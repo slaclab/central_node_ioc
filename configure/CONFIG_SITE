@@ -1,0 +1,88 @@
+# CONFIG_SITE
+
+# Make any application-specific changes to the EPICS build
+#   configuration variables in this file.
+#
+# Host/target specific settings can be specified in files named
+#   CONFIG_SITE.$(EPICS_HOST_ARCH).Common
+#   CONFIG_SITE.Common.$(T_A)
+#   CONFIG_SITE.$(EPICS_HOST_ARCH).$(T_A)
+
+# CHECK_RELEASE controls the consistency checking of the support
+#   applications pointed to by the RELEASE* files.
+# Normally CHECK_RELEASE should be set to YES.
+# Set CHECK_RELEASE to NO to disable checking completely.
+# Set CHECK_RELEASE to WARN to perform consistency checking but
+#   continue building anyway if conflicts are found.
+CHECK_RELEASE = YES
+
+# Set this when you only want to compile this application
+#   for a subset of the cross-compiled target architectures
+#   that Base is built for.
+#CROSS_COMPILER_TARGET_ARCHS = vxWorks-mpc8540 vxWorks-ppc604_long vxWorks-ppc604_altivec
+#CROSS_COMPILER_TARGET_ARCHS = RTEMS-beatnik RTEMS-mvme3100 RTEMS-uC5282 linuxRT-x86
+
+# If you only want to build for the host then uncomment the line below and no cross targets
+# will be built.  Remember EPICS will build for the HOST ARCH by default.
+#CROSS_COMPILER_TARGET_ARCHS =  linuxRT_glibc-x86_64
+CROSS_COMPILER_TARGET_ARCHS =  linux-x86_64
+BUILD_FOR_HOST_ARCH=""
+
+# To install files into a location other than $(TOP) define
+#   INSTALL_LOCATION here.
+#INSTALL_LOCATION=</path/name/to/install/top>
+
+# Set this when your IOC and the host use different paths
+#   to access the application. This will be needed to boot
+#   from a Microsoft FTP server or with some NFS mounts.
+# You must rebuild in the iocBoot directory for this to
+#   take effect.
+#IOCS_APPL_TOP = </IOC/path/to/application/top>
+IOCS_APPL_TOP  = $(INSTALL_LOCATION)
+
+INSTALL_LOCATION_STARTUP += $(INSTALL_LOCATION)/startup
+DIRECTORY_TARGETS += $(INSTALL_LOCATION_STARTUP)
+
+# Let's reference some external packages needed by our build:
+
+# =============================================
+# Define the version of external  packages needed by this                      
+# IOC Application
+# =============================================
+include $(TOP)/RELEASE_SITE
+#Define the external package version number to be used
+CPPUNIT_PACKAGE_VERSION=1.12.1
+BOOST_PACKAGE_VERSION=1.42.0
+BOOSTBINDINGS_PACKAGE_VERSION=1.42.0
+LAPACK_PACKAGE_VERSION=3.2.1
+
+#Define the path to the external package for the host architecture
+CPPUNIT=$(PACKAGE_SITE_TOP)/cppunit/$(CPPUNIT_PACKAGE_VERSION)/rhel6-x86_64
+BOOST=$(PACKAGE_SITE_TOP)/boost/$(BOOST_PACKAGE_VERSION)/rhel6-x86_64
+BOOSTBINDINGS=$(PACKAGE_SITE_TOP)/boost-numeric-bindings/$(BOOSTBINDINGS_PACKAGE_VERSION)
+LAPACK=$(PACKAGE_SITE_TOP)/lapack/$(LAPACK_PACKAGE_VERSION)/rhel6-x86_64
+
+#=========================================================
+#EVRSharing - Need to define path to EVRMA header files
+# For Build Type: x86_64-glibc-linux                                                            
+#=========================================================
+
+EVRMA_PACKAGE_VERSION=evrma-R1-0-p4
+
+### NOTE: SETTABLE_CONFIG
+KERNEL_MODULE_EVRMA=$(PACKAGE_SITE_TOP)/linuxKernel_Modules/evrmaDriver/$(EVRMA_PACKAGE_VERSION)
+### NOTE: SETTABLE_CONFIG
+EVRMA=$(PACKAGE_SITE_TOP)/evrma/$(EVRMA_PACKAGE_VERSION)/rhel6-linux-x86_64
+
+EVRMA_LIB = $(EVRMA)/lib
+EVRMA_INCLUDE = -I$(EVRMA)/include
+KERNEL_MODULE_EVRMA_INCLUDE = -I$(KERNEL_MODULE_EVRMA)/src
+
+#=========================================================
+# EasyLogging++
+#=========================================================
+EASYLOGGING=$(PACKAGE_SITE_TOP)/easylogging/easyloggingpp-8.91
+EASYLOGGINGPP_INCLUDE = -I$(EASYLOGGING)
+
+# Build this IOC App statically
+STATIC_BUILD=YES

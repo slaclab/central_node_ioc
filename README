@@ -1,0 +1,40 @@
+#==============================================================
+#
+#  Name: README
+#
+#  Rem:  
+#        EPICS IOC Application 
+#
+#  Side: None
+#
+#  Auth: XX-Mar-2012,          (XX)
+#  Rev:  dd-mmm-yyyy, Reviewer's Name (USERNAME)
+#--------------------------------------------------------------
+#  Mod:
+#        dd-mmm-yyyy, Reviewer's Name (USERNAME)
+#          coment
+#
+#==============================================================
+#
+# NOTE:
+# Please do not type make here !!
+# This module is only a template used by makeBaseApp.pl to create an EPICS IOC Application
+
+This module provides templates that are used by ICD to support our style
+of IOC Application Building for the facilities we support.
+These templates are used by makeBaseApp.pl
+In order to use this template area you must first set 
+"EPICS_MBA_TEMPLATE_TOP" before calling makeBaseApp.pl
+"EPICS_MBA_TEMPLATE_TOP" points to a specific release of the icdTemplates module.
+
+For example,
+mkdir mySandBox
+cd  mySandBox
+export EPICS_MBA_TEMPLATE_TOP=/afs/slac/g/lcls/epics/R3-14-12-3_1-0/modules/icdTemplates/icdTemplates-R1-0-1
+makeBaseApp.pl -t      slac myTest
+makeBaseApp.pl -i  -t  slac myIOC
+
+At this time I have only created one template called "slac" focused on creating IOC applications.
+Indeed, we can imagine a template focused on creating EPICS drivers or Device support.
+
+# End of file

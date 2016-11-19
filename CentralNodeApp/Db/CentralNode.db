@@ -1,0 +1,6 @@
+record(stringout, "CentralNode:ALGLOAD") {
+    field(DESC, "Load Algorithm")
+    field(DTYP, "asynOctetWrite")
+    field(OUT, "@asyn(CENTRAL_NODE 0 0)ALGLOAD")
+}
+

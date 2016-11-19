@@ -1,0 +1,91 @@
+# RELEASE - Location of external support modules
+#
+# IF YOU MAKE ANY CHANGES to this file you must subsequently
+# do a "gnumake rebuild" in this application's top level
+# directory.
+#
+# The build process does not check dependencies against files
+# that are outside this application, thus you should do a
+# "gnumake rebuild" in the top level directory after EPICS_BASE
+# or any other external module pointed to below is rebuilt.
+#
+# Host- or target-specific settings can be given in files named
+#  RELEASE.$(EPICS_HOST_ARCH).Common
+#  RELEASE.Common.$(T_A)
+#  RELEASE.$(EPICS_HOST_ARCH).$(T_A)
+#
+# This file should ONLY define paths to other support modules,
+# or include statements that pull in similar RELEASE files.
+# Build settings that are NOT module paths should appear in a
+# CONFIG_SITE file.
+
+# If you don't want to install into $(TOP) then
+# define INSTALL_LOCATION_APP here
+#INSTALL_LOCATION_APP=<fullpathname>
+
+# EPICS Templates
+TEMPLATE_TOP=/afs/slac/g/lcls/epics/R3-14-12-4_1-1/modules/icdTemplates/icdTemplates-R1-2-1
+
+# =============================================================
+# All needed variables come in via the following include:
+# =============================================================
+
+include $(TOP)/RELEASE_SITE
+
+# =============================================================
+# Define location of the modules tree
+# =============================================================
+
+EPICS_MODULES=$(MODULES_SITE_TOP)
+
+# ==============================================================
+# Define the cvs module version of EPICS BASE that you will use
+# =============================================================
+
+BASE_MODULE_VERSION=$(EPICS_BASE_VER)
+
+# =============================================================
+# Define the version of modules needed by
+# IOC apps or other Support apps
+# =============================================================
+ASYN_MODULE_VERSION=asyn-R4-26_0
+SEQ_MODULE_VERSION=seq-R2-1-6_1-3
+AUTOSAVE_MODULE_VERSION=autosave-R5-5_0-0
+CAPUTLOG_MODULE_VERSION=caPutLog-R3-4_1-0
+IOCADMIN_MODULE_VERSION=iocAdmin-R3-1-12_1-1
+MISCUTILS_MODULE_VERSION=miscUtils-R2-2-2
+EVENT_MODULE_VERSION=event-R4-1-6
+RTEMSUTILS_MODULE_VERSION=rtemsutils-R1-0-0-lcls5
+
+# Let's add in support for the cexpsh()
+# This can be called from the EPICS shell
+# Please look at the README file in 
+# CEXP module
+CEXP_MODULE_VERSION=cexpsh-R1-0-0
+
+# ============================================================
+#  Module Location
+# ============================================================
+ASYN=$(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
+SNCSEQ=$(EPICS_MODULES)/seq/$(SEQ_MODULE_VERSION)
+AUTOSAVE=$(EPICS_MODULES)/autosave/$(AUTOSAVE_MODULE_VERSION)
+CAPUTLOG=$(EPICS_MODULES)/caPutLog/$(CAPUTLOG_MODULE_VERSION)
+IOCADMIN=$(EPICS_MODULES)/iocAdmin/$(IOCADMIN_MODULE_VERSION)
+
+MISCUTILS=$(EPICS_MODULES)/miscUtils/$(MISCUTILS_MODULE_VERSION)
+EVENT=$(EPICS_MODULES)/event/$(EVENT_MODULE_VERSION)
+RTEMSUTILS=$(EPICS_MODULES)/rtemsutils/$(RTEMSUTILS_MODULE_VERSION)
+
+CEXP=$(EPICS_MODULES)/cexpsh/$(CEXP_MODULE_VERSION)
+
+# EPICS_BASE usually appears last so other apps can override stuff:
+##EPICS_BASE=/afs/slac/g/lcls/epics/base/base-R3-14-12-4_1-1
+
+EPICS_BASE=$(BASE_SITE_TOP)/$(BASE_MODULE_VERSION)
+
+# Location of Linux Kernel Modules:
+LINUX_KERNEL_MODULES=$(PACKAGE_SITE_TOP)/linuxKernel_Modules
+
+# Set RULES here if you want to take build rules from somewhere
+# other than EPICS_BASE:
+#RULES=/path/to/epics/support/module/rules/x-y
