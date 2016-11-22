@@ -9,8 +9,9 @@
 #include <dbCommon.h>
 #include <alarm.h>
 
-#include "Log.h"
 #include "LogWrapper.h"
+
+#include <central_node_engine.h>
 
 #ifdef LOG_ENABLED
 using namespace easyloggingpp;
@@ -18,15 +19,16 @@ static Logger *centralNodeLogger;
 #endif
 
 // Number of asyn parameters
-const int CENTRALNODE_NUM_PARAMS = 1;
+const int CENTRALNODE_NUM_PARAMS = 2;
 
 // Information extracted from the input file
 MpsAsynParam CentralNodeParams[CENTRALNODE_NUM_PARAMS] = {
   {asynParamOctet, "ALGLOAD", -1},
+  {asynParamInt32, "DIGITAL_INPUT", -1},
 };
 
 CentralNodeDriver::CentralNodeDriver(const char *portName) :
-  asynPortDriver(portName, 1, CENTRALNODE_NUM_PARAMS,
+  asynPortDriver(portName, 100, CENTRALNODE_NUM_PARAMS,
 		 asynOctetMask | asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask | asynDrvUserMask, // interfaceMask
 		 asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask, // interruptMask
 		 ASYN_MULTIDEVICE,                       // asynFlags
@@ -47,6 +49,15 @@ CentralNodeDriver::CentralNodeDriver(const char *portName) :
 CentralNodeDriver::~CentralNodeDriver() {
 }
 
+asynStatus CentralNodeDriver::drvUserCreate(asynUser *pasynUser, const char *drvInfo, const char **ppTypeName,
+					    size_t *psize) {
+  int addr;
+  getAddress(pasynUser, &addr);
+  LOG_TRACE("DRIVER", "drvUserCreate info=" << drvInfo << " timeout=" << pasynUser->timeout
+	    << "; address=" << addr);
+  return asynSuccess;
+}
+
 asynStatus CentralNodeDriver::readOctet(asynUser *pasynUser, char *value, size_t maxChars, size_t *nActual) {
   return asynSuccess;
 }
@@ -57,6 +68,15 @@ asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value,
 
   LOG_TRACE("DRIVER", "Writing to " << param->name << " the string " << value);
   *nActual = maxChars;
+  return asynSuccess;
+}
+
+asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) {
+  int addr;
+  getAddress(pasynUser, &addr);
+  Engine::getInstance();
+  LOG_TRACE("DRIVER", "Reading input [address=" << addr << "]");
+  *value = 1;
   return asynSuccess;
 }
 

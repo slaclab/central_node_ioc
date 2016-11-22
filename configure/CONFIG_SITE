@@ -84,5 +84,20 @@ KERNEL_MODULE_EVRMA_INCLUDE = -I$(KERNEL_MODULE_EVRMA)/src
 EASYLOGGING=$(PACKAGE_SITE_TOP)/easylogging/easyloggingpp-8.91
 EASYLOGGINGPP_INCLUDE = -I$(EASYLOGGING)
 
+#=========================================================
+# Central Node Engine
+#=========================================================
+CENTRAL_NODE_ENGINE=/afs/slac/u/cd/lpiccoli/top/central_node_engine
+CENTRAL_NODE_ENGINE_INCLUDE=-I$(CENTRAL_NODE_ENGINE)/include
+CENTRAL_NODE_ENGINE_LIB=$(CENTRAL_NODE_ENGINE)/lib/linux-x86_64
+
+#=========================================================
+# YAML-CPP
+#=========================================================
+YAML_CPP_VERSION=yaml-cpp-0.5.3
+YAML_CPP_PATH=$(PACKAGE_TOP)/yaml-cpp/$(YAML_CPP_VERSION)
+YAML_CPP_LIB=$(YAML_CPP_PATH)/rhel6-x86_64/lib
+YAML_CPP_INCLUDE=-I$(YAML_CPP_PATH)/rhel6-x86_64/include
+
 # Build this IOC App statically
 STATIC_BUILD=YES

@@ -4,6 +4,7 @@
 #include <epicsThread.h>
 
 #include "CentralNodeDriver.h"
+#include "Log.h"
 
 #include <epicsExport.h> /* This should be the last header */
 
@@ -11,6 +12,13 @@ static CentralNodeDriver *pCNDriver;
 
 static int configureCentralNode(const char *portName) {
   pCNDriver = new CentralNodeDriver(portName);
+
+#ifdef LOG_ENABLED
+  Configurations c;
+  //  c.parseFromText("*GLOBAL:\n Format = %level %msg");
+  Loggers::setDefaultConfigurations(c, true);
+#endif
+
   return 0;
 }
 

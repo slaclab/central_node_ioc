@@ -34,8 +34,8 @@ CentralNode_DBD += $(CEXP_DBDS)
 CentralNode_DBD += system.dbd
 
 # If you don't have an EVR comment the following two lines:
-CentralNode_DBD += evrSupport.dbd
-CentralNode_DBD += devMrfEr.dbd
+#CentralNode_DBD += evrSupport.dbd
+#CentralNode_DBD += devMrfEr.dbd
 
 # ======================================================================
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
@@ -71,57 +71,25 @@ CentralNode_LIBS += caPutLog
 # Needed to link cexpsh() support
 CentralNode_LIBS += $(CEXP_LIBS)
 
-
-# =============================================
-# Begin to link in the EVR support for
-# RTEMS, linux, and linuxRT
-# If you don't have an EVR, you can comment out 
-# the lines below.
-# =============================================
- CentralNode_LIBS += evrSupport
- CentralNode_LIBS += devMrfEr
-
-ifneq ($(T_A),linuxRT-x86)
-  ifneq ($(T_A),linuxRT-x86_64)
-   ifneq ($(T_A),linuxRT_glibc-x86_64)
-    ifneq ($(T_A),linux-x86)
-      ifneq ($(T_A),linux-x86_64)
-       CentralNode_LIBS += mrfVme64x
-      endif
-    endif
-  endif
- endif
-endif
-
- ifeq ($(T_A),linuxRT-x86)
-  CentralNode_LIBS += drvMrf
- endif
-
- ifeq ($(T_A),linuxRT-x86_64)
-  CentralNode_LIBS += drvMrf
- endif
- 
- ifeq ($(T_A),linuxRT_glibc-x86_64)
-  CentralNode_LIBS += drvMrf
- endif
-
- ifeq ($(T_A),linux-x86)
-  CentralNode_LIBS += drvMrf
- endif
-
- ifeq ($(T_A),linux-x86_64)
-  CentralNode_LIBS += drvMrf
- endif
-# =====================================================
-# END EVR libraries
-# =====================================================
-
 CentralNode_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-#===========================
+#======================================================
 
 USR_CPPFLAGS += -DLOG_ENABLED
 USR_CPPFLAGS += $(EASYLOGGINGPP_INCLUDE)
+USR_CPPFLAGS += $(YAML_CPP_INCLUDE)
+
+# =========================================================================
+#  Link in external package libraries (-lcentral_node_engine)
+# =========================================================================
+YAML_CPP_DIR=$(YAML_CPP_LIB)
+CENTRAL_NODE_ENGINE_DIR=$(CENTRAL_NODE_ENGINE_LIB)
+USR_CPPFLAGS += $(CENTRAL_NODE_ENGINE_INCLUDE)
+#CentralNode_LIBS += central_node_engine
+USR_LDFLAGS += -L$(CENTRAL_NODE_ENGINE_LIB)
+USR_LDFLAGS += -L$(YAML_CPP_LIB)
+CentralNode_SYS_LIBS += central_node_engine
+CentralNode_SYS_LIBS += yaml-cpp
 
 include $(TOP)/configure/RULES
 #----------------------------------------
