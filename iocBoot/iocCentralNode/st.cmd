@@ -20,6 +20,8 @@ epicsEnvSet("LOCATION","Twilight Zone")
 
 # END: Additional environment variables
 # ====================================================================
+epicsEnvSet("MPS_ENV_CONFIG_PATH", "/afs/slac/g/lcls/epics/iocTop/users/lpiccoli/central_node_engine/test/yaml/")
+
 configureCentralNode("CENTRAL_NODE")
 
 ########################################################################
@@ -37,6 +39,7 @@ dbLoadRecords("db/iocAdminScanMon.db","IOC=${IOC}")
 # The python parser is part of iocAdmin
 dbLoadRecords("db/iocRelease.db","IOC=${IOC}")
 dbLoadRecords("db/CentralNode.db","IOC=${IOC}")
+dbLoadRecords("db/digital_channels.db","BASE=MPS")
 
 iocInit()
 

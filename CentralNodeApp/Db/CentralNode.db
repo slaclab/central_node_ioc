@@ -1,23 +1,23 @@
-record(stringout, "CentralNode:ALGLOAD") {
+record(stringout, "CentralNode:CONFIG_LOAD") {
     field(DESC, "Load Algorithm")
     field(DTYP, "asynOctetWrite")
-    field(OUT, "@asyn(CENTRAL_NODE 0 0)ALGLOAD")
+    field(OUT, "@asyn(CENTRAL_NODE 0 0)CONFIG_LOAD")
 }
 
-record(bi, "CentralNode:INPUT0") {
-    field(DESC, "Test input")
-    field(DTYP, "asynInt32")
-    field(SCAN, "1 second")
-    field(ZNAM, "OK")
-    field(ONAM, "FAULTED")
-    field(INP, "@asyn(CENTRAL_NODE 0 3)DIGITAL_INPUT")
-}
+#record(bi, "CentralNode:DIGIN0") {
+#    field(DESC, "Test input")
+#    field(DTYP, "asynInt32")
+#    field(SCAN, "1 second")
+#    field(ZNAM, "OK")
+#    field(ONAM, "FAULTED")
+#    field(INP, "@asyn(CENTRAL_NODE 0 3)DIGITAL_CHANNEL")
+#}
 
-record(bi, "CentralNode:INPUT1") {
-    field(DESC, "Test input")
-    field(DTYP, "asynInt32")
-    field(SCAN, "1 second")
-    field(ZNAM, "OK")
-    field(ONAM, "FAULTED")
-    field(INP, "@asyn(CENTRAL_NODE 1 5)DIGITAL_INPUT")
-}
+#record(bi, "CentralNode:DIGIN1") {
+#    field(DESC, "Test input")
+#    field(DTYP, "asynInt32")
+#    field(SCAN, "1 second")
+#    field(ZNAM, "OK")
+#    field(ONAM, "FAULTED")
+#    field(INP, "@asyn(CENTRAL_NODE 1 5)DIGITAL_CHANNEL")
+#}

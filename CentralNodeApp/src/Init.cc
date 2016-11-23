@@ -1,4 +1,8 @@
 #include <iostream>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <unistd.h>
 
 #include <iocsh.h>
 #include <epicsThread.h>
@@ -11,7 +15,30 @@
 static CentralNodeDriver *pCNDriver;
 
 static int configureCentralNode(const char *portName) {
-  pCNDriver = new CentralNodeDriver(portName);
+  char *path = getenv(MPS_ENV_CONFIG_PATH);
+
+  if (path == NULL) {
+    fprintf(stderr, "ERROR: Missing environment variable \"%s\", can't proceed.\n", MPS_ENV_CONFIG_PATH);
+    return -1;
+  }
+
+  struct stat s;
+  int err = stat(path, &s);
+  if (err == -1) {
+    if (ENOENT == errno) {
+      fprintf(stderr, "ERROR: Directory for %s=%s does not exist, can't proceed.\n",
+	      MPS_ENV_CONFIG_PATH, path);
+      return -1;
+    }
+    else {
+      fprintf(stderr, "ERROR: Failed to get status for config directory %s=%s, can't proceed.\n",
+	      MPS_ENV_CONFIG_PATH, path);
+      perror("stat");
+      return -1;
+    }
+  }
+
+  pCNDriver = new CentralNodeDriver(portName, path);
 
 #ifdef LOG_ENABLED
   Configurations c;
