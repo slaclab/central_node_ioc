@@ -20,7 +20,7 @@ static Logger *centralNodeLogger;
 
 CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPath) :
   asynPortDriver(portName, 100, CENTRAL_NODE_DRIVER_NUM_PARAMS,
-		 asynOctetMask | asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask | asynDrvUserMask, // interfaceMask
+		 asynOctetMask | asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask | asynUInt32DigitalMask | asynDrvUserMask, // interfaceMask
 		 asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask, // interruptMask
 		 ASYN_MULTIDEVICE,                       // asynFlags
 		 1, 0, 0),            // autoConnect, priority, stackSize
@@ -31,7 +31,10 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   LOG_TRACE("DRIVER", "CentralNodeDriver constructor");
 
   createParam(CONFIG_LOAD_STRING, asynParamOctet, &_configLoadParam);
-  createParam(DIGITAL_CHANNEL_STRING, asynParamInt32, &_digitalChannelParam);
+  createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
+  createParam(DEVICE_INPUT_STRING, asynParamInt32, &_deviceInputParam);
+  createParam(ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_analogDeviceParam);
+  createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
@@ -60,6 +63,14 @@ asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value,
     LOG_TRACE("DRIVER", "Received request to load configuration: " << value);
     status = loadConfig(value);
   }
+  else if (_testDeviceInputParam == pasynUser->reason) {
+    LOG_TRACE("DRIVER", "Loading test device inputs from file: " << value);
+    status = loadTestDeviceInputs(value);
+  }
+  else if (_testAnalogDeviceParam == pasynUser->reason) {
+    LOG_TRACE("DRIVER", "Loading test analog devices from file: " << value);
+    status = loadTestAnalogDevices(value);
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
   }
@@ -69,28 +80,120 @@ asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value,
 }
 
 asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) {
+  asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
-  Engine::getInstance().getCurrentDb().digitalChannels()
-  //  LOG_TRACE("DRIVER", "Reading input [address=" << addr << "]");
-  *value = 1;
-  return asynSuccess;
+  if (_deviceInputParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()) {
+      // TODO: check if 'addr' is valid
+      *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
+    }
+    else {
+      // Database has not been loaded
+      LOG_TRACE("DRIVER", "ERROR: Invalid database");
+      status = asynError;
+    }
+  }
+  else {
+    LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
+    status = asynError;
+  }
+  return status;
+}
+
+
+asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask) {
+  asynStatus status = asynSuccess;
+  int addr;
+  getAddress(pasynUser, &addr);
+  if (_analogDeviceParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()) {
+      // TODO: check if 'addr' is valid
+      *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
+    }
+    else {
+      // Database has not been loaded
+      LOG_TRACE("DRIVER", "ERROR: Invalid database");
+      status = asynError;
+    }
+  }
+  else {
+    LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
+    status = asynError;
+  }
+  return status;
 }
 
 asynStatus CentralNodeDriver::loadConfig(const char *config) {
   std::string fullName = _configPath + config;
   try {
     if (Engine::getInstance().loadConfig(fullName) != 0) {
-      std::cerr << "Failed to load configuration " << fullName << std::endl; 
+      std::cerr << "ERROR: Failed to load configuration " << fullName << std::endl; 
       return asynError;
     }
   } catch (DbException ex) {
-    std::cerr << "Exception loading config " << fullName << std::endl;
+    std::cerr << "ERROR: Exception loading config " << fullName << std::endl;
     std::cerr << ex.what() << std::endl;
     return asynError;
   }
   LOG_TRACE("DRIVER", "Loaded configuration: " << fullName);
   return asynSuccess;
+}
+
+asynStatus CentralNodeDriver::loadTestDeviceInputs(const char *testFilename) {
+  asynStatus status = asynSuccess;
+  std::string fullName = _configPath + "../inputs/" + testFilename;
+
+  std::ifstream testInputFile;
+  testInputFile.open(fullName.c_str(), std::ifstream::in);
+  if (!testInputFile.is_open()) {
+    std::cerr << "ERROR: Failed to load test input file " << fullName << std::endl; 
+    return asynError;
+  }
+
+  while (!testInputFile.eof()) {
+    int deviceId;
+    int deviceValue;
+    testInputFile >> deviceId;
+    testInputFile >> deviceValue;
+
+    try {
+      Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->update(deviceValue);
+    } catch (std::exception ex) {
+      std::cerr << "ERROR: Invalid device input ID: " << deviceId << std::endl;
+      status = asynError;
+    }
+  } 
+
+  return status;
+}
+
+asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
+  asynStatus status = asynSuccess;
+  std::string fullName = _configPath + "../inputs/" + testFilename;
+
+  std::ifstream testInputFile;
+  testInputFile.open(fullName.c_str(), std::ifstream::in);
+  if (!testInputFile.is_open()) {
+    std::cerr << "ERROR: Failed to load test input file " << fullName << std::endl; 
+    return asynError;
+  }
+
+  while (!testInputFile.eof()) {
+    int deviceId;
+    int deviceValue;
+    testInputFile >> deviceId;
+    testInputFile >> deviceValue;
+
+    try {
+      Engine::getInstance().getCurrentDb()->analogDevices->at(deviceId)->update(deviceValue);
+    } catch (std::exception ex) {
+      std::cerr << "ERROR: Invalid analog device ID: " << deviceId << std::endl;
+      status = asynError;
+    }
+  } 
+
+  return status;
 }
 
 void CentralNodeDriver::report(FILE *fp, int reportDetails) {

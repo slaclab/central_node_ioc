@@ -4,6 +4,18 @@ record(stringout, "CentralNode:CONFIG_LOAD") {
     field(OUT, "@asyn(CENTRAL_NODE 0 0)CONFIG_LOAD")
 }
 
+record(stringout, "CentralNode:Test:DEVICE_INPUT") {
+    field(DESC, "Load test file for device inputs (digital)")
+    field(DTYP, "asynOctetWrite")
+    field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_DEVICE_INPUT")
+}
+
+record(stringout, "CentralNode:Test:ANALOG_DEVICE") {
+    field(DESC, "Load test file for analog devices")
+    field(DTYP, "asynOctetWrite")
+    field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_ANALOG_DEVICE")
+}
+
 #record(bi, "CentralNode:DIGIN0") {
 #    field(DESC, "Test input")
 #    field(DTYP, "asynInt32")
