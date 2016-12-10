@@ -41,6 +41,7 @@ dbLoadRecords("db/iocRelease.db","IOC=${IOC}")
 dbLoadRecords("db/CentralNode.db","IOC=${IOC}")
 dbLoadRecords("db/device_inputs.db","BASE=MPS")
 dbLoadRecords("db/analog_devices.db","BASE=MPS")
+dbLoadRecords("db/mitigation.db","BASE=MPS")
 
 iocInit()
 

@@ -5,7 +5,7 @@ record(stringout, "CentralNode:CONFIG_LOAD") {
 }
 
 record(stringout, "CentralNode:Test:DEVICE_INPUT") {
-    field(DESC, "Load test file for device inputs (digital)")
+    field(DESC, "Load values for device inputs (digital)")
     field(DTYP, "asynOctetWrite")
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_DEVICE_INPUT")
 }
@@ -14,6 +14,12 @@ record(stringout, "CentralNode:Test:ANALOG_DEVICE") {
     field(DESC, "Load test file for analog devices")
     field(DTYP, "asynOctetWrite")
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_ANALOG_DEVICE")
+}
+
+record(ao, "CentralNode:Test:CHECK_FAULTS") {
+    field(DESC, "Run engine evaluation one time")
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_CHECK_FAULTS")
 }
 
 #record(bi, "CentralNode:DIGIN0") {

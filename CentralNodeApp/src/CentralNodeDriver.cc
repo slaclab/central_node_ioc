@@ -31,10 +31,13 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   LOG_TRACE("DRIVER", "CentralNodeDriver constructor");
 
   createParam(CONFIG_LOAD_STRING, asynParamOctet, &_configLoadParam);
-  createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
-  createParam(DEVICE_INPUT_STRING, asynParamInt32, &_deviceInputParam);
+  createParam(DEVICE_INPUT_STRING, asynParamUInt32Digital, &_deviceInputParam);
   createParam(ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_analogDeviceParam);
+  createParam(MITIGATION_DEVICE_STRING, asynParamInt32, &_mitigationDeviceParam);
+
+  createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
+  createParam(TEST_CHECK_FAULTS_STRING, asynParamInt32, &_testCheckFaultsParam);
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
@@ -79,20 +82,10 @@ asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value,
   return status;
 }
 
-asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) {
+asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   asynStatus status = asynSuccess;
-  int addr;
-  getAddress(pasynUser, &addr);
-  if (_deviceInputParam == pasynUser->reason) {
-    if (Engine::getInstance().getCurrentDb()) {
-      // TODO: check if 'addr' is valid
-      *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
-    }
-    else {
-      // Database has not been loaded
-      LOG_TRACE("DRIVER", "ERROR: Invalid database");
-      status = asynError;
-    }
+  if (_testCheckFaultsParam == pasynUser->reason) {
+    Engine::getInstance().checkFaults();
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
@@ -101,12 +94,52 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   return status;
 }
 
+asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) {
+  asynStatus status = asynSuccess;
+  int addr;
+  getAddress(pasynUser, &addr);
+  if (_mitigationDeviceParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()) {
+      // TODO: check if 'addr' is valid
+      if (Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass) {
+	*value = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number;
+      }
+      else {
+	LOG_TRACE("DRIVER", "ERROR: Invalid allowed class for mitigation device "
+		  << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);
+      }
+	//      LOG_TRACE("DRIVER", "Mitagation: " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);// << ": " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number);
+    }
+    else {
+      // Database has not been loaded
+      LOG_TRACE("DRIVER", "ERROR: Invalid database");
+      status = asynError;
+    }
+  }
+  else {
+    LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");
+    status = asynError;
+  }
+  return status;
+}
 
 asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask) {
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
-  if (_analogDeviceParam == pasynUser->reason) {
+  if (_deviceInputParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()) {
+      // TODO: check if 'addr' is valid
+      *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
+      //      LOG_TRACE("DRIVER", "Input: " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name << ": " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value);
+    }
+    else {
+      // Database has not been loaded
+      LOG_TRACE("DRIVER", "ERROR: Invalid database");
+      status = asynError;
+    }
+  }
+  else if (_analogDeviceParam == pasynUser->reason) {
     if (Engine::getInstance().getCurrentDb()) {
       // TODO: check if 'addr' is valid
       *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
