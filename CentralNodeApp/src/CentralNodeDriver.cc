@@ -34,6 +34,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(DEVICE_INPUT_STRING, asynParamUInt32Digital, &_deviceInputParam);
   createParam(ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_analogDeviceParam);
   createParam(MITIGATION_DEVICE_STRING, asynParamInt32, &_mitigationDeviceParam);
+  createParam(FAULT_STRING, asynParamUInt32Digital, &_faultParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -143,6 +144,20 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     if (Engine::getInstance().getCurrentDb()) {
       // TODO: check if 'addr' is valid
       *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
+    }
+    else {
+      // Database has not been loaded
+      LOG_TRACE("DRIVER", "ERROR: Invalid database");
+      status = asynError;
+    }
+  }
+  else if (_faultParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()) {
+      // TODO: check if 'addr' is valid
+      *value = 0;
+      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
+	*value = 1;
+      }
     }
     else {
       // Database has not been loaded

@@ -15,12 +15,13 @@
 #define DEVICE_INPUT_STRING       "DEVICE_INPUT"
 #define ANALOG_DEVICE_STRING      "ANALOG_DEVICE"
 #define MITIGATION_DEVICE_STRING  "MITIGATION_DEVICE"
+#define FAULT_STRING              "FAULT"
 
 #define TEST_DEVICE_INPUT_STRING  "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING "TEST_ANALOG_DEVICE"
 #define TEST_CHECK_FAULTS_STRING  "TEST_CHECK_FAULTS"
 
-const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 7;
+const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 8;
 
 class CentralNodeDriver : public asynPortDriver {
 public:
@@ -45,6 +46,7 @@ public:
   int _deviceInputParam;
   int _analogDeviceParam;
   int _mitigationDeviceParam;
+  int _faultParam;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;

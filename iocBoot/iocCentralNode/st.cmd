@@ -39,9 +39,10 @@ dbLoadRecords("db/iocAdminScanMon.db","IOC=${IOC}")
 # The python parser is part of iocAdmin
 dbLoadRecords("db/iocRelease.db","IOC=${IOC}")
 dbLoadRecords("db/CentralNode.db","IOC=${IOC}")
-dbLoadRecords("db/device_inputs.db","BASE=MPS")
-dbLoadRecords("db/analog_devices.db","BASE=MPS")
-dbLoadRecords("db/mitigation.db","BASE=MPS")
+dbLoadRecords("db/device_inputs.db","BASE=MPS:DIGITAL")
+dbLoadRecords("db/analog_devices.db","BASE=MPS:ANALOG")
+dbLoadRecords("db/mitigation.db","BASE=MPS:MIT")
+dbLoadRecords("db/faults.db","BASE=MPS:FAULT")
 
 iocInit()
 
