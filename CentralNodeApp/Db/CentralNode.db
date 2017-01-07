@@ -22,6 +22,12 @@ record(ao, "CentralNode:Test:CHECK_FAULTS") {
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_CHECK_FAULTS")
 }
 
+record(ao, "CentralNode:Test:CHECK_BYPASS") {
+    field(DESC, "Check bypass queue one time")
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_CHECK_BYPASS")
+}
+
 #record(bi, "CentralNode:DIGIN0") {
 #    field(DESC, "Test input")
 #    field(DTYP, "asynInt32")

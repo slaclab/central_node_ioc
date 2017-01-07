@@ -12,7 +12,7 @@
 
 #include <epicsExport.h> /* This should be the last header */
 
-static CentralNodeDriver *pCNDriver;
+static CentralNodeDriver *pCNDriver = NULL;
 
 static int configureCentralNode(const char *portName) {
   char *path = getenv(MPS_ENV_CONFIG_PATH);
@@ -62,4 +62,22 @@ static void initCentralNodeRegistrar(void) {
 
 extern "C" {
 epicsExportRegistrar(initCentralNodeRegistrar);
+}
+
+static int printQueue() {
+  pCNDriver->printQueue();
+  return 0;
+}
+
+static const iocshFuncDef printQueueFuncDef = {"printQueue", 0, 0};
+static void printQueueCallFunc(const iocshArgBuf *args) {
+  printQueue();
+}
+
+static void printQueueRegistrar(void) {
+  iocshRegister(&printQueueFuncDef, printQueueCallFunc);
+}
+
+extern "C" {
+epicsExportRegistrar(printQueueRegistrar);
 }

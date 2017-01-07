@@ -35,10 +35,20 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_analogDeviceParam);
   createParam(MITIGATION_DEVICE_STRING, asynParamInt32, &_mitigationDeviceParam);
   createParam(FAULT_STRING, asynParamUInt32Digital, &_faultParam);
+  createParam(FAULT_IGNORED_STRING, asynParamUInt32Digital, &_faultIgnoredParam);
+  createParam(DEVICE_INPUT_LATCHED_STRING, asynParamUInt32Digital, &_deviceInputLatchedParam);
+  createParam(DEVICE_INPUT_UNLATCH_STRING, asynParamUInt32Digital, &_deviceInputUnlatchParam);
+  createParam(DEVICE_INPUT_BYPV_STRING, asynParamUInt32Digital, &_deviceInputBypassValueParam);
+  createParam(DEVICE_INPUT_BYPS_STRING, asynParamUInt32Digital, &_deviceInputBypassStatusParam);
+  createParam(DEVICE_INPUT_BYPEXPDATE_STRING, asynParamInt32, &_deviceInputBypassExpirationDateParam);
+  createParam(ANALOG_DEVICE_BYPV_STRING, asynParamInt32, &_analogDeviceBypassValueParam);
+  createParam(ANALOG_DEVICE_BYPS_STRING, asynParamUInt32Digital, &_analogDeviceBypassStatusParam);
+  createParam(ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_analogDeviceBypassExpirationDateParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
   createParam(TEST_CHECK_FAULTS_STRING, asynParamInt32, &_testCheckFaultsParam);
+  createParam(TEST_CHECK_BYPASS_STRING, asynParamInt32, &_testCheckBypassParam);
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
@@ -85,8 +95,31 @@ asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value,
 
 asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   asynStatus status = asynSuccess;
+  int addr;
+  getAddress(pasynUser, &addr);
   if (_testCheckFaultsParam == pasynUser->reason) {
     Engine::getInstance().checkFaults();
+  }
+  else if (_deviceInputBypassExpirationDateParam == pasynUser->reason) {
+    status = setBypass(BYPASS_DIGITAL, addr, value);
+    if (status != asynSuccess) {
+      setIntegerParam(_deviceInputBypassExpirationDateParam, 0);
+    }
+  }
+  else if (_analogDeviceBypassExpirationDateParam == pasynUser->reason) {
+    status = setBypass(BYPASS_ANALOG, addr, value);
+    if (status != asynSuccess) {
+      setIntegerParam(_deviceInputBypassExpirationDateParam, 0);
+    }
+  }
+  else if (_testCheckBypassParam == pasynUser->reason) {
+    Engine::getInstance().getBypassManager()->checkBypassQueue();
+  }
+  else if (_analogDeviceBypassValueParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass->value = value;
+    LOG_TRACE("DRIVER", "BypassValue: "
+	      << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
+	      << " value: " << value);
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
@@ -96,26 +129,26 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
 }
 
 asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) {
+  if (!Engine::getInstance().getCurrentDb()) {
+    // Database has not been loaded
+    LOG_TRACE("DRIVER", "ERROR: Invalid database");
+    return asynError;
+  }
+
+  // TODO: check if 'addr' is valid
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+
   if (_mitigationDeviceParam == pasynUser->reason) {
-    if (Engine::getInstance().getCurrentDb()) {
-      // TODO: check if 'addr' is valid
-      if (Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass) {
-	*value = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number;
-      }
-      else {
-	LOG_TRACE("DRIVER", "ERROR: Invalid allowed class for mitigation device "
-		  << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);
-      }
-	//      LOG_TRACE("DRIVER", "Mitagation: " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);// << ": " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number);
+    if (Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass) {
+      *value = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number;
     }
     else {
-      // Database has not been loaded
-      LOG_TRACE("DRIVER", "ERROR: Invalid database");
-      status = asynError;
+      LOG_TRACE("DRIVER", "ERROR: Invalid allowed class for mitigation device "
+		<< Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);
     }
+    //      LOG_TRACE("DRIVER", "Mitagation: " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);// << ": " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number);
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");
@@ -125,45 +158,81 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 }
 
 asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask) {
+  if (!Engine::getInstance().getCurrentDb()) {
+    // Database has not been loaded
+    LOG_TRACE("DRIVER", "ERROR: Invalid database");
+    return asynError;
+  }
+
+  // TODO: check if 'addr' is valid
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+
   if (_deviceInputParam == pasynUser->reason) {
-    if (Engine::getInstance().getCurrentDb()) {
-      // TODO: check if 'addr' is valid
-      *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
-      //      LOG_TRACE("DRIVER", "Input: " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name << ": " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value);
-    }
-    else {
-      // Database has not been loaded
-      LOG_TRACE("DRIVER", "ERROR: Invalid database");
-      status = asynError;
-    }
+    *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
+    //      LOG_TRACE("DRIVER", "Input: " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name << ": " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value);
   }
   else if (_analogDeviceParam == pasynUser->reason) {
-    if (Engine::getInstance().getCurrentDb()) {
-      // TODO: check if 'addr' is valid
-      *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
-    }
-    else {
-      // Database has not been loaded
-      LOG_TRACE("DRIVER", "ERROR: Invalid database");
-      status = asynError;
-    }
+    // LOG_TRACE("DRIVER", "ANALOG value=" << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value
+    // 	      << " mask=" << mask);
+    *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
   }
   else if (_faultParam == pasynUser->reason) {
-    if (Engine::getInstance().getCurrentDb()) {
-      // TODO: check if 'addr' is valid
-      *value = 0;
-      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
-	*value = 1;
-      }
+    *value = 0;
+    if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
+      *value = 1;
+    }
+  }
+  else if (_faultIgnoredParam == pasynUser->reason) {
+    *value = 0;
+    if (Engine::getInstance().getCurrentDb()->faults->at(addr)->ignored) {
+      *value = 1;
+    }
+  }
+  else if (_deviceInputLatchedParam == pasynUser->reason) {
+    *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue;
+  }
+  else if (_deviceInputBypassStatusParam ==  pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->status == BYPASS_VALID) {
+      *value = 1;
     }
     else {
-      // Database has not been loaded
-      LOG_TRACE("DRIVER", "ERROR: Invalid database");
-      status = asynError;
+      *value = 0;
     }
+  }
+  else if (_analogDeviceBypassStatusParam ==  pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass->status == BYPASS_VALID) {
+      *value = 1;
+    }
+    else {
+      *value = 0;
+    }
+  }
+  else {
+    LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
+    status = asynError;
+  }
+  return status;
+}
+
+asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt32 value, epicsUInt32 mask) {
+  asynStatus status = asynSuccess;
+  int addr;
+  getAddress(pasynUser, &addr);
+  if (_deviceInputUnlatchParam == pasynUser->reason) {
+    int faultValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->faultValue;
+    faultValue == 0? faultValue = 1 : faultValue = 0; // Flip faultValue and assign to latchedValue
+    Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue = faultValue;
+    LOG_TRACE("DRIVER", "Unlatch: "
+	      << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
+	      << " value: " << faultValue);
+  }
+  else if (_deviceInputBypassValueParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->value = value;
+    LOG_TRACE("DRIVER", "BypassValue: "
+	      << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
+	      << " value: " << value);
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
@@ -242,6 +311,26 @@ asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
   } 
 
   return status;
+}
+
+asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId, epicsInt32 expirationTime) {
+  time_t now;
+  time(&now);
+  if (expirationTime > 0 && expirationTime < now) {
+    std::cerr << "WARNING: Invalid expiration time " << expirationTime
+	      << ". Must be greater than (now) " << now << "." << std::endl;
+    return asynError;
+  }
+
+  uint32_t bypassValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->bypass->value;
+  Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), bypassType,
+						      deviceId, bypassValue, expirationTime);
+
+  return asynSuccess;
+}
+
+void CentralNodeDriver::printQueue() {
+  Engine::getInstance().getBypassManager()->printBypassQueue();
 }
 
 void CentralNodeDriver::report(FILE *fp, int reportDetails) {
