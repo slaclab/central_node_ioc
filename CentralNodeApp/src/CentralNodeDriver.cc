@@ -41,6 +41,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(DEVICE_INPUT_BYPV_STRING, asynParamUInt32Digital, &_deviceInputBypassValueParam);
   createParam(DEVICE_INPUT_BYPS_STRING, asynParamUInt32Digital, &_deviceInputBypassStatusParam);
   createParam(DEVICE_INPUT_BYPEXPDATE_STRING, asynParamInt32, &_deviceInputBypassExpirationDateParam);
+  createParam(DEVICE_INPUT_BYPEXPDATE_STRING_STRING, asynParamOctet, &_deviceInputBypassExpirationDateStringParam);
   createParam(ANALOG_DEVICE_BYPV_STRING, asynParamInt32, &_analogDeviceBypassValueParam);
   createParam(ANALOG_DEVICE_BYPS_STRING, asynParamUInt32Digital, &_analogDeviceBypassStatusParam);
   createParam(ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_analogDeviceBypassExpirationDateParam);
@@ -49,6 +50,11 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
   createParam(TEST_CHECK_FAULTS_STRING, asynParamInt32, &_testCheckFaultsParam);
   createParam(TEST_CHECK_BYPASS_STRING, asynParamInt32, &_testCheckBypassParam);
+
+  // Initialize bypass date strings
+  for (int i = 0; i < 100; ++i) {
+    setStringParam(i, _deviceInputBypassExpirationDateStringParam, "Bypass date not set");
+  }
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
@@ -62,17 +68,23 @@ CentralNodeDriver::~CentralNodeDriver() {
 // 	    << "; address=" << addr);
 //   return asynSuccess;
 // }
-
+/*
 asynStatus CentralNodeDriver::readOctet(asynUser *pasynUser, char *value, size_t maxChars, size_t *nActual) {
+  std::cout << "READOCTET"<< std::endl;
+  LOG_TRACE("DRIVER", "ReadOctet reason=" << pasynUser->reason);
+  if (_deviceInputBypassExpirationDateStringParam == pasynUser->reason) {
+    LOG_TRACE("DRIVER", "Read bypass string size (" << maxChars << ")");
+  }
+  *nActual = maxChars;
   return asynSuccess;
 }
-
+*/
 asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual) {
   asynStatus status = asynSuccess;
 
   // Set the parameter in the parameter library
   status = setStringParam(pasynUser->reason, (char *) value);
-  
+
   if (_configLoadParam == pasynUser->reason) {
     LOG_TRACE("DRIVER", "Received request to load configuration: " << value);
     status = loadConfig(value);
@@ -97,19 +109,28 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+
+  if (!Engine::getInstance().isInitialized()) {
+    // Database has not been loaded
+    LOG_TRACE("DRIVER", "ERROR: Database not initialized, reason="
+	      << pasynUser->reason << ", addr=" << addr << ", value=" << value);
+    return setIntegerParam(addr, pasynUser->reason, value);
+  }
+
+  LOG_TRACE("DRIVER", "INFO: reason=" << pasynUser->reason << ", addr=" << addr << ", value=" << value);
   if (_testCheckFaultsParam == pasynUser->reason) {
     Engine::getInstance().checkFaults();
   }
   else if (_deviceInputBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_DIGITAL, addr, value);
     if (status != asynSuccess) {
-      setIntegerParam(_deviceInputBypassExpirationDateParam, 0);
+      status = setIntegerParam(addr, _deviceInputBypassExpirationDateParam, 0);
     }
   }
   else if (_analogDeviceBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_ANALOG, addr, value);
     if (status != asynSuccess) {
-      setIntegerParam(_deviceInputBypassExpirationDateParam, 0);
+      status = setIntegerParam(addr, _analogDeviceBypassExpirationDateParam, 0);
     }
   }
   else if (_testCheckBypassParam == pasynUser->reason) {
@@ -129,16 +150,17 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
 }
 
 asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) {
-  if (!Engine::getInstance().getCurrentDb()) {
-    // Database has not been loaded
-    LOG_TRACE("DRIVER", "ERROR: Invalid database");
-    return asynError;
-  }
-
   // TODO: check if 'addr' is valid
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+
+  if (!Engine::getInstance().isInitialized()) {
+    // Database has not been loaded
+    LOG_TRACE("DRIVER", "ERROR: Database not initialized");
+    //    return asynError;
+    return status;
+  }
 
   if (_mitigationDeviceParam == pasynUser->reason) {
     if (Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass) {
@@ -158,16 +180,17 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 }
 
 asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask) {
-  if (!Engine::getInstance().getCurrentDb()) {
-    // Database has not been loaded
-    LOG_TRACE("DRIVER", "ERROR: Invalid database");
-    return asynError;
-  }
-
   // TODO: check if 'addr' is valid
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+
+  if (!Engine::getInstance().isInitialized()) {
+    // Database has not been loaded
+    LOG_TRACE("DRIVER", "ERROR: Database not initialized");
+    return status;
+    //    return asynError;
+  }
 
   if (_deviceInputParam == pasynUser->reason) {
     *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
@@ -220,6 +243,15 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+
+  if (!Engine::getInstance().isInitialized()) {
+    // Database has not been loaded
+    LOG_TRACE("DRIVER", "ERROR: Database not initialized (reason=" << pasynUser->reason
+	      << ", addr=" << addr << ")");
+    status = setUIntDigitalParam(addr, pasynUser->reason, value, mask);
+    return status;
+  }
+
   if (_deviceInputUnlatchParam == pasynUser->reason) {
     int faultValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->faultValue;
     faultValue == 0? faultValue = 1 : faultValue = 0; // Flip faultValue and assign to latchedValue
@@ -313,20 +345,43 @@ asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
   return status;
 }
 
+/**
+ * @param expirationTime bypass expiration time in seconds since now. If expirationTime is zero or negatie
+ *                       the bypass is cancelled.
+ */
 asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId, epicsInt32 expirationTime) {
+  asynStatus status = asynSuccess;
   time_t now;
   time(&now);
+  /*
   if (expirationTime > 0 && expirationTime < now) {
     std::cerr << "WARNING: Invalid expiration time " << expirationTime
 	      << ". Must be greater than (now) " << now << "." << std::endl;
     return asynError;
+  }
+  */
+
+  // Add expirationTime to current time, unless the bypass is being cancelled
+  if (expirationTime > 0) {
+    expirationTime += now;
+  }
+  else {
+    expirationTime = 0;
   }
 
   uint32_t bypassValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->bypass->value;
   Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), bypassType,
 						      deviceId, bypassValue, expirationTime);
 
-  return asynSuccess;
+  if (expirationTime == 0) {
+    status = setStringParam(deviceId, _deviceInputBypassExpirationDateStringParam, "Not Bypassed");
+  }
+  else {
+    time_t expTime = expirationTime;
+    status = setStringParam(deviceId, _deviceInputBypassExpirationDateStringParam, ctime(&expTime));
+  }
+
+  return status;
 }
 
 void CentralNodeDriver::printQueue() {

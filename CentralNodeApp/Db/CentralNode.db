@@ -16,16 +16,23 @@ record(stringout, "CentralNode:Test:ANALOG_DEVICE") {
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_ANALOG_DEVICE")
 }
 
-record(ao, "CentralNode:Test:CHECK_FAULTS") {
+record(longout, "CentralNode:Test:CHECK_FAULTS") {
     field(DESC, "Run engine evaluation one time")
     field(DTYP, "asynInt32")
+    field(VAL, "0")
+    field(PINI, "YES")
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_CHECK_FAULTS")
 }
 
-record(ao, "CentralNode:Test:CHECK_BYPASS") {
+record(longout, "CentralNode:Test:CHECK_BYPASS") {
     field(DESC, "Check bypass queue one time")
     field(DTYP, "asynInt32")
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_CHECK_BYPASS")
+}
+
+record(stringin, "TEST:123") {
+    field(DTYP, "asynOctetRead")
+    field(INP, "@asyn(CENTRAL_NODE 0 0)DEVICE_INPUT_BYPEXPDATE_STRING")
 }
 
 #record(bi, "CentralNode:DIGIN0") {

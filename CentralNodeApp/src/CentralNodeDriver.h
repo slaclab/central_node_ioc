@@ -23,6 +23,7 @@
 #define DEVICE_INPUT_BYPV_STRING        "DEVICE_INPUT_BYPV"
 #define DEVICE_INPUT_BYPS_STRING        "DEVICE_INPUT_BYPS"
 #define DEVICE_INPUT_BYPEXPDATE_STRING  "DEVICE_INPUT_BYPEXPDATE"
+#define DEVICE_INPUT_BYPEXPDATE_STRING_STRING "DEVICE_INPUT_BYPEXPDATE_STRING"
 #define ANALOG_DEVICE_BYPV_STRING       "ANALOG_DEVICE_BYPV"
 #define ANALOG_DEVICE_BYPS_STRING       "ANALOG_DEVICE_BYPS"
 #define ANALOG_DEVICE_BYPEXPDATE_STRING "ANALOG_DEVICE_BYPEXPDATE"
@@ -32,7 +33,7 @@
 #define TEST_CHECK_FAULTS_STRING        "TEST_CHECK_FAULTS"
 #define TEST_CHECK_BYPASS_STRING        "TEST_CHECK_BYPASS"
 
-const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 18;
+const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 19;
 
 class CentralNodeDriver : public asynPortDriver {
 public:
@@ -41,7 +42,7 @@ public:
 
   /* virtual asynStatus drvUserCreate(asynUser *pasynUser, const char *drvInfo, const char **ppTypeName, */
   /* 				   size_t *psize); */
-  virtual asynStatus readOctet(asynUser *pasynUser, char *value, size_t maxChars, size_t *nActual);
+  //  virtual asynStatus readOctet(asynUser *pasynUser, char *value, size_t maxChars, size_t *nActual);
   virtual asynStatus writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual);
   virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -67,6 +68,7 @@ public:
   int _deviceInputBypassValueParam;
   int _deviceInputBypassStatusParam;
   int _deviceInputBypassExpirationDateParam;
+  int _deviceInputBypassExpirationDateStringParam;
   int _analogDeviceBypassValueParam;
   int _analogDeviceBypassStatusParam;
   int _analogDeviceBypassExpirationDateParam;
