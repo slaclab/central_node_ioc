@@ -42,9 +42,12 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(DEVICE_INPUT_BYPS_STRING, asynParamUInt32Digital, &_deviceInputBypassStatusParam);
   createParam(DEVICE_INPUT_BYPEXPDATE_STRING, asynParamInt32, &_deviceInputBypassExpirationDateParam);
   createParam(DEVICE_INPUT_BYPEXPDATE_STRING_STRING, asynParamOctet, &_deviceInputBypassExpirationDateStringParam);
+  createParam(ANALOG_DEVICE_LATCHED_STRING, asynParamInt32, &_analogDeviceLatchedParam);
+  createParam(ANALOG_DEVICE_UNLATCH_STRING, asynParamUInt32Digital, &_analogDeviceUnlatchParam);
   createParam(ANALOG_DEVICE_BYPV_STRING, asynParamInt32, &_analogDeviceBypassValueParam);
   createParam(ANALOG_DEVICE_BYPS_STRING, asynParamUInt32Digital, &_analogDeviceBypassStatusParam);
   createParam(ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_analogDeviceBypassExpirationDateParam);
+  createParam(ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_analogDeviceBypassExpirationDateStringParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -54,6 +57,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   // Initialize bypass date strings
   for (int i = 0; i < 100; ++i) {
     setStringParam(i, _deviceInputBypassExpirationDateStringParam, "Bypass date not set");
+    setStringParam(i, _analogDeviceBypassExpirationDateStringParam, "Bypass date not set");
   }
 }
 
@@ -172,6 +176,9 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     }
     //      LOG_TRACE("DRIVER", "Mitagation: " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);// << ": " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number);
   }
+  else if (_analogDeviceLatchedParam == pasynUser->reason) {
+    *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue;
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");
     status = asynError;
@@ -256,9 +263,17 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     int faultValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->faultValue;
     faultValue == 0? faultValue = 1 : faultValue = 0; // Flip faultValue and assign to latchedValue
     Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue = faultValue;
+    status = setUIntDigitalParam(addr, pasynUser->reason, value, mask);
     LOG_TRACE("DRIVER", "Unlatch: "
 	      << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
 	      << " value: " << faultValue);
+  }
+  else if (_analogDeviceUnlatchParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue = 0; // Clear all threshold faults
+    status = setUIntDigitalParam(addr, pasynUser->reason, value, mask);
+    LOG_TRACE("DRIVER", "Unlatch: "
+	      << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
+	      << " value: " << 0);
   }
   else if (_deviceInputBypassValueParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->value = value;
@@ -374,11 +389,21 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId, epi
 						      deviceId, bypassValue, expirationTime);
 
   if (expirationTime == 0) {
-    status = setStringParam(deviceId, _deviceInputBypassExpirationDateStringParam, "Not Bypassed");
+    if (bypassType == BYPASS_DIGITAL) {
+      status = setStringParam(deviceId, _deviceInputBypassExpirationDateStringParam, "Not Bypassed");
+    }
+    else {
+      status = setStringParam(deviceId, _analogDeviceBypassExpirationDateStringParam, "Not Bypassed");
+    }
   }
   else {
     time_t expTime = expirationTime;
-    status = setStringParam(deviceId, _deviceInputBypassExpirationDateStringParam, ctime(&expTime));
+    if (bypassType == BYPASS_DIGITAL) {
+      status = setStringParam(deviceId, _deviceInputBypassExpirationDateStringParam, ctime(&expTime));
+    }
+    else {
+      status = setStringParam(deviceId, _analogDeviceBypassExpirationDateStringParam, ctime(&expTime));
+    }
   }
 
   return status;
