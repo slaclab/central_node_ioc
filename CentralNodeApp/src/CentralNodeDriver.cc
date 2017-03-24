@@ -141,10 +141,14 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
     Engine::getInstance().getBypassManager()->checkBypassQueue();
   }
   else if (_analogDeviceBypassValueParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass->value = value;
-    LOG_TRACE("DRIVER", "BypassValue: "
-	      << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
-	      << " value: " << value);
+    try {
+      Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass->value = value;
+      LOG_TRACE("DRIVER", "BypassValue: "
+		<< Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
+		<< " value: " << value);
+    } catch (const std::out_of_range &e) {
+      LOG_TRACE("DRIVER", "ERROR: AnalogDevices out of range, key=" << addr);
+    }
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
@@ -167,6 +171,11 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   }
 
   if (_mitigationDeviceParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->mitigationDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: MitigationDevice not found, key=" << addr);
+      return asynError;
+    }
     if (Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass) {
       *value = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number;
     }
@@ -174,9 +183,13 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       LOG_TRACE("DRIVER", "ERROR: Invalid allowed class for mitigation device "
 		<< Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);
     }
-    //      LOG_TRACE("DRIVER", "Mitagation: " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);// << ": " << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number);
   }
   else if (_analogDeviceLatchedParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+      return asynError;
+    }
     *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue;
   }
   else {
@@ -200,30 +213,57 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
   }
 
   if (_deviceInputParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
+	Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
+      LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
+      return asynError;
+    }
     *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
-    //      LOG_TRACE("DRIVER", "Input: " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name << ": " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value);
   }
   else if (_analogDeviceParam == pasynUser->reason) {
-    // LOG_TRACE("DRIVER", "ANALOG value=" << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value
-    // 	      << " mask=" << mask);
+    if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+      return asynError;
+    }
     *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
   }
   else if (_faultParam == pasynUser->reason) {
     *value = 0;
+    if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+	Engine::getInstance().getCurrentDb()->faults->end()) {
+      LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+      return asynError;
+    }
     if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
       *value = 1;
     }
   }
   else if (_faultIgnoredParam == pasynUser->reason) {
     *value = 0;
+    if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+	Engine::getInstance().getCurrentDb()->faults->end()) {
+      LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+      return asynError;
+    }
     if (Engine::getInstance().getCurrentDb()->faults->at(addr)->ignored) {
       *value = 1;
     }
   }
   else if (_deviceInputLatchedParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
+	Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
+      LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
+      return asynError;
+    }
     *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue;
   }
   else if (_deviceInputBypassStatusParam ==  pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
+	Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
+      LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
+      return asynError;
+    }
     if (Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->status == BYPASS_VALID) {
       *value = 1;
     }
@@ -232,6 +272,11 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     }
   }
   else if (_analogDeviceBypassStatusParam ==  pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+      return asynError;
+    }
     if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass->status == BYPASS_VALID) {
       *value = 1;
     }
