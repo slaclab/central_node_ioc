@@ -99,5 +99,13 @@ YAML_CPP_PATH=$(PACKAGE_TOP)/yaml-cpp/$(YAML_CPP_VERSION)
 YAML_CPP_LIB=$(YAML_CPP_PATH)/rhel6-x86_64/lib
 YAML_CPP_INCLUDE=-I$(YAML_CPP_PATH)/rhel6-x86_64/include
 
+#=========================================================
+# CPSW
+#=========================================================
+CPSW_VERSION=R3.5.4
+CPSW_PATH=$(PACKAGE_TOP)/cpsw/framework/$(CPSW_VERSION)
+CPSW_LIB=$(CPSW_PATH)/rhel6-x86_64/lib
+CPSW_INCLUDE=$(CPSW_PATH)/rhel6-x86_64/include
+
 # Build this IOC App statically
 STATIC_BUILD=YES

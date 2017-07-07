@@ -12,6 +12,7 @@
 #include "LogWrapper.h"
 
 #include <central_node_engine.h>
+#include <central_node_bypass.h>
 
 #ifdef LOG_ENABLED
 using namespace easyloggingpp;
@@ -44,7 +45,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(DEVICE_INPUT_BYPEXPDATE_STRING_STRING, asynParamOctet, &_deviceInputBypassExpirationDateStringParam);
   createParam(ANALOG_DEVICE_LATCHED_STRING, asynParamInt32, &_analogDeviceLatchedParam);
   createParam(ANALOG_DEVICE_UNLATCH_STRING, asynParamUInt32Digital, &_analogDeviceUnlatchParam);
-  createParam(ANALOG_DEVICE_BYPV_STRING, asynParamInt32, &_analogDeviceBypassValueParam);
+  createParam(ANALOG_DEVICE_BYPV_STRING, asynParamUInt32Digital, &_analogDeviceBypassValueParam);
   createParam(ANALOG_DEVICE_BYPS_STRING, asynParamUInt32Digital, &_analogDeviceBypassStatusParam);
   createParam(ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_analogDeviceBypassExpirationDateParam);
   createParam(ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_analogDeviceBypassExpirationDateStringParam);
@@ -139,16 +140,6 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
   }
   else if (_testCheckBypassParam == pasynUser->reason) {
     Engine::getInstance().getBypassManager()->checkBypassQueue();
-  }
-  else if (_analogDeviceBypassValueParam == pasynUser->reason) {
-    try {
-      Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass->value = value;
-      LOG_TRACE("DRIVER", "BypassValue: "
-		<< Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
-		<< " value: " << value);
-    } catch (const std::out_of_range &e) {
-      LOG_TRACE("DRIVER", "ERROR: AnalogDevices out of range, key=" << addr);
-    }
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
@@ -277,7 +268,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
       return asynError;
     }
-    if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass->status == BYPASS_VALID) {
+    if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[mask]->status == BYPASS_VALID) {
       *value = 1;
     }
     else {
@@ -325,6 +316,16 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     LOG_TRACE("DRIVER", "BypassValue: "
 	      << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
 	      << " value: " << value);
+  }
+  else if (_analogDeviceBypassValueParam == pasynUser->reason) {
+    try {
+      Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[mask]->value = value;
+      LOG_TRACE("DRIVER", "BypassValue: "
+		<< Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
+		<< " value: " << value);
+    } catch (const std::out_of_range &e) {
+      LOG_TRACE("DRIVER", "ERROR: AnalogDevices out of range, key=" << addr);
+    }
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");

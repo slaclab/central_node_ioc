@@ -78,18 +78,22 @@ CentralNode_LIBS += $(EPICS_BASE_IOC_LIBS)
 USR_CPPFLAGS += -DLOG_ENABLED
 USR_CPPFLAGS += $(EASYLOGGINGPP_INCLUDE)
 USR_CPPFLAGS += $(YAML_CPP_INCLUDE)
+USR_CPPFLAGS += $(CPSW_INCLUDE)
 
 # =========================================================================
 #  Link in external package libraries (-lcentral_node_engine)
 # =========================================================================
 YAML_CPP_DIR=$(YAML_CPP_LIB)
+CPSW_DIR=$(CPSW_LIB)
 CENTRAL_NODE_ENGINE_DIR=$(CENTRAL_NODE_ENGINE_LIB)
 USR_CPPFLAGS += $(CENTRAL_NODE_ENGINE_INCLUDE)
 #CentralNode_LIBS += central_node_engine
 USR_LDFLAGS += -L$(CENTRAL_NODE_ENGINE_LIB)
 USR_LDFLAGS += -L$(YAML_CPP_LIB)
+USR_LDFLAGS += -L$(CPSW_LIB)
 CentralNode_SYS_LIBS += central_node_engine
 CentralNode_SYS_LIBS += yaml-cpp
+CentralNode_SYS_LIBS += cpsw
 
 include $(TOP)/configure/RULES
 #----------------------------------------

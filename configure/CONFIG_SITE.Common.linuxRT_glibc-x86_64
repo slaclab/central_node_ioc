@@ -8,7 +8,6 @@ BOOST=$(PACKAGE_SITE_TOP)/boost/$(BOOST_PACKAGE_VERSION)/buildroot-2015.02-x86_6
 BOOSTBINDINGS=$(PACKAGE_SITE_TOP)/boost-numeric-bindings/$(BOOSTBINDINGS_PACKAGE_VERSION)
 LAPACK=$(PACKAGE_SITE_TOP)/lapack/$(LAPACK_PACKAGE_VERSION)/buildroot-2015.02-x86_64
 
-
 # Define the location of the gfortran
 # So only need to define location of libs and headers
 BUILDROOT_HOME=$(PACKAGE_SITE_TOP)/linuxRT/buildroot-2015.02-x86_64
