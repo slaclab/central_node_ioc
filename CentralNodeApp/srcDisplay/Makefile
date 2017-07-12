@@ -13,6 +13,7 @@ CFG +=  CONFIG_EDL
 
 # EDM Screens to install
 EDLS += example.edl
+EDLS += pydm.py
 
 # Install images to be used by EDM (Gif and Png are supported)
 # PNG is better and preferred.

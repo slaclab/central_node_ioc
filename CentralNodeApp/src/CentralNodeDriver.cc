@@ -43,7 +43,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(DEVICE_INPUT_BYPS_STRING, asynParamUInt32Digital, &_deviceInputBypassStatusParam);
   createParam(DEVICE_INPUT_BYPEXPDATE_STRING, asynParamInt32, &_deviceInputBypassExpirationDateParam);
   createParam(DEVICE_INPUT_BYPEXPDATE_STRING_STRING, asynParamOctet, &_deviceInputBypassExpirationDateStringParam);
-  createParam(ANALOG_DEVICE_LATCHED_STRING, asynParamInt32, &_analogDeviceLatchedParam);
+  createParam(ANALOG_DEVICE_LATCHED_STRING, asynParamUInt32Digital, &_analogDeviceLatchedParam);
   createParam(ANALOG_DEVICE_UNLATCH_STRING, asynParamUInt32Digital, &_analogDeviceUnlatchParam);
   createParam(ANALOG_DEVICE_BYPV_STRING, asynParamUInt32Digital, &_analogDeviceBypassValueParam);
   createParam(ANALOG_DEVICE_BYPS_STRING, asynParamUInt32Digital, &_analogDeviceBypassStatusParam);
@@ -175,14 +175,6 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 		<< Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);
     }
   }
-  else if (_analogDeviceLatchedParam == pasynUser->reason) {
-    if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
-	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
-      LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
-      return asynError;
-    }
-    *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue;
-  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");
     status = asynError;
@@ -217,7 +209,14 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
       return asynError;
     }
+    // Non-zero *value means threshold exceeded
     *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
+    //    *value = (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask) != 0;
+    /*
+    if (addr == 9) {
+      std::cout << "T(mask=" << mask << ")=" << *value << " - " << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value << std::endl;
+    }
+    */
   }
   else if (_faultParam == pasynUser->reason) {
     *value = 0;
@@ -275,6 +274,22 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       *value = 0;
     }
   }
+  else if (_analogDeviceLatchedParam == pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+      return asynError;
+    }
+    // mask
+    // Non-zero *value means threshold exceeded
+    *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue & mask;
+    /*
+    *value = 0;
+    if ((Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue & mask) > 0) {
+      *value = 1;
+    }
+    */
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
     status = asynError;
@@ -305,11 +320,18 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 	      << " value: " << faultValue);
   }
   else if (_analogDeviceUnlatchParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue = 0; // Clear all threshold faults
-    status = setUIntDigitalParam(addr, pasynUser->reason, value, mask);
+    // Copy the threshold bit from value to latchedValue
+    uint32_t latchedValue = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue;
+    latchedValue &= (latchedValue & ~mask);
+    Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue = latchedValue;
+
+      //    Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue = 0; // Clear all threshold faults
+    status = setUIntDigitalParam(addr, pasynUser->reason, latchedValue, mask);
     LOG_TRACE("DRIVER", "Unlatch: "
 	      << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
-	      << " value: " << 0);
+	      << " latchedValue: " << latchedValue << ", unlatched: "
+	      << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue 
+	      << " mask: " << mask);
   }
   else if (_deviceInputBypassValueParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->value = value;
