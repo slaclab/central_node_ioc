@@ -46,7 +46,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(ANALOG_DEVICE_LATCHED_STRING, asynParamUInt32Digital, &_analogDeviceLatchedParam);
   createParam(ANALOG_DEVICE_UNLATCH_STRING, asynParamUInt32Digital, &_analogDeviceUnlatchParam);
   createParam(ANALOG_DEVICE_BYPV_STRING, asynParamUInt32Digital, &_analogDeviceBypassValueParam);
-  createParam(ANALOG_DEVICE_BYPS_STRING, asynParamUInt32Digital, &_analogDeviceBypassStatusParam);
+  createParam(ANALOG_DEVICE_BYPS_STRING, asynParamInt32, &_analogDeviceBypassStatusParam);
   createParam(ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_analogDeviceBypassExpirationDateParam);
   createParam(ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_analogDeviceBypassExpirationDateStringParam);
 
@@ -127,13 +127,13 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
     Engine::getInstance().checkFaults();
   }
   else if (_deviceInputBypassExpirationDateParam == pasynUser->reason) {
-    status = setBypass(BYPASS_DIGITAL, addr, value);
+    status = setBypass(BYPASS_DIGITAL, addr, 0, value);
     if (status != asynSuccess) {
       status = setIntegerParam(addr, _deviceInputBypassExpirationDateParam, 0);
     }
   }
   else if (_analogDeviceBypassExpirationDateParam == pasynUser->reason) {
-    status = setBypass(BYPASS_ANALOG, addr, value);
+    status = setBypass(BYPASS_ANALOG, addr, pasynUser->timeout, value);
     if (status != asynSuccess) {
       status = setIntegerParam(addr, _analogDeviceBypassExpirationDateParam, 0);
     }
@@ -153,6 +153,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+  int bitIndex = pasynUser->timeout;
 
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
@@ -175,6 +176,19 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 		<< Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);
     }
   }
+  else if (_analogDeviceBypassStatusParam ==  pasynUser->reason) {
+    if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+      return asynError;
+    }
+    if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->status == BYPASS_VALID) {
+      *value = 1;
+    }
+    else {
+      *value = 0;
+    }
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");
     status = asynError;
@@ -187,6 +201,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+  int bitIndex = pasynUser->timeout;
 
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
@@ -261,19 +276,6 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       *value = 0;
     }
   }
-  else if (_analogDeviceBypassStatusParam ==  pasynUser->reason) {
-    if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
-	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
-      LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
-      return asynError;
-    }
-    if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[mask]->status == BYPASS_VALID) {
-      *value = 1;
-    }
-    else {
-      *value = 0;
-    }
-  }
   else if (_analogDeviceLatchedParam == pasynUser->reason) {
     if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
 	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
@@ -301,6 +303,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+  int bitIndex = pasynUser->timeout;
 
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
@@ -341,10 +344,10 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   }
   else if (_analogDeviceBypassValueParam == pasynUser->reason) {
     try {
-      Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[mask]->value = value;
+      Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->value = value;
       LOG_TRACE("DRIVER", "BypassValue: "
 		<< Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
-		<< " value: " << value);
+		<< " value: " << value << " (threshold=" << bitIndex << ")");
     } catch (const std::out_of_range &e) {
       LOG_TRACE("DRIVER", "ERROR: AnalogDevices out of range, key=" << addr);
     }
@@ -429,13 +432,18 @@ asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
 }
 
 /**
- * @param expirationTime bypass expiration time in seconds since now. If expirationTime is zero or negatie
- *                       the bypass is cancelled.
+ * @param expirationTime bypass expiration time in seconds since now.
+ * If expirationTime is zero or negative the bypass is cancelled.
+ * TODO: use the thresholdIndex for analog bypasses! 
  */
-asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId, epicsInt32 expirationTime) {
+asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId,
+					int thresholdIndex, epicsInt32 expirationTime) {
   asynStatus status = asynSuccess;
   time_t now;
   time(&now);
+
+  LOG_TRACE("DRIVER", "Set bypass for device " << deviceId << ", thresholdIndex=" << thresholdIndex);
+
   /*
   if (expirationTime > 0 && expirationTime < now) {
     std::cerr << "WARNING: Invalid expiration time " << expirationTime
@@ -452,9 +460,16 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId, epi
     expirationTime = 0;
   }
 
-  uint32_t bypassValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->bypass->value;
-  Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), bypassType,
-						      deviceId, bypassValue, expirationTime);
+  if (bypassType == BYPASS_DIGITAL) {
+    uint32_t bypassValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->bypass->value;
+    Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), bypassType,
+							deviceId, bypassValue, expirationTime);
+  }
+  else {
+    uint32_t bypassValue = Engine::getInstance().getCurrentDb()->analogDevices->at(deviceId)->bypass[thresholdIndex]->value;
+    Engine::getInstance().getBypassManager()->setThresholdBypass(Engine::getInstance().getCurrentDb(), bypassType,
+								 deviceId, bypassValue, expirationTime, thresholdIndex);
+  }
 
   if (expirationTime == 0) {
     if (bypassType == BYPASS_DIGITAL) {

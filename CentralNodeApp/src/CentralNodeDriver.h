@@ -88,7 +88,7 @@ public:
   asynStatus loadTestDeviceInputs(const char *testFileName);
   asynStatus loadTestAnalogDevices(const char *testFileName);
 
-  asynStatus setBypass(BypassType bypassType, int deviceId, epicsInt32 expirationTime);
+  asynStatus setBypass(BypassType bypassType, int deviceId, int thresholdIndex, epicsInt32 expirationTime);
 };
 
 #endif
