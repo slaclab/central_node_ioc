@@ -60,6 +60,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
     setStringParam(i, _deviceInputBypassExpirationDateStringParam, "Bypass date not set");
     setStringParam(i, _analogDeviceBypassExpirationDateStringParam, "Bypass date not set");
   }
+
+  Engine::getInstance().startUpdateThread();
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
