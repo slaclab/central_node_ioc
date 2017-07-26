@@ -30,25 +30,8 @@ record(longout, "CentralNode:Test:CHECK_BYPASS") {
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_CHECK_BYPASS")
 }
 
-record(stringin, "TEST:123") {
-    field(DTYP, "asynOctetRead")
-    field(INP, "@asyn(CENTRAL_NODE 0 0)DEVICE_INPUT_BYPEXPDATE_STRING")
+record(longout, "CentralNode:UNLATCHALL") {
+    field(DESC, "Unlatch all faults and inputs")
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn(CENTRAL_NODE 0 0)UNLATCH_ALL")
 }
-
-#record(bi, "CentralNode:DIGIN0") {
-#    field(DESC, "Test input")
-#    field(DTYP, "asynInt32")
-#    field(SCAN, "1 second")
-#    field(ZNAM, "OK")
-#    field(ONAM, "FAULTED")
-#    field(INP, "@asyn(CENTRAL_NODE 0 3)DIGITAL_CHANNEL")
-#}
-
-#record(bi, "CentralNode:DIGIN1") {
-#    field(DESC, "Test input")
-#    field(DTYP, "asynInt32")
-#    field(SCAN, "1 second")
-#    field(ZNAM, "OK")
-#    field(ONAM, "FAULTED")
-#    field(INP, "@asyn(CENTRAL_NODE 1 5)DIGITAL_CHANNEL")
-#}

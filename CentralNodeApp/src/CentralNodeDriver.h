@@ -18,6 +18,8 @@
 #define MITIGATION_DEVICE_STRING               "MITIGATION_DEVICE"
 #define FAULT_STRING                           "FAULT"
 #define FAULT_IGNORED_STRING                   "FAULT_IGNORED"
+#define FAULT_LATCHED_STRING                   "FAULT_LATCHED"
+#define FAULT_UNLATCH_STRING                   "FAULT_UNLATCH"
 #define DEVICE_INPUT_LATCHED_STRING            "DEVICE_INPUT_LATCHED"
 #define DEVICE_INPUT_UNLATCH_STRING            "DEVICE_INPUT_UNLATCH"
 #define DEVICE_INPUT_BYPV_STRING               "DEVICE_INPUT_BYPV"
@@ -30,13 +32,14 @@
 #define ANALOG_DEVICE_BYPS_STRING              "ANALOG_DEVICE_BYPS"
 #define ANALOG_DEVICE_BYPEXPDATE_STRING        "ANALOG_DEVICE_BYPEXPDATE"
 #define ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "ANALOG_DEVICE_BYPEXPDATE_STRING"
+#define UNLATCH_ALL_STRING                     "UNLATCH_ALL"
 
 #define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
 #define TEST_CHECK_FAULTS_STRING               "TEST_CHECK_FAULTS"
 #define TEST_CHECK_BYPASS_STRING               "TEST_CHECK_BYPASS"
 
-const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 22;
+const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 40;
 
 class CentralNodeDriver : public asynPortDriver {
 public:
@@ -66,6 +69,8 @@ public:
   int _mitigationDeviceParam;
   int _faultParam;
   int _faultIgnoredParam;
+  int _faultLatchedParam;
+  int _faultUnlatchParam;
   int _deviceInputLatchedParam;
   int _deviceInputUnlatchParam;
   int _deviceInputBypassValueParam;
@@ -78,7 +83,8 @@ public:
   int _analogDeviceBypassStatusParam;
   int _analogDeviceBypassExpirationDateParam;
   int _analogDeviceBypassExpirationDateStringParam;
-
+  int _unlatchAllParam;
+  
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;
   int _testCheckFaultsParam;

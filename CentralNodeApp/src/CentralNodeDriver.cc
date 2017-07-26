@@ -37,6 +37,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MITIGATION_DEVICE_STRING, asynParamInt32, &_mitigationDeviceParam);
   createParam(FAULT_STRING, asynParamUInt32Digital, &_faultParam);
   createParam(FAULT_IGNORED_STRING, asynParamUInt32Digital, &_faultIgnoredParam);
+  createParam(FAULT_LATCHED_STRING, asynParamUInt32Digital, &_faultLatchedParam);
+  createParam(FAULT_UNLATCH_STRING, asynParamUInt32Digital, &_faultUnlatchParam);
   createParam(DEVICE_INPUT_LATCHED_STRING, asynParamUInt32Digital, &_deviceInputLatchedParam);
   createParam(DEVICE_INPUT_UNLATCH_STRING, asynParamUInt32Digital, &_deviceInputUnlatchParam);
   createParam(DEVICE_INPUT_BYPV_STRING, asynParamUInt32Digital, &_deviceInputBypassValueParam);
@@ -49,6 +51,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(ANALOG_DEVICE_BYPS_STRING, asynParamInt32, &_analogDeviceBypassStatusParam);
   createParam(ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_analogDeviceBypassExpirationDateParam);
   createParam(ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_analogDeviceBypassExpirationDateStringParam);
+  createParam(UNLATCH_ALL_STRING, asynParamInt32, &_unlatchAllParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -128,6 +131,9 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
   if (_testCheckFaultsParam == pasynUser->reason) {
     Engine::getInstance().checkFaults();
   }
+  else if (_unlatchAllParam == pasynUser -> reason) {
+    Engine::getInstance().getCurrentDb()->unlatchAll();
+  }
   else if (_deviceInputBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_DIGITAL, addr, 0, value);
     if (status != asynSuccess) {
@@ -203,13 +209,11 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
-  int bitIndex = pasynUser->timeout;
 
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
     LOG_TRACE("DRIVER", "ERROR: Database not initialized");
     return status;
-    //    return asynError;
   }
 
   if (_deviceInputParam == pasynUser->reason) {
@@ -264,6 +268,12 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       return asynError;
     }
     *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue;
+  }
+  else if (_faultLatchedParam == pasynUser->reason) {
+    *value = 0;
+    if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultLatched) {
+      *value = 1;
+    }
   }
   else if (_deviceInputBypassStatusParam ==  pasynUser->reason) {
     if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
@@ -337,6 +347,9 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 	      << " latchedValue: " << latchedValue << ", unlatched: "
 	      << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue 
 	      << " mask: " << mask);
+  }
+  else if (_faultUnlatchParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->faults->at(addr)->faultLatched = false;
   }
   else if (_deviceInputBypassValueParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->value = value;

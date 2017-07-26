@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>742</width>
+    <width>563</width>
     <height>65</height>
    </rect>
   </property>
@@ -27,7 +27,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="deviceNameLabel">
+    <widget class="QLabel" name="faultLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -50,7 +50,7 @@
       <bool>true</bool>
      </property>
      <property name="text">
-      <string>DeviceName</string>
+      <string>Fault Description</string>
      </property>
     </widget>
    </item>
@@ -71,73 +71,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QLabel" name="crateLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>40</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>-1</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="cardLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>40</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>-1</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="channelLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>40</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>-1</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMLabel" name="currentStateLabel">
+    <widget class="PyDMLabel" name="faultStateLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -163,7 +97,7 @@
       <string/>
      </property>
      <property name="text">
-      <string>Current</string>
+      <string>FLT PV</string>
      </property>
      <property name="alarmSensitiveText" stdset="0">
       <bool>false</bool>
@@ -177,19 +111,7 @@
     </widget>
    </item>
    <item>
-    <widget class="PyDMLabel" name="latchedStateLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>110</width>
-       <height>0</height>
-      </size>
-     </property>
+    <widget class="PyDMLabel" name="faultLatchedLabel">
      <property name="maximumSize">
       <size>
        <width>40</width>
@@ -203,16 +125,7 @@
       <string/>
      </property>
      <property name="text">
-      <string>Latched</string>
-     </property>
-     <property name="alarmSensitiveText" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="alarmSensitiveBorder" stdset="0">
-      <bool>true</bool>
-     </property>
-     <property name="precision">
-      <number>7</number>
+      <string>FLT_MPS</string>
      </property>
     </widget>
    </item>
@@ -220,7 +133,7 @@
     <widget class="PyDMPushButton" name="unlatchButton">
      <property name="maximumSize">
       <size>
-       <width>40</width>
+       <width>60</width>
        <height>16777215</height>
       </size>
      </property>
@@ -269,12 +182,12 @@
       <string>Unlatch</string>
      </property>
      <property name="pressValue" stdset="0">
-      <string>2</string>
+      <string>1</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="PyDMLabel" name="bypassValueLabel">
+    <widget class="PyDMLabel" name="faultIgnoredStateLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -283,13 +196,13 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>40</width>
+       <width>110</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>120</width>
+       <width>40</width>
        <height>16777215</height>
       </size>
      </property>
@@ -300,45 +213,16 @@
       <string/>
      </property>
      <property name="text">
-      <string>BypassValue</string>
+      <string>FLT_IGN PV</string>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PyDMLabel" name="bypassStatusLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+     <property name="alarmSensitiveText" stdset="0">
+      <bool>false</bool>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>40</width>
-       <height>0</height>
-      </size>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="whatsThis">
-      <string/>
-     </property>
-     <property name="text">
-      <string>BypassStatus</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="bypassButton">
-     <property name="text">
-      <string>bypass</string>
+     <property name="precision">
+      <number>7</number>
      </property>
     </widget>
    </item>
