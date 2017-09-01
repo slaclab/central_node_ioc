@@ -33,6 +33,7 @@
 #define ANALOG_DEVICE_BYPEXPDATE_STRING        "ANALOG_DEVICE_BYPEXPDATE"
 #define ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "ANALOG_DEVICE_BYPEXPDATE_STRING"
 #define UNLATCH_ALL_STRING                     "UNLATCH_ALL"
+#define FW_BUILD_STAMP_STRING_STRING           "FW_BUILD_STAMP_STRING"
 
 #define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
@@ -48,7 +49,7 @@ public:
 
   /* virtual asynStatus drvUserCreate(asynUser *pasynUser, const char *drvInfo, const char **ppTypeName, */
   /* 				   size_t *psize); */
-  //  virtual asynStatus readOctet(asynUser *pasynUser, char *value, size_t maxChars, size_t *nActual);
+  //virtual asynStatus readOctet(asynUser *pasynUser, char *value, size_t maxChars, size_t *nActual);
   virtual asynStatus writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual);
   virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -58,6 +59,9 @@ public:
   virtual void report(FILE *fp, int details);
 
   void printQueue();
+  void showMitigation();
+  void showFaults();
+  void showFirmware();
   
  private:
   std::string _configPath;
@@ -84,6 +88,7 @@ public:
   int _analogDeviceBypassExpirationDateParam;
   int _analogDeviceBypassExpirationDateStringParam;
   int _unlatchAllParam;
+  int _fwBuildStampParam;
   
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;

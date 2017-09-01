@@ -64,6 +64,8 @@ extern "C" {
 epicsExportRegistrar(initCentralNodeRegistrar);
 }
 
+/*=== printQueue command =======================================================*/
+
 static int printQueue() {
   pCNDriver->printQueue();
   return 0;
@@ -79,5 +81,65 @@ static void printQueueRegistrar(void) {
 }
 
 extern "C" {
-epicsExportRegistrar(printQueueRegistrar);
+  epicsExportRegistrar(printQueueRegistrar);
+}
+
+/*=== showMitigation command =======================================================*/
+
+static int showMitigation() {
+  pCNDriver->showMitigation();
+  return 0;
+}
+
+static const iocshFuncDef showMitigationFuncDef = {"showMitigation", 0, 0};
+static void showMitigationCallFunc(const iocshArgBuf *args) {
+  showMitigation();
+}
+
+static void showMitigationRegistrar(void) {
+  iocshRegister(&showMitigationFuncDef, showMitigationCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(showMitigationRegistrar);
+}
+
+/*=== showFaults command =======================================================*/
+
+static int showFaults() {
+  pCNDriver->showFaults();
+  return 0;
+}
+
+static const iocshFuncDef showFaultsFuncDef = {"showFaults", 0, 0};
+static void showFaultsCallFunc(const iocshArgBuf *args) {
+  showFaults();
+}
+
+static void showFaultsRegistrar(void) {
+  iocshRegister(&showFaultsFuncDef, showFaultsCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(showFaultsRegistrar);
+}
+
+/*=== showFirmware command =======================================================*/
+
+static int showFirmware() {
+  pCNDriver->showFirmware();
+  return 0;
+}
+
+static const iocshFuncDef showFirmwareFuncDef = {"showFirmware", 0, 0};
+static void showFirmwareCallFunc(const iocshArgBuf *args) {
+  showFirmware();
+}
+
+static void showFirmwareRegistrar(void) {
+  iocshRegister(&showFirmwareFuncDef, showFirmwareCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(showFirmwareRegistrar);
 }

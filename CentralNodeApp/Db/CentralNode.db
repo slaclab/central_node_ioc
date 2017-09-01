@@ -16,6 +16,13 @@ record(stringout, "CentralNode:Test:ANALOG_DEVICE") {
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_ANALOG_DEVICE")
 }
 
+record(stringin, "CentralNode:FW_BUILD_STAMP") {
+    field(DESC, "Central node firmware build stamp")
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "1 second")
+    field(INP, "@asyn(CENTRAL_NODE 0 0)FW_BUILD_STAMP_STRING")
+}
+
 record(longout, "CentralNode:Test:CHECK_FAULTS") {
     field(DESC, "Run engine evaluation one time")
     field(DTYP, "asynInt32")
