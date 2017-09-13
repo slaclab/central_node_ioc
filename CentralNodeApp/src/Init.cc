@@ -6,6 +6,7 @@
 
 #include <iocsh.h>
 #include <epicsThread.h>
+#include <initHooks.h>
 
 #include "CentralNodeDriver.h"
 #include "Log.h"
@@ -14,11 +15,9 @@
 
 static CentralNodeDriver *pCNDriver = NULL;
 
-static int configureCentralNode(const char *portName) {
-  char *path = getenv(MPS_ENV_CONFIG_PATH);
-
+static int checkPath(char *path, const char *var) {
   if (path == NULL) {
-    fprintf(stderr, "ERROR: Missing environment variable \"%s\", can't proceed.\n", MPS_ENV_CONFIG_PATH);
+    fprintf(stderr, "ERROR: Missing environment variable \"%s\", can't proceed.\n", var);
     return -1;
   }
 
@@ -27,20 +26,36 @@ static int configureCentralNode(const char *portName) {
   if (err == -1) {
     if (ENOENT == errno) {
       fprintf(stderr, "ERROR: Directory for %s=%s does not exist, can't proceed.\n",
-	      MPS_ENV_CONFIG_PATH, path);
+	      var, path);
       return -1;
     }
     else {
-      fprintf(stderr, "ERROR: Failed to get status for config directory %s=%s, can't proceed.\n",
-	      MPS_ENV_CONFIG_PATH, path);
+      fprintf(stderr, "ERROR: Failed to get status for directory %s=%s, can't proceed.\n",
+	      var, path);
       perror("stat");
       return -1;
     }
   }
 
+  return 0;
+}
+
+static int configureCentralNode(const char *portName) {
+  char *path = getenv(MPS_ENV_CONFIG_PATH);
+  if (checkPath(path, MPS_ENV_CONFIG_PATH) != 0) {
+    return -1;
+  }
+
+  char *fwFile = getenv(MPS_ENV_FW_CONFIG);
+  if (checkPath(fwFile, MPS_ENV_FW_CONFIG) != 0) {
+    return -1;
+  }
+
+  Firmware::getInstance().loadConfig(fwFile);
+
   pCNDriver = new CentralNodeDriver(portName, path);
 
-#ifdef LOG_ENABLED
+#if defined(LOG_ENABLED) && !defined(LOG_STDOUT)
   Configurations c;
   //  c.parseFromText("*GLOBAL:\n Format = %level %msg");
   Loggers::setDefaultConfigurations(c, true);
@@ -64,82 +79,126 @@ extern "C" {
 epicsExportRegistrar(initCentralNodeRegistrar);
 }
 
-/*=== printQueue command =======================================================*/
+/*=== mpsPrintQueue command =======================================================*/
 
-static int printQueue() {
+static int mpsPrintQueue() {
   pCNDriver->printQueue();
   return 0;
 }
 
-static const iocshFuncDef printQueueFuncDef = {"printQueue", 0, 0};
-static void printQueueCallFunc(const iocshArgBuf *args) {
-  printQueue();
+static const iocshFuncDef mpsPrintQueueFuncDef = {"mpsPrintQueue", 0, 0};
+static void mpsPrintQueueCallFunc(const iocshArgBuf *args) {
+  mpsPrintQueue();
 }
 
-static void printQueueRegistrar(void) {
-  iocshRegister(&printQueueFuncDef, printQueueCallFunc);
+static void mpsPrintQueueRegistrar(void) {
+  iocshRegister(&mpsPrintQueueFuncDef, mpsPrintQueueCallFunc);
 }
 
 extern "C" {
-  epicsExportRegistrar(printQueueRegistrar);
+  epicsExportRegistrar(mpsPrintQueueRegistrar);
 }
 
-/*=== showMitigation command =======================================================*/
+/*=== mpsShowMitigation command =======================================================*/
 
-static int showMitigation() {
+static int mpsShowMitigation() {
   pCNDriver->showMitigation();
   return 0;
 }
 
-static const iocshFuncDef showMitigationFuncDef = {"showMitigation", 0, 0};
-static void showMitigationCallFunc(const iocshArgBuf *args) {
-  showMitigation();
+static const iocshFuncDef mpsShowMitigationFuncDef = {"mpsShowMitigation", 0, 0};
+static void mpsShowMitigationCallFunc(const iocshArgBuf *args) {
+  mpsShowMitigation();
 }
 
-static void showMitigationRegistrar(void) {
-  iocshRegister(&showMitigationFuncDef, showMitigationCallFunc);
+static void mpsShowMitigationRegistrar(void) {
+  iocshRegister(&mpsShowMitigationFuncDef, mpsShowMitigationCallFunc);
 }
 
 extern "C" {
-  epicsExportRegistrar(showMitigationRegistrar);
+  epicsExportRegistrar(mpsShowMitigationRegistrar);
 }
 
-/*=== showFaults command =======================================================*/
+/*=== mpsShowFaults command =======================================================*/
 
-static int showFaults() {
+static int mpsShowFaults() {
   pCNDriver->showFaults();
   return 0;
 }
 
-static const iocshFuncDef showFaultsFuncDef = {"showFaults", 0, 0};
-static void showFaultsCallFunc(const iocshArgBuf *args) {
-  showFaults();
+static const iocshFuncDef mpsShowFaultsFuncDef = {"mpsShowFaults", 0, 0};
+static void mpsShowFaultsCallFunc(const iocshArgBuf *args) {
+  mpsShowFaults();
 }
 
-static void showFaultsRegistrar(void) {
-  iocshRegister(&showFaultsFuncDef, showFaultsCallFunc);
+static void mpsShowFaultsRegistrar(void) {
+  iocshRegister(&mpsShowFaultsFuncDef, mpsShowFaultsCallFunc);
 }
 
 extern "C" {
-  epicsExportRegistrar(showFaultsRegistrar);
+  epicsExportRegistrar(mpsShowFaultsRegistrar);
 }
 
-/*=== showFirmware command =======================================================*/
+/*=== mpsShowFirmware command =======================================================*/
 
-static int showFirmware() {
+static int mpsShowFirmware() {
   pCNDriver->showFirmware();
   return 0;
 }
 
-static const iocshFuncDef showFirmwareFuncDef = {"showFirmware", 0, 0};
-static void showFirmwareCallFunc(const iocshArgBuf *args) {
-  showFirmware();
+static const iocshFuncDef mpsShowFirmwareFuncDef = {"mpsShowFirmware", 0, 0};
+static const iocshFuncDef mpsfwFuncDef = {"mpsfw", 0, 0};
+static void mpsShowFirmwareCallFunc(const iocshArgBuf *args) {
+  mpsShowFirmware();
 }
 
-static void showFirmwareRegistrar(void) {
-  iocshRegister(&showFirmwareFuncDef, showFirmwareCallFunc);
+static void mpsShowFirmwareRegistrar(void) {
+  iocshRegister(&mpsShowFirmwareFuncDef, mpsShowFirmwareCallFunc);
+  iocshRegister(&mpsfwFuncDef, mpsShowFirmwareCallFunc);
 }
 
 extern "C" {
-  epicsExportRegistrar(showFirmwareRegistrar);
+  epicsExportRegistrar(mpsShowFirmwareRegistrar);
+}
+
+/*=== mpsShowDatabaseInfo command =======================================================*/
+
+static int mpsShowDatabaseInfo() {
+  pCNDriver->showDatabaseInfo();
+  return 0;
+}
+
+static const iocshFuncDef mpsShowDatabaseInfoFuncDef = {"mpsShowDatabaseInfo", 0, 0};
+static const iocshFuncDef mpsdbFuncDef = {"mpsdb", 0, 0};
+static void mpsShowDatabaseInfoCallFunc(const iocshArgBuf *args) {
+  mpsShowDatabaseInfo();
+}
+
+static void mpsShowDatabaseInfoRegistrar(void) {
+  iocshRegister(&mpsShowDatabaseInfoFuncDef, mpsShowDatabaseInfoCallFunc);
+  iocshRegister(&mpsdbFuncDef, mpsShowDatabaseInfoCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(mpsShowDatabaseInfoRegistrar);
+}
+
+/*=== mpsShowEngineInfo command =======================================================*/
+
+static int mpsShowEngineInfo() {
+  pCNDriver->showEngineInfo();
+  return 0;
+}
+
+static const iocshFuncDef mpsShowEngineInfoFuncDef = {"mpsShowEngineInfo", 0, 0};
+static void mpsShowEngineInfoCallFunc(const iocshArgBuf *args) {
+  mpsShowEngineInfo();
+}
+
+static void mpsShowEngineInfoRegistrar(void) {
+  iocshRegister(&mpsShowEngineInfoFuncDef, mpsShowEngineInfoCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(mpsShowEngineInfoRegistrar);
 }

@@ -8,12 +8,13 @@
 # We will build some tools/scripts that allow us to
 # change this easily when relocating software.
 #==============================================================================
-EPICS_SITE_TOP=/afs/slac/g/lcls/epics/R3-14-12-4_1-1
-BASE_SITE_TOP=/afs/slac/g/lcls/epics/R3-14-12-4_1-1/base
-MODULES_SITE_TOP=/afs/slac/g/lcls/epics/R3-14-12-4_1-1/modules
-IOC_SITE_TOP=/afs/slac/g/lcls/epics/R3-14-12-4_1-1/iocTop
-EPICS_BASE_VER=base-R3-14-12-4_1-1
+BASE_MODULE_VERSION=R3.15.5-1.0
+EPICS_SITE_TOP=/afs/slac/g/lcls/epics
+BASE_SITE_TOP=/afs/slac/g/lcls/epics/base
+EPICS_MODULES=/afs/slac/g/lcls/epics/R3.15.5-1.0/modules
+IOC_SITE_TOP=/afs/slac/g/lcls/epics/iocTop
 PACKAGE_SITE_TOP=/afs/slac/g/lcls/package
+PSPKG_ROOT=/afs/slac/g/pcds/pkg_mgr
 TOOLS_SITE_TOP=/afs/slac/g/lcls/tools
 ALARM_CONFIGS_TOP=/afs/slac/g/lcls/tools/AlarmConfigsTop
 #==============================================================================

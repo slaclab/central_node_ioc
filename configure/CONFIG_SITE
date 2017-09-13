@@ -24,8 +24,8 @@ CHECK_RELEASE = YES
 
 # If you only want to build for the host then uncomment the line below and no cross targets
 # will be built.  Remember EPICS will build for the HOST ARCH by default.
-#CROSS_COMPILER_TARGET_ARCHS =  linuxRT_glibc-x86_64
-CROSS_COMPILER_TARGET_ARCHS =  linux-x86_64
+CROSS_COMPILER_TARGET_ARCHS =  rhel-x86_64
+CROSS_COMPILER_TARGET_ARCHS =  linuxRT-x86_64
 BUILD_FOR_HOST_ARCH=""
 
 # To install files into a location other than $(TOP) define
@@ -43,6 +43,18 @@ IOCS_APPL_TOP  = $(INSTALL_LOCATION)
 INSTALL_LOCATION_STARTUP += $(INSTALL_LOCATION)/startup
 DIRECTORY_TARGETS += $(INSTALL_LOCATION_STARTUP)
 
+## =============================
+## Build Application Statically
+## =============================
+SHARED_LIBRARIES=NO
+STATIC_BUILD=YES
+
+# Location of Linux Kernel Modules:
+LINUX_KERNEL_MODULES=$(PACKAGE_SITE_TOP)/linuxKernel_Modules
+
+LINUXRT_BUILDROOT_VERSION=buildroot-2016.11.1
+LINUX_VERSION=rhel6
+
 # Let's reference some external packages needed by our build:
 
 # =============================================
@@ -50,62 +62,45 @@ DIRECTORY_TARGETS += $(INSTALL_LOCATION_STARTUP)
 # IOC Application
 # =============================================
 include $(TOP)/RELEASE_SITE
-#Define the external package version number to be used
-CPPUNIT_PACKAGE_VERSION=1.12.1
-BOOST_PACKAGE_VERSION=1.42.0
-BOOSTBINDINGS_PACKAGE_VERSION=1.42.0
-LAPACK_PACKAGE_VERSION=3.2.1
-
-#Define the path to the external package for the host architecture
-CPPUNIT=$(PACKAGE_SITE_TOP)/cppunit/$(CPPUNIT_PACKAGE_VERSION)/rhel6-x86_64
-BOOST=$(PACKAGE_SITE_TOP)/boost/$(BOOST_PACKAGE_VERSION)/rhel6-x86_64
-BOOSTBINDINGS=$(PACKAGE_SITE_TOP)/boost-numeric-bindings/$(BOOSTBINDINGS_PACKAGE_VERSION)
-LAPACK=$(PACKAGE_SITE_TOP)/lapack/$(LAPACK_PACKAGE_VERSION)/rhel6-x86_64
 
 #=========================================================
-#EVRSharing - Need to define path to EVRMA header files
-# For Build Type: x86_64-glibc-linux                                                            
+# BOOST
 #=========================================================
-
-EVRMA_PACKAGE_VERSION=evrma-R1-0-p4
-
-### NOTE: SETTABLE_CONFIG
-KERNEL_MODULE_EVRMA=$(PACKAGE_SITE_TOP)/linuxKernel_Modules/evrmaDriver/$(EVRMA_PACKAGE_VERSION)
-### NOTE: SETTABLE_CONFIG
-EVRMA=$(PACKAGE_SITE_TOP)/evrma/$(EVRMA_PACKAGE_VERSION)/rhel6-linux-x86_64
-
-EVRMA_LIB = $(EVRMA)/lib
-EVRMA_INCLUDE = -I$(EVRMA)/include
-KERNEL_MODULE_EVRMA_INCLUDE = -I$(KERNEL_MODULE_EVRMA)/src
+BOOST_PACKAGE_NAME=boost
+BOOST_VERSION=1.63.0
+BOOST_TOP=$(PACKAGE_SITE_TOP)/$(BOOST_PACKAGE_NAME)/$(BOOST_VERSION)
+BOOST_LIB = $(BOOST_TOP)/$(PKG_ARCH)/lib
+BOOST_INCLUDE = $(BOOST_TOP)/$(PKG_ARCH)/include
 
 #=========================================================
 # EasyLogging++
 #=========================================================
 EASYLOGGING=$(PACKAGE_SITE_TOP)/easylogging/easyloggingpp-8.91
-EASYLOGGINGPP_INCLUDE = -I$(EASYLOGGING)
+EASYLOGGINGPP_INCLUDE = $(EASYLOGGING)
 
 #=========================================================
 # Central Node Engine
 #=========================================================
-CENTRAL_NODE_ENGINE=/afs/slac/u/cd/lpiccoli/top/central_node_engine
-CENTRAL_NODE_ENGINE_INCLUDE=-I$(CENTRAL_NODE_ENGINE)/include
-CENTRAL_NODE_ENGINE_LIB=$(CENTRAL_NODE_ENGINE)/lib/linux-x86_64
+CENTRAL_NODE_ENGINE_NAME=central_node_engine
+CENTRAL_NODE_ENGINE_VERSION=
+CENTRAL_NODE_ENGINE_TOP=/afs/slac/u/cd/lpiccoli/top/$(CENTRAL_NODE_ENGINE_NAME)
+CENTRAL_NODE_ENGINE_LIB=$(CENTRAL_NODE_ENGINE_TOP)/$(PKG_ARCH)/lib
+CENTRAL_NODE_ENGINE_INCLUDE=$(CENTRAL_NODE_ENGINE_TOP)/$(PKG_ARCH)/include
 
 #=========================================================
 # YAML-CPP
 #=========================================================
-YAML_CPP_VERSION=yaml-cpp-0.5.3
-YAML_CPP_PATH=$(PACKAGE_TOP)/yaml-cpp/$(YAML_CPP_VERSION)
-YAML_CPP_LIB=$(YAML_CPP_PATH)/rhel6-x86_64/lib
-YAML_CPP_INCLUDE=-I$(YAML_CPP_PATH)/rhel6-x86_64/include
+YAML_PACKAGE_NAME=yaml-cpp
+YAML_VERSION=yaml-cpp-0.5.3
+YAML_TOP=$(PACKAGE_SITE_TOP)/$(YAML_PACKAGE_NAME)/$(YAML_VERSION)
+YAML_LIB= $(YAML_TOP)/$(PKG_ARCH)/lib
+YAML_INCLUDE=$(YAML_TOP)/$(PKG_ARCH)/include
 
 #=========================================================
 # CPSW
 #=========================================================
-CPSW_VERSION=R3.5.4
-CPSW_PATH=$(PACKAGE_TOP)/cpsw/framework/$(CPSW_VERSION)
-CPSW_LIB=$(CPSW_PATH)/rhel6-x86_64/lib
-CPSW_INCLUDE=$(CPSW_PATH)/rhel6-x86_64/include
-
-# Build this IOC App statically
-STATIC_BUILD=YES
+CPSW_FRAMEWORK_PACKAGE_NAME=cpsw/framework
+CPSW_FRAMEWORK_VERSION=R3.5.4
+CPSW_FRAMEWORK_TOP=$(PACKAGE_SITE_TOP)/$(CPSW_FRAMEWORK_PACKAGE_NAME)/$(CPSW_FRAMEWORK_VERSION)
+CPSW_FRAMEWORK_LIB = $(CPSW_FRAMEWORK_TOP)/$(PKG_ARCH)/lib
+CPSW_FRAMEWORK_INCLUDE = $(CPSW_FRAMEWORK_TOP)/$(PKG_ARCH)/include

@@ -6,10 +6,12 @@
 #include <stdio.h>
 
 #include <central_node_bypass.h>
+#include <central_node_firmware.h>
 #include <asynPortDriver.h>
 
 // Environment variables
 #define MPS_ENV_CONFIG_PATH "MPS_ENV_CONFIG_PATH"
+#define MPS_ENV_FW_CONFIG "MPS_ENV_FW_CONFIG"
 
 // List of ASYN parameter names
 #define CONFIG_LOAD_STRING                     "CONFIG_LOAD"
@@ -34,6 +36,14 @@
 #define ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "ANALOG_DEVICE_BYPEXPDATE_STRING"
 #define UNLATCH_ALL_STRING                     "UNLATCH_ALL"
 #define FW_BUILD_STAMP_STRING_STRING           "FW_BUILD_STAMP_STRING"
+#define MPS_ENABLE_STRING                      "MPS_ENABLE"
+#define MPS_ENABLE_RBV_STRING                  "MPS_ENABLE_RBV"
+#define MPS_SW_ENABLE_STRING                   "MPS_SW_ENABLE"
+#define MPS_SW_ENABLE_RBV_STRING               "MPS_SW_ENABLE_RBV"
+
+// TODO: add device support for requested power class
+// params: device and power class
+
 
 #define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
@@ -62,6 +72,8 @@ public:
   void showMitigation();
   void showFaults();
   void showFirmware();
+  void showDatabaseInfo();
+  void showEngineInfo();
   
  private:
   std::string _configPath;
@@ -89,6 +101,10 @@ public:
   int _analogDeviceBypassExpirationDateStringParam;
   int _unlatchAllParam;
   int _fwBuildStampParam;
+  int _mpsEnableParam;
+  int _mpsEnableRbvParam;
+  int _mpsSwEnableParam;
+  int _mpsSwEnableRbvParam;
   
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;

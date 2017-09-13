@@ -1,29 +1,29 @@
-record(stringout, "CentralNode:CONFIG_LOAD") {
+record(stringout, "$(IOC):CONFIG_LOAD") {
     field(DESC, "Load Algorithm")
     field(DTYP, "asynOctetWrite")
     field(OUT, "@asyn(CENTRAL_NODE 0 0)CONFIG_LOAD")
 }
 
-record(stringout, "CentralNode:Test:DEVICE_INPUT") {
+record(stringout, "$(IOC):Test:DEVICE_INPUT") {
     field(DESC, "Load values for device inputs (digital)")
     field(DTYP, "asynOctetWrite")
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_DEVICE_INPUT")
 }
 
-record(stringout, "CentralNode:Test:ANALOG_DEVICE") {
+record(stringout, "$(IOC):Test:ANALOG_DEVICE") {
     field(DESC, "Load test file for analog devices")
     field(DTYP, "asynOctetWrite")
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_ANALOG_DEVICE")
 }
 
-record(stringin, "CentralNode:FW_BUILD_STAMP") {
+record(stringin, "$(IOC):FW_BUILD_STAMP") {
     field(DESC, "Central node firmware build stamp")
     field(DTYP, "asynOctetRead")
     field(SCAN, "1 second")
     field(INP, "@asyn(CENTRAL_NODE 0 0)FW_BUILD_STAMP_STRING")
 }
 
-record(longout, "CentralNode:Test:CHECK_FAULTS") {
+record(longout, "$(IOC):Test:CHECK_FAULTS") {
     field(DESC, "Run engine evaluation one time")
     field(DTYP, "asynInt32")
     field(VAL, "0")
@@ -31,14 +31,44 @@ record(longout, "CentralNode:Test:CHECK_FAULTS") {
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_CHECK_FAULTS")
 }
 
-record(longout, "CentralNode:Test:CHECK_BYPASS") {
+record(longout, "$(IOC):Test:CHECK_BYPASS") {
     field(DESC, "Check bypass queue one time")
     field(DTYP, "asynInt32")
     field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_CHECK_BYPASS")
 }
 
-record(longout, "CentralNode:UNLATCHALL") {
+record(longout, "$(IOC):UNLATCHALL") {
     field(DESC, "Unlatch all faults and inputs")
     field(DTYP, "asynInt32")
     field(OUT, "@asyn(CENTRAL_NODE 0 0)UNLATCH_ALL")
+}
+
+record(bo, "$(IOC):ENABLE") {
+    field(DESC, "Enable Central Node")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_ENABLE")
+}
+
+record(bi, "$(IOC):ENABLE_RBV") {
+    field(DESC, "Enable Central Node (RBV)")
+    field(DTYP, "asynUInt32Digital")
+    field(SCAN, "1 second")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+    field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_ENABLE_RBV")
+}
+
+record(bo, "$(IOC):SW_ENABLE") {
+    field(DESC, "Enable Central Node Software")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SW_ENABLE")
+}
+
+record(bi, "$(IOC):SW_ENABLE_RBV") {
+    field(DESC, "Enable Central Node Software (RBV)")
+    field(DTYP, "asynUInt32Digital")
+    field(SCAN, "1 second")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+    field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SW_ENABLE_RBV")
 }

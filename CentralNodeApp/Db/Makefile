@@ -10,23 +10,23 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install)
 # databases, templates, substitutions like this
-DB += dbExample.db
-DB += dbExample1.db
-DB += dbExample2.db
-DB += userHost.substitutions
+#DB += dbExample.db
+#DB += dbExample1.db
+#DB += dbExample2.db
+#DB += userHost.substitutions
 
 DB += CentralNode.db
 
 # ========================================
 # Install timing/event related databases
 # ========================================
-DB_INSTALLS += $(EVENT)/db/EvrPmc.db
-DB_INSTALLS += $(EVENT)/db/EvrPci.db
-DB_INSTALLS += $(EVENT)/db/Pattern.db
-DB_INSTALLS += $(EVENT)/db/PCI-trig.db
-DB_INSTALLS += $(EVENT)/db/PMC-trig.db
-DB_INSTALLS += $(EVENT)/db/VME-trig.db
-DB_INSTALLS += $(EVENT)/db/VME-TTB-trig.db
+#DB_INSTALLS += $(EVENT)/db/EvrPmc.db
+#DB_INSTALLS += $(EVENT)/db/EvrPci.db
+#DB_INSTALLS += $(EVENT)/db/Pattern.db
+#DB_INSTALLS += $(EVENT)/db/PCI-trig.db
+#DB_INSTALLS += $(EVENT)/db/PMC-trig.db
+#DB_INSTALLS += $(EVENT)/db/VME-trig.db
+#DB_INSTALLS += $(EVENT)/db/VME-TTB-trig.db
 
 # Install Common databases needed by All IOCs
 # ========================================================

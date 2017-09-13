@@ -1,6 +1,7 @@
 #include "CentralNodeDriver.h"
 
 #include <iostream>
+#include <fstream>
 #include <sstream>
 
 #include <epicsTypes.h>
@@ -14,7 +15,7 @@
 #include <central_node_engine.h>
 #include <central_node_bypass.h>
 
-#ifdef LOG_ENABLED
+#if defined(LOG_ENABLED) && !defined(LOG_STDOUT)
 using namespace easyloggingpp;
 static Logger *centralNodeLogger;
 #endif
@@ -26,7 +27,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
 		 ASYN_MULTIDEVICE,                       // asynFlags
 		 1, 0, 0),            // autoConnect, priority, stackSize
   _configPath(configPath) {
-#ifdef LOG_ENABLED
+#if defined(LOG_ENABLED) && !defined(LOG_STDOUT)
   centralNodeLogger = Loggers::getLogger("DRIVER");
 #endif
   LOG_TRACE("DRIVER", "CentralNodeDriver constructor");
@@ -53,6 +54,10 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_analogDeviceBypassExpirationDateStringParam);
   createParam(UNLATCH_ALL_STRING, asynParamInt32, &_unlatchAllParam);
   createParam(FW_BUILD_STAMP_STRING_STRING, asynParamOctet, &_fwBuildStampParam);
+  createParam(MPS_ENABLE_STRING, asynParamUInt32Digital, &_mpsEnableParam);
+  createParam(MPS_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsEnableRbvParam);
+  createParam(MPS_SW_ENABLE_STRING, asynParamUInt32Digital, &_mpsSwEnableParam);
+  createParam(MPS_SW_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsSwEnableRbvParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -66,10 +71,17 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   }
 
   Engine::getInstance().startUpdateThread();
-  History::getInstance().startSenderThread();
+  //History::getInstance().startSenderThread();
 
   //Need to get info from Firmware directly or through Engine...
   setStringParam(0, _fwBuildStampParam, "XXXX");//reinterpret_cast<char *>(Firmware::getInstance().buildStamp));
+
+  int value = 0;
+  if (Firmware::getInstance().getEnable()) value = 1;
+  setUIntDigitalParam(0, _mpsEnableRbvParam, value, 1);
+  value = 0;
+  if (Firmware::getInstance().getSoftwareEnable()) value = 1;
+  setUIntDigitalParam(0, _mpsSwEnableRbvParam, value, 1);
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
@@ -175,7 +187,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
-    LOG_TRACE("DRIVER", "ERROR: Database not initialized");
+    //    LOG_TRACE("DRIVER", "ERROR: Database not initialized");
     //    return asynError;
     return status;
   }
@@ -226,9 +238,18 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
   int addr;
   getAddress(pasynUser, &addr);
 
+  if (_mpsEnableRbvParam == pasynUser->reason) {
+    if (Firmware::getInstance().getEnable()) *value = 1; else *value = 0;
+    return status;
+  }
+  else if (_mpsSwEnableRbvParam == pasynUser->reason) {
+    if (Firmware::getInstance().getSoftwareEnable()) *value = 1; else *value = 0;
+    return status;
+  }
+
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
-    LOG_TRACE("DRIVER", "ERROR: Database not initialized");
+    //    LOG_TRACE("DRIVER", "ERROR: Database not initialized");
     return status;
   }
 
@@ -356,6 +377,27 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   getAddress(pasynUser, &addr);
   int bitIndex = pasynUser->timeout;
 
+  if (_mpsEnableParam == pasynUser->reason) {
+    std::cout << "Enable=" << value << std::endl;
+    if (value == 0) {
+      Firmware::getInstance().disable();
+    }
+    else {
+      Firmware::getInstance().enable();
+    }
+    return status;
+  }
+  else if (_mpsSwEnableParam == pasynUser->reason) {
+    std::cout << "SwEnable=" << value << std::endl;
+    if (value == 0) {
+      Firmware::getInstance().softwareDisable();
+    }
+    else {
+      Firmware::getInstance().softwareEnable();
+    }
+    return status;
+  }
+
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
     LOG_TRACE("DRIVER", "ERROR: Database not initialized (reason=" << pasynUser->reason
@@ -424,7 +466,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 }
 
 asynStatus CentralNodeDriver::loadConfig(const char *config) {
-  std::string fullName = _configPath + config;
+  std::string fullName = _configPath + "/" + config;
   try {
     if (Engine::getInstance().loadConfig(fullName) != 0) {
       std::cerr << "ERROR: Failed to load configuration " << fullName << std::endl; 
@@ -571,15 +613,23 @@ void CentralNodeDriver::printQueue() {
 }
 
 void CentralNodeDriver::showMitigation() {
-  Engine::getInstance().getCurrentDb()->showMitigation();
+  Engine::getInstance().showMitigationDevices();
 }
 
 void CentralNodeDriver::showFaults() {
-  Engine::getInstance().getCurrentDb()->showFaults();
+  Engine::getInstance().showFaults();
 }
 
 void CentralNodeDriver::showFirmware() {
   Engine::getInstance().showFirmware();
+}
+
+void CentralNodeDriver::showDatabaseInfo() {
+  Engine::getInstance().showDatabaseInfo();
+}
+
+void CentralNodeDriver::showEngineInfo() {
+  Engine::getInstance().showStats();
 }
 
 void CentralNodeDriver::report(FILE *fp, int reportDetails) {

@@ -5,6 +5,31 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #========================================
 
+#==================================================================================
+# Path to "NON EPICS" External PACKAGES: USER INCLUDES
+#==================================================================================
+
+# Support for CPSW
+USR_INCLUDES = -I$(BOOST_INCLUDE) -I$(CPSW_FRAMEWORK_INCLUDE) -I$(YAML_INCLUDE)
+#==================================================================================
+
+#======================================================
+# PATH TO "NON EPICS" EXTERNAL PACKAGES: USER LIBRARIES
+#======================================================
+# Support for CPSW
+cpsw_DIR = $(CPSW_FRAMEWORK_LIB)
+boost_system_DIR = $(BOOST_LIB)
+yaml-cpp_DIR = $(YAML_LIB)
+
+# Central Node Engine Lib
+USR_INCLUDES += -I$(CENTRAL_NODE_ENGINE_INCLUDE)
+central_node_engine_DIR = $(CENTRAL_NODE_ENGINE_LIB)
+
+# ======================================================
+# LINK "NON EPICS" EXTERNAL PACKAGE LIBRARIES STATICALLY
+#=======================================================
+USR_LIBS_Linux += central_node_engine cpsw boost_system yaml-cpp
+
 # ================================================
 # Build the IOC application
 # ================================================
@@ -22,9 +47,10 @@ DBD += CentralNode.dbd
 CentralNode_DBD += Init.dbd
 CentralNode_DBD += base.dbd
 CentralNode_DBD += devIocStats.dbd
-CentralNode_DBD += autosaveSupport.dbd
+CentralNode_DBD += asSupport.dbd
 CentralNode_DBD += caPutLog.dbd
 CentralNode_DBD += asyn.dbd
+CentralNode_DBD += yamlLoader.dbd
 CentralNode_DBD += $(CEXP_DBDS)
 
 # ================================================================================
@@ -68,6 +94,8 @@ CentralNode_LIBS += autosave
 # Needed to link caPutLog support
 CentralNode_LIBS += caPutLog
 
+CentralNode_LIBS += yamlLoader
+
 # Needed to link cexpsh() support
 CentralNode_LIBS += $(CEXP_LIBS)
 
@@ -75,25 +103,20 @@ CentralNode_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #======================================================
 
-USR_CPPFLAGS += -DLOG_ENABLED
-USR_CPPFLAGS += $(EASYLOGGINGPP_INCLUDE)
-USR_CPPFLAGS += $(YAML_CPP_INCLUDE)
-USR_CPPFLAGS += $(CPSW_INCLUDE)
+#USR_CPPFLAGS += -DLOG_ENABLED
+#USR_CPPFLAGS += -DLOG_STDOUT
+USR_CPPFLAGS += -I$(EASYLOGGINGPP_INCLUDE)
 
 # =========================================================================
 #  Link in external package libraries (-lcentral_node_engine)
 # =========================================================================
-YAML_CPP_DIR=$(YAML_CPP_LIB)
+YAML_DIR=$(YAML_LIB)
 CPSW_DIR=$(CPSW_LIB)
 CENTRAL_NODE_ENGINE_DIR=$(CENTRAL_NODE_ENGINE_LIB)
-USR_CPPFLAGS += $(CENTRAL_NODE_ENGINE_INCLUDE)
-#CentralNode_LIBS += central_node_engine
 USR_LDFLAGS += -L$(CENTRAL_NODE_ENGINE_LIB)
-USR_LDFLAGS += -L$(YAML_CPP_LIB)
-USR_LDFLAGS += -L$(CPSW_LIB)
-CentralNode_SYS_LIBS += central_node_engine
-CentralNode_SYS_LIBS += yaml-cpp
-CentralNode_SYS_LIBS += cpsw
+USR_LDFLAGS += -L$(YAML_LIB)
+USR_LDFLAGS += -L$(CPSW_FRAMEWORK_LIB)
+USR_LDFLAGS += -L$(BOOST_LIB)
 
 include $(TOP)/configure/RULES
 #----------------------------------------
