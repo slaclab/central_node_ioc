@@ -20,7 +20,8 @@ using namespace easyloggingpp;
 static Logger *centralNodeLogger;
 #endif
 
-CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPath) :
+CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPath,
+				     std::string historyServer, int historyPort) :
   asynPortDriver(portName, 100, CENTRAL_NODE_DRIVER_NUM_PARAMS,
 		 asynOctetMask | asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask | asynUInt32DigitalMask | asynDrvUserMask, // interfaceMask
 		 asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask, // interruptMask
@@ -35,7 +36,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(CONFIG_LOAD_STRING, asynParamOctet, &_configLoadParam);
   createParam(DEVICE_INPUT_STRING, asynParamUInt32Digital, &_deviceInputParam);
   createParam(ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_analogDeviceParam);
-  createParam(MITIGATION_DEVICE_STRING, asynParamInt32, &_mitigationDeviceParam);
+  createParam(MPS_SW_MITIGATION_STRING, asynParamInt32, &_mpsSwMitigationParam);
   createParam(FAULT_STRING, asynParamUInt32Digital, &_faultParam);
   createParam(FAULT_IGNORED_STRING, asynParamUInt32Digital, &_faultIgnoredParam);
   createParam(FAULT_LATCHED_STRING, asynParamUInt32Digital, &_faultLatchedParam);
@@ -58,6 +59,14 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsEnableRbvParam);
   createParam(MPS_SW_ENABLE_STRING, asynParamUInt32Digital, &_mpsSwEnableParam);
   createParam(MPS_SW_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsSwEnableRbvParam);
+  createParam(FAULT_REASON_STRING, asynParamInt32, &_faultReasonParam);
+  createParam(SW_UPDATE_RATE_STRING, asynParamInt32, &_updateRateParam);
+  createParam(MPS_TIMING_CHECK_ENABLE_STRING, asynParamUInt32Digital, &_mpsTimingCheckEnableParam);
+  createParam(MPS_TIMING_CHECK_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsTimingCheckEnableRbvParam);
+  createParam(MPS_FW_MITIGATION_STRING, asynParamInt32, &_mpsFwMitigationParam);
+  createParam(MPS_MITIGATION_STRING, asynParamInt32, &_mpsMitigationParam);
+  createParam(SW_UPDATE_COUNTER_STRING, asynParamInt32, &_updateCounterParam);
+  createParam(ENGINE_START_TIME_STRING_STRING, asynParamOctet, &_engineStartTimeStringParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -70,11 +79,12 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
     setStringParam(i, _analogDeviceBypassExpirationDateStringParam, "Bypass date not set");
   }
 
-  Engine::getInstance().startUpdateThread();
-  //History::getInstance().startSenderThread();
+  // Start thread that sends out history messages
+  History::getInstance().startSenderThread(historyServer, historyPort);
 
   //Need to get info from Firmware directly or through Engine...
   setStringParam(0, _fwBuildStampParam, "XXXX");//reinterpret_cast<char *>(Firmware::getInstance().buildStamp));
+  setStringParam(0, _engineStartTimeStringParam, "** Engine not started **");
 
   int value = 0;
   if (Firmware::getInstance().getEnable()) value = 1;
@@ -82,6 +92,9 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   value = 0;
   if (Firmware::getInstance().getSoftwareEnable()) value = 1;
   setUIntDigitalParam(0, _mpsSwEnableRbvParam, value, 1);
+  value = 0;
+  if (Firmware::getInstance().getTimingCheckEnable()) value = 1;
+  setUIntDigitalParam(0, _mpsTimingCheckEnableRbvParam, value, 1);
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
@@ -97,13 +110,9 @@ CentralNodeDriver::~CentralNodeDriver() {
 // }
 /*
 asynStatus CentralNodeDriver::readOctet(asynUser *pasynUser, char *value, size_t maxChars, size_t *nActual) {
-
-
-  std::cout << "READOCTET"<< std::endl;
-
-  if (_fwBuildStampParam == pasynUser->reason) {
-    setStringParam(0, _fwBuildStampParam, "XXX");
-    std::cout << "fw"<< std::endl;
+  if (_engineStartTimeStringParam == pasynUser->reason) {
+    time_t startTime = Engine::getInstance().getStartTime();
+    setStringParam(0, _engineStartTimeStringParam, ctime(&startTime));
   }
   *nActual = maxChars;
   return asynSuccess;
@@ -185,6 +194,27 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   getAddress(pasynUser, &addr);
   int bitIndex = pasynUser->timeout;
 
+  if (_faultReasonParam == pasynUser->reason) {
+    try {
+      *value = Firmware::getInstance().getFaultReason();
+    } catch (std::exception &e) {
+      status = asynError;
+    }
+    return status;
+  }
+  else if (_updateRateParam == pasynUser->reason) {
+    *value = Engine::getInstance().getUpdateRate();
+    return status;
+  } 
+  else if (_updateCounterParam == pasynUser->reason) {
+    *value = Engine::getInstance().getUpdateCounter();
+
+    time_t startTime = Engine::getInstance().getStartTime();
+    setStringParam(0, _engineStartTimeStringParam, ctime(&startTime));
+
+    return status;
+  } 
+
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
     //    LOG_TRACE("DRIVER", "ERROR: Database not initialized");
@@ -192,7 +222,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     return status;
   }
 
-  if (_mitigationDeviceParam == pasynUser->reason) {
+  if (_mpsSwMitigationParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->mitigationDevices->find(addr) ==
 	Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
@@ -225,6 +255,46 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     }
     Engine::getInstance().getCurrentDb()->unlock();
   }
+  else if (_mpsFwMitigationParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->lock();
+    if (Engine::getInstance().getCurrentDb()->mitigationDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: MitigationDevice not found, key=" << addr);
+      Engine::getInstance().getCurrentDb()->unlock();
+      return asynError;
+    }
+    uint8_t index = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->softwareMitigationBufferIndex;
+    uint8_t bitShift = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->bitShift;
+    Engine::getInstance().getCurrentDb()->unlock();
+
+    uint32_t fwMitigation[2];
+    try {
+      Firmware::getInstance().getFirmwareMitigation(&fwMitigation[0]);
+    } catch (std::exception &e) {
+      status = asynError;
+    }
+    *value = (fwMitigation[index] >> bitShift) & 0xF;
+  }
+  else if (_mpsMitigationParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->lock();
+    if (Engine::getInstance().getCurrentDb()->mitigationDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: MitigationDevice not found, key=" << addr);
+      Engine::getInstance().getCurrentDb()->unlock();
+      return asynError;
+    }
+    uint8_t index = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->softwareMitigationBufferIndex;
+    uint8_t bitShift = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->bitShift;
+    Engine::getInstance().getCurrentDb()->unlock();
+
+    uint32_t mitigation[2];
+    try {
+      Firmware::getInstance().getMitigation(&mitigation[0]);
+    } catch (std::exception &e) {
+      status = asynError;
+    }
+    *value = (mitigation[index] >> bitShift) & 0xF;
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");
     status = asynError;
@@ -244,6 +314,10 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
   }
   else if (_mpsSwEnableRbvParam == pasynUser->reason) {
     if (Firmware::getInstance().getSoftwareEnable()) *value = 1; else *value = 0;
+    return status;
+  }
+  else if (_mpsTimingCheckEnableRbvParam == pasynUser->reason) {
+    if (Firmware::getInstance().getTimingCheckEnable()) *value = 1; else *value = 0;
     return status;
   }
 
@@ -378,23 +452,27 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   int bitIndex = pasynUser->timeout;
 
   if (_mpsEnableParam == pasynUser->reason) {
-    std::cout << "Enable=" << value << std::endl;
-    if (value == 0) {
-      Firmware::getInstance().disable();
+    bool enable = false;
+    if (value != 0) {
+      enable = true;
     }
-    else {
-      Firmware::getInstance().enable();
-    }
+    Firmware::getInstance().setEnable(enable);
     return status;
   }
   else if (_mpsSwEnableParam == pasynUser->reason) {
-    std::cout << "SwEnable=" << value << std::endl;
-    if (value == 0) {
-      Firmware::getInstance().softwareDisable();
+    bool enable = false;
+    if (value != 0) {
+      enable = true;
     }
-    else {
-      Firmware::getInstance().softwareEnable();
+    Firmware::getInstance().setSoftwareEnable(enable);
+    return status;
+  }
+  else if (_mpsTimingCheckEnableParam == pasynUser->reason) {
+    bool enable = false;
+    if (value != 0) {
+      enable = true;
     }
+    Firmware::getInstance().setTimingCheckEnable(enable);
     return status;
   }
 

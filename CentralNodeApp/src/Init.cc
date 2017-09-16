@@ -11,6 +11,9 @@
 #include "CentralNodeDriver.h"
 #include "Log.h"
 
+#include "central_node_database.h"
+#include "central_node_engine.h"
+
 #include <epicsExport.h> /* This should be the last header */
 
 static CentralNodeDriver *pCNDriver = NULL;
@@ -51,9 +54,21 @@ static int configureCentralNode(const char *portName) {
     return -1;
   }
 
+  char *historyServer = getenv(MPS_ENV_HISTORY_HOST);
+  if (historyServer == NULL) {
+    fprintf(stderr, "ERROR: Missing environment variable \"%s\", can't proceed.\n", MPS_ENV_HISTORY_HOST);
+    return -1;
+  }
+  char *historyPortStr = getenv(MPS_ENV_HISTORY_PORT);
+  if (historyPortStr == NULL) {
+    fprintf(stderr, "ERROR: Missing environment variable \"%s\", can't proceed.\n", MPS_ENV_HISTORY_PORT);
+    return -1;
+  }
+  int historyPort = atoi(historyPortStr);
+
   Firmware::getInstance().loadConfig(fwFile);
 
-  pCNDriver = new CentralNodeDriver(portName, path);
+  pCNDriver = new CentralNodeDriver(portName, path, historyServer, historyPort);
 
 #if defined(LOG_ENABLED) && !defined(LOG_STDOUT)
   Configurations c;
@@ -87,12 +102,14 @@ static int mpsPrintQueue() {
 }
 
 static const iocshFuncDef mpsPrintQueueFuncDef = {"mpsPrintQueue", 0, 0};
+static const iocshFuncDef mpspqFuncDef = {"mpspq", 0, 0};
 static void mpsPrintQueueCallFunc(const iocshArgBuf *args) {
   mpsPrintQueue();
 }
 
 static void mpsPrintQueueRegistrar(void) {
   iocshRegister(&mpsPrintQueueFuncDef, mpsPrintQueueCallFunc);
+  iocshRegister(&mpspqFuncDef, mpsPrintQueueCallFunc);
 }
 
 extern "C" {
@@ -191,14 +208,42 @@ static int mpsShowEngineInfo() {
 }
 
 static const iocshFuncDef mpsShowEngineInfoFuncDef = {"mpsShowEngineInfo", 0, 0};
+static const iocshFuncDef mpseiFuncDef = {"mpsei", 0, 0};
 static void mpsShowEngineInfoCallFunc(const iocshArgBuf *args) {
   mpsShowEngineInfo();
 }
 
 static void mpsShowEngineInfoRegistrar(void) {
   iocshRegister(&mpsShowEngineInfoFuncDef, mpsShowEngineInfoCallFunc);
+  iocshRegister(&mpseiFuncDef, mpsShowEngineInfoCallFunc);
 }
 
 extern "C" {
   epicsExportRegistrar(mpsShowEngineInfoRegistrar);
+}
+
+/*=== mpsShowUpdateBuffer command =======================================================*/
+
+static const iocshArg mpssubArg0 = {"id", iocshArgInt};
+static const iocshArg * const mpssubArgs[1] = {&mpssubArg0};
+static const iocshFuncDef mpsShowUpdateBufferFuncDef = {"mpsShowUpdateBuffer", 1, mpssubArgs};
+static const iocshFuncDef mpssubFuncDef = {"mpssub", 1, mpssubArgs};
+static void mpsShowUpdateBufferCallFunc(const iocshArgBuf *args) {
+  int id = args[0].ival;  
+
+  DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
+    
+  if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+    std::cout << (*appCard).second->name << ": ";
+    std::cout << *(*appCard).second->applicationUpdateBuffer << std::endl;
+  }
+}
+
+static void mpsShowUpdateBufferRegistrar(void) {
+  iocshRegister(&mpsShowUpdateBufferFuncDef, mpsShowUpdateBufferCallFunc);
+  iocshRegister(&mpssubFuncDef, mpsShowUpdateBufferCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(mpsShowUpdateBufferRegistrar);
 }

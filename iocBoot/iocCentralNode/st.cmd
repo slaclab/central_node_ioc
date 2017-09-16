@@ -26,6 +26,8 @@ epicsEnvSet("LOCATION","Twilight Zone")
 #epicsEnvSet("MPS_ENV_CONFIG_PATH", "/afs/slac/g/lcls/epics/iocTop/users/lpiccoli/central_node_engine/src/test/yaml/")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "/data/cpu-b084-hp03/lpiccoli/mps/config")
 epicsEnvSet("MPS_ENV_FW_CONFIG", "/data/cpu-b084-hp03/lpiccoli/mps/CentralNodeYAML/000TopLevel.yaml")
+epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
+epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
 
 configureCentralNode("CENTRAL_NODE")
 
