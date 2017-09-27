@@ -124,12 +124,14 @@ static int mpsShowMitigation() {
 }
 
 static const iocshFuncDef mpsShowMitigationFuncDef = {"mpsShowMitigation", 0, 0};
+static const iocshFuncDef mpssmFuncDef = {"mpssm", 0, 0};
 static void mpsShowMitigationCallFunc(const iocshArgBuf *args) {
   mpsShowMitigation();
 }
 
 static void mpsShowMitigationRegistrar(void) {
   iocshRegister(&mpsShowMitigationFuncDef, mpsShowMitigationCallFunc);
+  iocshRegister(&mpssmFuncDef, mpsShowMitigationCallFunc);
 }
 
 extern "C" {
@@ -143,13 +145,30 @@ static int mpsShowFaults() {
   return 0;
 }
 
-static const iocshFuncDef mpsShowFaultsFuncDef = {"mpsShowFaults", 0, 0};
+static const iocshArg mpssfArg0 = {"id", iocshArgInt};
+static const iocshArg * const mpssfArgs[1] = {&mpssfArg0};
+static const iocshFuncDef mpsShowFaultsFuncDef = {"mpsShowFaults", 1, mpssfArgs};
+static const iocshFuncDef mpssfFuncDef = {"mpssf", 1, mpssfArgs};
 static void mpsShowFaultsCallFunc(const iocshArgBuf *args) {
-  mpsShowFaults();
+  int id = args[0].ival;  
+
+  if (id != 0) {
+    Engine::getInstance().getCurrentDb()->lock();
+    DbFaultMap::iterator fault = Engine::getInstance().getCurrentDb()->faults->find(id);
+    
+    if (fault != Engine::getInstance().getCurrentDb()->faults->end()) {
+      std::cout << (*fault).second << std::endl;
+    }
+    Engine::getInstance().getCurrentDb()->unlock();
+  }
+  else {
+    mpsShowFaults();
+  }
 }
 
 static void mpsShowFaultsRegistrar(void) {
   iocshRegister(&mpsShowFaultsFuncDef, mpsShowFaultsCallFunc);
+  iocshRegister(&mpssfFuncDef, mpsShowFaultsCallFunc);
 }
 
 extern "C" {
@@ -246,4 +265,139 @@ static void mpsShowUpdateBufferRegistrar(void) {
 
 extern "C" {
   epicsExportRegistrar(mpsShowUpdateBufferRegistrar);
+}
+
+/*=== mpsShowConfigBuffer command =======================================================*/
+
+static const iocshArg mpsscbArg0 = {"id", iocshArgInt};
+static const iocshArg * const mpsscbArgs[1] = {&mpsscbArg0};
+static const iocshFuncDef mpsShowConfigBufferFuncDef = {"mpsShowConfigBuffer", 1, mpsscbArgs};
+static const iocshFuncDef mpsscbFuncDef = {"mpsscb", 1, mpsscbArgs};
+static void mpsShowConfigBufferCallFunc(const iocshArgBuf *args) {
+  int id = args[0].ival;  
+
+  DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
+    
+  if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+    std::cout << (*appCard).second->name << ": ";
+    std::cout << *(*appCard).second->applicationConfigBuffer << std::endl;
+    //    (*appCard).second->printAnalogConfiguration();
+  }
+}
+
+static void mpsShowConfigBufferRegistrar(void) {
+  iocshRegister(&mpsShowConfigBufferFuncDef, mpsShowConfigBufferCallFunc);
+  iocshRegister(&mpsscbFuncDef, mpsShowConfigBufferCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(mpsShowConfigBufferRegistrar);
+}
+
+/*=== mpsShowDigitalDevice command =======================================================*/
+
+static const iocshArg mpssddArg0 = {"id", iocshArgInt};
+static const iocshArg * const mpssddArgs[1] = {&mpssddArg0};
+static const iocshFuncDef mpsShowDigitalDeviceFuncDef = {"mpsShowDigitalDevice", 1, mpssddArgs};
+static const iocshFuncDef mpssddFuncDef = {"mpssdd", 1, mpssddArgs};
+static void mpsShowDigitalDeviceCallFunc(const iocshArgBuf *args) {
+  int id = args[0].ival;  
+
+  Engine::getInstance().getCurrentDb()->lock();
+  DbDigitalDeviceMap::iterator device = Engine::getInstance().getCurrentDb()->digitalDevices->find(id);
+    
+  if (device != Engine::getInstance().getCurrentDb()->digitalDevices->end()) {
+    std::cout << (*device).second << std::endl;
+  }
+  Engine::getInstance().getCurrentDb()->unlock();
+}
+
+static void mpsShowDigitalDeviceRegistrar(void) {
+  iocshRegister(&mpsShowDigitalDeviceFuncDef, mpsShowDigitalDeviceCallFunc);
+  iocshRegister(&mpssddFuncDef, mpsShowDigitalDeviceCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(mpsShowDigitalDeviceRegistrar);
+}
+
+/*=== mpsShowDeviceInput command =======================================================*/
+
+static const iocshArg mpssdiArg0 = {"id", iocshArgInt};
+static const iocshArg * const mpssdiArgs[1] = {&mpssdiArg0};
+static const iocshFuncDef mpsShowDeviceInputFuncDef = {"mpsShowDeviceInput", 1, mpssdiArgs};
+static const iocshFuncDef mpssdiFuncDef = {"mpssdi", 1, mpssdiArgs};
+static void mpsShowDeviceInputCallFunc(const iocshArgBuf *args) {
+  int id = args[0].ival;  
+
+  Engine::getInstance().getCurrentDb()->lock();
+  DbDeviceInputMap::iterator device = Engine::getInstance().getCurrentDb()->deviceInputs->find(id);
+    
+  if (device != Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
+    std::cout << (*device).second << std::endl;
+  }
+  Engine::getInstance().getCurrentDb()->unlock();
+}
+
+static void mpsShowDeviceInputRegistrar(void) {
+  iocshRegister(&mpsShowDeviceInputFuncDef, mpsShowDeviceInputCallFunc);
+  iocshRegister(&mpssdiFuncDef, mpsShowDeviceInputCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(mpsShowDeviceInputRegistrar);
+}
+
+/*=== mpsShowAnalogDevice command =======================================================*/
+
+static const iocshArg mpssadArg0 = {"id", iocshArgInt};
+static const iocshArg * const mpssadArgs[1] = {&mpssadArg0};
+static const iocshFuncDef mpsShowAnalogDeviceFuncDef = {"mpsShowAnalogDevice", 1, mpssadArgs};
+static const iocshFuncDef mpssadFuncDef = {"mpssad", 1, mpssadArgs};
+static void mpsShowAnalogDeviceCallFunc(const iocshArgBuf *args) {
+  int id = args[0].ival;  
+
+  Engine::getInstance().getCurrentDb()->lock();
+  DbAnalogDeviceMap::iterator device = Engine::getInstance().getCurrentDb()->analogDevices->find(id);
+    
+  if (device != Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+    std::cout << (*device).second << std::endl;
+  }
+  Engine::getInstance().getCurrentDb()->unlock();
+}
+
+static void mpsShowAnalogDeviceRegistrar(void) {
+  iocshRegister(&mpsShowAnalogDeviceFuncDef, mpsShowAnalogDeviceCallFunc);
+  iocshRegister(&mpssadFuncDef, mpsShowAnalogDeviceCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(mpsShowAnalogDeviceRegistrar);
+}
+
+/*=== mpsShowMitigationDevice command =======================================================*/
+
+static const iocshArg mpssmdArg0 = {"id", iocshArgInt};
+static const iocshArg * const mpssmdArgs[1] = {&mpssmdArg0};
+static const iocshFuncDef mpsShowMitigationDeviceFuncDef = {"mpsShowMitigationDevice", 1, mpssmdArgs};
+static const iocshFuncDef mpssmdFuncDef = {"mpssmd", 1, mpssmdArgs};
+static void mpsShowMitigationDeviceCallFunc(const iocshArgBuf *args) {
+  int id = args[0].ival;  
+
+  Engine::getInstance().getCurrentDb()->lock();
+  DbMitigationDeviceMap::iterator device = Engine::getInstance().getCurrentDb()->mitigationDevices->find(id);
+    
+  if (device != Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
+    std::cout << (*device).second << std::endl;
+  }
+  Engine::getInstance().getCurrentDb()->unlock();
+}
+
+static void mpsShowMitigationDeviceRegistrar(void) {
+  iocshRegister(&mpsShowMitigationDeviceFuncDef, mpsShowMitigationDeviceCallFunc);
+  iocshRegister(&mpssmdFuncDef, mpsShowMitigationDeviceCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(mpsShowMitigationDeviceRegistrar);
 }

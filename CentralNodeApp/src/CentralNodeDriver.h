@@ -16,40 +16,51 @@
 #define MPS_ENV_HISTORY_PORT "MPS_ENV_HISTORY_PORT"
 
 // List of ASYN parameter names
-#define CONFIG_LOAD_STRING                     "CONFIG_LOAD"
-#define DEVICE_INPUT_STRING                    "DEVICE_INPUT"
-#define ANALOG_DEVICE_STRING                   "ANALOG_DEVICE"
-#define MPS_SW_MITIGATION_STRING               "MPS_SW_MITIGATION"
-#define FAULT_STRING                           "FAULT"
-#define FAULT_IGNORED_STRING                   "FAULT_IGNORED"
-#define FAULT_LATCHED_STRING                   "FAULT_LATCHED"
-#define FAULT_UNLATCH_STRING                   "FAULT_UNLATCH"
-#define DEVICE_INPUT_LATCHED_STRING            "DEVICE_INPUT_LATCHED"
-#define DEVICE_INPUT_UNLATCH_STRING            "DEVICE_INPUT_UNLATCH"
-#define DEVICE_INPUT_BYPV_STRING               "DEVICE_INPUT_BYPV"
-#define DEVICE_INPUT_BYPS_STRING               "DEVICE_INPUT_BYPS"
-#define DEVICE_INPUT_BYPEXPDATE_STRING         "DEVICE_INPUT_BYPEXPDATE"
-#define DEVICE_INPUT_BYPEXPDATE_STRING_STRING  "DEVICE_INPUT_BYPEXPDATE_STRING"
-#define ANALOG_DEVICE_LATCHED_STRING           "ANALOG_DEVICE_LATCHED"
-#define ANALOG_DEVICE_UNLATCH_STRING           "ANALOG_DEVICE_UNLATCH"
-#define ANALOG_DEVICE_BYPV_STRING              "ANALOG_DEVICE_BYPV"
-#define ANALOG_DEVICE_BYPS_STRING              "ANALOG_DEVICE_BYPS"
-#define ANALOG_DEVICE_BYPEXPDATE_STRING        "ANALOG_DEVICE_BYPEXPDATE"
-#define ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "ANALOG_DEVICE_BYPEXPDATE_STRING"
-#define UNLATCH_ALL_STRING                     "UNLATCH_ALL"
-#define FW_BUILD_STAMP_STRING_STRING           "FW_BUILD_STAMP_STRING"
-#define MPS_ENABLE_STRING                      "MPS_ENABLE"
-#define MPS_ENABLE_RBV_STRING                  "MPS_ENABLE_RBV"
-#define MPS_SW_ENABLE_STRING                   "MPS_SW_ENABLE"
-#define MPS_SW_ENABLE_RBV_STRING               "MPS_SW_ENABLE_RBV"
-#define FAULT_REASON_STRING                    "FAULT_REASON"
-#define SW_UPDATE_RATE_STRING                  "SW_UPDATE_RATE"
-#define MPS_TIMING_CHECK_ENABLE_STRING         "MPS_TIMING_CHECK_ENABLE"
-#define MPS_TIMING_CHECK_ENABLE_RBV_STRING     "MPS_TIMING_CHECK_ENABLE_RBV"
-#define MPS_FW_MITIGATION_STRING               "MPS_FW_MITIGATION"
-#define MPS_MITIGATION_STRING                  "MPS_MITIGATION"
-#define SW_UPDATE_COUNTER_STRING               "SW_UPDATE_COUNTER"
-#define ENGINE_START_TIME_STRING_STRING        "ENGINE_START_TIME_STRING"
+#define MPS_CONFIG_LOAD_STRING                     "MPS_CONFIG_LOAD"
+#define MPS_DEVICE_INPUT_STRING                    "MPS_DEVICE_INPUT"
+#define MPS_ANALOG_DEVICE_STRING                   "MPS_ANALOG_DEVICE"
+#define MPS_SW_MITIGATION_STRING                   "MPS_SW_MITIGATION"
+#define MPS_FAULT_STRING                           "MPS_FAULT"
+#define MPS_FAULT_IGNORED_STRING                   "MPS_FAULT_IGNORED"
+#define MPS_FAULT_LATCHED_STRING                   "MPS_FAULT_LATCHED"
+#define MPS_FAULT_UNLATCH_STRING                   "MPS_FAULT_UNLATCH"
+#define MPS_DEVICE_INPUT_LATCHED_STRING            "MPS_DEVICE_INPUT_LATCHED"
+#define MPS_DEVICE_INPUT_UNLATCH_STRING            "MPS_DEVICE_INPUT_UNLATCH"
+#define MPS_DEVICE_INPUT_BYPV_STRING               "MPS_DEVICE_INPUT_BYPV"
+#define MPS_DEVICE_INPUT_BYPS_STRING               "MPS_DEVICE_INPUT_BYPS"
+#define MPS_DEVICE_INPUT_BYPEXPDATE_STRING         "MPS_DEVICE_INPUT_BYPEXPDATE"
+#define MPS_DEVICE_INPUT_BYPEXPDATE_STRING_STRING  "MPS_DEVICE_INPUT_BYPEXPDATE_STRING"
+#define MPS_ANALOG_DEVICE_LATCHED_STRING           "MPS_ANALOG_DEVICE_LATCHED"
+#define MPS_ANALOG_DEVICE_UNLATCH_STRING           "MPS_ANALOG_DEVICE_UNLATCH"
+#define MPS_ANALOG_DEVICE_BYPV_STRING              "MPS_ANALOG_DEVICE_BYPV"
+#define MPS_ANALOG_DEVICE_BYPS_STRING              "MPS_ANALOG_DEVICE_BYPS"
+#define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING        "MPS_ANALOG_DEVICE_BYPEXPDATE"
+#define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "MPS_ANALOG_DEVICE_BYPEXPDATE_STRING"
+#define MPS_UNLATCH_ALL_STRING                     "MPS_UNLATCH_ALL"
+#define MPS_FW_BUILD_STAMP_STRING_STRING           "MPS_FW_BUILD_STAMP_STRING"
+#define MPS_ENABLE_STRING                          "MPS_ENABLE"
+#define MPS_ENABLE_RBV_STRING                      "MPS_ENABLE_RBV"
+#define MPS_SW_ENABLE_STRING                       "MPS_SW_ENABLE"
+#define MPS_SW_ENABLE_RBV_STRING                   "MPS_SW_ENABLE_RBV"
+#define MPS_FAULT_REASON_STRING                    "MPS_FAULT_REASON"
+#define MPS_SW_UPDATE_RATE_STRING                  "MPS_SW_UPDATE_RATE"
+#define MPS_TIMING_CHECK_ENABLE_STRING             "MPS_TIMING_CHECK_ENABLE"
+#define MPS_TIMING_CHECK_ENABLE_RBV_STRING         "MPS_TIMING_CHECK_ENABLE_RBV"
+#define MPS_FW_MITIGATION_STRING                   "MPS_FW_MITIGATION"
+#define MPS_MITIGATION_STRING                      "MPS_MITIGATION"
+#define MPS_SW_UPDATE_COUNTER_STRING               "MPS_SW_UPDATE_COUNTER"
+#define MPS_ENGINE_START_TIME_STRING_STRING        "MPS_ENGINE_START_TIME_STRING"
+#define MPS_LATCHED_MITIGATION_STRING              "MPS_LATCHED_MITIGATION"
+#define MPS_MITIGATION_UNLATCH_STRING              "MPS_MITIGATION_UNLATCH"
+#define MPS_APP_STATUS_STRING                      "MPS_APP_STATUS"
+#define MPS_EVALUATION_ENABLE_STRING               "MPS_EVALUATION_ENABLE"
+#define MPS_EVALUATION_ENABLE_RBV_STRING           "MPS_EVALUATION_ENABLE_RBV"
+#define MPS_MON_ERR_CLEAR_STRING                   "MPS_MON_ERR_CLEAR"
+#define MPS_SW_ERR_CLEAR_STRING                    "MPS_SW_ERR_CLEAR"
+#define MPS_TO_ERR_CLEAR_STRING                    "MPS_TO_ERR_CLEAR"
+#define MPS_MO_CONC_ERR_CLEAR_STRING               "MPS_MO_CONC_ERR_CLEAR"
+#define MPS_TIMEOUT_ENABLE_STRING                  "MPS_TIMEOUT_ENABLE"
+#define MPS_TIMEOUT_ENABLE_RBV_STRING              "MPS_TIMEOUT_ENABLE_RBV"
 
 // TODO: add device support for requested power class
 // params: device and power class
@@ -90,40 +101,51 @@ public:
   std::string _configPath;
 
   // List of ASYN parameters
-  int _configLoadParam;
-  int _deviceInputParam;
-  int _analogDeviceParam;
+  int _mpsConfigLoadParam;
+  int _mpsDeviceInputParam;
+  int _mpsAnalogDeviceParam;
   int _mpsSwMitigationParam;
-  int _faultParam;
-  int _faultIgnoredParam;
-  int _faultLatchedParam;
-  int _faultUnlatchParam;
-  int _deviceInputLatchedParam;
-  int _deviceInputUnlatchParam;
-  int _deviceInputBypassValueParam;
-  int _deviceInputBypassStatusParam;
-  int _deviceInputBypassExpirationDateParam;
-  int _deviceInputBypassExpirationDateStringParam;
-  int _analogDeviceLatchedParam;
-  int _analogDeviceUnlatchParam;
-  int _analogDeviceBypassValueParam;
-  int _analogDeviceBypassStatusParam;
-  int _analogDeviceBypassExpirationDateParam;
-  int _analogDeviceBypassExpirationDateStringParam;
-  int _unlatchAllParam;
-  int _fwBuildStampParam;
+  int _mpsFaultParam;
+  int _mpsFaultIgnoredParam;
+  int _mpsFaultLatchedParam;
+  int _mpsFaultUnlatchParam;
+  int _mpsDeviceInputLatchedParam;
+  int _mpsDeviceInputUnlatchParam;
+  int _mpsDeviceInputBypassValueParam;
+  int _mpsDeviceInputBypassStatusParam;
+  int _mpsDeviceInputBypassExpirationDateParam;
+  int _mpsDeviceInputBypassExpirationDateStringParam;
+  int _mpsAnalogDeviceLatchedParam;
+  int _mpsAnalogDeviceUnlatchParam;
+  int _mpsAnalogDeviceBypassValueParam;
+  int _mpsAnalogDeviceBypassStatusParam;
+  int _mpsAnalogDeviceBypassExpirationDateParam;
+  int _mpsAnalogDeviceBypassExpirationDateStringParam;
+  int _mpsUnlatchAllParam;
+  int _mpsFwBuildStampParam;
   int _mpsEnableParam;
   int _mpsEnableRbvParam;
   int _mpsSwEnableParam;
   int _mpsSwEnableRbvParam;
-  int _faultReasonParam;
-  int _updateRateParam;
+  int _mpsFaultReasonParam;
+  int _mpsUpdateRateParam;
   int _mpsTimingCheckEnableParam;
   int _mpsTimingCheckEnableRbvParam;
   int _mpsFwMitigationParam;
   int _mpsMitigationParam;
-  int _updateCounterParam;
-  int _engineStartTimeStringParam;
+  int _mpsUpdateCounterParam;
+  int _mpsEngineStartTimeStringParam;
+  int _mpsLatchedMitigationParam;
+  int _mpsMitigationUnlatchParam;
+  int _mpsAppStatusParam;
+  int _mpsEvaluationEnableParam;
+  int _mpsEvaluationEnableRbvParam;
+  int _mpsMonErrClearParam;
+  int _mpsSwErrClearParam;
+  int _mpsToErrClearParam;
+  int _mpsMoConcErrClearParam;
+  int _mpsTimeoutEnableParam;
+  int _mpsTimeoutEnableRbvParam;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;

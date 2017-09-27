@@ -33,40 +33,51 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
 #endif
   LOG_TRACE("DRIVER", "CentralNodeDriver constructor");
 
-  createParam(CONFIG_LOAD_STRING, asynParamOctet, &_configLoadParam);
-  createParam(DEVICE_INPUT_STRING, asynParamUInt32Digital, &_deviceInputParam);
-  createParam(ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_analogDeviceParam);
+  createParam(MPS_CONFIG_LOAD_STRING, asynParamOctet, &_mpsConfigLoadParam);
+  createParam(MPS_DEVICE_INPUT_STRING, asynParamUInt32Digital, &_mpsDeviceInputParam);
+  createParam(MPS_ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceParam);
   createParam(MPS_SW_MITIGATION_STRING, asynParamInt32, &_mpsSwMitigationParam);
-  createParam(FAULT_STRING, asynParamUInt32Digital, &_faultParam);
-  createParam(FAULT_IGNORED_STRING, asynParamUInt32Digital, &_faultIgnoredParam);
-  createParam(FAULT_LATCHED_STRING, asynParamUInt32Digital, &_faultLatchedParam);
-  createParam(FAULT_UNLATCH_STRING, asynParamUInt32Digital, &_faultUnlatchParam);
-  createParam(DEVICE_INPUT_LATCHED_STRING, asynParamUInt32Digital, &_deviceInputLatchedParam);
-  createParam(DEVICE_INPUT_UNLATCH_STRING, asynParamUInt32Digital, &_deviceInputUnlatchParam);
-  createParam(DEVICE_INPUT_BYPV_STRING, asynParamUInt32Digital, &_deviceInputBypassValueParam);
-  createParam(DEVICE_INPUT_BYPS_STRING, asynParamUInt32Digital, &_deviceInputBypassStatusParam);
-  createParam(DEVICE_INPUT_BYPEXPDATE_STRING, asynParamInt32, &_deviceInputBypassExpirationDateParam);
-  createParam(DEVICE_INPUT_BYPEXPDATE_STRING_STRING, asynParamOctet, &_deviceInputBypassExpirationDateStringParam);
-  createParam(ANALOG_DEVICE_LATCHED_STRING, asynParamUInt32Digital, &_analogDeviceLatchedParam);
-  createParam(ANALOG_DEVICE_UNLATCH_STRING, asynParamUInt32Digital, &_analogDeviceUnlatchParam);
-  createParam(ANALOG_DEVICE_BYPV_STRING, asynParamUInt32Digital, &_analogDeviceBypassValueParam);
-  createParam(ANALOG_DEVICE_BYPS_STRING, asynParamInt32, &_analogDeviceBypassStatusParam);
-  createParam(ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_analogDeviceBypassExpirationDateParam);
-  createParam(ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_analogDeviceBypassExpirationDateStringParam);
-  createParam(UNLATCH_ALL_STRING, asynParamInt32, &_unlatchAllParam);
-  createParam(FW_BUILD_STAMP_STRING_STRING, asynParamOctet, &_fwBuildStampParam);
+  createParam(MPS_FAULT_STRING, asynParamUInt32Digital, &_mpsFaultParam);
+  createParam(MPS_FAULT_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultIgnoredParam);
+  createParam(MPS_FAULT_LATCHED_STRING, asynParamUInt32Digital, &_mpsFaultLatchedParam);
+  createParam(MPS_FAULT_UNLATCH_STRING, asynParamUInt32Digital, &_mpsFaultUnlatchParam);
+  createParam(MPS_DEVICE_INPUT_LATCHED_STRING, asynParamUInt32Digital, &_mpsDeviceInputLatchedParam);
+  createParam(MPS_DEVICE_INPUT_UNLATCH_STRING, asynParamUInt32Digital, &_mpsDeviceInputUnlatchParam);
+  createParam(MPS_DEVICE_INPUT_BYPV_STRING, asynParamUInt32Digital, &_mpsDeviceInputBypassValueParam);
+  createParam(MPS_DEVICE_INPUT_BYPS_STRING, asynParamUInt32Digital, &_mpsDeviceInputBypassStatusParam);
+  createParam(MPS_DEVICE_INPUT_BYPEXPDATE_STRING, asynParamInt32, &_mpsDeviceInputBypassExpirationDateParam);
+  createParam(MPS_DEVICE_INPUT_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsDeviceInputBypassExpirationDateStringParam);
+  createParam(MPS_ANALOG_DEVICE_LATCHED_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceLatchedParam);
+  createParam(MPS_ANALOG_DEVICE_UNLATCH_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceUnlatchParam);
+  createParam(MPS_ANALOG_DEVICE_BYPV_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceBypassValueParam);
+  createParam(MPS_ANALOG_DEVICE_BYPS_STRING, asynParamInt32, &_mpsAnalogDeviceBypassStatusParam);
+  createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_mpsAnalogDeviceBypassExpirationDateParam);
+  createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsAnalogDeviceBypassExpirationDateStringParam);
+  createParam(MPS_UNLATCH_ALL_STRING, asynParamInt32, &_mpsUnlatchAllParam);
+  createParam(MPS_FW_BUILD_STAMP_STRING_STRING, asynParamOctet, &_mpsFwBuildStampParam);
   createParam(MPS_ENABLE_STRING, asynParamUInt32Digital, &_mpsEnableParam);
   createParam(MPS_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsEnableRbvParam);
   createParam(MPS_SW_ENABLE_STRING, asynParamUInt32Digital, &_mpsSwEnableParam);
   createParam(MPS_SW_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsSwEnableRbvParam);
-  createParam(FAULT_REASON_STRING, asynParamInt32, &_faultReasonParam);
-  createParam(SW_UPDATE_RATE_STRING, asynParamInt32, &_updateRateParam);
+  createParam(MPS_FAULT_REASON_STRING, asynParamInt32, &_mpsFaultReasonParam);
+  createParam(MPS_SW_UPDATE_RATE_STRING, asynParamInt32, &_mpsUpdateRateParam);
   createParam(MPS_TIMING_CHECK_ENABLE_STRING, asynParamUInt32Digital, &_mpsTimingCheckEnableParam);
   createParam(MPS_TIMING_CHECK_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsTimingCheckEnableRbvParam);
   createParam(MPS_FW_MITIGATION_STRING, asynParamInt32, &_mpsFwMitigationParam);
   createParam(MPS_MITIGATION_STRING, asynParamInt32, &_mpsMitigationParam);
-  createParam(SW_UPDATE_COUNTER_STRING, asynParamInt32, &_updateCounterParam);
-  createParam(ENGINE_START_TIME_STRING_STRING, asynParamOctet, &_engineStartTimeStringParam);
+  createParam(MPS_SW_UPDATE_COUNTER_STRING, asynParamInt32, &_mpsUpdateCounterParam);
+  createParam(MPS_ENGINE_START_TIME_STRING_STRING, asynParamOctet, &_mpsEngineStartTimeStringParam);
+  createParam(MPS_LATCHED_MITIGATION_STRING, asynParamInt32, &_mpsLatchedMitigationParam);
+  createParam(MPS_MITIGATION_UNLATCH_STRING, asynParamUInt32Digital, &_mpsMitigationUnlatchParam);
+  createParam(MPS_APP_STATUS_STRING, asynParamUInt32Digital, &_mpsAppStatusParam);
+  createParam(MPS_EVALUATION_ENABLE_STRING, asynParamUInt32Digital, &_mpsEvaluationEnableParam);
+  createParam(MPS_EVALUATION_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsEvaluationEnableRbvParam);
+  createParam(MPS_MON_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsMonErrClearParam);
+  createParam(MPS_SW_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsSwErrClearParam);
+  createParam(MPS_TO_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsToErrClearParam);
+  createParam(MPS_MO_CONC_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsMoConcErrClearParam);
+  createParam(MPS_TIMEOUT_ENABLE_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableParam);
+  createParam(MPS_TIMEOUT_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableRbvParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -75,16 +86,16 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
 
   // Initialize bypass date strings
   for (int i = 0; i < 100; ++i) {
-    setStringParam(i, _deviceInputBypassExpirationDateStringParam, "Bypass date not set");
-    setStringParam(i, _analogDeviceBypassExpirationDateStringParam, "Bypass date not set");
+    setStringParam(i, _mpsDeviceInputBypassExpirationDateStringParam, "Bypass date not set");
+    setStringParam(i, _mpsAnalogDeviceBypassExpirationDateStringParam, "Bypass date not set");
   }
 
   // Start thread that sends out history messages
   History::getInstance().startSenderThread(historyServer, historyPort);
 
   //Need to get info from Firmware directly or through Engine...
-  setStringParam(0, _fwBuildStampParam, "XXXX");//reinterpret_cast<char *>(Firmware::getInstance().buildStamp));
-  setStringParam(0, _engineStartTimeStringParam, "** Engine not started **");
+  setStringParam(0, _mpsFwBuildStampParam, "XXXX");//reinterpret_cast<char *>(Firmware::getInstance().buildStamp));
+  setStringParam(0, _mpsEngineStartTimeStringParam, "** Engine not started **");
 
   int value = 0;
   if (Firmware::getInstance().getEnable()) value = 1;
@@ -95,6 +106,12 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   value = 0;
   if (Firmware::getInstance().getTimingCheckEnable()) value = 1;
   setUIntDigitalParam(0, _mpsTimingCheckEnableRbvParam, value, 1);
+  value = 0;
+  if (Firmware::getInstance().getEvaluationEnable()) value = 1;
+  setUIntDigitalParam(0, _mpsEvaluationEnableRbvParam, value, 1);
+  value = 0;
+  if (Firmware::getInstance().getTimeoutEnable()) value = 1;
+  setUIntDigitalParam(0, _mpsTimeoutEnableRbvParam, value, 1);
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
@@ -124,7 +141,7 @@ asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value,
   // Set the parameter in the parameter library
   status = setStringParam(pasynUser->reason, (char *) value);
 
-  if (_configLoadParam == pasynUser->reason) {
+  if (_mpsConfigLoadParam == pasynUser->reason) {
     LOG_TRACE("DRIVER", "Received request to load configuration: " << value);
     status = loadConfig(value);
   }
@@ -160,21 +177,21 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
   if (_testCheckFaultsParam == pasynUser->reason) {
     Engine::getInstance().checkFaults();
   }
-  else if (_unlatchAllParam == pasynUser -> reason) {
+  else if (_mpsUnlatchAllParam == pasynUser -> reason) {
     Engine::getInstance().getCurrentDb()->lock();
     Engine::getInstance().getCurrentDb()->unlatchAll();
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_deviceInputBypassExpirationDateParam == pasynUser->reason) {
+  else if (_mpsDeviceInputBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_DIGITAL, addr, 0, value);
     if (status != asynSuccess) {
-      status = setIntegerParam(addr, _deviceInputBypassExpirationDateParam, 0);
+      status = setIntegerParam(addr, _mpsDeviceInputBypassExpirationDateParam, 0);
     }
   }
-  else if (_analogDeviceBypassExpirationDateParam == pasynUser->reason) {
+  else if (_mpsAnalogDeviceBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_ANALOG, addr, pasynUser->timeout, value);
     if (status != asynSuccess) {
-      status = setIntegerParam(addr, _analogDeviceBypassExpirationDateParam, 0);
+      status = setIntegerParam(addr, _mpsAnalogDeviceBypassExpirationDateParam, 0);
     }
   }
   else if (_testCheckBypassParam == pasynUser->reason) {
@@ -194,7 +211,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   getAddress(pasynUser, &addr);
   int bitIndex = pasynUser->timeout;
 
-  if (_faultReasonParam == pasynUser->reason) {
+  if (_mpsFaultReasonParam == pasynUser->reason) {
     try {
       *value = Firmware::getInstance().getFaultReason();
     } catch (std::exception &e) {
@@ -202,15 +219,15 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     }
     return status;
   }
-  else if (_updateRateParam == pasynUser->reason) {
+  else if (_mpsUpdateRateParam == pasynUser->reason) {
     *value = Engine::getInstance().getUpdateRate();
     return status;
   } 
-  else if (_updateCounterParam == pasynUser->reason) {
+  else if (_mpsUpdateCounterParam == pasynUser->reason) {
     *value = Engine::getInstance().getUpdateCounter();
 
     time_t startTime = Engine::getInstance().getStartTime();
-    setStringParam(0, _engineStartTimeStringParam, ctime(&startTime));
+    setStringParam(0, _mpsEngineStartTimeStringParam, ctime(&startTime));
 
     return status;
   } 
@@ -239,7 +256,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     }
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_analogDeviceBypassStatusParam ==  pasynUser->reason) {
+  else if (_mpsAnalogDeviceBypassStatusParam ==  pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
 	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
@@ -295,6 +312,26 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     }
     *value = (mitigation[index] >> bitShift) & 0xF;
   }
+  else if (_mpsLatchedMitigationParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->lock();
+    if (Engine::getInstance().getCurrentDb()->mitigationDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: MitigationDevice not found, key=" << addr);
+      Engine::getInstance().getCurrentDb()->unlock();
+      return asynError;
+    }
+    uint8_t index = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->softwareMitigationBufferIndex;
+    uint8_t bitShift = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->bitShift;
+    Engine::getInstance().getCurrentDb()->unlock();
+
+    uint32_t mitigation[2];
+    try {
+      Firmware::getInstance().getLatchedMitigation(&mitigation[0]);
+    } catch (std::exception &e) {
+      status = asynError;
+    }
+    *value = (mitigation[index] >> bitShift) & 0xF;
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");
     status = asynError;
@@ -320,6 +357,15 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     if (Firmware::getInstance().getTimingCheckEnable()) *value = 1; else *value = 0;
     return status;
   }
+  else if (_mpsEvaluationEnableRbvParam == pasynUser->reason) {
+    if (Firmware::getInstance().getEvaluationEnable()) *value = 1; else *value = 0;
+    return status;
+  }
+  else if (_mpsTimeoutEnableRbvParam == pasynUser->reason) {
+    if (Firmware::getInstance().getTimeoutEnable()) *value = 1; else *value = 0;
+    return status;
+  }
+
 
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
@@ -327,7 +373,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     return status;
   }
 
-  if (_deviceInputParam == pasynUser->reason) {
+  if (_mpsDeviceInputParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
 	Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
@@ -338,7 +384,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_analogDeviceParam == pasynUser->reason) {
+  else if (_mpsAnalogDeviceParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
 	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
@@ -356,7 +402,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     }
     */
   }
-  else if (_faultParam == pasynUser->reason) {
+  else if (_mpsFaultParam == pasynUser->reason) {
     *value = 0;
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
@@ -370,7 +416,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     }
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_faultIgnoredParam == pasynUser->reason) {
+  else if (_mpsFaultIgnoredParam == pasynUser->reason) {
     *value = 0;
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
@@ -384,7 +430,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     }
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_deviceInputLatchedParam == pasynUser->reason) {
+  else if (_mpsDeviceInputLatchedParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
 	Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
@@ -395,7 +441,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue;
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_faultLatchedParam == pasynUser->reason) {
+  else if (_mpsFaultLatchedParam == pasynUser->reason) {
     *value = 0;
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultLatched) {
@@ -403,7 +449,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     }
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_deviceInputBypassStatusParam ==  pasynUser->reason) {
+  else if (_mpsDeviceInputBypassStatusParam ==  pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
 	Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
@@ -419,7 +465,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     }
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_analogDeviceLatchedParam == pasynUser->reason) {
+  else if (_mpsAnalogDeviceLatchedParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
 	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
@@ -436,6 +482,22 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       *value = 1;
     }
     */
+    Engine::getInstance().getCurrentDb()->unlock();
+  }
+  else if (_mpsAppStatusParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->lock();
+    if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
+	Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+      LOG_TRACE("DRIVER", "ERROR: ApplicationCard not found, key=" << addr);
+      Engine::getInstance().getCurrentDb()->unlock();
+      return asynError;
+    }
+    if (Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->online) {
+      *value = 1;
+    }
+    else {
+      *value = 0;
+    }
     Engine::getInstance().getCurrentDb()->unlock();
   }
   else {
@@ -467,12 +529,48 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     Firmware::getInstance().setSoftwareEnable(enable);
     return status;
   }
+  else if (_mpsEvaluationEnableParam == pasynUser->reason) {
+    bool enable = false;
+    if (value != 0) {
+      enable = true;
+    }
+    Firmware::getInstance().setEvaluationEnable(enable);
+    return status;
+  }
   else if (_mpsTimingCheckEnableParam == pasynUser->reason) {
     bool enable = false;
     if (value != 0) {
       enable = true;
     }
     Firmware::getInstance().setTimingCheckEnable(enable);
+    return status;
+  }
+  else if (_mpsTimeoutEnableParam == pasynUser->reason) {
+    bool enable = false;
+    if (value != 0) {
+      enable = true;
+    }
+    Firmware::getInstance().setTimeoutEnable(enable);
+    return status;
+  }
+  else if (_mpsMitigationUnlatchParam == pasynUser->reason) {
+    Firmware::getInstance().evalLatchClear();
+    return status;
+  }
+  else if (_mpsMonErrClearParam == pasynUser->reason) {
+    Firmware::getInstance().monErrClear();
+    return status;
+  }
+  else if (_mpsSwErrClearParam == pasynUser->reason) {
+    Firmware::getInstance().swErrClear();
+    return status;
+  }
+  else if (_mpsToErrClearParam == pasynUser->reason) {
+    Firmware::getInstance().toErrClear();
+    return status;
+  }
+  else if (_mpsMoConcErrClearParam == pasynUser->reason) {
+    Firmware::getInstance().moConcErrClear();
     return status;
   }
 
@@ -484,7 +582,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     return status;
   }
 
-  if (_deviceInputUnlatchParam == pasynUser->reason) {
+  if (_mpsDeviceInputUnlatchParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     int faultValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->faultValue;
     faultValue == 0? faultValue = 1 : faultValue = 0; // Flip faultValue and assign to latchedValue
@@ -495,7 +593,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 	      << " value: " << faultValue);
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_analogDeviceUnlatchParam == pasynUser->reason) {
+  else if (_mpsAnalogDeviceUnlatchParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     // Copy the threshold bit from value to latchedValue
     uint32_t latchedValue = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue;
@@ -511,12 +609,12 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 	      << " mask: " << mask);
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_faultUnlatchParam == pasynUser->reason) {
+  else if (_mpsFaultUnlatchParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     Engine::getInstance().getCurrentDb()->faults->at(addr)->faultLatched = false;
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_deviceInputBypassValueParam == pasynUser->reason) {
+  else if (_mpsDeviceInputBypassValueParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->value = value;
     LOG_TRACE("DRIVER", "BypassValue: "
@@ -524,7 +622,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 	      << " value: " << value);
     Engine::getInstance().getCurrentDb()->unlock();
   }
-  else if (_analogDeviceBypassValueParam == pasynUser->reason) {
+  else if (_mpsAnalogDeviceBypassValueParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     try {
       Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->value = value;
@@ -667,19 +765,19 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId,
 
   if (expirationTime == 0) {
     if (bypassType == BYPASS_DIGITAL) {
-      status = setStringParam(deviceId, _deviceInputBypassExpirationDateStringParam, "Not Bypassed");
+      status = setStringParam(deviceId, _mpsDeviceInputBypassExpirationDateStringParam, "Not Bypassed");
     }
     else {
-      status = setStringParam(deviceId, _analogDeviceBypassExpirationDateStringParam, "Not Bypassed");
+      status = setStringParam(deviceId, _mpsAnalogDeviceBypassExpirationDateStringParam, "Not Bypassed");
     }
   }
   else {
     time_t expTime = expirationTime;
     if (bypassType == BYPASS_DIGITAL) {
-      status = setStringParam(deviceId, _deviceInputBypassExpirationDateStringParam, ctime(&expTime));
+      status = setStringParam(deviceId, _mpsDeviceInputBypassExpirationDateStringParam, ctime(&expTime));
     }
     else {
-      status = setStringParam(deviceId, _analogDeviceBypassExpirationDateStringParam, ctime(&expTime));
+      status = setStringParam(deviceId, _mpsAnalogDeviceBypassExpirationDateStringParam, ctime(&expTime));
     }
   }
 

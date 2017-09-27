@@ -1,7 +1,7 @@
 record(stringout, "$(IOC):CONFIG_LOAD") {
     field(DESC, "Load Algorithm")
     field(DTYP, "asynOctetWrite")
-    field(OUT, "@asyn(CENTRAL_NODE 0 0)CONFIG_LOAD")
+    field(OUT, "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_LOAD")
 }
 
 record(stringout, "$(IOC):Test:DEVICE_INPUT") {
@@ -20,7 +20,7 @@ record(stringin, "$(IOC):FW_BUILD_STAMP") {
     field(DESC, "Central node firmware build stamp")
     field(DTYP, "asynOctetRead")
     field(SCAN, "1 second")
-    field(INP, "@asyn(CENTRAL_NODE 0 0)FW_BUILD_STAMP_STRING")
+    field(INP, "@asyn(CENTRAL_NODE 0 0)MPS_FW_BUILD_STAMP_STRING")
 }
 
 record(longout, "$(IOC):Test:CHECK_FAULTS") {
@@ -40,13 +40,25 @@ record(longout, "$(IOC):Test:CHECK_BYPASS") {
 record(longout, "$(IOC):UNLATCHALL") {
     field(DESC, "Unlatch all faults and inputs")
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn(CENTRAL_NODE 0 0)UNLATCH_ALL")
+    field(OUT, "@asyn(CENTRAL_NODE 0 0)MPS_UNLATCH_ALL")
 }
 
 record(bo, "$(IOC):ENABLE") {
     field(DESC, "Enable Central Node")
     field(DTYP, "asynUInt32Digital")
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_ENABLE")
+}
+
+record(bo, "$(IOC):EVALUATION_ENABLE") {
+    field(DESC, "Enable Central Node")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_EVALUATION_ENABLE")
+}
+
+record(bo, "$(IOC):MITIGATION_UNLH") {
+    field(DESC, "Unlatch mitigation")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_MITIGATION_UNLATCH")
 }
 
 record(bi, "$(IOC):ENABLE_RBV") {
@@ -58,6 +70,17 @@ record(bi, "$(IOC):ENABLE_RBV") {
     field(ZSV, "MAJOR")
     field(OSV, "NO_ALARM")
     field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_ENABLE_RBV")
+}
+
+record(bi, "$(IOC):EVALUATION_ENABLE_RBV") {
+    field(DESC, "Enable Eval Central Node (RBV)")
+    field(DTYP, "asynUInt32Digital")
+    field(SCAN, "1 second")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+    field(ZSV, "MAJOR")
+    field(OSV, "NO_ALARM")
+    field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_EVALUATION_ENABLE_RBV")
 }
 
 record(bo, "$(IOC):SW_ENABLE") {
@@ -81,21 +104,22 @@ record(longin, "$(IOC):FAULT_REASON") {
     field(DESC, "Fault reason bit mask")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(INP, "@asyn(CENTRAL_NODE 1 0)FAULT_REASON")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FAULT_REASON")
 }
 
 record(longin, "$(IOC):SW_UPDATE_RATE") {
     field(DESC, "Software evaluation engine rate")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(INP, "@asyn(CENTRAL_NODE 1 0)SW_UPDATE_RATE")
+    field(EGU, "Hz")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_SW_UPDATE_RATE")
 }
 
 record(longin, "$(IOC):SW_UPDATE_COUNTER") {
     field(DESC, "Software evaluation engine counter")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(INP, "@asyn(CENTRAL_NODE 1 0)SW_UPDATE_COUNTER")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_SW_UPDATE_COUNTER")
 }
 
 record(bo, "$(IOC):TIMING_CHECK_ENABLE") {
@@ -115,9 +139,62 @@ record(bi, "$(IOC):TIMING_CHECK_ENABLE_RBV") {
     field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TIMING_CHECK_ENABLE_RBV")
 }
 
+record(bo, "$(IOC):TIMEOUT_ENABLE") {
+    field(DESC, "Timeout enable")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TIMEOUT_ENABLE")
+}
+
+record(bi, "$(IOC):TIMEOUT_ENABLE_RBV") {
+    field(DESC, "Timeout enable RBV")
+    field(DTYP, "asynUInt32Digital")
+    field(SCAN, "1 second")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+    field(ZSV, "MAJOR")
+    field(OSV, "NO_ALARM")
+    field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TIMEOUT_ENABLE_RBV")
+}
+
+#record(bi, "$(IOC):TIMEOUT_ERROR_STATUS") {
+#    field(DESC, "EIC BPM01/BPM02 [L2KA00-0517 S3]")
+#    field(DTYP, "asynUInt32Digital")
+#    field(SCAN, "1 second")
+#    field(ZNAM, "OFFLINE")
+#    field(ONAM, "ONLINE")
+#    field(ZSV, "MAJOR")
+#    field(OSV, "NO_ALARM")
+#    field(INP, "@asynMask(CENTRAL_NODE 3 1 0)MPS_TIMEOUT_ERROR_STATUS")
+#}
+
 record(stringin, "$(IOC):ENGINE_START_TIME_STR") {
     field(DESC, "Engine start time (config load time)")
     field(DTYP, "asynOctetRead")
     field(SCAN, "1 second")
-    field(INP, "@asyn(CENTRAL_NODE 0 0)ENGINE_START_TIME_STRING")
+    field(INP, "@asyn(CENTRAL_NODE 0 0)MPS_ENGINE_START_TIME_STRING")
 }
+
+record(bo, "$(IOC):MON_ERR_CLR") {
+    field(DESC, "Monitor Error Clear Cmd")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_MON_ERR_CLEAR")
+}
+
+record(bo, "$(IOC):SW_ERR_CLR") {
+    field(DESC, "Software Error Clear Cmd")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SW_ERR_CLEAR")
+}
+
+record(bo, "$(IOC):TO_ERR_CLR") {
+    field(DESC, "Timeout Error Clear Cmd")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TO_ERR_CLEAR")
+}
+
+record(bo, "$(IOC):MO_CONC_ERR_CLR") {
+    field(DESC, "Monitor Conc Error Clear Cmd")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_MO_CONC_ERR_CLEAR")
+}
+

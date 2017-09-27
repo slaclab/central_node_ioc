@@ -11,7 +11,7 @@
 #    define LOG_TRACE(X, MSG) CTRACE(X) << MSG
 #  endif
 #else
-#  warning ">>> Logging disabled <<<"
+//#  warning ">>> Logging disabled <<<"
 #  define LOG_TRACE(X, MSG) (void) 0
 #endif
 

@@ -50,6 +50,7 @@ dbLoadRecords("db/device_inputs.db","BASE=MPS:DIGITAL")
 dbLoadRecords("db/analog_devices.db","BASE=MPS:ANALOG")
 dbLoadRecords("db/mitigation.db","BASE=${IOC_PV}")
 dbLoadRecords("db/faults.db","BASE=MPS:FAULT")
+dbLoadRecords("db/apps.db","BASE=${IOC_PV}")
 
 iocInit()
 
