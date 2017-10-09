@@ -1,0 +1,70 @@
+########################################################################################################################
+# Summary:             Mapping from YAML register path to Asyn parameter name
+########################################################################################################################
+
+########################################################################################################################
+# Register path                                                                                           Asyn parm name
+########################################################################################################################
+# Shared registers
+/mmio/AmcCarrierCore/AxiVersion/BuildStamp                                                                BuildStamp
+/mmio/AmcCarrierCore/AxiVersion/FpgaVersion                                                               FpgaVersion
+/mmio/AmcCarrierCore/AxiVersion/DeviceDna                                                                 DeviceDna
+/mmio/AmcCarrierCore/AxiVersion/ScratchPad                                                                ScratchPad
+/mmio/AmcCarrierCore/AxiVersion/UpTimeCnt                                                                 UpTimeCnt
+/mmio/AmcCarrierCore/AxiVersion/DeviceId                                                                  DeviceId
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/sofCount                                              sofCount
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/eofCount                                              eofCount
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/CrcErrCount                                           CrcErrCount
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxClkCount                                            RxClkCount
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxRstCount                                            RxRstCount
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxDecErrCount                                         RxDecErrCount
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxDspErrCount                                         RxDspErrCount
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxLinkUp                                              RxLinkUp
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/ClkSel                                                ClkSel
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxPolarity                                            RxPolarity
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/FrameVersion                                          FrameVersion
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/VersionErr                                            VersionErr
+/mmio/MpsCentralApplication/Pgp2bAxi/RxPhyReady                                                           RxPhyReady
+/mmio/MpsCentralApplication/Pgp2bAxi/TxPhyReady                                                           TxPhyReady
+/mmio/MpsCentralApplication/Pgp2bAxi/RxLocalLinkReady                                                     RxLocalLinkReady
+/mmio/MpsCentralApplication/Pgp2bAxi/RxRemLinkReady                                                       RxRemLinkReady
+/mmio/MpsCentralApplication/Pgp2bAxi/RxFrameCount                                                         RxFrameCount
+/mmio/MpsCentralApplication/Pgp2bAxi/RxFrameErrorCoumt                                                    RxFrameErrorCount
+/mmio/MpsCentralApplication/MpsCentralNodeCore/Enable                                                     Enable
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareEnable                                             SoftwareEnable
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareClear                                              SoftwareClear
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareLossError                                          SoftwareLossError
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareLossCnt                                            SoftwareLossCnt
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareBwidthCnt                                          SoftwareBwidthCnt
+/mmio/MpsCentralApplication/MpsCentralNodeCore/BeamIntTime                                                BeamIntTime
+/mmio/MpsCentralApplication/MpsCentralNodeCore/BeamMinPeriod                                              BeamMinPeriod
+/mmio/MpsCentralApplication/MpsCentralNodeCore/BeamIntCharge                                              BeamIntCharge
+/mmio/MpsCentralApplication/MpsCentralNodeCore/BeamFaultReason                                            BeamFaultReason
+/mmio/MpsCentralApplication/MpsCentralNodeCore/BeamFaultEn                                                BeamFaultEn
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonErrClear                                                MonErrClear
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SwErrClear                                                 SwErrClear
+/mmio/MpsCentralApplication/MpsCentralNodeCore/BeamFaultClr                                               BeamFaultClr
+/mmio/MpsCentralApplication/MpsCentralNodeCore/EvaluationSwPowerLevel                                     EvaluationSwPowerLevel
+/mmio/MpsCentralApplication/MpsCentralNodeCore/EvaluationFwPowerLevel                                     EvaluationFwPowerLevel
+/mmio/MpsCentralApplication/MpsCentralNodeCore/EvaluationLatchedPowerLevel                                EvaluationLatchedPowerLevel
+/mmio/MpsCentralApplication/MpsCentralNodeCore/EvaluationPowerLevel                                       EvaluationPowerLevel
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorReady                                               MonitorReady
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorRxErrCnt                                            MonitorRxErrCnt
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorPauseCnt                                            MonitorPauseCnt
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorOvflCnt                                             MonitorOvflCnt
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorDropCnt                                             MonitorDropCnt
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcWdErr                                           MonitorConcWdErr
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcStallErr                                        MonitorConcStallErr
+/mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutEnable                                              TimeoutEnable
+/mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutTime                                                TimeoutTime
+/mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutMask                                                TimeoutMask
+/mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutErrStatus                                           TimeoutErrStatus
+/mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutErrIndex                                            TimeoutErrIndex
+/mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutMsgVer                                              TimeoutMsgVer
+/mmio/MpsCentralApplication/MpsCentralNodeCore/EvaluationEnable                                           EvaluationEnable
+/mmio/MpsCentralApplication/MpsCentralNodeCore/EvaluationTimeStamp                                        EvaluationTimeStamp
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareWdTime                                             SoftwareWdTime
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareBusy                                               SoftwareBusy
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwarePause                                              SoftwarePause
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareWdError                                            SoftwareWdError
+/mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareOvflCnt                                            SoftwareOvflCnt
