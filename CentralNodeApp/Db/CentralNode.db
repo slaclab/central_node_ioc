@@ -198,3 +198,46 @@ record(bo, "$(IOC):MO_CONC_ERR_CLR") {
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_MO_CONC_ERR_CLEAR")
 }
 
+record(longin, "$(IOC):EVAL_AVG_TIME") {
+    field(DESC, "Slow engine average exec time")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_EVAL_AVG_TIME")
+}
+
+record(longin, "$(IOC):EVAL_MAX_TIME") {
+    field(DESC, "Slow engine max exec time")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_EVAL_MAX_TIME")
+}
+
+record(bo, "$(IOC):EVAL_TIME_CLR") {
+    field(DESC, "Clear slow engine exec time tracker")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_EVAL_TIME_CLEAR")
+}
+
+record(longin, "$(IOC):UPDATE_AVG_TIME") {
+    field(DESC, "")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_UPDATE_AVG_TIME")
+}
+
+record(longin, "$(IOC):UPDATE_MAX_TIME") {
+    field(DESC, "")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_UPDATE_MAX_TIME")
+}
+
+record(bo, "$(IOC):UPDATE_TIME_CLR") {
+    field(DESC, "Clear slow engine input update time tracker")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_UPDATE_TIME_CLEAR")
+}

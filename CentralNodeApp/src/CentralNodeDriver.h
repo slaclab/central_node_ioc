@@ -61,17 +61,19 @@
 #define MPS_MO_CONC_ERR_CLEAR_STRING               "MPS_MO_CONC_ERR_CLEAR"
 #define MPS_TIMEOUT_ENABLE_STRING                  "MPS_TIMEOUT_ENABLE"
 #define MPS_TIMEOUT_ENABLE_RBV_STRING              "MPS_TIMEOUT_ENABLE_RBV"
-
-// TODO: add device support for requested power class
-// params: device and power class
-
+#define MPS_EVAL_AVG_TIME_STRING                   "MPS_EVAL_AVG_TIME"
+#define MPS_EVAL_MAX_TIME_STRING                   "MPS_EVAL_MAX_TIME"
+#define MPS_EVAL_TIME_CLEAR_STRING                 "MPS_EVAL_TIME_CLEAR"
+#define MPS_UPDATE_AVG_TIME_STRING                 "MPS_UPDATE_AVG_TIME"
+#define MPS_UPDATE_MAX_TIME_STRING                 "MPS_UPDATE_MAX_TIME"
+#define MPS_UPDATE_TIME_CLEAR_STRING               "MPS_UPDATE_TIME_CLEAR"
 
 #define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
 #define TEST_CHECK_FAULTS_STRING               "TEST_CHECK_FAULTS"
 #define TEST_CHECK_BYPASS_STRING               "TEST_CHECK_BYPASS"
 
-const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 50;
+const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 100;
 
 class CentralNodeDriver : public asynPortDriver {
 public:
@@ -146,6 +148,12 @@ public:
   int _mpsMoConcErrClearParam;
   int _mpsTimeoutEnableParam;
   int _mpsTimeoutEnableRbvParam;
+  int _mpsEvalAvgParam;
+  int _mpsEvalMaxParam;
+  int _mpsEvalClearParam;
+  int _mpsUpdateAvgParam;
+  int _mpsUpdateMaxParam;
+  int _mpsUpdateClearParam;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;

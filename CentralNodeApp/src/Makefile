@@ -50,6 +50,7 @@ CentralNode_DBD += devIocStats.dbd
 CentralNode_DBD += asSupport.dbd
 CentralNode_DBD += caPutLog.dbd
 CentralNode_DBD += asyn.dbd
+CentralNode_DBD += ycpswasyn.dbd
 CentralNode_DBD += yamlLoader.dbd
 CentralNode_DBD += $(CEXP_DBDS)
 
@@ -94,6 +95,7 @@ CentralNode_LIBS += autosave
 # Needed to link caPutLog support
 CentralNode_LIBS += caPutLog
 
+CentralNode_LIBS += ycpswasyn
 CentralNode_LIBS += yamlLoader
 
 # Needed to link cexpsh() support

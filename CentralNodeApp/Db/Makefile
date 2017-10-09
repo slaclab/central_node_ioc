@@ -17,6 +17,8 @@ include $(TOP)/configure/CONFIG
 
 DB += CentralNode.db
 
+DB += Carrier.db
+
 # ========================================
 # Install timing/event related databases
 # ========================================
@@ -27,6 +29,25 @@ DB += CentralNode.db
 #DB_INSTALLS += $(EVENT)/db/PMC-trig.db
 #DB_INSTALLS += $(EVENT)/db/VME-trig.db
 #DB_INSTALLS += $(EVENT)/db/VME-TTB-trig.db
+
+#----------------------------------------------------
+# Create and install (or just install)
+# databases, templates, substitutions like this
+DB_INSTALLS += $(YCPSWASYN)/db/ai.template
+DB_INSTALLS += $(YCPSWASYN)/db/ao.template
+DB_INSTALLS += $(YCPSWASYN)/db/longin.template
+DB_INSTALLS += $(YCPSWASYN)/db/longout.template
+DB_INSTALLS += $(YCPSWASYN)/db/waveform_in.template
+DB_INSTALLS += $(YCPSWASYN)/db/waveform_out.template
+DB_INSTALLS += $(YCPSWASYN)/db/waveform_8_in.template
+DB_INSTALLS += $(YCPSWASYN)/db/waveform_8_out.template
+DB_INSTALLS += $(YCPSWASYN)/db/waveform_in_float.template
+DB_INSTALLS += $(YCPSWASYN)/db/waveform_out_float.template
+DB_INSTALLS += $(YCPSWASYN)/db/mbbi.template
+DB_INSTALLS += $(YCPSWASYN)/db/mbbo.template
+DB_INSTALLS += $(YCPSWASYN)/db/bo.template
+DB_INSTALLS += $(YCPSWASYN)/db/waveform_stream16.template
+DB_INSTALLS += $(YCPSWASYN)/db/waveform_stream32.template
 
 # Install Common databases needed by All IOCs
 # ========================================================

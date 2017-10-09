@@ -78,6 +78,12 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_MO_CONC_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsMoConcErrClearParam);
   createParam(MPS_TIMEOUT_ENABLE_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableParam);
   createParam(MPS_TIMEOUT_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableRbvParam);
+  createParam(MPS_EVAL_AVG_TIME_STRING, asynParamInt32, &_mpsEvalAvgParam);
+  createParam(MPS_EVAL_MAX_TIME_STRING, asynParamInt32, &_mpsEvalMaxParam);
+  createParam(MPS_EVAL_TIME_CLEAR_STRING, asynParamUInt32Digital, &_mpsEvalClearParam);
+  createParam(MPS_UPDATE_AVG_TIME_STRING, asynParamInt32, &_mpsUpdateAvgParam);
+  createParam(MPS_UPDATE_MAX_TIME_STRING, asynParamInt32, &_mpsUpdateMaxParam);
+  createParam(MPS_UPDATE_TIME_CLEAR_STRING, asynParamUInt32Digital, &_mpsUpdateClearParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -331,6 +337,22 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       status = asynError;
     }
     *value = (mitigation[index] >> bitShift) & 0xF;
+  }
+  else if (_mpsEvalMaxParam == pasynUser->reason) {
+    *value = Engine::getInstance().getMaxCheckTime();
+    return status;
+  }
+  else if (_mpsEvalAvgParam == pasynUser->reason) {
+    *value = Engine::getInstance().getAvgCheckTime();
+    return status;
+  }
+  else if (_mpsUpdateMaxParam == pasynUser->reason) {
+    *value = Engine::getInstance().getCurrentDb()->getMaxUpdateTime();
+    return status;
+  }
+  else if (_mpsUpdateAvgParam == pasynUser->reason) {
+    *value = Engine::getInstance().getCurrentDb()->getAvgUpdateTime();
+    return status;
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");
@@ -634,6 +656,14 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     }
     Engine::getInstance().getCurrentDb()->unlock();
   }
+  else if (_mpsEvalClearParam == pasynUser->reason) {
+    Engine::getInstance().clearCheckTime();
+    return status;
+  }
+  else if (_mpsUpdateClearParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->clearUpdateTime();
+    return status;
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
     status = asynError;
@@ -723,7 +753,6 @@ asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
 /**
  * @param expirationTime bypass expiration time in seconds since now.
  * If expirationTime is zero or negative the bypass is cancelled.
- * TODO: use the thresholdIndex for analog bypasses! 
  */
 asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId,
 					int thresholdIndex, epicsInt32 expirationTime) {

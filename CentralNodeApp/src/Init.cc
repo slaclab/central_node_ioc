@@ -7,10 +7,12 @@
 #include <iocsh.h>
 #include <epicsThread.h>
 #include <initHooks.h>
+#include <yamlLoader.h>
 
 #include "CentralNodeDriver.h"
 #include "Log.h"
 
+#include "central_node_database_tables.h"
 #include "central_node_database.h"
 #include "central_node_engine.h"
 
@@ -66,7 +68,16 @@ static int configureCentralNode(const char *portName) {
   }
   int historyPort = atoi(historyPortStr);
 
-  Firmware::getInstance().loadConfig(fwFile);
+  Path root = cpswGetRoot();
+  if (!root) {
+    std::cout << "There is no root from yaml loader, creating root now (file=" 
+	      << fwFile << ")" << std::endl;
+    Firmware::getInstance().createRoot(fwFile);
+  }
+  else {
+    Firmware::getInstance().setRoot(root);
+  }
+  Firmware::getInstance().createRegisters();
 
   pCNDriver = new CentralNodeDriver(portName, path, historyServer, historyPort);
 
