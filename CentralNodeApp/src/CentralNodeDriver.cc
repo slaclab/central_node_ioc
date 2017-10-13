@@ -70,6 +70,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_LATCHED_MITIGATION_STRING, asynParamInt32, &_mpsLatchedMitigationParam);
   createParam(MPS_MITIGATION_UNLATCH_STRING, asynParamUInt32Digital, &_mpsMitigationUnlatchParam);
   createParam(MPS_APP_STATUS_STRING, asynParamUInt32Digital, &_mpsAppStatusParam);
+  createParam(MPS_APP_TIMESTAMP_LOW_BITS_STRING, asynParamInt32, &_mpsAppTimestampLowBitsParam);
+  createParam(MPS_APP_TIMESTAMP_HIGH_BITS_STRING, asynParamInt32, &_mpsAppTimestampHighBitsParam);
   createParam(MPS_EVALUATION_ENABLE_STRING, asynParamUInt32Digital, &_mpsEvaluationEnableParam);
   createParam(MPS_EVALUATION_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsEvaluationEnableRbvParam);
   createParam(MPS_MON_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsMonErrClearParam);
@@ -352,6 +354,20 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   }
   else if (_mpsUpdateAvgParam == pasynUser->reason) {
     *value = Engine::getInstance().getCurrentDb()->getAvgUpdateTime();
+    return status;
+  }
+  else if (_mpsAppTimestampLowBitsParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->lock();
+    uint64_t *time = reinterpret_cast<uint64_t *>(Engine::getInstance().getCurrentDb()->getFastUpdateBuffer() + 8);
+    *value = *time & 0xFFFFFFFF;
+    Engine::getInstance().getCurrentDb()->unlock();
+    return status;
+  }
+  else if (_mpsAppTimestampHighBitsParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->lock();
+    uint64_t *time = reinterpret_cast<uint64_t *>(Engine::getInstance().getCurrentDb()->getFastUpdateBuffer() + 8);
+    *value = (*time >> 32) & 0xFFFFFFFF;
+    Engine::getInstance().getCurrentDb()->unlock();
     return status;
   }
   else {

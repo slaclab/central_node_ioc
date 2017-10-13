@@ -261,11 +261,25 @@ static const iocshFuncDef mpssubFuncDef = {"mpssub", 1, mpssubArgs};
 static void mpsShowUpdateBufferCallFunc(const iocshArgBuf *args) {
   int id = args[0].ival;  
 
-  DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
+  if (id == 999) {
+    std::cout << "Full update buffer:" << std::endl;
+    ApplicationUpdateBufferFullBitSet *buf = reinterpret_cast<ApplicationUpdateBufferFullBitSet *>(Engine::getInstance().getCurrentDb()->getFastUpdateBuffer());
+    std::cout << *buf << std::endl;
+  }
+  else {
+    DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
     
-  if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-    std::cout << (*appCard).second->name << ": ";
-    std::cout << *(*appCard).second->applicationUpdateBuffer << std::endl;
+    if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+      std::cout << (*appCard).second->name << " [id:"
+		<< (*appCard).second->globalId << "]:" << std::endl;
+      
+      std::cout << "WasLow: " << std::endl;
+      std::cout << *(*appCard).second->wasLowUpper
+		<< *(*appCard).second->wasLowLower << std::endl;
+      std::cout << "WasHigh: " << std::endl;
+      std::cout << *(*appCard).second->wasHighUpper
+		<< *(*appCard).second->wasHighLower << std::endl;
+    }
   }
 }
 

@@ -31,6 +31,7 @@
 /mmio/MpsCentralApplication/Pgp2bAxi/RxFrameCount                                                         RxFrameCount
 /mmio/MpsCentralApplication/Pgp2bAxi/RxFrameErrorCoumt                                                    RxFrameErrorCount
 /mmio/MpsCentralApplication/MpsCentralNodeCore/Enable                                                     Enable
+/mmio/MpsCentralApplication/MpsCentralNodeCore/DualCoreEn                                                 DualCoreEn
 /mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareEnable                                             SoftwareEnable
 /mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareClear                                              SoftwareClear
 /mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareLossError                                          SoftwareLossError
@@ -43,6 +44,8 @@
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamFaultEn                                                BeamFaultEn
 /mmio/MpsCentralApplication/MpsCentralNodeCore/MonErrClear                                                MonErrClear
 /mmio/MpsCentralApplication/MpsCentralNodeCore/SwErrClear                                                 SwErrClear
+/mmio/MpsCentralApplication/MpsCentralNodeCore/ToErrClear                                                 ToErrClear
+/mmio/MpsCentralApplication/MpsCentralNodeCore/EvalLatchClear                                             EvalLatchClear
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamFaultClr                                               BeamFaultClr
 /mmio/MpsCentralApplication/MpsCentralNodeCore/EvaluationSwPowerLevel                                     EvaluationSwPowerLevel
 /mmio/MpsCentralApplication/MpsCentralNodeCore/EvaluationFwPowerLevel                                     EvaluationFwPowerLevel
@@ -55,6 +58,8 @@
 /mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorDropCnt                                             MonitorDropCnt
 /mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcWdErr                                           MonitorConcWdErr
 /mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcStallErr                                        MonitorConcStallErr
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MoConcTout                                                 MonitorConcTout
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcExtRxErr                                        MonitorConcExtRxErr
 /mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutEnable                                              TimeoutEnable
 /mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutTime                                                TimeoutTime
 /mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutMask                                                TimeoutMask

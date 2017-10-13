@@ -53,6 +53,8 @@
 #define MPS_LATCHED_MITIGATION_STRING              "MPS_LATCHED_MITIGATION"
 #define MPS_MITIGATION_UNLATCH_STRING              "MPS_MITIGATION_UNLATCH"
 #define MPS_APP_STATUS_STRING                      "MPS_APP_STATUS"
+#define MPS_APP_TIMESTAMP_LOW_BITS_STRING          "MPS_APP_TIMESTAMP_LOW_BITS"
+#define MPS_APP_TIMESTAMP_HIGH_BITS_STRING         "MPS_APP_TIMESTAMP_HIGH_BITS"
 #define MPS_EVALUATION_ENABLE_STRING               "MPS_EVALUATION_ENABLE"
 #define MPS_EVALUATION_ENABLE_RBV_STRING           "MPS_EVALUATION_ENABLE_RBV"
 #define MPS_MON_ERR_CLEAR_STRING                   "MPS_MON_ERR_CLEAR"
@@ -140,6 +142,8 @@ public:
   int _mpsLatchedMitigationParam;
   int _mpsMitigationUnlatchParam;
   int _mpsAppStatusParam;
+  int _mpsAppTimestampLowBitsParam;
+  int _mpsAppTimestampHighBitsParam;
   int _mpsEvaluationEnableParam;
   int _mpsEvaluationEnableRbvParam;
   int _mpsMonErrClearParam;
