@@ -46,12 +46,14 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_DEVICE_INPUT_BYPV_STRING, asynParamUInt32Digital, &_mpsDeviceInputBypassValueParam);
   createParam(MPS_DEVICE_INPUT_BYPS_STRING, asynParamUInt32Digital, &_mpsDeviceInputBypassStatusParam);
   createParam(MPS_DEVICE_INPUT_BYPEXPDATE_STRING, asynParamInt32, &_mpsDeviceInputBypassExpirationDateParam);
+  createParam(MPS_DEVICE_INPUT_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsDeviceInputBypassRemainingExpirationTimeParam);
   createParam(MPS_DEVICE_INPUT_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsDeviceInputBypassExpirationDateStringParam);
   createParam(MPS_ANALOG_DEVICE_LATCHED_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceLatchedParam);
   createParam(MPS_ANALOG_DEVICE_UNLATCH_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceUnlatchParam);
   createParam(MPS_ANALOG_DEVICE_BYPV_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceBypassValueParam);
   createParam(MPS_ANALOG_DEVICE_BYPS_STRING, asynParamInt32, &_mpsAnalogDeviceBypassStatusParam);
   createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_mpsAnalogDeviceBypassExpirationDateParam);
+  createParam(MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsAnalogDeviceBypassRemainingExpirationTimeParam);
   createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsAnalogDeviceBypassExpirationDateStringParam);
   createParam(MPS_UNLATCH_ALL_STRING, asynParamInt32, &_mpsUnlatchAllParam);
   createParam(MPS_FW_BUILD_STAMP_STRING_STRING, asynParamOctet, &_mpsFwBuildStampParam);
@@ -369,6 +371,40 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     *value = (*time >> 32) & 0xFFFFFFFF;
     Engine::getInstance().getCurrentDb()->unlock();
     return status;
+  }
+  else if (_mpsDeviceInputBypassRemainingExpirationTimeParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->lock();
+    if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
+	Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
+      LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
+    Engine::getInstance().getCurrentDb()->unlock();
+      return asynError;
+    }
+    if (Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->status == BYPASS_VALID) {
+      time_t now = time(0);
+      *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->until - now;
+    }
+    else {
+      *value = 0;
+    }
+    Engine::getInstance().getCurrentDb()->unlock();
+  }
+  else if (_mpsAnalogDeviceBypassRemainingExpirationTimeParam == pasynUser->reason) {
+    Engine::getInstance().getCurrentDb()->lock();
+    if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+      LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+    Engine::getInstance().getCurrentDb()->unlock();
+      return asynError;
+    }
+    if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->status == BYPASS_VALID) {
+      time_t now = time(0);
+      *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->until - now;
+    }
+    else {
+      *value = 0;
+    }
+    Engine::getInstance().getCurrentDb()->unlock();
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");

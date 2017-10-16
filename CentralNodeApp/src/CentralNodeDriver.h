@@ -29,12 +29,14 @@
 #define MPS_DEVICE_INPUT_BYPV_STRING               "MPS_DEVICE_INPUT_BYPV"
 #define MPS_DEVICE_INPUT_BYPS_STRING               "MPS_DEVICE_INPUT_BYPS"
 #define MPS_DEVICE_INPUT_BYPEXPDATE_STRING         "MPS_DEVICE_INPUT_BYPEXPDATE"
+#define MPS_DEVICE_INPUT_REMAINING_BYPTIME_STRING  "MPS_DEVICE_INPUT_REMAINING_BYPTIME"
 #define MPS_DEVICE_INPUT_BYPEXPDATE_STRING_STRING  "MPS_DEVICE_INPUT_BYPEXPDATE_STRING"
 #define MPS_ANALOG_DEVICE_LATCHED_STRING           "MPS_ANALOG_DEVICE_LATCHED"
 #define MPS_ANALOG_DEVICE_UNLATCH_STRING           "MPS_ANALOG_DEVICE_UNLATCH"
 #define MPS_ANALOG_DEVICE_BYPV_STRING              "MPS_ANALOG_DEVICE_BYPV"
 #define MPS_ANALOG_DEVICE_BYPS_STRING              "MPS_ANALOG_DEVICE_BYPS"
 #define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING        "MPS_ANALOG_DEVICE_BYPEXPDATE"
+#define MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING "MPS_ANALOG_DEVICE_REMAINING_BYPTIME"
 #define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "MPS_ANALOG_DEVICE_BYPEXPDATE_STRING"
 #define MPS_UNLATCH_ALL_STRING                     "MPS_UNLATCH_ALL"
 #define MPS_FW_BUILD_STAMP_STRING_STRING           "MPS_FW_BUILD_STAMP_STRING"
@@ -118,12 +120,14 @@ public:
   int _mpsDeviceInputBypassValueParam;
   int _mpsDeviceInputBypassStatusParam;
   int _mpsDeviceInputBypassExpirationDateParam;
+  int _mpsDeviceInputBypassRemainingExpirationTimeParam;
   int _mpsDeviceInputBypassExpirationDateStringParam;
   int _mpsAnalogDeviceLatchedParam;
   int _mpsAnalogDeviceUnlatchParam;
   int _mpsAnalogDeviceBypassValueParam;
   int _mpsAnalogDeviceBypassStatusParam;
   int _mpsAnalogDeviceBypassExpirationDateParam;
+  int _mpsAnalogDeviceBypassRemainingExpirationTimeParam;
   int _mpsAnalogDeviceBypassExpirationDateStringParam;
   int _mpsUnlatchAllParam;
   int _mpsFwBuildStampParam;
