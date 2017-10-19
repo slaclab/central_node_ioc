@@ -272,13 +272,11 @@ static void mpsShowUpdateBufferCallFunc(const iocshArgBuf *args) {
     if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
       std::cout << (*appCard).second->name << " [id:"
 		<< (*appCard).second->globalId << "]:" << std::endl;
-      
+
       std::cout << "WasLow: " << std::endl;
-      std::cout << *(*appCard).second->wasLowUpper
-		<< *(*appCard).second->wasLowLower << std::endl;
+      std::cout << *(*appCard).second->wasLowBuffer << std::endl;
       std::cout << "WasHigh: " << std::endl;
-      std::cout << *(*appCard).second->wasHighUpper
-		<< *(*appCard).second->wasHighLower << std::endl;
+      std::cout << *(*appCard).second->wasHighBuffer << std::endl;
     }
   }
 }

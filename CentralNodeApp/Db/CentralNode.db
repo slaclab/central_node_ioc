@@ -256,3 +256,31 @@ record(longin, "$(IOC):UPDATE_TIME_HIGH") {
     field(INP, "@asyn(CENTRAL_NODE 0 1)MPS_APP_TIMESTAMP_HIGH_BITS")
 }
 
+record(stringin, "$(IOC):CONFIG_DB_SRC") {
+    field(DESC, "Database configuration source")
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "1 second")
+    field(INP, "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_DB_SRC")
+}
+
+record(stringin, "$(IOC):CONFIG_DB_DATE") {
+    field(DESC, "Database configuration date")
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "1 second")
+    field(INP, "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_DB_DATE")
+}
+
+record(stringin, "$(IOC):CONFIG_DB_USER") {
+    field(DESC, "Who generated YAML database")
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "1 second")
+    field(INP, "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_DB_USER")
+}
+
+record(stringin, "$(IOC):CONFIG_DB_MD5SUM") {
+    field(DESC, "Md5sum of source database")
+    field(DTYP, "asynOctetRead")
+    field(SCAN, "1 second")
+    field(INP, "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_DB_MD5SUM")
+}
+

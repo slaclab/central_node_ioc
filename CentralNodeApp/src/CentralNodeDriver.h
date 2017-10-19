@@ -71,6 +71,10 @@
 #define MPS_UPDATE_AVG_TIME_STRING                 "MPS_UPDATE_AVG_TIME"
 #define MPS_UPDATE_MAX_TIME_STRING                 "MPS_UPDATE_MAX_TIME"
 #define MPS_UPDATE_TIME_CLEAR_STRING               "MPS_UPDATE_TIME_CLEAR"
+#define MPS_CONFIG_DB_SRC_STRING                   "MPS_CONFIG_DB_SRC"
+#define MPS_CONFIG_DB_USER_STRING                  "MPS_CONFIG_DB_USER"
+#define MPS_CONFIG_DB_DATE_STRING                  "MPS_CONFIG_DB_DATE"
+#define MPS_CONFIG_DB_MD5SUM_STRING                "MPS_CONFIG_DB_MD5SUM"
 
 #define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
@@ -162,6 +166,10 @@ public:
   int _mpsUpdateAvgParam;
   int _mpsUpdateMaxParam;
   int _mpsUpdateClearParam;
+  int _mpsConfigDbSourceParam;
+  int _mpsConfigDbUserParam;
+  int _mpsConfigDbDateParam;
+  int _mpsConfigDbMd5SumParam;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;
