@@ -48,6 +48,7 @@ DB_INSTALLS += $(YCPSWASYN)/db/mbbo.template
 DB_INSTALLS += $(YCPSWASYN)/db/bo.template
 DB_INSTALLS += $(YCPSWASYN)/db/waveform_stream16.template
 DB_INSTALLS += $(YCPSWASYN)/db/waveform_stream32.template
+DB_INSTALLS += $(YCPSWASYN)/db/RegisterCommand.template
 
 # Install Common databases needed by All IOCs
 # ========================================================

@@ -1,4 +1,4 @@
-epicsEnvSet("IOC","sioc-sys2-mp01")
+epicsEnvSet("IOC","iocCentralNode")
 epicsEnvSet("TOP","../..")
 epicsEnvSet("EPICS_SITE_TOP","/afs/slac/g/lcls/epics")
 epicsEnvSet("BASE_SITE_TOP","/afs/slac/g/lcls/epics/base")
@@ -14,5 +14,7 @@ epicsEnvSet("AUTOSAVE","/afs/slac/g/lcls/epics/R3.15.5-1.0/modules/autosave/R5.7
 epicsEnvSet("CAPUTLOG","/afs/slac/g/lcls/epics/R3.15.5-1.0/modules/caPutLog/R3.5-0.1.0")
 epicsEnvSet("IOCADMIN","/afs/slac/g/lcls/epics/R3.15.5-1.0/modules/iocAdmin/R3.1.15-1.0.0")
 epicsEnvSet("MISCUTILS","/afs/slac/g/lcls/epics/R3.15.5-1.0/modules/miscUtils/R2.2.4")
+epicsEnvSet("YCPSWASYN","/afs/slac/g/lcls/epics/R3.15.5-1.0/modules/ycpswasyn/R1.1.6")
+epicsEnvSet("YAMLLOADER","/afs/slac/g/lcls/epics/R3.15.5-1.0/modules/yamlLoader/R1.0.3")
 epicsEnvSet("EPICS_BASE","/afs/slac/g/lcls/epics/base/R3.15.5-1.0")
 epicsEnvSet("LINUX_KERNEL_MODULES","/afs/slac/g/lcls/package/linuxKernel_Modules")

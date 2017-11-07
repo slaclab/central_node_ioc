@@ -5,10 +5,13 @@
 
 < envPaths
 
+#epicsEnvSet("TOP", "/afs/slac/g/lcls/epics/iocTop/users/lpiccoli/central_node_ioc")
 epicsEnvSet("IOC","sioc-sys2-mp01")
 epicsEnvSet("IOC_PV","SIOC:SYS2:MP01")
 
+pwd()
 cd ${TOP}
+pwd()
 
 ## Register all support components
 dbLoadDatabase("dbd/CentralNode.dbd")
@@ -78,8 +81,8 @@ YCPSWASYNConfig("${CPSW_PORT}", "${YAML_FILE}", "", "${FPGA_IP}", "", 40, "${AUT
 # =====================================================================
 # Load iocAdmin databases to support IOC Health and monitoring
 # =====================================================================
-dbLoadRecords("db/iocAdminSoft.db","IOC=${IOC}")
-dbLoadRecords("db/iocAdminScanMon.db","IOC=${IOC}")
+dbLoadRecords("db/iocAdminSoft.db","IOC=${IOC_PV}")
+dbLoadRecords("db/iocAdminScanMon.db","IOC=${IOC_PV}")
 
 # The following database is a result of a python parser
 # which looks at RELEASE_SITE and RELEASE to discover
@@ -94,6 +97,16 @@ dbLoadRecords("db/faults.db","BASE=MPS:FAULT")
 dbLoadRecords("db/apps.db","BASE=${IOC_PV}")
 dbLoadRecords("db/Carrier.db","P=${IOC_PV}, PORT=${CPSW_PORT}")
 
+cd iocBoot/iocCentralNode
+
+#======================================================================
+# Save/Restore 
+#======================================================================
+set_requestfile_path("${IOC_DATA}/${IOC}/autosave-req")
+set_savefile_path("/${IOC_DATA}/${IOC}/autosave")
+set_pass0_restoreFile("info_settings.sav")
+set_pass1_restoreFile("info_settings.sav")
+
 iocInit()
 
 # =====================================================
@@ -102,3 +115,6 @@ iocInit()
 caPutLogInit("${EPICS_CA_PUT_LOG_ADDR}")
 caPutLogShow(2)
 # =====================================================
+
+# Start autosave
+< start_restore_soft.cmd

@@ -220,6 +220,22 @@ record(bo, "$(IOC):EVAL_TIME_CLR") {
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_EVAL_TIME_CLEAR")
 }
 
+record(longin, "$(IOC):EVALCYCLE_AVG_TIME") {
+    field(DESC, "Slow engine average cycle time")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_EVALCYCLE_AVG_TIME")
+}
+
+record(longin, "$(IOC):EVALCYCLE_MAX_TIME") {
+    field(DESC, "Slow engine max cycle time")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_EVALCYCLE_MAX_TIME")
+}
+
 record(longin, "$(IOC):UPDATE_AVG_TIME") {
     field(DESC, "")
     field(DTYP, "asynInt32")
@@ -242,6 +258,22 @@ record(bo, "$(IOC):UPDATE_TIME_CLR") {
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_UPDATE_TIME_CLEAR")
 }
 
+record(longin, "$(IOC):INPUTDELAY_AVG_TIME") {
+    field(DESC, "")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_INPUTDELAY_AVG_TIME")
+}
+
+record(longin, "$(IOC):INPUTDELAY_MAX_TIME") {
+    field(DESC, "")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_INPUTDELAY_MAX_TIME")
+}
+
 record(longin, "$(IOC):UPDATE_TIME_LOW") {
     field(DESC, "Input update timestamp (low 32-bits)")
     field(DTYP, "asynInt32")
@@ -254,6 +286,13 @@ record(longin, "$(IOC):UPDATE_TIME_HIGH") {
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
     field(INP, "@asyn(CENTRAL_NODE 0 1)MPS_APP_TIMESTAMP_HIGH_BITS")
+}
+
+record(longin, "$(IOC):MPS_STATE") {
+    field(DESC, "Status Central Node IOC State")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(INP, "@asyn(CENTRAL_NODE 0 1)MPS_STATE")
 }
 
 record(stringin, "$(IOC):CONFIG_DB_SRC") {

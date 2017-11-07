@@ -38,6 +38,7 @@
 #define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING        "MPS_ANALOG_DEVICE_BYPEXPDATE"
 #define MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING "MPS_ANALOG_DEVICE_REMAINING_BYPTIME"
 #define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "MPS_ANALOG_DEVICE_BYPEXPDATE_STRING"
+#define MPS_ANALOG_DEVICE_IGNORED_STRING           "MPS_ANALOG_DEVICE_IGNORED"
 #define MPS_UNLATCH_ALL_STRING                     "MPS_UNLATCH_ALL"
 #define MPS_FW_BUILD_STAMP_STRING_STRING           "MPS_FW_BUILD_STAMP_STRING"
 #define MPS_ENABLE_STRING                          "MPS_ENABLE"
@@ -65,16 +66,21 @@
 #define MPS_MO_CONC_ERR_CLEAR_STRING               "MPS_MO_CONC_ERR_CLEAR"
 #define MPS_TIMEOUT_ENABLE_STRING                  "MPS_TIMEOUT_ENABLE"
 #define MPS_TIMEOUT_ENABLE_RBV_STRING              "MPS_TIMEOUT_ENABLE_RBV"
+#define MPS_EVALCYCLE_AVG_TIME_STRING              "MPS_EVALCYCLE_AVG_TIME"
+#define MPS_EVALCYCLE_MAX_TIME_STRING              "MPS_EVALCYCLE_MAX_TIME"
 #define MPS_EVAL_AVG_TIME_STRING                   "MPS_EVAL_AVG_TIME"
 #define MPS_EVAL_MAX_TIME_STRING                   "MPS_EVAL_MAX_TIME"
 #define MPS_EVAL_TIME_CLEAR_STRING                 "MPS_EVAL_TIME_CLEAR"
 #define MPS_UPDATE_AVG_TIME_STRING                 "MPS_UPDATE_AVG_TIME"
 #define MPS_UPDATE_MAX_TIME_STRING                 "MPS_UPDATE_MAX_TIME"
 #define MPS_UPDATE_TIME_CLEAR_STRING               "MPS_UPDATE_TIME_CLEAR"
+#define MPS_INPUTDELAY_AVG_TIME_STRING             "MPS_INPUTDELAY_AVG_TIME"
+#define MPS_INPUTDELAY_MAX_TIME_STRING             "MPS_INPUTDELAY_MAX_TIME"
 #define MPS_CONFIG_DB_SRC_STRING                   "MPS_CONFIG_DB_SRC"
 #define MPS_CONFIG_DB_USER_STRING                  "MPS_CONFIG_DB_USER"
 #define MPS_CONFIG_DB_DATE_STRING                  "MPS_CONFIG_DB_DATE"
 #define MPS_CONFIG_DB_MD5SUM_STRING                "MPS_CONFIG_DB_MD5SUM"
+#define MPS_STATE_STRING                           "MPS_STATE"
 
 #define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
@@ -82,6 +88,13 @@
 #define TEST_CHECK_BYPASS_STRING               "TEST_CHECK_BYPASS"
 
 const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 100;
+
+enum CentralNodeState {
+  MPS_STATE_IDLE,
+  MPS_STATE_RUNNING,
+  MPS_STATE_LOAD_CONFIG,
+  MPS_STATE_LOAD_CONFIG_ERROR,
+};
 
 class CentralNodeDriver : public asynPortDriver {
 public:
@@ -133,6 +146,7 @@ public:
   int _mpsAnalogDeviceBypassExpirationDateParam;
   int _mpsAnalogDeviceBypassRemainingExpirationTimeParam;
   int _mpsAnalogDeviceBypassExpirationDateStringParam;
+  int _mpsAnalogDeviceIgnoredParam;
   int _mpsUnlatchAllParam;
   int _mpsFwBuildStampParam;
   int _mpsEnableParam;
@@ -162,20 +176,27 @@ public:
   int _mpsTimeoutEnableRbvParam;
   int _mpsEvalAvgParam;
   int _mpsEvalMaxParam;
+  int _mpsEvalCycleAvgParam;
+  int _mpsEvalCycleMaxParam;
   int _mpsEvalClearParam;
   int _mpsUpdateAvgParam;
   int _mpsUpdateMaxParam;
   int _mpsUpdateClearParam;
+  int _mpsInputDelayAvgParam;
+  int _mpsInputDelayMaxParam;
   int _mpsConfigDbSourceParam;
   int _mpsConfigDbUserParam;
   int _mpsConfigDbDateParam;
   int _mpsConfigDbMd5SumParam;
+  int _mpsStateParam;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;
   int _testCheckFaultsParam;
   int _testCheckBypassParam;
 
+  //  CentralNodeState _mpsState;
+  
   asynStatus loadConfig(const char *config);
   asynStatus loadTestDeviceInputs(const char *testFileName);
   asynStatus loadTestAnalogDevices(const char *testFileName);

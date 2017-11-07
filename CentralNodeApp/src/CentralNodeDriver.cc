@@ -55,6 +55,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_mpsAnalogDeviceBypassExpirationDateParam);
   createParam(MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsAnalogDeviceBypassRemainingExpirationTimeParam);
   createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsAnalogDeviceBypassExpirationDateStringParam);
+  createParam(MPS_ANALOG_DEVICE_IGNORED_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceIgnoredParam);
   createParam(MPS_UNLATCH_ALL_STRING, asynParamInt32, &_mpsUnlatchAllParam);
   createParam(MPS_FW_BUILD_STAMP_STRING_STRING, asynParamOctet, &_mpsFwBuildStampParam);
   createParam(MPS_ENABLE_STRING, asynParamUInt32Digital, &_mpsEnableParam);
@@ -82,21 +83,28 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_MO_CONC_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsMoConcErrClearParam);
   createParam(MPS_TIMEOUT_ENABLE_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableParam);
   createParam(MPS_TIMEOUT_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableRbvParam);
+  createParam(MPS_EVALCYCLE_AVG_TIME_STRING, asynParamInt32, &_mpsEvalCycleAvgParam);
+  createParam(MPS_EVALCYCLE_MAX_TIME_STRING, asynParamInt32, &_mpsEvalCycleMaxParam);
   createParam(MPS_EVAL_AVG_TIME_STRING, asynParamInt32, &_mpsEvalAvgParam);
   createParam(MPS_EVAL_MAX_TIME_STRING, asynParamInt32, &_mpsEvalMaxParam);
   createParam(MPS_EVAL_TIME_CLEAR_STRING, asynParamUInt32Digital, &_mpsEvalClearParam);
   createParam(MPS_UPDATE_AVG_TIME_STRING, asynParamInt32, &_mpsUpdateAvgParam);
   createParam(MPS_UPDATE_MAX_TIME_STRING, asynParamInt32, &_mpsUpdateMaxParam);
   createParam(MPS_UPDATE_TIME_CLEAR_STRING, asynParamUInt32Digital, &_mpsUpdateClearParam);
+  createParam(MPS_INPUTDELAY_AVG_TIME_STRING, asynParamInt32, &_mpsInputDelayAvgParam);
+  createParam(MPS_INPUTDELAY_MAX_TIME_STRING, asynParamInt32, &_mpsInputDelayMaxParam);
   createParam(MPS_CONFIG_DB_SRC_STRING, asynParamOctet, &_mpsConfigDbSourceParam);
   createParam(MPS_CONFIG_DB_USER_STRING, asynParamOctet, &_mpsConfigDbUserParam);
   createParam(MPS_CONFIG_DB_DATE_STRING, asynParamOctet, &_mpsConfigDbDateParam);
   createParam(MPS_CONFIG_DB_MD5SUM_STRING, asynParamOctet, &_mpsConfigDbMd5SumParam);
+  createParam(MPS_STATE_STRING, asynParamInt32, &_mpsStateParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
   createParam(TEST_CHECK_FAULTS_STRING, asynParamInt32, &_testCheckFaultsParam);
   createParam(TEST_CHECK_BYPASS_STRING, asynParamInt32, &_testCheckBypassParam);
+
+  setIntegerParam(0, _mpsStateParam, MPS_STATE_IDLE);
 
   // Initialize bypass date strings
   for (int i = 0; i < 100; ++i) {
@@ -162,7 +170,14 @@ asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value,
 
   if (_mpsConfigLoadParam == pasynUser->reason) {
     LOG_TRACE("DRIVER", "Received request to load configuration: " << value);
+    setIntegerParam(0, _mpsStateParam, MPS_STATE_LOAD_CONFIG);
     status = loadConfig(value);
+    if (status != asynSuccess) {
+      setIntegerParam(0, _mpsStateParam, MPS_STATE_LOAD_CONFIG_ERROR);
+    }
+    else {
+      setIntegerParam(0, _mpsStateParam, MPS_STATE_RUNNING);
+    }
   }
   else if (_testDeviceInputParam == pasynUser->reason) {
     LOG_TRACE("DRIVER", "Loading test device inputs from file: " << value);
@@ -250,6 +265,10 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 
     return status;
   } 
+  else if (_mpsStateParam == pasynUser->reason) {
+    getIntegerParam(_mpsStateParam, value);
+    return status;
+  }
 
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
@@ -361,6 +380,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       status = asynError;
     }
   }
+  else if (_mpsEvalCycleMaxParam == pasynUser->reason) {
+    *value = Engine::getInstance().getMaxEvalTime();
+    return status;
+  }
+  else if (_mpsEvalCycleAvgParam == pasynUser->reason) {
+    *value = Engine::getInstance().getAvgEvalTime();
+    return status;
+  }
   else if (_mpsEvalMaxParam == pasynUser->reason) {
     *value = Engine::getInstance().getMaxCheckTime();
     return status;
@@ -375,6 +402,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   }
   else if (_mpsUpdateAvgParam == pasynUser->reason) {
     *value = Engine::getInstance().getCurrentDb()->getAvgUpdateTime();
+    return status;
+  }
+  else if (_mpsInputDelayMaxParam == pasynUser->reason) {
+    *value = Engine::getInstance().getCurrentDb()->getMaxInputDelayTime();
+    return status;
+  }
+  else if (_mpsInputDelayAvgParam == pasynUser->reason) {
+    *value = Engine::getInstance().getCurrentDb()->getAvgInputDelayTime();
     return status;
   }
   else if (_mpsAppTimestampLowBitsParam == pasynUser->reason) {
@@ -548,6 +583,25 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
 
     Engine::getInstance().getCurrentDb()->unlock();
   }
+  else if (_mpsAnalogDeviceIgnoredParam == pasynUser->reason) {
+    *value = 0;
+    Engine::getInstance().getCurrentDb()->lock();
+    try {
+      if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	  Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+	LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+	Engine::getInstance().getCurrentDb()->unlock();
+	return asynError;
+      }
+      if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->ignored) {
+	*value = 1;
+      }
+    } catch (std::exception &e) {
+      status = asynError;
+    }
+
+    Engine::getInstance().getCurrentDb()->unlock();
+  }
   else if (_mpsDeviceInputLatchedParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     try {
@@ -614,12 +668,6 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       status = asynError;
     }
 
-    /*
-    *value = 0;
-    if ((Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue & mask) > 0) {
-      *value = 1;
-    }
-    */
     Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsAppStatusParam == pasynUser->reason) {
@@ -728,13 +776,12 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   if (_mpsDeviceInputUnlatchParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     try {
-      int faultValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->faultValue;
-      faultValue == 0? faultValue = 1 : faultValue = 0; // Flip faultValue and assign to latchedValue
-      Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue = faultValue;
-      status = setUIntDigitalParam(addr, pasynUser->reason, value, mask);
+      Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->unlatch();
+      status = setUIntDigitalParam(addr, pasynUser->reason,
+				   Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue, mask);
       LOG_TRACE("DRIVER", "Unlatch: "
 		<< Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
-		<< " value: " << faultValue);
+		<< " value: " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue);
     } catch (std::exception &e) {
       status = asynError;
     }
@@ -743,12 +790,8 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   else if (_mpsAnalogDeviceUnlatchParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     try {
-      // Copy the threshold bit from value to latchedValue
-      uint32_t latchedValue = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue;
-      latchedValue &= (latchedValue & ~mask);
-      Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue = latchedValue;
-      
-      //    Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue = 0; // Clear all threshold faults
+      uint32_t latchedValue = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->unlatch(mask);
+
       status = setUIntDigitalParam(addr, pasynUser->reason, latchedValue, mask);
       LOG_TRACE("DRIVER", "Unlatch: "
 		<< Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
@@ -764,7 +807,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   else if (_mpsFaultUnlatchParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     try {
-      Engine::getInstance().getCurrentDb()->faults->at(addr)->faultLatched = false;
+      Engine::getInstance().getCurrentDb()->faults->at(addr)->unlatch();
     } catch (std::exception &e) {
       status = asynError;
     }
@@ -828,14 +871,16 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
   }
   LOG_TRACE("DRIVER", "Loaded configuration: " << fullName);
 
-  try {
-    setStringParam(0, _mpsConfigDbMd5SumParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->md5sum.c_str());
-    setStringParam(0, _mpsConfigDbUserParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->user.c_str());
-    setStringParam(0, _mpsConfigDbDateParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->date.c_str());
-    setStringParam(0, _mpsConfigDbSourceParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->source.c_str());
-  } catch (std::exception ex) {
-    std::cerr << "ERROR: Invalid database info" << std::endl;
-    return asynError;
+  if (Engine::getInstance().getCurrentDb()->databaseInfo) {
+    try {
+      setStringParam(0, _mpsConfigDbMd5SumParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->md5sum.c_str());
+      setStringParam(0, _mpsConfigDbUserParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->user.c_str());
+      setStringParam(0, _mpsConfigDbDateParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->date.c_str());
+      setStringParam(0, _mpsConfigDbSourceParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->source.c_str());
+    } catch (std::exception ex) {
+      std::cerr << "ERROR: Invalid database info" << std::endl;
+      return asynError;
+    }
   }
 
   return asynSuccess;

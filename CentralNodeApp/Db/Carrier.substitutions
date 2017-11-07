@@ -1,0 +1,186 @@
+########################################################################################################################
+# Summary:             Carrier substitutions file to generate PVs for CPSW registers
+# Author:              C. Ford <caf@slac.stanford.edu>
+# Date:                21-mar-2017 
+# YAML config version: AmcCarrierBcm_00000018
+########################################################################################################################
+
+########################################################################################################################
+# Macros:
+#   P,R: The PV name as $(P):$(R)
+#   DESC, PINI, SCAN, NELM, etc.: The same fields on the records
+#   PORT: The asyn port name. It must match the port name given when calling "YCPSWASYNConfig" on st.cmd
+#   PARAM: The asyn paramter name. It must be defined in the dictionary file and assigned to a register
+########################################################################################################################
+
+#======================================
+# Registers with ScalVal_RO interfaces
+#======================================
+# Single register
+file "RegisterIn.template" { pattern
+{ P,          R,              DESC,                                       PINI,   SCAN,       PORT, EGU,  PARAM              }
+{ $(P), DeviceDna,           "Xilinx device DNA",                           "YES",  "Passive",  $(PORT),   "",   DeviceDna         }
+{ $(P), FpgaVersion,         "FPGA firmware version number",                "YES",  "Passive",  $(PORT),   "",   FpgaVersion       }
+{ $(P), UpTimeCnt,           "Seconds since last reset",                    "YES",  "1 second", $(PORT),   "s",  UpTimeCnt         }
+{ $(P), DeviceId,            "Device identification",                       "YES",  "Passive",  $(PORT),   "",   DeviceId          }
+{ $(P), RxPhyReady,          "RX phy is ready",                             "YES",  "Passive",  $(PORT),   "",   RxPhyReady        }
+{ $(P), TxPhyReady,          "TX phy is ready",                             "YES",  "Passive",  $(PORT),   "",   TxPhyReady        }
+{ $(P), RxLocalLinkReady,    "RX local link ready",                         "YES",  "Passive",  $(PORT),   "",   RxLocalLinkReady  }
+{ $(P), RxRemLinkReady,      "RX remote link ready",                        "YES",  "Passive",  $(PORT),   "",   RxRemLinkReady    }
+{ $(P), RxFrameCount,        "RX frame count",                              "YES",  "1 second", $(PORT),   "",   RxFrameCount      }
+{ $(P), RxFrameErrorCount,   "RX frame error count",                        "YES",  "1 second", $(PORT),   "",   RxFrameErrorCount }
+{ $(P), FrameVersion,        "Received timing frame version",               "YES",  "1 second", $(PORT),   "",   FrameVersion      }
+{ $(P), VersionErr,          "Version check error",                         "YES",  "1 second", $(PORT),   "",   VersionErr        }
+{ $(P), SoftwareLossError,   "Software packet loss error",                  "YES",  "1 second", $(PORT),   "",   SoftwareLossError }
+{ $(P), SoftwareLossCount,   "Software packet loss counter",                "YES",  "1 second", $(PORT),   "",   SoftwareLossCnt }
+{ $(P), SoftwareBwidthCount, "Software bandwidth counter",                  "YES",  "1 second", $(PORT),   "",   SoftwareBwidthCnt }
+{ $(P), BeamFaultReason,     "Beam fault reason vector",                    "YES",  "1 second", $(PORT),   "",   BeamFaultReason  }
+{ $(P), MonitorReady,        "Must be OK to allow beam",                    "YES",  "1 second", $(PORT),   "",   MonitorReady      }
+{ $(P), MonitorConcWdErr,    "Concentrator watchdog error",                 "YES",  "1 second", $(PORT),   "",   MonitorConcWdErr }
+{ $(P), MonitorConcExtRxErr, "External mitg msg recvr Err Cnt",             "YES",  "1 second", $(PORT),   "",   MonitorConcExtRxErr }
+{ $(P), MonitorConcStallErr, "Mitigation message conc tstamp stall err",    "YES",  "1 second", $(PORT),   "",   MonitorConcStallErr }
+{ $(P), TimeoutErrStatus,    "Timeout bit error",                           "YES",  "1 second", $(PORT),   "",   TimeoutErrStatus }
+{ $(P), EvaluationTimeStamp, "Mitigation timestamp",                        "YES",  "1 second", $(PORT),   "",   EvaluationTimeStamp }
+{ $(P), SoftwareBusy,        "Soft. engine busy, waiting pause to clr",     "YES",  "1 second", $(PORT),   "",   SoftwareBusy }
+{ $(P), SoftwarePause,       "Soft. engine pause back-pressure signal",     "YES",  "1 second", $(PORT),   "",   SoftwarePause }
+{ $(P), SoftwareWdError,     "Software watchdog error",                     "YES",  "1 second", $(PORT),   "",   SoftwareWdError }
+{ $(P), SoftwareOvflCnt,     "Number of axi-fifo overflows",                "YES",  "1 second", $(PORT),   "",   SoftwareOvflCnt }
+}
+
+# Array of register
+file "RegisterArrayIn.template" { pattern
+{ P,          R,             DESC,                          NELM,   PINI,   SCAN,       PORT,  PARAM       }
+}
+
+# Array of 8-bit register as a string
+file "RegisterArrayChar.template" { pattern
+{ P,        R,              DESC,                           NELM,   PINI,   SCAN,       PORT,  PARAM       }
+# Shared
+{ $(P), BuildStamp,     "Firmware build string",        256,     "YES",  "Passive",  $(PORT),  BuildStamp }
+}
+
+# ENUM register
+file "RegisterEnumBIn.template" { pattern
+{ P,        R,              DESC,                    PINI,   ZNAM,       ONAM,       SCAN,      PORT, PARAM     }
+}
+
+#======================================
+# Register with ScalVal interfaces
+#======================================
+
+file "RegisterOut.template" { pattern
+{ P,        R,              DESC,                                       PINI,   SCAN,       PORT,  PARAM       }
+{ $(P), ScratchPad,       "Register to test R/W"                        "NO",   "Passive",  $(PORT),    ScratchPad }
+{ $(P), RxPolarity,       ""                                            "NO",   "Passive",  $(PORT),    RxPolarity }
+{ $(P), Enable,           "General Enable. Enables message stream",     "NO",   "Passive",  $(PORT),    Enable     }
+{ $(P), DualCoreEn,       "Dual-Core '1' vs. Single-Core '0'",          "NO",   "Passive",  $(PORT),    DualCoreEn     }
+{ $(P), SoftwareEnable,   "Enable software eval engine updates",        "NO",   "Passive",  $(PORT),    SoftwareEnable     }
+{ $(P), EvaluationEnable, "Enable evaluation engine",                   "NO",   "Passive",  $(PORT),    EvaluationEnable     }
+{ $(P), BeamFaultEn,      "Beam fault enable",                          "NO",   "Passive",  $(PORT),    BeamFaultEn     }
+{ $(P), TimeoutEnable,    "Enable application timeout engine",          "NO",   "Passive",  $(PORT),    TimeoutEnable     }
+#{ $(P), MonitorConcTout,  "Mitigation Msg Concentrator wdog Tout",      "NO",   "Passive",  $(PORT),    MonitorConcTout     }
+{ $(P), SoftwareClear,    "Clear software counters",                    "NO",   "Passive",  $(PORT),    SoftwareClear     }
+{ $(P), TimeoutMsgVer,    "MPS Message version (5 bits)",               "NO",   "Passive",  $(PORT),    TimeoutMsgVer  }
+#{ $(P), SoftwareWdTime,   "Watchdog timeout setting, in usec",          "NO",   "Passive",  $(PORT),    SoftwareWdTime  }
+#{ $(P), TimeoutTime,      "Application timeout setting, in usec",       "NO",   "Passive",  $(PORT),    TimeoutTime  }
+}
+
+file "RegisterOutAutosave.template" { pattern
+{ P,        R,              DESC,                                       PINI,   SCAN,       PORT,  PARAM       }
+{ $(P), MonitorConcTout,  "Mitigation Msg Concentrator wdog Tout",      "YES",   "Passive",  $(PORT),    MonitorConcTout     }
+{ $(P), SoftwareWdTime,   "Watchdog timeout setting, in usec",          "YES",   "Passive",  $(PORT),    SoftwareWdTime  }
+{ $(P), TimeoutTime,      "Application timeout setting, in usec",       "YES",   "Passive",  $(PORT),    TimeoutTime  }
+}
+
+file "RegisterOutRBV.template" { pattern
+{ P,           R,                DESC,                                    PINI,   SCAN,        PORT,       PARAM          }
+{ $(P), ScratchPadRBV,      "Register to test R/W",                       "YES",  "1 second",  $(PORT),    ScratchPad      }
+{ $(P), ClkSelRBV,          ""                                            "YES",  "1 second",  $(PORT),    ClkSel          }
+{ $(P), RxPolarityRBV,      ""                                            "YES",  "1 second",  $(PORT),    RxPolarity      }
+{ $(P), EnableRBV,          "General Enable. Enables message stream",     "YES",  "1 second",  $(PORT),    Enable          }
+{ $(P), DualCoreEnRBV,      "Dual-Core '1' vs. Single-Core '0'",          "YES",  "1 second",  $(PORT),    DualCoreEn     }
+{ $(P), MonitorConcToutRBV, "Mitigation Msg Concentrator wdog Tout",      "YES",  "1 second",  $(PORT),    MonitorConcTout     }
+{ $(P), BeamFaultEnRBV,     "Beam fault enable",                          "YES",  "1 second",  $(PORT),    BeamFaultEn }
+{ $(P), SoftwareEnableRBV,  "Enable software eval engine updates",        "YES",  "1 second",  $(PORT),    SoftwareEnable  }
+{ $(P), TimeoutEnableRBV,   "Enable application timeout engine",          "YES",  "1 second",  $(PORT),    TimeoutEnable  }
+{ $(P), TimeoutTimeRBV,     "Application timeout setting, in usec",       "YES",  "1 second",  $(PORT),    TimeoutTime  }
+{ $(P), TimeoutMsgVerRBV,   "MPS Message version (5 bits)",               "YES",  "1 second",  $(PORT),    TimeoutMsgVer  }
+{ $(P), EvaluationEnableRBV,"Enable evaluation engine",                   "YES",  "1 second",  $(PORT),    EvaluationEnable  }
+{ $(P), SoftwareWdTimeRBV,  "Watchdog timeout setting, in usec",          "YES",  "1 second",  $(PORT),    SoftwareWdTime  }
+}
+
+# Array of register
+file "RegisterArrayOutRBV.template" { pattern
+{ P,    R,             DESC,                                                         NELM,      SCAN, ADDR,    PORT, PARAM         }
+{ $(P), BeamIntTime,                 "Beam integration time",                        16,   "Passive",   1, $(PORT), BeamIntTime   }
+{ $(P), BeamMinPeriod,               "Min period for each power level in 1uS",       16,   "Passive",   1, $(PORT), BeamMinPeriod }
+{ $(P), BeamIntCharge,               "Integ. max charge for each power level",       16,   "Passive",   1, $(PORT), BeamIntCharge }
+{ $(P), EvaluationSwPowerLevel,      "Allowed power levels from software",           2,    "Passive",   1, $(PORT), EvaluationSwPowerLevel }
+{ $(P), EvaluationFwPowerLevel,      "Allowed power levels from firmware",           2,    "Passive",   0, $(PORT), EvaluationFwPowerLevel }
+{ $(P), EvaluationLatchedPowerLevel, "Latched power levels from firmware",           2,    "Passive",   0, $(PORT), EvaluationLatchedPowerLevel}
+{ $(P), EvaluationPowerLevel,        "Actual power levels",                          2,    "Passive",   0, $(PORT), EvaluationPowerLevel }
+{ $(P), MonitorRxErrCnt,             "MPS update message receiver counter",          12,   "Passive",   0, $(PORT), MonitorRxErrCnt }
+{ $(P), MonitorPauseCnt,             "Partitioner msg pause backpreassure cnt",      12,   "Passive",   0, $(PORT), MonitorPauseCnt }
+{ $(P), MonitorOvflCnt,              "Partitioner msg fifo overflow cnt",            12,   "Passive",   0, $(PORT), MonitorOvflCnt }
+{ $(P), MonitorDropCnt,              "Partitioner msg drop cnt",                     12,   "Passive",   0, $(PORT), MonitorDropCnt }
+{ $(P), TimeoutErrIndex,             "Timeout bit status per application",           32,   "Passive",   0, $(PORT), TimeoutErrIndex }
+{ $(P), TimeoutMask,                 "1024 Bit Application Mask",                    32,   "Passive",   1, $(PORT), TimeoutMask }
+}
+
+# ENUM register
+file "RegisterEnumBOut.template" { pattern
+{ P,        R,              DESC,        PINI   ZNAM,        ONAM,     SCAN,       PORT, PARAM     }
+}
+
+file "RegisterEnumBOutRBV.template" { pattern
+{ P,        R,              DESC,         PINI    ZNAM,        ONAM,     SCAN,        PORT, PARAM     }
+}
+
+#======================================
+# Register with DoubleVal_RO interfaces
+#======================================
+
+file "RegisterDoubleIn.template" { pattern
+{ P,              R,            DESC,                         PINI,   SCAN,        PORT,   EGU,    PARAM    }
+}
+
+#======================================
+# Register with DoubleVal interfaces
+#======================================
+
+file "RegisterDoubleOut.template" { pattern
+{ P,              R,         DESC,                            PINI,  SCAN,        PORT,     EGU,    PARAM   }
+}
+
+file "RegisterDoubleOutRBV.template" { pattern
+{ P,              R,         DESC,                            PINI,   SCAN,       PORT,     EGU,    PARAM   }
+}
+
+#======================================
+# Register with Command interfaces
+#======================================
+file "RegisterCommand.template" { pattern
+{ P,            R,            DESC,                            PINI,   SCAN,       PORT,   PARAM   }
+{ $(P), MonErrClear,      "Clear monitor error",               "NO",   "Passive",  $(PORT),    MonErrClear     }
+{ $(P), SwErrClear,       "Clear software error",              "NO",   "Passive",  $(PORT),    SwErrClear     }
+{ $(P), ToErrClear,       "Clear the latched timeout error",   "NO",   "Passive",  $(PORT),    ToErrClear     }
+{ $(P), EvalLatchClear,   "Clear PowerLevel Latch",            "NO",   "Passive",  $(PORT),    EvalLatchClear     }
+}
+
+
+#======================================
+# Register with Stream interfaces
+#======================================
+
+file "RegisterStream.template" {pattern
+{ P,            R,          DESC,               NELM,       PINI,   PORT,   PARAM       }
+}
+
+# For Stream interfaces, an additional parameter is automatically created
+# and the name is generated adding ":16" to the original parameter name
+# This gives access to the same stream data, but as 16-bit words which
+# is the case for ADC samples for example. Note that the NELM is 2x
+
+file "RegisterStream16.template" {pattern
+{ P,            R,          DESC,                           NELM,        PINI,  PORT,  PARAM         }
+}
