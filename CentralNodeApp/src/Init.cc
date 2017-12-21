@@ -424,3 +424,35 @@ static void mpsShowMitigationDeviceRegistrar(void) {
 extern "C" {
   epicsExportRegistrar(mpsShowMitigationDeviceRegistrar);
 }
+
+/*=== mpsEnableApp command =======================================================*/
+
+static const iocshArg mpseaArg0 = {"id", iocshArgInt};
+static const iocshArg mpseaArg1 = {"enable", iocshArgInt};
+static const iocshArg * const mpseaArgs[2] = {&mpseaArg0, &mpseaArg1};
+static const iocshFuncDef mpsEnableAppFuncDef = {"mpsEnableApp", 2, mpseaArgs};
+static const iocshFuncDef mpseaFuncDef = {"mpsea", 2, mpseaArgs};
+static void mpsEnableAppCallFunc(const iocshArgBuf *args) {
+  int id = args[0].ival;  
+  int enableInt = args[1].ival;
+  
+  Engine::getInstance().getCurrentDb()->lock();
+
+  bool enable = false;
+  if (enableInt > 0) {
+    enable = true;
+  }
+  Firmware::getInstance().setAppTimeoutEnable(id, enable);
+  Firmware::getInstance().writeAppTimeoutMask();
+
+  Engine::getInstance().getCurrentDb()->unlock();
+}
+
+static void mpsEnableAppRegistrar(void) {
+  iocshRegister(&mpsEnableAppFuncDef, mpsEnableAppCallFunc);
+  iocshRegister(&mpseaFuncDef, mpsEnableAppCallFunc);
+}
+
+extern "C" {
+  epicsExportRegistrar(mpsEnableAppRegistrar);
+}

@@ -31,6 +31,7 @@
 /mmio/MpsCentralApplication/Pgp2bAxi/RxFrameCount                                                         RxFrameCount
 /mmio/MpsCentralApplication/Pgp2bAxi/RxFrameErrorCoumt                                                    RxFrameErrorCount
 /mmio/MpsCentralApplication/MpsCentralNodeCore/Enable                                                     Enable
+/mmio/MpsCentralApplication/MpsCentralNodeCore/Switch                                                     Switch
 /mmio/MpsCentralApplication/MpsCentralNodeCore/DualCoreEn                                                 DualCoreEn
 /mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareEnable                                             SoftwareEnable
 /mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareClear                                              SoftwareClear

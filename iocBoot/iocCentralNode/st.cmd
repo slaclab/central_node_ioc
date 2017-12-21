@@ -31,6 +31,7 @@ epicsEnvSet("MPS_ENV_CONFIG_PATH", "/data/${IOC}/database")
 epicsEnvSet("MPS_ENV_FW_CONFIG", "/data/${IOC}/yaml/000TopLevel.yaml")
 epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
+epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 
 # Yaml File
 epicsEnvSet("YAML_FILE", "${MPS_ENV_FW_CONFIG}")
@@ -95,6 +96,7 @@ dbLoadRecords("db/analog_devices.db","BASE=MPS:ANALOG")
 dbLoadRecords("db/mitigation.db","BASE=${IOC_PV}")
 dbLoadRecords("db/faults.db","BASE=MPS:FAULT")
 dbLoadRecords("db/apps.db","BASE=${IOC_PV}")
+dbLoadRecords("db/conditions.db","BASE=${IOC_PV}")
 dbLoadRecords("db/Carrier.db","P=${IOC_PV}, PORT=${CPSW_PORT}")
 
 cd iocBoot/iocCentralNode

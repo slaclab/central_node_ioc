@@ -10,10 +10,11 @@
 #include <asynPortDriver.h>
 
 // Environment variables
-#define MPS_ENV_CONFIG_PATH "MPS_ENV_CONFIG_PATH"
-#define MPS_ENV_FW_CONFIG "MPS_ENV_FW_CONFIG"
-#define MPS_ENV_HISTORY_HOST "MPS_ENV_HISTORY_HOST"
-#define MPS_ENV_HISTORY_PORT "MPS_ENV_HISTORY_PORT"
+#define MPS_ENV_CONFIG_PATH                        "MPS_ENV_CONFIG_PATH"
+#define MPS_ENV_FW_CONFIG                          "MPS_ENV_FW_CONFIG"
+#define MPS_ENV_HISTORY_HOST                       "MPS_ENV_HISTORY_HOST"
+#define MPS_ENV_HISTORY_PORT                       "MPS_ENV_HISTORY_PORT"
+#define MPS_ENV_UPDATE_TIMEOUT                     "MPS_ENV_UPDATE_TIMEOUT"
 
 // List of ASYN parameter names
 #define MPS_CONFIG_LOAD_STRING                     "MPS_CONFIG_LOAD"
@@ -81,6 +82,7 @@
 #define MPS_CONFIG_DB_DATE_STRING                  "MPS_CONFIG_DB_DATE"
 #define MPS_CONFIG_DB_MD5SUM_STRING                "MPS_CONFIG_DB_MD5SUM"
 #define MPS_STATE_STRING                           "MPS_STATE"
+#define MPS_CONDITION_STRING                       "MPS_CONDITION"
 
 #define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
@@ -122,6 +124,7 @@ public:
   
  private:
   std::string _configPath;
+  uint32_t _inputUpdateTimeout;
 
   // List of ASYN parameters
   int _mpsConfigLoadParam;
@@ -189,6 +192,7 @@ public:
   int _mpsConfigDbDateParam;
   int _mpsConfigDbMd5SumParam;
   int _mpsStateParam;
+  int _mpsConditionParam;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;

@@ -49,7 +49,8 @@ file "RegisterIn.template" { pattern
 
 # Array of register
 file "RegisterArrayIn.template" { pattern
-{ P,          R,             DESC,                          NELM,   PINI,   SCAN,       PORT,  PARAM       }
+{ P,          R,             DESC,                          NELM,   PINI,      SCAN,       PORT,  PARAM       }
+#{ $(P), TimeoutMaskSet,    "1024 Bit Application Mask (Set)",    32,   "No", "Passive",    $(PORT),  TimeoutMask }
 }
 
 # Array of 8-bit register as a string
@@ -73,6 +74,7 @@ file "RegisterOut.template" { pattern
 { $(P), ScratchPad,       "Register to test R/W"                        "NO",   "Passive",  $(PORT),    ScratchPad }
 { $(P), RxPolarity,       ""                                            "NO",   "Passive",  $(PORT),    RxPolarity }
 { $(P), Enable,           "General Enable. Enables message stream",     "NO",   "Passive",  $(PORT),    Enable     }
+{ $(P), Switch,           "Switch the configuration buffer",            "NO",   "Passive",  $(PORT),    Switch     }
 { $(P), DualCoreEn,       "Dual-Core '1' vs. Single-Core '0'",          "NO",   "Passive",  $(PORT),    DualCoreEn     }
 { $(P), SoftwareEnable,   "Enable software eval engine updates",        "NO",   "Passive",  $(PORT),    SoftwareEnable     }
 { $(P), EvaluationEnable, "Enable evaluation engine",                   "NO",   "Passive",  $(PORT),    EvaluationEnable     }
@@ -98,6 +100,7 @@ file "RegisterOutRBV.template" { pattern
 { $(P), ClkSelRBV,          ""                                            "YES",  "1 second",  $(PORT),    ClkSel          }
 { $(P), RxPolarityRBV,      ""                                            "YES",  "1 second",  $(PORT),    RxPolarity      }
 { $(P), EnableRBV,          "General Enable. Enables message stream",     "YES",  "1 second",  $(PORT),    Enable          }
+{ $(P), SwitchRBV,          "Switch the configuration buffer       ",     "YES",  "1 second",  $(PORT),    Switch          }
 { $(P), DualCoreEnRBV,      "Dual-Core '1' vs. Single-Core '0'",          "YES",  "1 second",  $(PORT),    DualCoreEn     }
 { $(P), MonitorConcToutRBV, "Mitigation Msg Concentrator wdog Tout",      "YES",  "1 second",  $(PORT),    MonitorConcTout     }
 { $(P), BeamFaultEnRBV,     "Beam fault enable",                          "YES",  "1 second",  $(PORT),    BeamFaultEn }

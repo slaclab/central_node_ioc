@@ -33,6 +33,14 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
 #endif
   LOG_TRACE("DRIVER", "CentralNodeDriver constructor");
 
+  char *inputUpdateTimeoutStr = getenv(MPS_ENV_UPDATE_TIMEOUT);
+  if (inputUpdateTimeoutStr == NULL) {
+    _inputUpdateTimeout = 3500;
+  }
+  else {
+    _inputUpdateTimeout = atoi(inputUpdateTimeoutStr);
+  }
+
   createParam(MPS_CONFIG_LOAD_STRING, asynParamOctet, &_mpsConfigLoadParam);
   createParam(MPS_DEVICE_INPUT_STRING, asynParamUInt32Digital, &_mpsDeviceInputParam);
   createParam(MPS_ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceParam);
@@ -98,6 +106,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_CONFIG_DB_DATE_STRING, asynParamOctet, &_mpsConfigDbDateParam);
   createParam(MPS_CONFIG_DB_MD5SUM_STRING, asynParamOctet, &_mpsConfigDbMd5SumParam);
   createParam(MPS_STATE_STRING, asynParamInt32, &_mpsStateParam);
+  createParam(MPS_CONDITION_STRING, asynParamUInt32Digital, &_mpsConditionParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -691,6 +700,25 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
 
     Engine::getInstance().getCurrentDb()->unlock();
   }
+  else if (_mpsConditionParam == pasynUser->reason) {
+    *value = 0;
+    Engine::getInstance().getCurrentDb()->lock();
+    try {
+      if (Engine::getInstance().getCurrentDb()->conditions->find(addr) ==
+	  Engine::getInstance().getCurrentDb()->conditions->end()) {
+	LOG_TRACE("DRIVER", "ERROR: Condition not found, key=" << addr);
+	Engine::getInstance().getCurrentDb()->unlock();
+	return asynError;
+      }
+      if (Engine::getInstance().getCurrentDb()->conditions->at(addr)->state) {
+	*value = 1;
+      }
+    } catch (std::exception &e) {
+      status = asynError;
+    }
+
+    Engine::getInstance().getCurrentDb()->unlock();
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
     status = asynError;
@@ -855,8 +883,12 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 
 asynStatus CentralNodeDriver::loadConfig(const char *config) {
   std::string fullName = _configPath + "/" + config;
+  time_t now;
+  time(&now);
+
+  std::cout << "[" << ctime(&now) << "] INFO: Loading config " << fullName << std::endl;
   try {
-    if (Engine::getInstance().loadConfig(fullName) != 0) {
+    if (Engine::getInstance().loadConfig(fullName, _inputUpdateTimeout) != 0) {
       std::cerr << "ERROR: Failed to load configuration " << fullName << std::endl; 
       return asynError;
     }
