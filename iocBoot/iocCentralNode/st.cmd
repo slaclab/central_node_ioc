@@ -26,8 +26,17 @@ epicsEnvSet("LOCATION","Twilight Zone")
 
 # END: Additional environment variables
 # ====================================================================
-#epicsEnvSet("MPS_ENV_CONFIG_PATH", "/afs/slac/g/lcls/epics/iocTop/users/lpiccoli/central_node_engine/src/test/yaml/")
-epicsEnvSet("MPS_ENV_CONFIG_PATH", "/data/${IOC}/database")
+#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2017-12-21-b")
+#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-12-b")
+#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-17-a")
+#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-22-a")
+#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-26-a")
+#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-26-b")
+epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-02-09-b")
+
+epicsEnvSet("PACKAGE_TOP", "/afs/slac/g/lcls/package")
+epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")
+epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PACKAGE_TOP}/mps_configuration/${MPS_ENV_CONFIG_VERSION}/${MPS_ENV_DATABASE_VERSION}")
 epicsEnvSet("MPS_ENV_FW_CONFIG", "/data/${IOC}/yaml/000TopLevel.yaml")
 epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
@@ -91,13 +100,14 @@ dbLoadRecords("db/iocAdminScanMon.db","IOC=${IOC_PV}")
 # The python parser is part of iocAdmin
 dbLoadRecords("db/iocRelease.db","IOC=${IOC}")
 dbLoadRecords("db/CentralNode.db","IOC=${IOC_PV}")
-dbLoadRecords("db/device_inputs.db","BASE=MPS:DIGITAL")
-dbLoadRecords("db/analog_devices.db","BASE=MPS:ANALOG")
-dbLoadRecords("db/mitigation.db","BASE=${IOC_PV}")
-dbLoadRecords("db/faults.db","BASE=MPS:FAULT")
-dbLoadRecords("db/apps.db","BASE=${IOC_PV}")
-dbLoadRecords("db/conditions.db","BASE=${IOC_PV}")
 dbLoadRecords("db/Carrier.db","P=${IOC_PV}, PORT=${CPSW_PORT}")
+
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/device_inputs.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/analog_devices.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/destinations.db","BASE=${IOC_PV}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/faults.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/apps.db","BASE=${IOC_PV}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/conditions.db","BASE=${IOC_PV}")
 
 cd iocBoot/iocCentralNode
 

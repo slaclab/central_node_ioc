@@ -323,3 +323,26 @@ record(stringin, "$(IOC):CONFIG_DB_MD5SUM") {
     field(INP, "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_DB_MD5SUM")
 }
 
+record(longin, "$(IOC):SoftwareWdErrorCounter") {
+    field(DESC, "Inc. when software wd error is non-zero")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FW_SOFTWARE_WDOG_COUNTER")
+}
+
+record(longin, "$(IOC):MonitorNotReadyCounter") {
+    field(DESC, "Increases when FW not ready for beam")
+    field(DTYP, "asynInt32")
+    field(SCAN, "1 second")
+    field(EGU, "usec")
+    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FW_MONITOR_NOT_READY_COUNTER")
+}
+
+record(bo, "$(IOC):SKIP_HEARTBEAT") {
+    field(DESC, "For test only - disable SW/FW heartbeats")
+    field(DTYP, "asynUInt32Digital")
+    field(VAL, "0")
+    field(PINI, "YES")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SKIP_HEARTBEAT")
+}

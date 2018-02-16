@@ -83,6 +83,9 @@
 #define MPS_CONFIG_DB_MD5SUM_STRING                "MPS_CONFIG_DB_MD5SUM"
 #define MPS_STATE_STRING                           "MPS_STATE"
 #define MPS_CONDITION_STRING                       "MPS_CONDITION"
+#define MPS_FW_SOFTWARE_WDOG_COUNTER_STRING        "MPS_FW_SOFTWARE_WDOG_COUNTER"
+#define MPS_FW_MONITOR_NOT_READY_COUNTER_STRING    "MPS_FW_MONITOR_NOT_READY_COUNTER"
+#define MPS_SKIP_HEARTBEAT_STRING                  "MPS_SKIP_HEARTBEAT"
 
 #define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
@@ -193,6 +196,9 @@ public:
   int _mpsConfigDbMd5SumParam;
   int _mpsStateParam;
   int _mpsConditionParam;
+  int _mpsFwSoftwareWdogCounterParam;
+  int _mpsFwMonitorNotReadyCounterParam;
+  int _mpsSkipHeartbeatParam;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;

@@ -107,6 +107,9 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_CONFIG_DB_MD5SUM_STRING, asynParamOctet, &_mpsConfigDbMd5SumParam);
   createParam(MPS_STATE_STRING, asynParamInt32, &_mpsStateParam);
   createParam(MPS_CONDITION_STRING, asynParamUInt32Digital, &_mpsConditionParam);
+  createParam(MPS_FW_SOFTWARE_WDOG_COUNTER_STRING, asynParamInt32, &_mpsFwSoftwareWdogCounterParam);
+  createParam(MPS_FW_MONITOR_NOT_READY_COUNTER_STRING, asynParamInt32, &_mpsFwMonitorNotReadyCounterParam);
+  createParam(MPS_SKIP_HEARTBEAT_STRING, asynParamUInt32Digital, &_mpsSkipHeartbeatParam);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -278,6 +281,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     getIntegerParam(_mpsStateParam, value);
     return status;
   }
+  else if (_mpsFwSoftwareWdogCounterParam == pasynUser->reason) {
+    *value = (epicsInt32)(Firmware::getInstance()._swWdErrorCounter);
+    return status;
+  }
+  else if (_mpsFwMonitorNotReadyCounterParam == pasynUser->reason) {
+    *value = Firmware::getInstance()._monitorNotReadyCounter;
+    return status;
+  }
 
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
@@ -289,18 +300,18 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   if (_mpsSwMitigationParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     try {
-      if (Engine::getInstance().getCurrentDb()->mitigationDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: MitigationDevice not found, key=" << addr);
+      if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	  Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
 	Engine::getInstance().getCurrentDb()->unlock();
 	return asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass) {
-	*value = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->allowedBeamClass->number;
+      if (Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->allowedBeamClass) {
+	*value = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->allowedBeamClass->number;
       }
       else {
 	LOG_TRACE("DRIVER", "ERROR: Invalid allowed class for mitigation device "
-		  << Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->name);
+		  << Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->name);
       }
     } catch (std::exception &e) {
       status = asynError;
@@ -331,14 +342,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   else if (_mpsFwMitigationParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     try {
-      if (Engine::getInstance().getCurrentDb()->mitigationDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: MitigationDevice not found, key=" << addr);
+      if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	  Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
 	Engine::getInstance().getCurrentDb()->unlock();
 	return asynError;
       }
-      uint8_t index = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->softwareMitigationBufferIndex;
-      uint8_t bitShift = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->bitShift;
+      uint8_t index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
+      uint8_t bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
       Engine::getInstance().getCurrentDb()->unlock();
       
       uint32_t fwMitigation[2];
@@ -352,14 +363,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   else if (_mpsMitigationParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
     try {
-      if (Engine::getInstance().getCurrentDb()->mitigationDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: MitigationDevice not found, key=" << addr);
+      if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	  Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
 	Engine::getInstance().getCurrentDb()->unlock();
 	return asynError;
       }
-      uint8_t index = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->softwareMitigationBufferIndex;
-      uint8_t bitShift = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->bitShift;
+      uint8_t index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
+      uint8_t bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
       Engine::getInstance().getCurrentDb()->unlock();
       
       uint32_t mitigation[2];
@@ -372,14 +383,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   else if (_mpsLatchedMitigationParam == pasynUser->reason) {
     try {	  
       Engine::getInstance().getCurrentDb()->lock();
-      if (Engine::getInstance().getCurrentDb()->mitigationDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->mitigationDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: MitigationDevice not found, key=" << addr);
+      if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	  Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
 	Engine::getInstance().getCurrentDb()->unlock();
 	return asynError;
       }
-      uint8_t index = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->softwareMitigationBufferIndex;
-      uint8_t bitShift = Engine::getInstance().getCurrentDb()->mitigationDevices->at(addr)->bitShift;
+      uint8_t index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
+      uint8_t bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
       Engine::getInstance().getCurrentDb()->unlock();
       
       uint32_t mitigation[2];
@@ -685,6 +696,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
 	  Engine::getInstance().getCurrentDb()->applicationCards->end()) {
 	LOG_TRACE("DRIVER", "ERROR: ApplicationCard not found, key=" << addr);
+	std::cout << "*** ERROR: ApplicationCard not found, key=" << addr << std::endl;
 	Engine::getInstance().getCurrentDb()->unlock();
 	return asynError;
       }
@@ -790,6 +802,10 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   }
   else if (_mpsMoConcErrClearParam == pasynUser->reason) {
     Firmware::getInstance().moConcErrClear();
+    return status;
+  }
+  else if (_mpsSkipHeartbeatParam == pasynUser->reason) {
+    Firmware::getInstance()._skipHeartbeat = value;
     return status;
   }
 
@@ -1053,7 +1069,7 @@ void CentralNodeDriver::printQueue() {
 }
 
 void CentralNodeDriver::showMitigation() {
-  Engine::getInstance().showMitigationDevices();
+  Engine::getInstance().showBeamDestinations();
 }
 
 void CentralNodeDriver::showFaults() {
