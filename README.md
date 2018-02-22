@@ -12,3 +12,6 @@ be done by setting the CONFIG_LOAD PV with the database file name:
 '''
    caput SIOC:SYS2:MP01:CONFIG_LOAD mps_config-2018-02-09-a.yaml
 '''
+
+The MPS configuration is kept in the $PHYSICS_TOP/mps_configuration area
+(please check the mps_configuration/README.md file for more information)
