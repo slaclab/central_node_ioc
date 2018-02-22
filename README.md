@@ -10,5 +10,5 @@ After startup the IOC does not automatically loads the MPS configuration, that m
 be done by setting the CONFIG_LOAD PV with the database file name:
 
 '''
-caput SIOC:SYS2:MP01:CONFIG_LOAD mps_config-2018-02-09-a.yaml
+   caput SIOC:SYS2:MP01:CONFIG_LOAD mps_config-2018-02-09-a.yaml
 '''
