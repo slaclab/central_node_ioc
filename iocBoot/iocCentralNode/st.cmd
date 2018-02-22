@@ -26,17 +26,11 @@ epicsEnvSet("LOCATION","Twilight Zone")
 
 # END: Additional environment variables
 # ====================================================================
-#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2017-12-21-b")
-#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-12-b")
-#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-17-a")
-#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-22-a")
-#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-26-a")
-#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-01-26-b")
-epicsEnvSet("MPS_ENV_DATABASE_VERSION", "2018-02-09-b")
+epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
 
-epicsEnvSet("PACKAGE_TOP", "/afs/slac/g/lcls/package")
+epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics")
 epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")
-epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PACKAGE_TOP}/mps_configuration/${MPS_ENV_CONFIG_VERSION}/${MPS_ENV_DATABASE_VERSION}")
+epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
 epicsEnvSet("MPS_ENV_FW_CONFIG", "/data/${IOC}/yaml/000TopLevel.yaml")
 epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")

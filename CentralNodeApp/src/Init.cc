@@ -208,7 +208,7 @@ static void mpsShowUpdateBuffer(int id) {
     DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
     
     if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-      std::cout << (*appCard).second->name << " [id:"
+      std::cout << (*appCard).second->name << " [global id:"
 		<< (*appCard).second->globalId << "]:" << std::endl;
 
       std::cout << "WasLow: " << std::endl;
@@ -244,7 +244,8 @@ static void mpsShowConfigBuffer(int id) {
   DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
     
   if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-    std::cout << (*appCard).second->name << ": ";
+    std::cout << (*appCard).second->name << " [global id:"
+	      << (*appCard).second->globalId << "]:" << std::endl;
     std::cout << *(*appCard).second->applicationConfigBuffer << std::endl;
     //    (*appCard).second->printAnalogConfiguration();
   }
@@ -321,6 +322,30 @@ static void mpsShowDigitalChannel(int id) {
     
   if (channel != Engine::getInstance().getCurrentDb()->digitalChannels->end()) {
     std::cout << (*channel).second << std::endl;
+  }
+  Engine::getInstance().getCurrentDb()->unlock();
+}
+
+/*=== mpsShowAppCard command =======================================================*/
+
+static void mpsShowAppCard(int id) {
+  if (id < 0) {
+    std::cout << "*** mps show app [id] ***" << std::endl
+	      << "  id: database Id for the application card - *not* the global app id!" << std::endl
+	      << std::endl;
+    return;
+  }
+
+  if (!Engine::getInstance().getCurrentDb()) {
+    std::cerr << "ERROR: No database loaded" << std::endl;
+    return;
+  }
+
+  Engine::getInstance().getCurrentDb()->lock();
+  DbApplicationCardMap::iterator card = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
+    
+  if (card != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+    std::cout << (*card).second << std::endl;
   }
   Engine::getInstance().getCurrentDb()->unlock();
 }
@@ -460,8 +485,7 @@ static void mpsApp2Db(int id) {
 
 /*=== mps command =======================================================*/
 
-static void printHelp(std::string option) {
-  if (option == "all") {
+static void printHelp() {
     std::cout << "Usage: mps [command] [arg0] [arg1] [arg2]" << std::endl
 	      << "  help                   : print this help" << std::endl
 	      << "  app db [id]            : convert app dd to database id" << std::endl
@@ -473,6 +497,7 @@ static void printHelp(std::string option) {
 	      << "  |- show firmware       : print firmware info" << std::endl
 	      << "  |- show destination    : print beam destination info" << std::endl
 	      << "  |- show faults         : print current MPS faults" << std::endl
+	      << "  |- show app [id]       : print application card info" << std::endl
     	      << "  |- show digital [id]   : print digital device info" << std::endl
 	      << "  |- show input [id]     : print device input info (for digital devices)" << std::endl
 	      << "  |- show channel [id]   : print channel info (for digital devices)" << std::endl
@@ -484,7 +509,6 @@ static void printHelp(std::string option) {
 	      << "" << std::endl
 	      << "*** The id specified to the mps command is the database id   ***" << std::endl
 	      << "*** Use id=-1 for additional help (e.g. 'mps show fault -1') ***" << std::endl;
-  }
 }
 
 static const iocshArg mpsArg0 = {"[help|show]", iocshArgString};
@@ -495,7 +519,7 @@ static const iocshArg * const mpsArgs[4] = {&mpsArg0, &mpsArg1, &mpsArg2, &mpsAr
 static const iocshFuncDef mpsFuncDef = {"mps", 4, mpsArgs};
 static void mpsCallFunc(const iocshArgBuf *args) {
   if (args[0].sval == NULL) {
-    printHelp("all");
+    printHelp();
     return;
   }
 
@@ -506,13 +530,14 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     if (args[1].sval != NULL) {
       option = args[1].sval;
     }
-    printHelp(option);
+    printHelp();
     return;
   }
 
   if (command == "app") {
     if (args[1].sval == NULL) {
       std::cout << "ERROR: missing option" << std::endl;
+      printHelp();
       return;
     }
     std::string option(args[1].sval);
@@ -524,6 +549,7 @@ static void mpsCallFunc(const iocshArgBuf *args) {
   else if (command == "print") {
     if (args[1].sval == NULL) {
       std::cout << "ERROR: missing option" << std::endl;
+      printHelp();
       return;
     }
     std::string option(args[1].sval);
@@ -534,6 +560,7 @@ static void mpsCallFunc(const iocshArgBuf *args) {
   else if (command == "enable") {
     if (args[1].sval == NULL) {
       std::cout << "ERROR: missing option" << std::endl;
+      printHelp();
       return;
     }
     std::string option(args[1].sval);
@@ -546,6 +573,7 @@ static void mpsCallFunc(const iocshArgBuf *args) {
   else if (command == "show" || command == "s") {
     if (args[1].sval == NULL) {
       std::cout << "ERROR: missing option" << std::endl;
+      printHelp();
       return;
     }
     std::string option(args[1].sval);
@@ -567,6 +595,10 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     else if (option == "mit" || option == "mitigation") {
       int id = args[2].ival;
       mpsShowMitigationDevice(id);
+    }
+    else if (option == "app") {
+      int id = args[2].ival;
+      mpsShowAppCard(id);
     }
     else if (option == "ad" || option == "analog") {
       int id = args[2].ival;
@@ -601,8 +633,6 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       return;
     }
   }
-  
-  std::cout << command << std::endl;
 }
 
 static void mpsRegistrar(void) {
