@@ -9,11 +9,4 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
-NOTE: This is for EPICS BASE: R3-14-12-4_1-0
-
-icdTemplates-R1-2-1: Fixed errors, added missing database files, updated st.cmd @common
-
-icdTemplates-R1-2-0: For EPICS BASE: R3-14-12-4_1-0
-
-icdTemplates-R1-0-1: First official release to be consumed.
-                     EPICS BASE: R3-14-12-3_1-0
+central_node_ioc-R1-0-0: first version for EIC
