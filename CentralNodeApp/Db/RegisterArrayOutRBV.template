@@ -1,0 +1,10 @@
+record(waveform,	"$(P):$(R)") {
+  field(PINI,		"YES")
+  field(DESC, 		"$(DESC)")
+  field(DTYP,		"asynInt32ArrayIn")
+  field(NELM,		"$(NELM)")
+  field(FTVL,		"LONG")
+  field(SCAN,		"$(SCAN)")
+  field(PHAS,		"1")
+  field(INP,		"@asyn($(PORT),$(ADDR))$(PARAM)")
+}
