@@ -9,9 +9,9 @@ Configuration
 After startup the IOC does not automatically loads the MPS configuration, that must
 be done by setting the CONFIG_LOAD PV with the database file name (in YAML format):
 
-'''
+```
    caput SIOC:SYS2:MP01:CONFIG_LOAD mps_config-2018-02-09-a.yaml
-'''
+```
 
 The MPS configuration is kept in the $PHYSICS_TOP/mps_configuration area. In
 addition to the YAML configuration file it contains auto-generated EPICS
