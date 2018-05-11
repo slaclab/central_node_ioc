@@ -64,6 +64,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsAnalogDeviceBypassRemainingExpirationTimeParam);
   createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsAnalogDeviceBypassExpirationDateStringParam);
   createParam(MPS_ANALOG_DEVICE_IGNORED_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceIgnoredParam);
+  createParam(MPS_ANALOG_DEVICE_IGNORED_INTEGRATOR_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceIgnoredIntegratorParam);
   createParam(MPS_UNLATCH_ALL_STRING, asynParamInt32, &_mpsUnlatchAllParam);
   createParam(MPS_FW_BUILD_STAMP_STRING_STRING, asynParamOctet, &_mpsFwBuildStampParam);
   createParam(MPS_ENABLE_STRING, asynParamUInt32Digital, &_mpsEnableParam);
@@ -614,6 +615,26 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
 	return asynError;
       }
       if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->ignored) {
+	*value = 1;
+      }
+    } catch (std::exception &e) {
+      status = asynError;
+    }
+
+    Engine::getInstance().getCurrentDb()->unlock();
+  }
+  else if (_mpsAnalogDeviceIgnoredIntegratorParam == pasynUser->reason) {
+    *value = 0;
+    int integrator = pasynUser->timeout;
+    Engine::getInstance().getCurrentDb()->lock();
+    try {
+      if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	  Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+	LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+	Engine::getInstance().getCurrentDb()->unlock();
+	return asynError;
+      }
+      if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->ignoredIntegrator[integrator]) {
 	*value = 1;
       }
     } catch (std::exception &e) {

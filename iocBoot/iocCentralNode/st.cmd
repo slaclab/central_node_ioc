@@ -1,4 +1,4 @@
-#!../../bin/rhel6-x86_64/CentralNode
+#!iocSpecificRelease/bin/linuxRT-x86_64/CentralNode
 
 ## You may have to change CentralNode to something else
 ## everywhere it appears in this file
