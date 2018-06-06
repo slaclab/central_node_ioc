@@ -64,7 +64,6 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsAnalogDeviceBypassRemainingExpirationTimeParam);
   createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsAnalogDeviceBypassExpirationDateStringParam);
   createParam(MPS_ANALOG_DEVICE_IGNORED_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceIgnoredParam);
-  createParam(MPS_ANALOG_DEVICE_IGNORED_INTEGRATOR_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceIgnoredIntegratorParam);
   createParam(MPS_UNLATCH_ALL_STRING, asynParamInt32, &_mpsUnlatchAllParam);
   createParam(MPS_FW_BUILD_STAMP_STRING_STRING, asynParamOctet, &_mpsFwBuildStampParam);
   createParam(MPS_ENABLE_STRING, asynParamUInt32Digital, &_mpsEnableParam);
@@ -96,12 +95,13 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_EVALCYCLE_MAX_TIME_STRING, asynParamInt32, &_mpsEvalCycleMaxParam);
   createParam(MPS_EVAL_AVG_TIME_STRING, asynParamInt32, &_mpsEvalAvgParam);
   createParam(MPS_EVAL_MAX_TIME_STRING, asynParamInt32, &_mpsEvalMaxParam);
-  createParam(MPS_EVAL_TIME_CLEAR_STRING, asynParamUInt32Digital, &_mpsEvalClearParam);
   createParam(MPS_UPDATE_AVG_TIME_STRING, asynParamInt32, &_mpsUpdateAvgParam);
   createParam(MPS_UPDATE_MAX_TIME_STRING, asynParamInt32, &_mpsUpdateMaxParam);
   createParam(MPS_UPDATE_TIME_CLEAR_STRING, asynParamUInt32Digital, &_mpsUpdateClearParam);
-  createParam(MPS_INPUTDELAY_AVG_TIME_STRING, asynParamInt32, &_mpsInputDelayAvgParam);
-  createParam(MPS_INPUTDELAY_MAX_TIME_STRING, asynParamInt32, &_mpsInputDelayMaxParam);
+  createParam(MPS_FWUPDATDE_AVG_PERIOD_STRING, asynParamInt32, &_mpsFwUpdateAvgParam);
+  createParam(MPS_FWUPDATDE_MAX_PERIOD_STRING, asynParamInt32, &_mpsFwUpdateMaxParam);
+  createParam(MPS_WDUPDATDE_AVG_PERIOD_STRING, asynParamInt32, &_mpsWdUpdateAvgParam);
+  createParam(MPS_WDUPDATDE_MAX_PERIOD_STRING, asynParamInt32, &_mpsWdUpdateMaxParam);
   createParam(MPS_CONFIG_DB_SRC_STRING, asynParamOctet, &_mpsConfigDbSourceParam);
   createParam(MPS_CONFIG_DB_USER_STRING, asynParamOctet, &_mpsConfigDbUserParam);
   createParam(MPS_CONFIG_DB_DATE_STRING, asynParamOctet, &_mpsConfigDbDateParam);
@@ -283,11 +283,13 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     return status;
   }
   else if (_mpsFwSoftwareWdogCounterParam == pasynUser->reason) {
-    *value = (epicsInt32)(Firmware::getInstance()._swWdErrorCounter);
+    *value = (epicsInt32)(Engine::getInstance().getWdErrorCnt());
     return status;
   }
   else if (_mpsFwMonitorNotReadyCounterParam == pasynUser->reason) {
-    *value = Firmware::getInstance()._monitorNotReadyCounter;
+    //*value = Firmware::getInstance()._monitorNotReadyCounter;
+    // TO BE DONE: We should rething if this is neccesaty and how to implement it, maybe in FW instead?
+    *value = 0;
     return status;
   }
 
@@ -425,25 +427,33 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     *value = Engine::getInstance().getCurrentDb()->getAvgUpdateTime();
     return status;
   }
-  else if (_mpsInputDelayMaxParam == pasynUser->reason) {
-    *value = Engine::getInstance().getCurrentDb()->getMaxInputDelayTime();
+  else if (_mpsFwUpdateMaxParam == pasynUser->reason) {
+    *value = Engine::getInstance().getCurrentDb()->getMaxFwUpdatePeriod();
     return status;
   }
-  else if (_mpsInputDelayAvgParam == pasynUser->reason) {
-    *value = Engine::getInstance().getCurrentDb()->getAvgInputDelayTime();
+  else if (_mpsWdUpdateMaxParam == pasynUser->reason) {
+    *value = Engine::getInstance().getMaxWdUpdatePeriod();
+    return status;
+  }
+  else if (_mpsFwUpdateAvgParam == pasynUser->reason) {
+    *value = Engine::getInstance().getCurrentDb()->getAvgFwUpdatePeriod();
+    return status;
+  }
+  else if (_mpsWdUpdateAvgParam == pasynUser->reason) {
+    *value = Engine::getInstance().getAvgWdUpdatePeriod();
     return status;
   }
   else if (_mpsAppTimestampLowBitsParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
-    uint64_t *time = reinterpret_cast<uint64_t *>(Engine::getInstance().getCurrentDb()->getFastUpdateBuffer() + 8);
-    *value = *time & 0xFFFFFFFF;
+    uint64_t time = Engine::getInstance().getCurrentDb()->getFastUpdateTimeStamp();
+    *value = time & 0xFFFFFFFF;
     Engine::getInstance().getCurrentDb()->unlock();
     return status;
   }
   else if (_mpsAppTimestampHighBitsParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->lock();
-    uint64_t *time = reinterpret_cast<uint64_t *>(Engine::getInstance().getCurrentDb()->getFastUpdateBuffer() + 8);
-    *value = (*time >> 32) & 0xFFFFFFFF;
+    uint64_t time = Engine::getInstance().getCurrentDb()->getFastUpdateTimeStamp();
+    *value = (time >> 32) & 0xFFFFFFFF;
     Engine::getInstance().getCurrentDb()->unlock();
     return status;
   }
@@ -615,26 +625,6 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
 	return asynError;
       }
       if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->ignored) {
-	*value = 1;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
-    }
-
-    Engine::getInstance().getCurrentDb()->unlock();
-  }
-  else if (_mpsAnalogDeviceIgnoredIntegratorParam == pasynUser->reason) {
-    *value = 0;
-    int integrator = pasynUser->timeout;
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->analogDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
-      }
-      if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->ignoredIntegrator[integrator]) {
 	*value = 1;
       }
     } catch (std::exception &e) {
@@ -826,7 +816,8 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     return status;
   }
   else if (_mpsSkipHeartbeatParam == pasynUser->reason) {
-    Firmware::getInstance()._skipHeartbeat = value;
+    //Firmware::getInstance()._skipHeartbeat = value;
+    // TO BE DONE: Is this neccesary? If so, we need to reimplement it.
     return status;
   }
 
@@ -902,10 +893,6 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       LOG_TRACE("DRIVER", "ERROR: AnalogDevices out of range, key=" << addr);
     }
     Engine::getInstance().getCurrentDb()->unlock();
-  }
-  else if (_mpsEvalClearParam == pasynUser->reason) {
-    Engine::getInstance().clearCheckTime();
-    return status;
   }
   else if (_mpsUpdateClearParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->clearUpdateTime();
