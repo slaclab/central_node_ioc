@@ -213,9 +213,9 @@ static void mpsShowUpdateBuffer(int id) {
 		<< (*appCard).second->globalId << "]:" << std::endl;
 
       std::cout << "WasLow: " << std::endl;
-      std::cout << *(*appCard).second->wasLowBuffer << std::endl;
+      std::cout << *(*appCard).second->getWasLowBuffer() << std::endl;
       std::cout << "WasHigh: " << std::endl;
-      std::cout << *(*appCard).second->wasHighBuffer << std::endl;
+      std::cout << *(*appCard).second->getWasHighBuffer() << std::endl;
     }
   }
 }
