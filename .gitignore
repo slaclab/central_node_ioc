@@ -1,0 +1,16 @@
+*~
+.*
+O.*
+*.log
+*.swp
+*.bak
+envPaths
+RELEASE_SITE
+bin/
+lib/
+include/
+db/
+dbd/
+startup/
+cfg/
+restor/

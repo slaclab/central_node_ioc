@@ -40,7 +40,6 @@
 #define MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING "MPS_ANALOG_DEVICE_REMAINING_BYPTIME"
 #define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "MPS_ANALOG_DEVICE_BYPEXPDATE_STRING"
 #define MPS_ANALOG_DEVICE_IGNORED_STRING           "MPS_ANALOG_DEVICE_IGNORED"
-#define MPS_ANALOG_DEVICE_IGNORED_INTEGRATOR_STRING "MPS_ANALOG_DEVICE_IGNORED_INTEGRATOR"
 #define MPS_UNLATCH_ALL_STRING                     "MPS_UNLATCH_ALL"
 #define MPS_FW_BUILD_STAMP_STRING_STRING           "MPS_FW_BUILD_STAMP_STRING"
 #define MPS_ENABLE_STRING                          "MPS_ENABLE"
@@ -72,12 +71,13 @@
 #define MPS_EVALCYCLE_MAX_TIME_STRING              "MPS_EVALCYCLE_MAX_TIME"
 #define MPS_EVAL_AVG_TIME_STRING                   "MPS_EVAL_AVG_TIME"
 #define MPS_EVAL_MAX_TIME_STRING                   "MPS_EVAL_MAX_TIME"
-#define MPS_EVAL_TIME_CLEAR_STRING                 "MPS_EVAL_TIME_CLEAR"
 #define MPS_UPDATE_AVG_TIME_STRING                 "MPS_UPDATE_AVG_TIME"
 #define MPS_UPDATE_MAX_TIME_STRING                 "MPS_UPDATE_MAX_TIME"
 #define MPS_UPDATE_TIME_CLEAR_STRING               "MPS_UPDATE_TIME_CLEAR"
-#define MPS_INPUTDELAY_AVG_TIME_STRING             "MPS_INPUTDELAY_AVG_TIME"
-#define MPS_INPUTDELAY_MAX_TIME_STRING             "MPS_INPUTDELAY_MAX_TIME"
+#define MPS_FWUPDATDE_AVG_PERIOD_STRING            "MPS_FWUPDATE_AVG_PERIOD"
+#define MPS_FWUPDATDE_MAX_PERIOD_STRING            "MPS_FWUPDATE_MAX_PERIOD"
+#define MPS_WDUPDATDE_AVG_PERIOD_STRING            "MPS_WDUPDATE_AVG_PERIOD"
+#define MPS_WDUPDATDE_MAX_PERIOD_STRING            "MPS_WDUPDATE_MAX_PERIOD"
 #define MPS_CONFIG_DB_SRC_STRING                   "MPS_CONFIG_DB_SRC"
 #define MPS_CONFIG_DB_USER_STRING                  "MPS_CONFIG_DB_USER"
 #define MPS_CONFIG_DB_DATE_STRING                  "MPS_CONFIG_DB_DATE"
@@ -154,7 +154,6 @@ public:
   int _mpsAnalogDeviceBypassRemainingExpirationTimeParam;
   int _mpsAnalogDeviceBypassExpirationDateStringParam;
   int _mpsAnalogDeviceIgnoredParam;
-  int _mpsAnalogDeviceIgnoredIntegratorParam;
   int _mpsUnlatchAllParam;
   int _mpsFwBuildStampParam;
   int _mpsEnableParam;
@@ -190,8 +189,10 @@ public:
   int _mpsUpdateAvgParam;
   int _mpsUpdateMaxParam;
   int _mpsUpdateClearParam;
-  int _mpsInputDelayAvgParam;
-  int _mpsInputDelayMaxParam;
+  int _mpsFwUpdateAvgParam;
+  int _mpsFwUpdateMaxParam;
+  int _mpsWdUpdateAvgParam;
+  int _mpsWdUpdateMaxParam;
   int _mpsConfigDbSourceParam;
   int _mpsConfigDbUserParam;
   int _mpsConfigDbDateParam;

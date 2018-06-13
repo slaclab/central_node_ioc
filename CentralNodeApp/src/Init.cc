@@ -201,8 +201,9 @@ static void mpsShowUpdateBuffer(int id) {
 
   if (id == 999) {
     std::cout << "Full update buffer:" << std::endl;
-    ApplicationUpdateBufferFullBitSet *buf = reinterpret_cast<ApplicationUpdateBufferFullBitSet *>(Engine::getInstance().getCurrentDb()->getFastUpdateBuffer());
-    std::cout << *buf << std::endl;
+    std::vector<uint8_t> updateBuffer = Engine::getInstance().getCurrentDb()->getFastUpdateBuffer();
+    ApplicationUpdateBufferFullBitSet *buf = reinterpret_cast<ApplicationUpdateBufferFullBitSet *>(&updateBuffer);
+    std::cout << buf << std::endl;
   }
   else {
     DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
@@ -212,9 +213,9 @@ static void mpsShowUpdateBuffer(int id) {
 		<< (*appCard).second->globalId << "]:" << std::endl;
 
       std::cout << "WasLow: " << std::endl;
-      std::cout << *(*appCard).second->wasLowBuffer << std::endl;
+      std::cout << *(*appCard).second->getWasLowBuffer() << std::endl;
       std::cout << "WasHigh: " << std::endl;
-      std::cout << *(*appCard).second->wasHighBuffer << std::endl;
+      std::cout << *(*appCard).second->getWasHighBuffer() << std::endl;
     }
   }
 }

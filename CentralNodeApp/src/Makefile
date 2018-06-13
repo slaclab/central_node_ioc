@@ -5,6 +5,8 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #========================================
 
+USR_CXXFLAGS += -std=c++0x
+
 #==================================================================================
 # Path to "NON EPICS" External PACKAGES: USER INCLUDES
 #==================================================================================
