@@ -19,4 +19,4 @@ database files (under the central_node_db subdirectory). Those databases
 are loaded by the st.cmd script at startup time.
 
 Please check the mps_configuration/README.md file for more information. The README.md
-is also available at http://lcls-dev3.slac.stanford.edu/gitlist/hps/mps_configuration.git/.
+is also available at http://lcls-dev3.slac.stanford.edu/gitlist/hps/mps_configuration.git/README.md.
