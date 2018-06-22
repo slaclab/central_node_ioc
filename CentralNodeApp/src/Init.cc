@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <unistd.h>
+#include <mutex>
 
 #include <iocsh.h>
 #include <epicsThread.h>
@@ -145,13 +146,12 @@ static void mpsShowFault(int id) {
     return;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbFaultMap::iterator fault = Engine::getInstance().getCurrentDb()->faults->find(id);
   
   if (fault != Engine::getInstance().getCurrentDb()->faults->end()) {
     std::cout << (*fault).second << std::endl;
   }
-  Engine::getInstance().getCurrentDb()->unlock();
 }
 
 /*=== mpsShowFirmware command =======================================================*/
@@ -268,13 +268,12 @@ static void mpsShowDigitalDevice(int id) {
     return;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbDigitalDeviceMap::iterator device = Engine::getInstance().getCurrentDb()->digitalDevices->find(id);
     
   if (device != Engine::getInstance().getCurrentDb()->digitalDevices->end()) {
     std::cout << (*device).second << std::endl;
   }
-  Engine::getInstance().getCurrentDb()->unlock();
 }
 
 /*=== mpsShowDeviceInput command =======================================================*/
@@ -293,13 +292,12 @@ static void mpsShowDeviceInput(int id) {
     return;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbDeviceInputMap::iterator device = Engine::getInstance().getCurrentDb()->deviceInputs->find(id);
     
   if (device != Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
     std::cout << (*device).second << std::endl;
   }
-  Engine::getInstance().getCurrentDb()->unlock();
 }
 
 /*=== mpsShowDigitalChannel command =======================================================*/
@@ -318,13 +316,12 @@ static void mpsShowDigitalChannel(int id) {
     return;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbChannelMap::iterator channel = Engine::getInstance().getCurrentDb()->digitalChannels->find(id);
     
   if (channel != Engine::getInstance().getCurrentDb()->digitalChannels->end()) {
     std::cout << (*channel).second << std::endl;
   }
-  Engine::getInstance().getCurrentDb()->unlock();
 }
 
 /*=== mpsShowAppCard command =======================================================*/
@@ -342,13 +339,12 @@ static void mpsShowAppCard(int id) {
     return;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbApplicationCardMap::iterator card = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
     
   if (card != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
     std::cout << (*card).second << std::endl;
   }
-  Engine::getInstance().getCurrentDb()->unlock();
 }
 
 /*=== mpsShowAnalogDevice command =======================================================*/
@@ -367,13 +363,12 @@ static void mpsShowAnalogDevice(int id) {
     return;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbAnalogDeviceMap::iterator device = Engine::getInstance().getCurrentDb()->analogDevices->find(id);
     
   if (device != Engine::getInstance().getCurrentDb()->analogDevices->end()) {
     std::cout << (*device).second << std::endl;
   }
-  Engine::getInstance().getCurrentDb()->unlock();
 }
 
 /*=== mpsShowMitigationDevice command =======================================================*/
@@ -391,7 +386,7 @@ static void mpsShowMitigationDevice(int id) {
     return;
   }
   
-  Engine::getInstance().getCurrentDb()->lock();
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   if (id < 0) {
     std::cout << "This are the available mitigation devices: " << std::endl;
     for (DbBeamDestinationMap::iterator it = Engine::getInstance().getCurrentDb()->beamDestinations->begin();
@@ -407,7 +402,6 @@ static void mpsShowMitigationDevice(int id) {
   if (device != Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
     std::cout << (*device).second << std::endl;
   }
-  Engine::getInstance().getCurrentDb()->unlock();
 }
 
 /*=== mpsEnableApp command =======================================================*/
@@ -429,7 +423,7 @@ static void mpsEnableApp(int id, int enableInt) {
     return;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
 
   bool enable = false;
   if (enableInt > 0) {
@@ -437,8 +431,6 @@ static void mpsEnableApp(int id, int enableInt) {
   }
   Firmware::getInstance().setAppTimeoutEnable(id, enable);
   Firmware::getInstance().writeAppTimeoutMask();
-
-  Engine::getInstance().getCurrentDb()->unlock();
 }
 
 /*=== mpsApp2Db command =======================================================*/
@@ -459,7 +451,7 @@ static void mpsApp2Db(int id) {
     return;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
 
   bool found = false;
   DbApplicationCardPtr appCard;
@@ -480,8 +472,6 @@ static void mpsApp2Db(int id) {
   else {
     std::cerr << "ERROR: no entry found for globalId=" << id << std::endl;
   }
-
-  Engine::getInstance().getCurrentDb()->unlock();
 }
 
 /*=== mps command =======================================================*/

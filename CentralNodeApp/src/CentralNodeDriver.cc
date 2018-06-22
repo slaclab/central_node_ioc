@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <mutex>
 
 #include <epicsTypes.h>
 #include <epicsExport.h>
@@ -155,6 +156,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
+  History::getInstance().stopSenderThread();
 }
 
 // asynStatus CentralNodeDriver::drvUserCreate(asynUser *pasynUser, const char *drvInfo, const char **ppTypeName,
@@ -225,9 +227,10 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
     Engine::getInstance().checkFaults();
   }
   else if (_mpsUnlatchAllParam == pasynUser -> reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    Engine::getInstance().getCurrentDb()->unlatchAll();
-    Engine::getInstance().getCurrentDb()->unlock();
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      Engine::getInstance().getCurrentDb()->unlatchAll();
+    }
   }
   else if (_mpsDeviceInputBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_DIGITAL, addr, 0, value);
@@ -301,60 +304,61 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   }
 
   if (_mpsSwMitigationParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-	LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->allowedBeamClass) {
+	  *value = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->allowedBeamClass->number;
+	}
+	else {
+	  LOG_TRACE("DRIVER", "ERROR: Invalid allowed class for mitigation device "
+		    << Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->name);
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->allowedBeamClass) {
-	*value = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->allowedBeamClass->number;
-      }
-      else {
-	LOG_TRACE("DRIVER", "ERROR: Invalid allowed class for mitigation device "
-		  << Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->name);
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsAnalogDeviceBypassStatusParam ==  pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->analogDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->status == BYPASS_VALID) {
+	  *value = 1;
+	}
+	else {
+	  *value = 0;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->status == BYPASS_VALID) {
-	*value = 1;
-      }
-      else {
-	*value = 0;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsFwMitigationParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
     try {
-      if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-	LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+      uint8_t index = 0;
+      uint8_t bitShift = 0;
+      {
+	std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+	if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+	  return asynError;
+	}
+	index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
+	bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
       }
-      uint8_t index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
-      uint8_t bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
-      Engine::getInstance().getCurrentDb()->unlock();
-      
+
       uint32_t fwMitigation[2];
       
       Firmware::getInstance().getFirmwareMitigation(&fwMitigation[0]);
@@ -364,17 +368,19 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     }
   }
   else if (_mpsMitigationParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
     try {
-      if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-	LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+      uint8_t index = 0;
+      uint8_t bitShift = 0;
+      {
+	std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+	if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+	  return asynError;
+	}
+	index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
+	bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
       }
-      uint8_t index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
-      uint8_t bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
-      Engine::getInstance().getCurrentDb()->unlock();
       
       uint32_t mitigation[2];
       Firmware::getInstance().getMitigation(&mitigation[0]);
@@ -385,16 +391,19 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   }
   else if (_mpsLatchedMitigationParam == pasynUser->reason) {
     try {	  
-      Engine::getInstance().getCurrentDb()->lock();
-      if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-	LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+      uint8_t index = 0;
+      uint8_t bitShift = 0;
+      {
+	std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+	if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+
+	  return asynError;
+	}
+	index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
+	bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
       }
-      uint8_t index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
-      uint8_t bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
-      Engine::getInstance().getCurrentDb()->unlock();
       
       uint32_t mitigation[2];
       Firmware::getInstance().getLatchedMitigation(&mitigation[0]);
@@ -444,60 +453,64 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     return status;
   }
   else if (_mpsAppTimestampLowBitsParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    uint64_t time = Engine::getInstance().getCurrentDb()->getFastUpdateTimeStamp();
-    *value = time & 0xFFFFFFFF;
-    Engine::getInstance().getCurrentDb()->unlock();
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      uint64_t time = Engine::getInstance().getCurrentDb()->getFastUpdateTimeStamp();
+      *value = time & 0xFFFFFFFF;
+    }
     return status;
   }
   else if (_mpsAppTimestampHighBitsParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    uint64_t time = Engine::getInstance().getCurrentDb()->getFastUpdateTimeStamp();
-    *value = (time >> 32) & 0xFFFFFFFF;
-    Engine::getInstance().getCurrentDb()->unlock();
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      uint64_t time = Engine::getInstance().getCurrentDb()->getFastUpdateTimeStamp();
+      *value = (time >> 32) & 0xFFFFFFFF;
+    }
     return status;
   }
   else if (_mpsDeviceInputBypassRemainingExpirationTimeParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
-	LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+      try {
+	if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->status == BYPASS_VALID) {
+	  time_t now = time(0);
+	  *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->until - now;
+	}
+	else {
+	  *value = 0;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->status == BYPASS_VALID) {
-	time_t now = time(0);
-	*value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->until - now;
-      }
-      else {
-	*value = 0;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsAnalogDeviceBypassRemainingExpirationTimeParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->analogDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+      try {
+	if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->status == BYPASS_VALID) {
+	  time_t now = time(0);
+	  *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->until - now;
+	}
+	else {
+	  *value = 0;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->status == BYPASS_VALID) {
-	time_t now = time(0);
-	*value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->until - now;
-      }
-      else {
-	*value = 0;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request (reason " << pasynUser->reason << ")");
@@ -541,206 +554,193 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
   }
 
   if (_mpsDeviceInputParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
-	LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
+	  return asynError;
+	}
+	*value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->value;
-    } catch (std::exception &e) {
-      status = asynError;
     }
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsAnalogDeviceParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->analogDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+	  return asynError;
+	}
+	// Non-zero *value means threshold exceeded
+	*value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      // Non-zero *value means threshold exceeded
-      *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
-    } catch (std::exception &e) {
-      status = asynError;
     }
-    Engine::getInstance().getCurrentDb()->unlock();
-      //    *value = (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask) != 0;
-      /*
-	if (addr == 9) {
-	std::cout << "T(mask=" << mask << ")=" << *value << " - " << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value << std::endl;
-    }
-      */
   }
   else if (_mpsFaultParam == pasynUser->reason) {
     *value = 0;
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->faults->end()) {
-	LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->faults->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
+	  *value = 1;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
-	*value = 1;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsFaultIgnoredParam == pasynUser->reason) {
     *value = 0;
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->faults->end()) {
-	LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->faults->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->faults->at(addr)->ignored) {
+	  *value = 1;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->ignored) {
-	*value = 1;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsAnalogDeviceIgnoredParam == pasynUser->reason) {
     *value = 0;
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->analogDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->ignored) {
+	  *value = 1;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->ignored) {
-	*value = 1;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsDeviceInputLatchedParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
-	LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
+	  return asynError;
+	}
+	*value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue;
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      *value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue;
-    } catch (std::exception &e) {
-      status = asynError;
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsFaultLatchedParam == pasynUser->reason) {
     *value = 0;
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultLatched) {
-	*value = 1;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultLatched) {
+	  *value = 1;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsDeviceInputBypassStatusParam ==  pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
-	LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->deviceInputs->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: DeviceInput not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->status == BYPASS_VALID) {
+	  *value = 1;
+	}
+	else {
+	  *value = 0;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->status == BYPASS_VALID) {
-	*value = 1;
-      }
-      else {
-	*value = 0;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsAnalogDeviceLatchedParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->analogDevices->end()) {
-	LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->analogDevices->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->analogDevices->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+	  return asynError;
+	}
+	// mask
+	// Non-zero *value means threshold exceeded
+	*value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue & mask;
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      // mask
-      // Non-zero *value means threshold exceeded
-      *value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue & mask;
-    } catch (std::exception &e) {
-      status = asynError;
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsAppStatusParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-	LOG_TRACE("DRIVER", "ERROR: ApplicationCard not found, key=" << addr);
-	std::cout << "*** ERROR: ApplicationCard not found, key=" << addr << std::endl;
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: ApplicationCard not found, key=" << addr);
+	  std::cout << "*** ERROR: ApplicationCard not found, key=" << addr << std::endl;
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->online) {
+	  *value = 1;
+	}
+	else {
+	  *value = 0;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->online) {
-	*value = 1;
-      }
-      else {
-	*value = 0;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsConditionParam == pasynUser->reason) {
     *value = 0;
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      if (Engine::getInstance().getCurrentDb()->conditions->find(addr) ==
-	  Engine::getInstance().getCurrentDb()->conditions->end()) {
-	LOG_TRACE("DRIVER", "ERROR: Condition not found, key=" << addr);
-	Engine::getInstance().getCurrentDb()->unlock();
-	return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->conditions->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->conditions->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: Condition not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->conditions->at(addr)->state) {
+	  *value = 1;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
       }
-      if (Engine::getInstance().getCurrentDb()->conditions->at(addr)->state) {
-	*value = 1;
-      }
-    } catch (std::exception &e) {
-      status = asynError;
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
@@ -830,69 +830,72 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   }
 
   if (_mpsDeviceInputUnlatchParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->unlatch();
-      status = setUIntDigitalParam(addr, pasynUser->reason,
-				   Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue, mask);
-      LOG_TRACE("DRIVER", "Unlatch: "
-		<< Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
-		<< " value: " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue);
-    } catch (std::exception &e) {
-      status = asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->unlatch();
+	status = setUIntDigitalParam(addr, pasynUser->reason,
+				     Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue, mask);
+	LOG_TRACE("DRIVER", "Unlatch: "
+		  << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
+		  << " value: " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue);
+      } catch (std::exception &e) {
+	status = asynError;
+      }
     }
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsAnalogDeviceUnlatchParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      uint32_t latchedValue = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->unlatch(mask);
-
-      status = setUIntDigitalParam(addr, pasynUser->reason, latchedValue, mask);
-      LOG_TRACE("DRIVER", "Unlatch: "
-		<< Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
-		<< " latchedValue: " << latchedValue << ", unlatched: "
-		<< Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue 
-		<< " mask: " << mask);
-    } catch (std::exception &e) {
-      status = asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	uint32_t latchedValue = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->unlatch(mask);
+	
+	status = setUIntDigitalParam(addr, pasynUser->reason, latchedValue, mask);
+	LOG_TRACE("DRIVER", "Unlatch: "
+		  << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
+		  << " latchedValue: " << latchedValue << ", unlatched: "
+		  << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue 
+		  << " mask: " << mask);
+      } catch (std::exception &e) {
+	status = asynError;
+      }
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsFaultUnlatchParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      Engine::getInstance().getCurrentDb()->faults->at(addr)->unlatch();
-    } catch (std::exception &e) {
-      status = asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	Engine::getInstance().getCurrentDb()->faults->at(addr)->unlatch();
+      } catch (std::exception &e) {
+	status = asynError;
+      }
     }
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsDeviceInputBypassValueParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->value = value;
-      LOG_TRACE("DRIVER", "BypassValue: "
-		<< Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
-		<< " value: " << value);
-    } catch (std::exception &e) {
-      status = asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->bypass->value = value;
+	LOG_TRACE("DRIVER", "BypassValue: "
+		  << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
+		  << " value: " << value);
+      } catch (std::exception &e) {
+	status = asynError;
+      }
     }
-
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsAnalogDeviceBypassValueParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->lock();
-    try {
-      Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->value = value;
-      LOG_TRACE("DRIVER", "BypassValue: "
-		<< Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
-		<< " value: " << value << " (threshold=" << bitIndex << ")");
-    } catch (const std::out_of_range &e) {
-      LOG_TRACE("DRIVER", "ERROR: AnalogDevices out of range, key=" << addr);
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->bypass[bitIndex]->value = value;
+	LOG_TRACE("DRIVER", "BypassValue: "
+		  << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
+		  << " value: " << value << " (threshold=" << bitIndex << ")");
+      } catch (const std::out_of_range &e) {
+	LOG_TRACE("DRIVER", "ERROR: AnalogDevices out of range, key=" << addr);
+      }
     }
-    Engine::getInstance().getCurrentDb()->unlock();
   }
   else if (_mpsUpdateClearParam == pasynUser->reason) {
     Engine::getInstance().getCurrentDb()->clearUpdateTime();
@@ -953,22 +956,22 @@ asynStatus CentralNodeDriver::loadTestDeviceInputs(const char *testFilename) {
     return asynError;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
-
-  while (!testInputFile.eof()) {
-    int deviceId;
-    int deviceValue;
-    testInputFile >> deviceId;
-    testInputFile >> deviceValue;
-
-    try {
-      Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->update(deviceValue);
-    } catch (std::exception ex) {
-      std::cerr << "ERROR: Invalid device input ID: " << deviceId << std::endl;
-      status = asynError;
-    }
-  } 
-  Engine::getInstance().getCurrentDb()->unlock();
+  {
+    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+    while (!testInputFile.eof()) {
+      int deviceId;
+      int deviceValue;
+      testInputFile >> deviceId;
+      testInputFile >> deviceValue;
+      
+      try {
+	Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->update(deviceValue);
+      } catch (std::exception ex) {
+	std::cerr << "ERROR: Invalid device input ID: " << deviceId << std::endl;
+	status = asynError;
+      }
+    } 
+  }
 
   return status;
 }
@@ -984,23 +987,22 @@ asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
     return asynError;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
-
-  while (!testInputFile.eof()) {
-    int deviceId;
-    int deviceValue;
-    testInputFile >> deviceId;
-    testInputFile >> deviceValue;
-
-    try {
-      Engine::getInstance().getCurrentDb()->analogDevices->at(deviceId)->update(deviceValue);
-    } catch (std::exception ex) {
-      std::cerr << "ERROR: Invalid analog device ID: " << deviceId << std::endl;
-      status = asynError;
-    }
-  } 
-
-  Engine::getInstance().getCurrentDb()->unlock();
+  {
+    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+    while (!testInputFile.eof()) {
+      int deviceId;
+      int deviceValue;
+      testInputFile >> deviceId;
+      testInputFile >> deviceValue;
+      
+      try {
+	Engine::getInstance().getCurrentDb()->analogDevices->at(deviceId)->update(deviceValue);
+      } catch (std::exception ex) {
+	std::cerr << "ERROR: Invalid analog device ID: " << deviceId << std::endl;
+	status = asynError;
+      }
+    } 
+  }
 
   return status;
 }
@@ -1033,23 +1035,23 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId,
     expirationTime = 0;
   }
 
-  Engine::getInstance().getCurrentDb()->lock();
-  try {
-    if (bypassType == BYPASS_DIGITAL) {
-      uint32_t bypassValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->bypass->value;
-      Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), bypassType,
-							  deviceId, bypassValue, expirationTime);
+  {
+    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+    try {
+      if (bypassType == BYPASS_DIGITAL) {
+	uint32_t bypassValue = Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->bypass->value;
+	Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), bypassType,
+							    deviceId, bypassValue, expirationTime);
+      }
+      else {
+	uint32_t bypassValue = Engine::getInstance().getCurrentDb()->analogDevices->at(deviceId)->bypass[thresholdIndex]->value;
+	Engine::getInstance().getBypassManager()->setThresholdBypass(Engine::getInstance().getCurrentDb(), bypassType,
+								     deviceId, bypassValue, expirationTime, thresholdIndex);
+      }
+    } catch (std::exception &e) {
+      return asynError;
     }
-    else {
-      uint32_t bypassValue = Engine::getInstance().getCurrentDb()->analogDevices->at(deviceId)->bypass[thresholdIndex]->value;
-      Engine::getInstance().getBypassManager()->setThresholdBypass(Engine::getInstance().getCurrentDb(), bypassType,
-								   deviceId, bypassValue, expirationTime, thresholdIndex);
-    }
-  } catch (std::exception &e) {
-    Engine::getInstance().getCurrentDb()->unlock();
-    return asynError;
   }
-  Engine::getInstance().getCurrentDb()->unlock();
 
   if (expirationTime == 0) {
     if (bypassType == BYPASS_DIGITAL) {
