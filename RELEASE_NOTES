@@ -9,6 +9,9 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-2-1:
+ * built against central_node_engine-R1-2-1
+
 central_node_ioc-R1-2-0:
  * built against central_node_engine-R1-2-0
  * not compatible with R1-1-x
