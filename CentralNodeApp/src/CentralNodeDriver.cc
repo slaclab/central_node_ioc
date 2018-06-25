@@ -898,7 +898,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     }
   }
   else if (_mpsUpdateClearParam == pasynUser->reason) {
-    Engine::getInstance().getCurrentDb()->clearUpdateTime();
+    Engine::getInstance().clearMaxTimers();
     return status;
   }
   else {
