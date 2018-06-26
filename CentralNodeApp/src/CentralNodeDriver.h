@@ -40,6 +40,7 @@
 #define MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING "MPS_ANALOG_DEVICE_REMAINING_BYPTIME"
 #define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "MPS_ANALOG_DEVICE_BYPEXPDATE_STRING"
 #define MPS_ANALOG_DEVICE_IGNORED_STRING           "MPS_ANALOG_DEVICE_IGNORED"
+#define MPS_ANALOG_DEVICE_IGNORED_INTEGRATOR_STRING "MPS_ANALOG_DEVICE_IGNORED_INTEGRATOR"
 #define MPS_UNLATCH_ALL_STRING                     "MPS_UNLATCH_ALL"
 #define MPS_FW_BUILD_STAMP_STRING_STRING           "MPS_FW_BUILD_STAMP_STRING"
 #define MPS_ENABLE_STRING                          "MPS_ENABLE"
@@ -154,6 +155,7 @@ public:
   int _mpsAnalogDeviceBypassRemainingExpirationTimeParam;
   int _mpsAnalogDeviceBypassExpirationDateStringParam;
   int _mpsAnalogDeviceIgnoredParam;
+  int _mpsAnalogDeviceIgnoredIntegratorParam;
   int _mpsUnlatchAllParam;
   int _mpsFwBuildStampParam;
   int _mpsEnableParam;
