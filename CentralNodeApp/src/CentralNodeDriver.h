@@ -111,7 +111,7 @@ public:
 
   /* virtual asynStatus drvUserCreate(asynUser *pasynUser, const char *drvInfo, const char **ppTypeName, */
   /* 				   size_t *psize); */
-  //  virtual asynStatus readOctet(asynUser *pasynUser, char *value, size_t maxChars, size_t *nActual);
+  //virtual asynStatus readOctet(asynUser *pasynUser, char *value, size_t maxChars, size_t *nActual);
   virtual asynStatus writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual);
   virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -217,6 +217,8 @@ public:
   asynStatus loadTestAnalogDevices(const char *testFileName);
 
   asynStatus setBypass(BypassType bypassType, int deviceId, int thresholdIndex, epicsInt32 expirationTime);
+
+  int getParamStringOffset(int deviceIndex, int thresholdIndex);
 };
 
 #endif

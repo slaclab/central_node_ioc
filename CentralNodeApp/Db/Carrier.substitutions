@@ -164,10 +164,10 @@ file "RegisterDoubleOutRBV.template" { pattern
 #======================================
 file "RegisterCommand.template" { pattern
 { P,            R,            DESC,                            PINI,   SCAN,       PORT,   PARAM   }
-{ $(P), MonErrClear,      "Clear monitor error",               "NO",   "Passive",  $(PORT),    MonErrClear     }
-{ $(P), SwErrClear,       "Clear software error",              "NO",   "Passive",  $(PORT),    SwErrClear     }
-{ $(P), ToErrClear,       "Clear the latched timeout error",   "NO",   "Passive",  $(PORT),    ToErrClear     }
-{ $(P), EvalLatchClear,   "Clear PowerLevel Latch",            "NO",   "Passive",  $(PORT),    EvalLatchClear     }
+{ $(P), :MonErrClear,      "Clear monitor error",               "NO",   "Passive",  $(PORT),    MonErrClear     }
+{ $(P), :SwErrClear,       "Clear software error",              "NO",   "Passive",  $(PORT),    SwErrClear     }
+{ $(P), :ToErrClear,       "Clear the latched timeout error",   "NO",   "Passive",  $(PORT),    ToErrClear     }
+{ $(P), :EvalLatchClear,   "Clear PowerLevel Latch",            "NO",   "Passive",  $(PORT),    EvalLatchClear     }
 }
 
 

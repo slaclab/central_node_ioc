@@ -178,6 +178,7 @@ asynStatus CentralNodeDriver::readOctet(asynUser *pasynUser, char *value, size_t
   return asynSuccess;
 }
 */
+
 asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual) {
   asynStatus status = asynSuccess;
 
@@ -1027,6 +1028,10 @@ asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
   return status;
 }
 
+int CentralNodeDriver::getParamStringOffset(int deviceIndex, int thresholdIndex) {
+  return deviceIndex * 4 + thresholdIndex;
+}
+
 /**
  * @param expirationTime bypass expiration time in seconds since now.
  * If expirationTime is zero or negative the bypass is cancelled.
@@ -1075,19 +1080,23 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId,
 
   if (expirationTime == 0) {
     if (bypassType == BYPASS_DIGITAL) {
-      status = setStringParam(deviceId, _mpsDeviceInputBypassExpirationDateStringParam, "Not Bypassed");
+      status = setStringParam(deviceId,
+			      _mpsDeviceInputBypassExpirationDateStringParam, "Not Bypassed");
     }
     else {
-      status = setStringParam(deviceId, _mpsAnalogDeviceBypassExpirationDateStringParam, "Not Bypassed");
+      status = setStringParam(getParamStringOffset(deviceId, thresholdIndex),
+			      _mpsAnalogDeviceBypassExpirationDateStringParam, "Not Bypassed");
     }
   }
   else {
     time_t expTime = expirationTime;
     if (bypassType == BYPASS_DIGITAL) {
-      status = setStringParam(deviceId, _mpsDeviceInputBypassExpirationDateStringParam, ctime(&expTime));
+      status = setStringParam(deviceId,
+			      _mpsDeviceInputBypassExpirationDateStringParam, ctime(&expTime));
     }
     else {
-      status = setStringParam(deviceId, _mpsAnalogDeviceBypassExpirationDateStringParam, ctime(&expTime));
+      status = setStringParam(getParamStringOffset(deviceId, thresholdIndex),
+			      _mpsAnalogDeviceBypassExpirationDateStringParam, ctime(&expTime));
     }
   }
 

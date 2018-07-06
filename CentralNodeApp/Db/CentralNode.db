@@ -362,3 +362,21 @@ record(bo, "$(IOC):SKIP_HEARTBEAT") {
     field(PINI, "YES")
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SKIP_HEARTBEAT")
 }
+
+record(bi, "$(IOC):SW_LOSS_ERROR") {
+    field(INP, "$(IOC):SoftwareLossError")
+    field(PINI, "YES")
+    field(ZNAM, "OK")
+    field(ONAM, "SW_LOSS_ERROR")
+    field(OSV, "MAJOR")
+    field(ZSV, "NO_ALARM")
+}
+
+record(bi, "$(IOC):SW_WD_ERROR") {
+    field(INP, "$(IOC):SoftwareWdError")
+    field(PINI, "YES")
+    field(ZNAM, "OK")
+    field(ONAM, "SW_WD_ERROR")
+    field(OSV, "MAJOR")
+    field(ZSV, "NO_ALARM")
+}
