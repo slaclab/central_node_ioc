@@ -486,6 +486,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 	}
 	else {
 	  *value = 0;
+	  status = setStringParam(addr, _mpsDeviceInputBypassExpirationDateStringParam, "Not Bypassed");
 	}
       } catch (std::exception &e) {
 	status = asynError;
@@ -508,6 +509,8 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 	}
 	else {
 	  *value = 0;
+	  status = setStringParam(getParamStringOffset(addr, bitIndex),
+				  _mpsAnalogDeviceBypassExpirationDateStringParam, "Not Bypassed");
 	}
       } catch (std::exception &e) {
 	status = asynError;
