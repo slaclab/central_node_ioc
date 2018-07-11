@@ -9,6 +9,13 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-2-3:
+ * Fixes to the bypass string PVs, each analog threshold
+   has a separate bypass string - which is indicated by
+   the INP address calculated by the scripts that export
+   information from the MPS database. When number of seconds
+   reaches zero the string is set back to 'Not Bypassed'
+ 
 central_node_ioc-R1-2-2:
  * build against central_node_engine-R1-2-2
  * Addition (again) of code to retrieve status of ignore
