@@ -9,6 +9,9 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-2-4:
+ * Add PVs to control and readback the status of the timing core.
+
 central_node_ioc-R1-2-3:
  * Fixes to the bypass string PVs, each analog threshold
    has a separate bypass string - which is indicated by
