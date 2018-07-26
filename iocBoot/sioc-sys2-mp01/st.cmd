@@ -1,4 +1,4 @@
-#!../../bin/rhel6-x86_64/CentralNode
+#!iocSpecificRelease/bin/linuxRT-x86_64/CentralNode
 
 ## You may have to change CentralNode to something else
 ## everywhere it appears in this file
@@ -44,7 +44,7 @@ epicsEnvSet("FPGA_IP", "10.0.2.102")
 #epicsEnvSet("FPGA_IP", "10.0.1.103")
 
 # Use Automatic generation of records from the YAML definition
-# 0 = No, 1 = Yes
+# 0 = No, 1 = Yes (using maps), 2 = Yes (using hash)
 epicsEnvSet("AUTO_GEN", 0 )
 
 # CPSW Port
@@ -64,20 +64,19 @@ epicsEnvSet("DICT_FILE", "/data/${IOC}/CentralNodeFirmware.dict")
 #    YAML Path,                 #directory where YAML includes can be found (optional)
 #    IP Address,                # OPTIONAL: Target FPGA IP Address. If not given it is taken from the YAML file
 # ==========================================================================================================
-#cpswLoadYamlFile("${YAML_FILE}", "NetIODev", "", "${FPGA_IP}")
+cpswLoadYamlFile("${YAML_FILE}", "NetIODev", "", "${FPGA_IP}")
 
 configureCentralNode("CENTRAL_NODE")
 
 ## Configure asyn port driver
 # YCPSWASYNConfig(
 #    Port Name,                 # the name given to this port driver
-#    Yaml Doc,                  # Path to the YAML file
 #    Root Path                  # OPTIONAL: Root path to start the generation. If empty, the Yaml root will be used
-#    IP Address,                # OPTIONAL: Target FPGA IP Address. If not given it is taken from the YAML file
 #    Record name Prefix,        # Record name prefix
-#    Record name Length Max,    # Record name maximum length (must be greater than lenght of prefix + 4)
+#    DB Autogeneration mode,    # Set autogeneration of records. 0: disabled, 1: Enable usig maps, 2: Enabled using hash names.
+#    Load dictionary,           # Dictionary file path with registers to load. An empty string will disable this function
 # ==========================================================================================================
-#YCPSWASYNConfig("${CPSW_PORT}", "${YAML_FILE}", "", "${FPGA_IP}", "", 40, "${AUTO_GEN}", "${DICT_FILE}")
+YCPSWASYNConfig("${CPSW_PORT}", "", "", "${AUTO_GEN}", "${DICT_FILE}")
 
 ########################################################################
 # BEGIN: Load the record databases
@@ -103,7 +102,7 @@ dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/faults.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/apps.db","BASE=${IOC_PV}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/conditions.db","BASE=${IOC_PV}")
 
-cd iocBoot/iocCentralNode
+cd iocBoot/sioc-sys2-mp01
 
 #======================================================================
 # Save/Restore 
