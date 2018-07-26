@@ -12,6 +12,10 @@
 /mmio/AmcCarrierCore/AxiVersion/ScratchPad                                                                ScratchPad
 /mmio/AmcCarrierCore/AxiVersion/UpTimeCnt                                                                 UpTimeCnt
 /mmio/AmcCarrierCore/AxiVersion/DeviceId                                                                  DeviceId
+/mmio/AmcCarrierCore/AxiSy56040/OutputConfig[0]                                                           TIM_CB_OUT_0
+/mmio/AmcCarrierCore/AxiSy56040/OutputConfig[1]                                                           TIM_CB_OUT_1
+/mmio/AmcCarrierCore/AxiSy56040/OutputConfig[2]                                                           TIM_CB_OUT_2
+/mmio/AmcCarrierCore/AxiSy56040/OutputConfig[3]                                                           TIM_CB_OUT_3
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/sofCount                                              sofCount
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/eofCount                                              eofCount
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/CrcErrCount                                           CrcErrCount
@@ -19,8 +23,8 @@
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxRstCount                                            RxRstCount
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxDecErrCount                                         RxDecErrCount
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxDspErrCount                                         RxDspErrCount
-/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxLinkUp                                              RxLinkUp
-/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/ClkSel                                                ClkSel
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxLinkUp                                              TIM_RX_LINK
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/ClkSel                                                TIM_CLK_SEL
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxPolarity                                            RxPolarity
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/FrameVersion                                          FrameVersion
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/VersionErr                                            VersionErr

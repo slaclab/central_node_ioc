@@ -97,7 +97,6 @@ file "RegisterOutAutosave.template" { pattern
 file "RegisterOutRBV.template" { pattern
 { P,           R,                DESC,                                    PINI,   SCAN,        PORT,       PARAM          }
 { $(P), ScratchPadRBV,      "Register to test R/W",                       "YES",  "1 second",  $(PORT),    ScratchPad      }
-{ $(P), ClkSelRBV,          ""                                            "YES",  "1 second",  $(PORT),    ClkSel          }
 { $(P), RxPolarityRBV,      ""                                            "YES",  "1 second",  $(PORT),    RxPolarity      }
 { $(P), EnableRBV,          "General Enable. Enables message stream",     "YES",  "1 second",  $(PORT),    Enable          }
 { $(P), SwitchRBV,          "Switch the configuration buffer       ",     "YES",  "1 second",  $(PORT),    Switch          }
@@ -137,6 +136,33 @@ file "RegisterEnumBOut.template" { pattern
 
 file "RegisterEnumBOutRBV.template" { pattern
 { P,        R,              DESC,         PINI    ZNAM,        ONAM,     SCAN,        PORT, PARAM     }
+}
+
+#======================================
+# 1-bit Register with ScalVal_RO interfaces
+#======================================
+file "Reg1BitRO.template" { pattern
+{ R,                  DESC,                                     ZNAM,           ONAM,       SCAN,           PARAM                }
+{ TIM_LINK_STAT       "Timing Rx link status",                  "Non-locked",   "Locked",   "1 second",     TIM_RX_LINK          }
+}
+
+#======================================
+# 1-bit Register with ScalVal interfaces
+#======================================
+file "Reg1BitRW.template" { pattern
+{ R,                  DESC,                                     ZNAM,       ONAM,       SCAN,          PARAM                    }
+{ TIM_CLK_SRC,        "Timinig source",                         "LCLS-1",   "LCLS-2",   "1 second",    TIM_CLK_SEL              }
+}
+
+#======================================
+# 2-bit Register with ScalVal interfaces
+#======================================
+file "Reg2BitsRW.template" { pattern
+{ R,              DESC,                                     ZRST,       ONST,       TWST,           THST,       SCAN,          PARAM                     }
+{ TIM_SRC_RTM0,   "Timing source for RTM #0",               "RTM_0",    "FPGA",     "Backplane",    "RTM_1",    "1 second",    TIM_CB_OUT_0              }
+{ TIM_SRC_FPGA,   "Timing source for FPGA",                 "RTM_0",    "FPGA",     "Backplane",    "RTM_1",    "1 second",    TIM_CB_OUT_1              }
+{ TIM_SRC_BP,     "Timing source for Backplane",            "RTM_0",    "FPGA",     "Backplane",    "RTM_1",    "1 second",    TIM_CB_OUT_2              }
+{ TIM_SRC_RTM1,   "Timing source for RTM #1",               "RTM_0",    "FPGA",     "Backplane",    "RTM_1",    "1 second",    TIM_CB_OUT_3              }
 }
 
 #======================================
