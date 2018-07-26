@@ -40,7 +40,7 @@ epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 epicsEnvSet("YAML_FILE", "${MPS_ENV_FW_CONFIG}")
 
 # Central Node FPGA IP address 
-epicsEnvSet("FPGA_IP", "10.0.2.102")
+epicsEnvSet("FPGA_IP", "10.0.0.102")
 #epicsEnvSet("FPGA_IP", "10.0.1.103")
 
 # Use Automatic generation of records from the YAML definition
