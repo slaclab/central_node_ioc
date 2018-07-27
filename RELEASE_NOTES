@@ -16,6 +16,7 @@ central_node_ioc-R1-2-4:
  * Give executable permission to st.cmd.
  * Update PHYSICS_TOP path used in PROD.
  * Use dictionary file which is shipped with the IOC application.
+ * Add PVs to save and load register configuration via CPSW YAML.
 
 central_node_ioc-R1-2-3:
  * Fixes to the bypass string PVs, each analog threshold
