@@ -17,6 +17,10 @@ central_node_ioc-R1-2-4:
  * Update PHYSICS_TOP path used in PROD.
  * Use dictionary file which is shipped with the IOC application.
  * Add PVs to save and load register configuration via CPSW YAML.
+ * Rename the directory yaml to firmware.
+ * Add the FW mcs file to the IOC app so it can be (re)load in PROD.
+ * Add the YAML definition file corresponding to the current FW image
+   to the IOC application and reference that file from st.cmd.
 
 central_node_ioc-R1-2-3:
  * Fixes to the bypass string PVs, each analog threshold
