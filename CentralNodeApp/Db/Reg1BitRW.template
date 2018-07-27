@@ -9,7 +9,7 @@ record(bo,      "$(P):$(R)") {
     field(FLNK, "$(P):$(R)_RBV")
 }
 
-record(bi,      "$(P):$(R)RBV") {
+record(bi,      "$(P):$(R)_RBV") {
     field(DTYP, "asynUInt32Digital")
     field(DESC, "$(DESC)")
     field(PINI, "YES")
