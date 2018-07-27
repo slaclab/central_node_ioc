@@ -51,7 +51,7 @@ epicsEnvSet("AUTO_GEN", 0 )
 epicsEnvSet("CPSW_PORT", "CentralNodeCPSW")
 
 # Dictionary file for manual (empty string if none)
-epicsEnvSet("DICT_FILE", "yaml/CentralNodeFirmware.dict")
+epicsEnvSet("DICT_FILE", "firmware/CentralNodeFirmware.dict")
 
 # ===================================================================================================================
 # Driver setup and initialization for YCPSWAsyn
