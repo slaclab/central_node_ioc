@@ -13,6 +13,7 @@ central_node_ioc-R1-2-4:
  * Add PVs to control and readback the status of the timing core.
  * Rename IOC directory to sioc-sys2-mp01.
  * Update Central Node FPGA IP address to 10.0.0.102.
+ * Give executable permission to st.cmd.
 
 central_node_ioc-R1-2-3:
  * Fixes to the bypass string PVs, each analog threshold
