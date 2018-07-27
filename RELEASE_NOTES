@@ -15,6 +15,7 @@ central_node_ioc-R1-2-4:
  * Update Central Node FPGA IP address to 10.0.0.102.
  * Give executable permission to st.cmd.
  * Update PHYSICS_TOP path used in PROD.
+ * Use dictionary file which is shipped with the IOC application.
 
 central_node_ioc-R1-2-3:
  * Fixes to the bypass string PVs, each analog threshold
