@@ -95,6 +95,9 @@ dbLoadRecords("db/iocRelease.db","IOC=${IOC}")
 dbLoadRecords("db/CentralNode.db","IOC=${IOC_PV}")
 dbLoadRecords("db/Carrier.db","P=${IOC_PV}, PORT=${CPSW_PORT}")
 
+# Save/load configuration database
+dbLoadRecords("db/saveLoadConfig.db", "P=${IOC_PV}, PORT=${CPSW_PORT}")
+
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/device_inputs.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/analog_devices.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/destinations.db","BASE=${IOC_PV}")

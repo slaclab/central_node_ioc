@@ -50,6 +50,9 @@ DB_INSTALLS += $(YCPSWASYN)/db/waveform_stream16.template
 DB_INSTALLS += $(YCPSWASYN)/db/waveform_stream32.template
 DB_INSTALLS += $(YCPSWASYN)/db/RegisterCommand.template
 
+# For saving and loading yaml configuration
+DB += saveLoadConfig.db
+
 # Install Common databases needed by All IOCs
 # ========================================================
 # Install databases from iocAdmin package

@@ -1,0 +1,102 @@
+# Database to save/load defaults from YAML
+# Asyn ADDR 6 is reserved for this function
+# List of ASYN parameters:
+#     CONFIG_LOAD        : Calls the load configuration function
+#     CONFIG_SAVE        : Calls the save configuration function
+#     CONFIG_LOAD_FILE   : Name of the YAML file with the configuration to load
+#     CONFIG_SAVE_FILE   : Name of the YAML file where to dump the configuration
+#     CONFIG_LOAD_STATUS : Status of the configuration loading proccess 
+#     CONFIG_SAVE_STATUS : Status of the configuration saving process
+
+record(ao, "$(P):loadConfig") {
+  field(DESC, "Load configuration from YAML")
+  field(DTYP, "asynInt32")
+  field(SCAN, "Passive")
+  field(OUT, "@asyn($(PORT),6)CONFIG_LOAD")
+  info(asyn:READBACK, "1")
+}
+
+record(ao, "$(P):saveConfig") {
+  field(DESC, "Save configuration on YAML")
+  field(DTYP, "asynInt32")
+  field(SCAN, "Passive")
+  field(OUT, "@asyn($(PORT),6)CONFIG_SAVE")
+  info(asyn:READBACK, "1")
+}
+
+record(waveform, "$(P):saveConfigFile") {
+  field(DESC, "Save configuration file name")
+  field(DTYP, "asynOctetWrite")
+  field(FTVL, "CHAR")
+  field(NELM, "256")
+  field(SCAN, "Passive")
+  field(INP, "@asyn($(PORT),6)CONFIG_SAVE_FILE")
+  field(PINI, "YES")
+}
+
+record(waveform, "$(P):loadConfigFile") {
+  field(DESC, "Load configuration file name")
+  field(DTYP, "asynOctetWrite")
+  field(FTVL, "CHAR")
+  field(NELM, "256")
+  field(SCAN, "Passive")
+  field(INP, "@asyn($(PORT),6)CONFIG_LOAD_FILE")
+  field(PINI, "YES")
+}
+
+record(mbbi, "$(P):loadConfigStatus") {
+  field(DESC, "Load configuration status")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "I/O Intr")
+  field(INP, "@asynMask($(PORT),6,0x03)CONFIG_LOAD_STATUS")
+  field(NOBT, "2")
+  field(ZRVL, "0")
+  field(ONVL, "1")
+  field(TWVL, "2")
+  field(THVL, "3")
+  field(ZRST, "Idle")
+  field(ONST, "Loading...")
+  field(TWST, "Loaded successfully")
+  field(THST, "Error while loading")
+  field(VAL,  "0")
+  field(PINI, "YES")
+}
+
+record(mbbi, "$(P):saveConfigStatus") {
+  field(DESC, "Load configuration status")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "I/O Intr")
+  field(INP, "@asynMask($(PORT),6,0x03)CONFIG_SAVE_STATUS")
+  field(NOBT, "2")
+  field(ZRVL, "0")
+  field(ONVL, "1")
+  field(TWVL, "2")
+  field(THVL, "3")
+  field(ZRST, "Idle")
+  field(ONST, "Saving...")
+  field(TWST, "Saved successfully")
+  field(THST, "Error while saving")
+  field(VAL,  "0")
+  field(PINI, "YES")
+}
+
+record(waveform, "$(P):loadConfigRoot") {
+  field(DESC, "Load configuration CPSW root Path")
+  field(DTYP, "asynOctetWrite")
+  field(FTVL, "CHAR")
+  field(NELM, "256")
+  field(SCAN, "Passive")
+  field(INP, "@asyn($(PORT),6)CONFIG_LOAD_ROOT")
+  field(PINI, "YES")
+}
+
+
+record(waveform, "$(P):saveConfigRoot") {
+  field(DESC, "Save configuration CPSW root Path")
+  field(DTYP, "asynOctetWrite")
+  field(FTVL, "CHAR")
+  field(NELM, "256")
+  field(SCAN, "Passive")
+  field(INP, "@asyn($(PORT),6)CONFIG_SAVE_ROOT")
+  field(PINI, "YES")
+}
