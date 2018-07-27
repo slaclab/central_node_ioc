@@ -1,0 +1,592 @@
+##############################################################################
+## This file is part of 'LCLS2 Common Carrier Core'.
+## It is subject to the license terms in the LICENSE.txt file found in the 
+## top-level directory of this distribution and at: 
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
+## No part of 'LCLS2 Common Carrier Core', including this file, 
+## may be copied, modified, propagated, or distributed except according to 
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once DaqMuxV2.yaml
+
+DaqMuxV2: &DaqMuxV2
+  name: DaqMuxV2
+  description: Waveform Data Acquisition Module
+  size: 0x1000
+  class: MMIODev
+  configPrio: 1
+  metadata:
+    - numOutPorts: 4              
+  children:
+    #########################################################
+    TriggerSw:
+      at:
+        offset: 0x000
+      class: IntField
+      name: TriggerSw
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Software Trigger (triggers DAQ on all enabled channels)."
+    #########################################################
+    TriggerCascMask:
+      at:
+        offset: 0x000
+      class: IntField
+      name: TriggerCascMask
+      sizeBits: 1
+      lsBit: 1
+      mode: RW
+      enums:
+        - name: Disabled
+          class: Enum
+          value: 0
+        - name: Enabled
+          class: Enum
+          value: 1
+      description: Mask for enabling/disabling cascaded trigger.
+    #########################################################
+    TriggerHwAutoRearm:
+      at:
+        offset: 0x000
+      class: IntField
+      name: TriggerHwAutoRearm
+      sizeBits: 1
+      lsBit: 2
+      mode: RW
+      enums:
+        - name: Disabled
+          class: Enum
+          value: 0
+        - name: Enabled
+          class: Enum
+          value: 1
+      description: Mask for enabling/disabling hardware trigger. If disabled it has
+        to be rearmed by ArmHwTrigger.
+    #########################################################
+    TriggerHwArm:
+      at:
+        offset: 0x000
+      class: IntField
+      name: TriggerHwArm
+      sizeBits: 1
+      lsBit: 3
+      mode: RW
+      description: Arm the Hardware trigger (On the rising edge). After trigger occurs
+        the trigger has to be rearmed.
+    #########################################################
+    TriggerClearStatus:
+      at:
+        offset: 0x000
+      class: IntField
+      name: TriggerClearStatus
+      sizeBits: 1
+      lsBit: 4
+      mode: RW
+      description: Trigger status will be cleared (On the rising edge).
+    #########################################################
+    DaqMode:
+      at:
+        offset: 0x000
+      class: IntField
+      name: DaqMode
+      sizeBits: 1
+      lsBit: 5
+      mode: RW
+      enums:
+        - name: TriggeredMode
+          class: Enum
+          value: 0
+        - name: ContinuousMode
+          class: Enum
+          value: 1
+      description: Select the data ackuisition mode.
+    #########################################################
+    PacketHeaderEn:
+      at:
+        offset: 0x000
+      class: IntField
+      name: PacketHeaderEn
+      sizeBits: 1
+      lsBit: 6
+      mode: RW
+      enums:
+        - name: Disabled
+          class: Enum
+          value: 0
+        - name: Enabled
+          class: Enum
+          value: 1
+      description: Applies only to Triggered mode.
+    #########################################################
+    FreezeSw:
+      at:
+        offset: 0x000
+      class: IntField
+      name: FreezeSw
+      sizeBits: 1
+      lsBit: 7
+      mode: RW
+      description: Software freeze buffer (Freezes all enabled circular buffers).
+    #########################################################
+    FreezeHwMask:
+      at:
+        offset: 0x001
+      class: IntField
+      name: FreezeHwMask
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      enums:
+        - name: Disabled
+          class: Enum
+          value: 0
+        - name: Enabled
+          class: Enum
+          value: 1
+      description: Mask for enabling/disabling hardware freaze buffer request.
+    #########################################################
+    TriggerSwStatus:
+      at:
+        offset: 0x004
+      class: IntField
+      name: TriggerSwStatus
+      sizeBits: 1
+      lsBit: 0
+      mode: RO
+      description: Software Trigger Status (Registered on first trigger until cleared
+        by TriggerClearStatus).
+    #########################################################
+    TriggerCascStatus:
+      at:
+        offset: 0x004
+      class: IntField
+      name: TriggerCascStatus
+      sizeBits: 1
+      lsBit: 1
+      mode: RO
+      description: Cascade Trigger Status (Registered on first trigger until cleared
+        by TriggerClearStatus).
+    #########################################################
+    TriggerHwStatus:
+      at:
+        offset: 0x004
+      class: IntField
+      name: TriggerHwStatus
+      sizeBits: 1
+      lsBit: 2
+      mode: RO
+      description: Hardware Trigger Status (Registered on first trigger until cleared
+        by TriggerClearStatus).
+    #########################################################
+    TriggerHwArmed:
+      at:
+        offset: 0x004
+      class: IntField
+      name: TriggerHwArmed
+      sizeBits: 1
+      lsBit: 3
+      mode: RO
+      description: Hardware Trigger Armed Status (Registered on rising edge Control(3)
+        and cleared when Hw trigger occurs).
+    #########################################################
+    TriggerStatus:
+      at:
+        offset: 0x004
+      class: IntField
+      name: TriggerStatus
+      sizeBits: 1
+      lsBit: 4
+      mode: RO
+      description: Combined Trigger Status (Registered on first trigger until cleared
+        by TriggerClearStatus).
+    #########################################################    
+    FreezeStatus:
+      at:
+        offset: 0x004
+      class: IntField
+      name: FreezeStatus
+      sizeBits: 1
+      lsBit: 5
+      mode: RO
+      description: Freeze Buffers Status (Registered on first freeze until cleared
+        by TriggerClearStatus)
+    #########################################################      
+    DecimationRateDiv:
+      at:
+        offset: 0x008
+      class: IntField
+      name: DecimationRateDiv
+      sizeBits: 16
+      mode: RW
+      description: 'Averaging Enabled: (powers of two) 1,2,4,8,16,etc (max 2^12).
+        Averaging Disabled (32-bit): 1,2,3,4,etc (max 2^16-1). Averaging Disabled
+        (16-bit): 1,2,4,6,8,etc (max 2^16-1).'
+    #########################################################
+    DataBufferSize:
+      at:
+        offset: 0x00C
+      class: IntField
+      name: DataBufferSize
+      sizeBits: 32
+      mode: RW
+      description: Number of 32-bit words. Minimum size is 4.
+    #########################################################
+    Timestamp:
+      at:
+        offset: 0x010
+        nelms: 2
+      class: IntField
+      name: Timestamp
+      sizeBits: 32
+      mode: RO
+      description: Timestamp 63:0
+    #########################################################
+    Bsa:
+      at:
+        offset: 0x018
+        nelms: 4
+      class: IntField
+      name: Bsa
+      sizeBits: 32
+      mode: RO
+      description:  "bsa(0) - edefAvgDn, bsa(1) - edefMinor, bsa(2) - edefMajor, bsa(3) - edefInit"
+    #########################################################
+    TrigCount:
+      at:
+        offset: 0x028
+      class: IntField
+      name: TrigCount
+      sizeBits: 32
+      mode: RO
+      description:  "Counts valid data acquisition triggers."
+    #########################################################
+    DbgInputValid:
+      at:
+        offset: 0x02C
+      class: IntField
+      name: DbgInputValid
+      sizeBits: 32
+      mode: RO
+      description:  "Input Valid bus for debugging"   
+    #########################################################
+    DbgLinkReady:
+      at:
+        offset: 0x030
+      class: IntField
+      name: DbgInputValid
+      sizeBits: 32
+      mode: RO
+      description:  "Input LinkReady bus for debugging"         
+    #########################################################
+    InputMuxSel:
+      at:
+        offset: 0x040
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: InputMuxSel
+      sizeBits: 5
+      mode: RW
+      enums:
+        - name: Disabled
+          class: Enum
+          value: 0
+        - name: Test
+          class: Enum
+          value: 1
+        - name: Ch0
+          class: Enum
+          value: 2
+        - name: Ch1
+          class: Enum
+          value: 3
+        - name: Ch2
+          class: Enum
+          value: 4
+        - name: Ch3
+          class: Enum
+          value: 5
+        - name: Ch4
+          class: Enum
+          value: 6
+        - name: Ch5
+          class: Enum
+          value: 7
+        - name: Ch6
+          class: Enum
+          value: 8
+        - name: Ch7
+          class: Enum
+          value: 9
+        - name: Ch8
+          class: Enum
+          value: 10
+        - name: Ch9
+          class: Enum
+          value: 11
+        - name: Ch10
+          class: Enum
+          value: 12
+        - name: Ch11
+          class: Enum
+          value: 13
+        - name: Ch12
+          class: Enum
+          value: 14
+        - name: Ch13
+          class: Enum
+          value: 15
+        - name: Ch14
+          class: Enum
+          value: 16
+        - name: Ch15
+          class: Enum
+          value: 17
+        - name: Ch16
+          class: Enum
+          value: 18
+        - name: Ch17
+          class: Enum
+          value: 19
+        - name: Ch18
+          class: Enum
+          value: 20
+        - name: Ch19
+          class: Enum
+          value: 21
+        - name: Ch20
+          class: Enum
+          value: 22
+        - name: Ch21
+          class: Enum
+          value: 23
+        - name: Ch22
+          class: Enum
+          value: 24
+        - name: Ch23
+          class: Enum
+          value: 25
+        - name: Ch24
+          class: Enum
+          value: 26
+        - name: Ch25
+          class: Enum
+          value: 27
+        - name: Ch26
+          class: Enum
+          value: 28
+        - name: Ch27
+          class: Enum
+          value: 29
+        - name: Ch28
+          class: Enum
+          value: 30
+        - name: Ch29
+          class: Enum
+          value: 31
+      description: Input Mux select. Maximum number of channels is 29.
+    #########################################################
+    StreamPause:
+      at:
+        offset: 0x080
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: StreamPause
+      sizeBits: 1
+      mode: RO
+      description: Raw diagnostic stream control Pause.
+    #########################################################
+    StreamReady:
+      at:
+        offset: 0x080
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: StreamReady
+      sizeBits: 1
+      lsBit: 1
+      mode: RO
+      description: Raw diagnostic stream control Ready.
+    #########################################################
+    StreamOverflow:
+      at:
+        offset: 0x080
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: StreamOverflow
+      sizeBits: 1
+      lsBit: 2
+      mode: RO
+      description: Raw diagnostic stream control Overflow.
+    #########################################################
+    StreamError:
+      at:
+        offset: 0x080
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: StreamError
+      sizeBits: 1
+      lsBit: 3
+      mode: RO
+      description: Error during last Acquisition (Raw diagnostic stream control Ready
+        or incoming data valid dropped).
+    #########################################################
+    InputDataValid:
+      at:
+        offset: 0x080
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: InputDataValid
+      sizeBits: 1
+      lsBit: 4
+      mode: RO
+      description: The incoming data is Valid (Usually connected to JESD valid signal).
+    #########################################################
+    StreamEnabled:
+      at:
+        offset: 0x080
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: StreamEnabled
+      sizeBits: 1
+      lsBit: 5
+      mode: RO
+      description: Output stream enabled.
+    #########################################################
+    FrameCnt:
+      at:
+        offset: 0x080
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: FrameCnt
+      sizeBits: 26
+      lsBit: 6
+      mode: RO
+      description: Number of 4096 byte frames sent.
+    #########################################################
+    FormatSignWidth:
+      at:
+        offset: 0x0C0
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: FormatSignWidth
+      sizeBits: 5
+      mode: RW
+      hidden: true
+      description: Indicating sign extension point.
+    #########################################################
+    FormatDataWidth:
+      at:
+        offset: 0x0C0
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: FormatDataWidth
+      sizeBits: 1
+      lsBit: 5
+      mode: RW
+      enums:
+        - name: D32-bit
+          class: Enum
+          value: 0
+        - name: D16-bit
+          class: Enum
+          value: 1
+      description: Data width 32-bit or 16-bit.
+    #########################################################
+    FormatSign:
+      at:
+        offset: 0x0C0
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: FormatSign
+      sizeBits: 1
+      lsBit: 6
+      mode: RW
+      enums:
+        - name: Unsigned
+          class: Enum
+          value: 0
+        - name: Signed
+          class: Enum
+          value: 1
+      hidden: true
+      description: Sign format.
+    #########################################################
+    DecimationAveraging:
+      at:
+        offset: 0x0C0
+        stride: 4
+        nelms: 4                  
+      class: IntField
+      name: DecimationAveraging
+      sizeBits: 1
+      lsBit: 7
+      mode: RW
+      enums:
+        - name: Disabled
+          class: Enum
+          value: 0
+        - name: Enabled
+          class: Enum
+          value: 1
+      description: Decimation Averaging.
+    #########################################################
+    TriggerDaq:
+      name: TriggerDaq
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Trigger data aquisition from software.
+      sequence:
+      - entry: TriggerSw
+        value: 0x1
+      - entry: TriggerSw
+        value: 0x0
+    #########################################################
+    ArmHwTrigger:
+      name: ArmHwTrigger
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Arm Hardware Trigger.
+      sequence:
+      - entry: TriggerHwArm
+        value: 0x1
+      - entry: TriggerHwArm
+        value: 0x0
+    #########################################################
+    FreezeBuffers:
+      name: FreezeBuffers
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Freeze circular buffers from software.
+      sequence:
+      - entry: FreezeSw
+        value: 0x1
+      - entry: FreezeSw
+        value: 0x0
+    #########################################################
+    ClearTrigStatus:
+      name: ClearTrigStatus
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Clear the status.
+      sequence:
+      - entry: TriggerClearStatus
+        value: 0x1
+      - entry: TriggerClearStatus
+        value: 0x0
+    #########################################################

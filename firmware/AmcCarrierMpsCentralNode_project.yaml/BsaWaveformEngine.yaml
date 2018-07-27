@@ -1,0 +1,80 @@
+##############################################################################
+## This file is part of 'LCLS2 Common Carrier Core'.
+## It is subject to the license terms in the LICENSE.txt file found in the 
+## top-level directory of this distribution and at: 
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
+## No part of 'LCLS2 Common Carrier Core', including this file, 
+## may be copied, modified, propagated, or distributed except according to 
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once BsaWaveformEngine.yaml
+#include: AxiStreamDmaRingWrite.yaml
+
+Device: &BsaWaveformEngine
+  name: BsaWaveformEngine
+  class: MMIODev
+  configPrio: 1
+  description: Configuration and status of the BSA dignosic buffers
+  size: 0x1000 
+  metadata:
+    numBuffers: &BsaWaveformNelms 4
+    destHidden: &BsaWaveformHidden false
+    destEnums: &BsaWaveformEnums
+      - name: Software
+        value: 0
+      - name: Auto-Readout
+        value: 1
+  #########
+  children:
+    WaveformEngineBuffers:
+      <<: *AxiStreamDmaRingWrite
+      at:
+        offset: 0x00000000
+#      children:
+#        StartAddr:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        EndAddr:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        WrAddr:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        TriggerAddr:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        Enabled:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        Mode:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        SoftTrigger:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        MsgDest:
+#          at:
+#            nelms: *BsaWaveformNelms
+#          enums: *BsaWaveformEnums
+#        FramesAfterTrigger:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        Empty:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        Full:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        Done:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        Triggered:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        Error:
+#          at:
+#            nelms: *BsaWaveformNelms
+#        FramesSinceTrigger:
+#          at:
+#            nelms: *BsaWaveformNelms

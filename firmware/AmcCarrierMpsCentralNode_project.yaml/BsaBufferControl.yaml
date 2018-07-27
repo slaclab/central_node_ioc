@@ -1,0 +1,116 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the 
+## top-level directory of this distribution and at: 
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
+## No part of 'SLAC Firmware Standard Library', including this file, 
+## may be copied, modified, propagated, or distributed except according to 
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once BsaBufferControl.yaml
+#include GenericMemory.yaml
+#include AxiStreamDmaRingWrite.yaml
+
+BsaBufferControl: &BsaBufferControl
+  description: Configuration and status of the BSA dignosic buffers
+  class: MMIODev
+  configPrio: 1
+  size: 0x2000 # Double check this
+  #########
+  children:
+    Timestamps:
+      at:
+        offset: 0x00000000
+      size: 512 # 64 64-bit values
+      class: MMIODev
+      configPrio: 1
+      children:
+        MemoryArray:
+          <<: *MemoryArray
+          at:
+            offset: 0x0
+            stride: 8
+            nelms: 64
+          sizeBits: 64
+          mode: RO
+    BsaBuffers:
+      at:
+        offset: 0x00001000
+      <<: *AxiStreamDmaRingWrite
+      metadata:
+        numBuffers: &BsaBufferControlNelms 64
+        destEnums: &BsaBufferControlEnums
+          - name: Software
+            value: 0
+        destHidden: &BsaBufferControlHidden true
+      children:
+        StartAddr:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        EndAddr:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        WrAddr:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        TriggerAddr:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        Enabled:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        Mode:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        Init:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        SoftTrigger:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        MsgDest:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+          enums: *BsaBufferControlEnums
+        FramesAfterTrigger:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        Status:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        Empty:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        Full:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        Done:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        Triggered:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        Error:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms
+        FramesSinceTrigger:
+          class: IntField
+          at:
+            nelms: *BsaBufferControlNelms

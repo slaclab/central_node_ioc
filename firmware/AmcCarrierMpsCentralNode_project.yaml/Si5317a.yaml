@@ -1,0 +1,246 @@
+##############################################################################
+## This file is part of 'LCLS2 Common Carrier Core'.
+## It is subject to the license terms in the LICENSE.txt file found in the 
+## top-level directory of this distribution and at: 
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
+## No part of 'LCLS2 Common Carrier Core', including this file, 
+## may be copied, modified, propagated, or distributed except according to 
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once Si5317a.yaml
+
+Si5317a: &Si5317a
+  name: Si5317a
+  description: Si5317a Module
+  class: MMIODev
+  configPrio: 1
+  size: 0x100
+  children:
+    #########################################################
+    pllRst:
+      at:
+        offset: 0x4
+      class: IntField
+      name: pllRst
+      mode: WO
+      sizeBits: 1
+      lsBit: 0
+      description: pllRst    
+    #########################################################
+    pllInc:
+      at:
+        offset: 0x4
+      class: IntField
+      name: pllInc
+      mode: RW
+      sizeBits: 1
+      lsBit: 1
+      description: pllInc    
+    #########################################################
+    pllDec:
+      at:
+        offset: 0x4
+      class: IntField
+      name: pllDec
+      mode: RW
+      sizeBits: 1
+      lsBit: 2
+      description: pllDec    
+    #########################################################
+    pllLos:
+      at:
+        offset: 0x4
+      class: IntField
+      name: pllLos
+      mode: RO
+      sizeBits: 1
+      lsBit: 3
+      description: pllLos    
+    #########################################################
+    pllLol:
+      at:
+        offset: 0x4
+      class: IntField
+      name: pllLol
+      mode: RO
+      sizeBits: 1
+      lsBit: 4
+      description: pllLol 
+    #########################################################
+    pllLocked:
+      at:
+        offset: 0x4
+      class: IntField
+      name: pllLocked
+      mode: RO
+      sizeBits: 1
+      lsBit: 5
+      description: pllLocked       
+    #########################################################
+    pllDbl2By:
+      at:
+        offset: 0x5
+      class: IntField
+      name: pllDbl2By
+      mode: RW
+      sizeBits: 1
+      lsBit: 0
+      description: pllDbl2By    
+    #########################################################
+    pllDbl2ByTri:
+      at:
+        offset: 0x5
+      class: IntField
+      name: pllDbl2ByTri
+      mode: RW
+      sizeBits: 1
+      lsBit: 1
+      description: pllDbl2ByTri    
+    #########################################################
+    pllFrqTbl:
+      at:
+        offset: 0x5
+      class: IntField
+      name: pllFrqTbl
+      mode: RW
+      sizeBits: 1
+      lsBit: 2
+      description: pllFrqTbl    
+    #########################################################
+    pllFrqTblTri:
+      at:
+        offset: 0x5
+      class: IntField
+      name: pllFrqTblTri
+      mode: RW
+      sizeBits: 1
+      lsBit: 3
+      description: pllFrqTblTri    
+    #########################################################
+    pllRate:
+      at:
+        offset: 0x5
+      class: IntField
+      name: pllRate
+      mode: RW
+      sizeBits: 2
+      lsBit: 4
+      description: pllRate    
+    #########################################################
+    pllRateTri:
+      at:
+        offset: 0x5
+      class: IntField
+      name: pllRateTri
+      mode: RW
+      sizeBits: 2
+      lsBit: 6
+      description: pllRateTri    
+    #########################################################
+    pllSFout:
+      at:
+        offset: 0x6
+      class: IntField
+      name: pllSFout
+      mode: RW
+      sizeBits: 2
+      lsBit: 0
+      description: pllSFout    
+    #########################################################
+    pllSFoutTri:
+      at:
+        offset: 0x6
+      class: IntField
+      name: pllSFoutTri
+      mode: RW
+      sizeBits: 2
+      lsBit: 2
+      description: pllSFoutTri    
+    #########################################################
+    pllBwSel:
+      at:
+        offset: 0x6
+      class: IntField
+      name: pllBwSel
+      mode: RW
+      sizeBits: 2
+      lsBit: 4
+      description: pllBwSel    
+    #########################################################
+    pllBwSelTri:
+      at:
+        offset: 0x6
+      class: IntField
+      name: pllBwSelTri
+      mode: RW
+      sizeBits: 2
+      lsBit: 6
+      description: pllBwSelTri    
+    #########################################################
+    pllFrqSel:
+      at:
+        offset: 0x7
+      class: IntField
+      name: pllFrqSel
+      mode: RW
+      sizeBits: 4
+      lsBit: 0
+      description: pllFrqSel    
+    #########################################################
+    pllFrqSelTri:
+      at:
+        offset: 0x7
+      class: IntField
+      name: pllFrqSelTri
+      mode: RW
+      sizeBits: 4
+      lsBit: 4
+      description: pllFrqSelTri    
+    #########################################################
+    cntLos:
+      at:
+        offset: 0x80
+      class: IntField
+      name: cntLos
+      mode: RO
+      sizeBits: 32
+      description: status counter for los   
+    #########################################################
+    cntLol:
+      at:
+        offset: 0x84
+      class: IntField
+      name: cntLol
+      mode: RO
+      sizeBits: 32
+      description: status counter for los        
+    #########################################################
+    cntLocked:
+      at:
+        offset: 0x88
+      class: IntField
+      name: cntLocked
+      mode: RO
+      sizeBits: 32
+      description: status counter for pllLocked  
+    #########################################################
+    cntPllRst:
+      at:
+        offset: 0x8C
+      class: IntField
+      name: cntPllRst
+      mode: RO
+      sizeBits: 32
+      description: status counter for pllRst        
+    #########################################################
+    cntRst:
+      at:
+        offset: 0xFC
+      class: IntField
+      name: cntRst
+      mode: WO
+      sizeBits: 1
+      lsBit: 0
+      description: cntRst      
+    #########################################################

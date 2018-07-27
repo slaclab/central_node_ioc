@@ -1,0 +1,85 @@
+##############################################################################
+## This file is part of 'LCLS2 Common Carrier Core'.
+## It is subject to the license terms in the LICENSE.txt file found in the 
+## top-level directory of this distribution and at: 
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
+## No part of 'LCLS2 Common Carrier Core', including this file, 
+## may be copied, modified, propagated, or distributed except according to 
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once AmcCarrierBsi.yaml
+
+AmcCarrierBsi: &AmcCarrierBsi
+  name: AmcCarrierBsi
+  description: AmcCarrier BSI Module
+  class: MMIODev
+  configPrio: 1
+  size: 0x100
+  children:
+    #########################################################
+    MAC:
+      at:
+        offset: 0x00
+        nelms: 4
+        stride: 8
+      class: IntField
+      name: MAC
+      sizeBits: 48
+      mode: RO
+      description: MAC Address[3:0]
+    #########################################################
+    CrateId:
+      at:
+        offset: 0x80
+      class: IntField
+      name: CrateId
+      mode: RO
+      sizeBits: 16
+      description: ATCA Crate ID
+    #########################################################
+    SlotNumber:
+      at:
+        offset: 0x84
+      class: IntField
+      name: SlotNumber
+      mode: RO
+      sizeBits: 4
+      description: ATCA Logical Slot Number
+    #########################################################
+    BootStartAddress:
+      at:
+        offset: 0x88
+      class: IntField
+      name: BootStartAddress
+      mode: RO
+      description: Bootloader Start Address
+    #########################################################
+    VersionMinor:
+      at:
+        offset: 0x8C
+      class: IntField
+      name: VersionMinor
+      mode: RO
+      sizeBits: 8
+      description: BSI's Minor Version Number
+    #########################################################
+    VersionMajor:
+      at:
+        offset: 0x91
+      class: IntField
+      name: VersionMajor
+      mode: RO
+      sizeBits: 8
+      description: BSI's Major Version Number
+    #########################################################
+    EthUpTime:
+      at:
+        offset: 0x94
+      class: IntField
+      name: EthUpTime
+      mode: RO
+      sizeBits: 32
+      description: ETH Uptime (units of sec)     
+    #########################################################
+    

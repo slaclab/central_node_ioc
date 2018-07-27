@@ -1,0 +1,87 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'SLAC Firmware Standard Library', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once MpsLinkNodeCore.yaml
+#include MpsDigitalMessage.yaml
+#include MpsConcentrator.yaml
+#include GigEthReg.yaml
+#include MpsLcls1Core.yaml
+#include MpsMitigationCore.yaml
+#include Pgp2bAxi.yaml
+
+MpsLinkNodeCore: &MpsLinkNodeCore
+  class: MMIODev
+  configPrio: 1
+  description: MPS Link Node Core Module
+  size: 0x1000000
+  ########
+  children:
+  ########
+    MpsDigitalMessage:
+       <<: *MpsDigitalMessage
+       at:
+          offset: 0x000000
+    #########################################################
+    MpsConcentrator:
+       <<: *MpsConcentrator
+       at:
+          offset: 0x100000
+    #########################################################
+    MpsLcls1Core:
+       <<: *MpsLcls1Core
+       at:
+          offset: 0x200000
+    #########################################################
+    GigEthReg:
+       <<: *GigEthReg
+       at:
+          offset: 0x300000
+    ##################################################
+    UdpEngineServer:
+       <<: *UdpEngineServer
+       at:
+          offset: 0x400800
+    #########################################################
+    UdpBroadcastIP:
+       at:
+         offset: 0x400FF0
+       class: IntField
+       sizeBits: 32
+       mode: RW
+       description: Broadcast IP port
+    ##################################################
+    UdpDhcpIP:
+       at:
+         offset: 0x400FF4
+       class: IntField
+       sizeBits: 32
+       mode: RO
+       description: DHCP IP port
+    ##################################################
+    UdplocalMac:
+       at:
+         offset: 0x400FF8
+       class: IntField
+       sizeBits: 32
+       mode: RO
+       description: Local MAC
+    #########################################################
+    Pgp2bAxi:
+       <<: *Pgp2bAxi
+       at:
+          offset: 0x500000
+          nelms:  4
+          stride: 0x100000
+    #########################################################
+    MpsMitigationCore:
+       <<: *MpsMitigationCore
+       at:
+          offset: 0x900000
+    #########################################################

@@ -1,0 +1,145 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the 
+## top-level directory of this distribution and at: 
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
+## No part of 'SLAC Firmware Standard Library', including this file, 
+## may be copied, modified, propagated, or distributed except according to 
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once MpsDigitalMessage.yaml
+
+MpsDigitalMsg: &MpsDigitalMessage
+  class: MMIODev
+  configPrio: 1
+  description: MPS Digital Message Generator
+  size: 0x10000
+  ########
+  children:
+  ########
+    #########################################################
+    DigitalForceEn:
+      class: IntField
+      at:
+        offset: 0x0000
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Enable Digital Force Bits."
+    #########################################################
+    DigitalForceBits:
+      class: IntField
+      at:
+        offset: 0x0004
+      sizeBits: 64
+      lsBit: 0
+      mode: RW
+      description: "Digital Force Bits."
+    #########################################################
+    AppId:
+      class: IntField
+      at:
+        offset: 0x000C
+      sizeBits: 16
+      lsBit: 0
+      mode: RW
+      description: "Application ID."
+    #########################################################
+    L1Polarity:
+      class: IntField
+      at:
+        offset: 0x0010
+        stride: 1
+        nelms: 64
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Digital Bit Polarity for LCLS1."
+    #########################################################
+    L2Polarity:
+      class: IntField
+      at:
+        offset: 0x0018
+        stride: 1
+        nelms: 64
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Digital Bit Polarity for LCLS2."
+    #########################################################
+    L1DebounceValue:
+      class: IntField
+      at:
+        offset: 0x0020
+        stride: 2
+        nelms: 64
+      sizeBits: 2
+      lsBit: 0
+      mode: RW
+      description: "Digital Debounce Config for LCLS1."
+    #########################################################
+    L2DebounceValue:
+      class: IntField
+      at:
+        offset: 0x0030
+        stride: 2
+        nelms: 64
+      sizeBits: 2
+      lsBit: 0
+      mode: RW
+      description: "Digital Debounce Config for LCLS2."
+    #########################################################
+    DigitalBytes:
+      class: IntField
+      at:
+        offset: 0x0040
+      sizeBits: 8
+      lsBit: 0
+      mode: RO
+      description: "Number of digital bytes in message."
+    #########################################################
+    SwBytes:
+      class: IntField
+      at:
+        offset: 0x0041
+      sizeBits: 8
+      lsBit: 0
+      mode: RO
+      description: "Number of software bytes in message."
+    #########################################################
+    SwBitError:
+      class: IntField
+      at:
+        offset: 0x0044
+      sizeBits: 16
+      lsBit: 0
+      mode: RW
+      description: "Value to set for sw bits in case of timeout."
+    #########################################################
+    SwBitValue:
+      class: IntField
+      at:
+        offset: 0x0048
+      sizeBits: 16
+      lsBit: 0
+      mode: RW
+      description: "Value to set for sw bits."
+    #########################################################
+    OutputBits:
+      class: IntField
+      at:
+        offset: 0x0050
+      sizeBits: 8
+      lsBit: 0
+      mode: RW
+      description: "Output digital values."
+    #########################################################
+    RegInputBits:
+      class: IntField
+      at:
+        offset: 0x0054
+      sizeBits: 64
+      lsBit: 0
+      mode: RO
+      description: "Debounced Input Values"

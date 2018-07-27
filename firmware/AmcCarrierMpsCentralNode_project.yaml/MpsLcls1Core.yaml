@@ -1,0 +1,129 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the 
+## top-level directory of this distribution and at: 
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
+## No part of 'SLAC Firmware Standard Library', including this file, 
+## may be copied, modified, propagated, or distributed except according to 
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once MpsLcls1Core.yaml
+
+MpsLcls1Core: &MpsLcls1Core 
+  class: MMIODev
+  configPrio: 1
+  description: Lcls1 Interface Core 
+  size: 0x10000
+  ########
+  children:
+  ########
+    #########################################################
+    #   Timeout Engine
+    #########################################################
+    TimeoutEnable:
+      class: IntField
+      at:
+        offset: 0x0000
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Enable Application Timeout Engine. "
+    #########################################################
+    TimeoutClear:
+      class: IntField
+      at:
+        offset: 0x0000
+      sizeBits: 1
+      lsBit: 1
+      mode: RW
+      description: "Clear the latched timeout error. The clearing will occur on the rising edge of this signal."
+    #########################################################
+    TimeoutTime:
+      class: IntField
+      at:
+        offset: 0x0004
+      sizeBits: 3
+      lsBit: 0
+      mode: RW
+      description: "Application timeout setting. In micro seconds. Range from 0 us to 7 us."
+    #########################################################
+    TimeoutMask:
+      class: IntField
+      at:
+        offset: 0x0008
+      sizeBits: 11
+      mode: RW
+      description: "11 Bit Application Mask. 1 - App Timeout Active/Enabled, 0 - App Timeout Inactive/Masked."
+    #########################################################   
+    appIdRemap:
+      class: IntField
+      at:
+        offset: 0x000C
+        stride: 4
+        nelms: 11
+      sizeBits: 10
+      mode: RW
+      description: "AppId Remapping. Remap the existing AppIDs in the carate to 0 - 10."
+    #########################################################
+    NodeId:
+      class: IntField
+      at:
+        offset: 0x0040
+      sizeBits: 8
+      mode: RW
+      description: "Lcls1 BLM Link Node Id for the App."
+    #########################################################   
+    TimeoutStatusMask:
+      class: IntField
+      at:
+        offset: 0x0100
+      sizeBits: 11
+      mode: RO
+      description: "Timeout error status (11 bit) - Shows which corresponding app is in timeout."
+    #########################################################   
+    lcls1MessageError:
+      class: IntField
+      at:
+        offset: 0x0104
+      sizeBits: 32
+      mode: RO
+      description: "Lcls1 Message Error counter."
+    #########################################################   
+    lcls2MessageError:
+      class: IntField
+      at:
+        offset: 0x0108
+      sizeBits: 32
+      mode: RO
+      description: "Lcls2 Message Error counter."
+    #########################################################   
+    IpAddr:
+      class: IntField
+      at:
+        offset: 0x0110
+      sizeBits: 32
+      mode: RW
+      description: "IP Address for LCLS1 Interface."
+    #########################################################   
+    MacAddr:
+      class: IntField
+      at:
+        offset: 0x0114
+      sizeBits: 48
+      mode: RO
+      description: "MAC Address for LCLS1 Interface. Set by BSI."
+    #########################################################
+    # Commands
+    #########################################################
+    ClearTout:
+      name: ClearTout
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Clear timeout error
+      sequence:
+      - entry: TimeoutClear
+        value: 0x1
+      - entry: TimeoutClear
+        value: 0x0 

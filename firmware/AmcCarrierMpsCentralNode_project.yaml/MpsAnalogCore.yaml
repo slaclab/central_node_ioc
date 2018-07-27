@@ -1,0 +1,92 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the 
+## top-level directory of this distribution and at: 
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
+## No part of 'SLAC Firmware Standard Library', including this file, 
+## may be copied, modified, propagated, or distributed except according to 
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once MpsAnalogCore.yaml
+MpsAnalogCore: &MpsAnalogCore
+  class: MMIODev
+  configPrio: 1
+  description: MPS Analog Core
+  size: 0x10000
+  ########
+  children:
+  ########
+    #########################################################
+    IntegrationCounts:
+      class: IntField
+      at:
+        offset: 0x0000
+        stride: 4
+        nelms: 24
+      sizeBits: 16
+      lsBit: 0
+      mode: RW
+      description: "Integration Count."
+    #########################################################
+    ProcessingSelect:
+      class: IntField
+      at:
+        offset: 0x0080
+        stride: 4
+        nelms: 6
+      sizeBits: 4
+      lsBit: 0
+      mode: RW
+      description: "Processing Selection."
+    #########################################################
+    Slope:
+      class: IntField
+      at:
+        offset: 0x00A0
+        stride: 4
+        nelms: 6
+      sizeBits: 16
+      lsBit: 0
+      mode: RW
+      description: "Equation Slope."
+    #########################################################
+    Intercept:
+      class: IntField
+      at:
+        offset: 0x00A2
+        stride: 4
+        nelms: 6
+      sizeBits: 16
+      lsBit: 0
+      mode: RW
+      description: "Equation Intercept."
+    #########################################################
+    ForcePeakValEn:
+      class: IntField
+      at:
+        offset: 0x0000
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Force Peak Values, Enable."
+    #########################################################
+    ForcePeakValue:
+      class: IntField
+      at:
+        offset: 0x0104
+        stride: 4
+        nelms: 6
+      sizeBits: 16
+      lsBit: 0
+      mode: RW
+      description: "Force Peak Values."
+    #########################################################
+    InputDisable:
+      class: IntField
+      at:
+        offset: 0x0120
+      sizeBits: 2
+      lsBit: 0
+      mode: RW
+      description: "Disable analog AMC card."
