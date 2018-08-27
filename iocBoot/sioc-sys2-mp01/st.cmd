@@ -32,7 +32,7 @@ epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
 epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
 epicsEnvSet("MPS_ENV_FW_CONFIG", "firmware/AmcCarrierMpsCentralNode_project.yaml/000TopLevel.yaml")
-epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
+epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-daemon2")
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
 epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 
