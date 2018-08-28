@@ -9,6 +9,12 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-2-5:
+ * Version built against central_node_engine-R1-2-3, the only 
+   difference to previous version is that the beam charge table
+   is now populated with values from the configuration database
+   (as opposed to hardcoded test numbers).
+
 central_node_ioc-R1-2-4:
  * Add PVs to control and readback the status of the timing core.
  * Rename IOC directory to sioc-sys2-mp01.
