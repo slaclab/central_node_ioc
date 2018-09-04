@@ -9,6 +9,11 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-2-6:
+ * Version built against central_node_engine-R1-2-4, minor fix
+   to the beam charge verification table readback ('mps show fw'
+   command) 
+
 central_node_ioc-R1-2-5:
  * Version built against central_node_engine-R1-2-3, the only 
    difference to previous version is that the beam charge table
