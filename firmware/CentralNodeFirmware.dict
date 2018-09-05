@@ -78,3 +78,7 @@
 /mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwarePause                                              SoftwarePause
 /mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareWdError                                            SoftwareWdError
 /mmio/MpsCentralApplication/MpsCentralNodeCore/SoftwareOvflCnt                                            SoftwareOvflCnt
+/mmio/MpsCentralApplication/MpsCentralNodeCore/TimePowL                                                   TimePowL
+/mmio/MpsCentralApplication/MpsCentralNodeCore/TimePowH                                                   TimePowH
+/mmio/MpsCentralApplication/MpsCentralNodeCore/ConPowL                                                    ConPowL
+/mmio/MpsCentralApplication/MpsCentralNodeCore/ConPowH                                                    ConPowH

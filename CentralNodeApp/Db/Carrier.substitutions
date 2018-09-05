@@ -45,6 +45,10 @@ file "RegisterIn.template" { pattern
 { $(P), SoftwarePause,       "Soft. engine pause back-pressure signal",     "YES",  "1 second", $(PORT),   "",   SoftwarePause }
 { $(P), SoftwareWdError,     "Software watchdog error",                     "YES",  "1 second", $(PORT),   "",   SoftwareWdError }
 { $(P), SoftwareOvflCnt,     "Number of axi-fifo overflows",                "YES",  "1 second", $(PORT),   "",   SoftwareOvflCnt }
+{ $(P), TimePowL,            "PowerClass from timing (lower 32 bits)",      "YES",  "1 second", $(PORT),   "",   TimePowL }
+{ $(P), TimePowH,            "PowerClass from timing (upper 32 bits)",      "YES",  "1 second", $(PORT),   "",   TimePowH }
+{ $(P), ConPowL,             "PowerClass send by MPS (lower 32 bits)",      "YES",  "1 second", $(PORT),   "",   ConPowL }
+{ $(P), ConPowH,             "PowerClass send by MPS (upper 32 bits)",      "YES",  "1 second", $(PORT),   "",   ConPowH }
 }
 
 # Array of register
@@ -152,6 +156,7 @@ file "Reg1BitRO.template" { pattern
 file "Reg1BitRW.template" { pattern
 { R,                  DESC,                                     ZNAM,       ONAM,       SCAN,          PARAM                    }
 { TIM_CLK_SRC,        "Timinig source",                         "LCLS-1",   "LCLS-2",   "1 second",    TIM_CLK_SEL              }
+{ BeamFaultClr,       "Beam fault clear strobe"                 "Clear",    "Clear",    "1 second",    BeamFaultClr             }
 }
 
 #======================================
@@ -190,10 +195,10 @@ file "RegisterDoubleOutRBV.template" { pattern
 #======================================
 file "RegisterCommand.template" { pattern
 { P,            R,            DESC,                            PINI,   SCAN,       PORT,   PARAM   }
-{ $(P), MonErrClear,      "Clear monitor error",               "NO",   "Passive",  $(PORT),    MonErrClear     }
-{ $(P), SwErrClear,       "Clear software error",              "NO",   "Passive",  $(PORT),    SwErrClear     }
-{ $(P), ToErrClear,       "Clear the latched timeout error",   "NO",   "Passive",  $(PORT),    ToErrClear     }
-{ $(P), EvalLatchClear,   "Clear PowerLevel Latch",            "NO",   "Passive",  $(PORT),    EvalLatchClear     }
+{ $(P), :MonErrClear,      "Clear monitor error",               "NO",   "Passive",  $(PORT),    MonErrClear     }
+{ $(P), :SwErrClear,       "Clear software error",              "NO",   "Passive",  $(PORT),    SwErrClear     }
+{ $(P), :ToErrClear,       "Clear the latched timeout error",   "NO",   "Passive",  $(PORT),    ToErrClear     }
+{ $(P), :EvalLatchClear,   "Clear PowerLevel Latch",            "NO",   "Passive",  $(PORT),    EvalLatchClear     }
 }
 
 
