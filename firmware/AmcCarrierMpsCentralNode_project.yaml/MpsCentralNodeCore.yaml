@@ -375,13 +375,15 @@ MpsCentralNodeCore: &MpsCentralNodeCore
       mode: RO
       description: "Number of clock cycles needed for SW packet to be transferred(32-bit)." 
     #########################################################    
+    #   Timing Checker
+    #########################################################    
     BeamIntTime:
       class: IntField
       at:
         offset: 0x04000
         nelms:  16
         stride: 12
-      sizeBits: 10
+      sizeBits: 32
       mode: RW
       description: "Integration time for each power level in 1uS."
     #########################################################    
@@ -391,7 +393,7 @@ MpsCentralNodeCore: &MpsCentralNodeCore
         offset: 0x04004
         nelms:  16
         stride: 12
-      sizeBits: 20
+      sizeBits: 32
       mode: RW
       description: "Min period for each power level in 1uS."
     #########################################################    
@@ -428,6 +430,38 @@ MpsCentralNodeCore: &MpsCentralNodeCore
       sizeBits: 1
       mode: RW
       description: "Beam fault enable."
+    #########################################################    
+    TimePowL:
+      class: IntField
+      at:
+        offset: 0x04110
+      sizeBits: 32
+      mode: RO
+      description: "Power class being received from the timing system (lower 32 bits)"
+    #########################################################    
+    TimePowH:
+      class: IntField
+      at:
+        offset: 0x04114
+      sizeBits: 32
+      mode: RO
+      description: "Power class being received from the timing system (upper 32 bits)"
+    #########################################################    
+    ConPowL:
+      class: IntField
+      at:
+        offset: 0x04118
+      sizeBits: 32
+      mode: RO
+      description: "Final power class being send by MPS (lower 32 bits)"
+    #########################################################    
+    ConPowH:
+      class: IntField
+      at:
+        offset: 0x0411C
+      sizeBits: 32
+      mode: RO
+      description: "Final power class being send by MPS (upper 32 bits)"
     #########################################################
     #  Commands
     #########################################################   
