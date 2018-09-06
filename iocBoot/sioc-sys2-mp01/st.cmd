@@ -32,6 +32,7 @@ epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
 epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
 epicsEnvSet("MPS_ENV_FW_CONFIG", "firmware/AmcCarrierMpsCentralNode_project.yaml/000TopLevel.yaml")
+epicsEnvSet("MPS_ENV_FW_DEFAULTS", "firmware/AmcCarrierMpsCentralNode_project.yaml/config/defaults.yaml")
 epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-daemon2")
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
 epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
@@ -39,7 +40,7 @@ epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 # Yaml File
 epicsEnvSet("YAML_FILE", "${MPS_ENV_FW_CONFIG}")
 
-# Central Node FPGA IP address 
+# Central Node FPGA IP address
 epicsEnvSet("FPGA_IP", "10.0.0.102")
 #epicsEnvSet("FPGA_IP", "10.0.1.103")
 
@@ -78,6 +79,12 @@ configureCentralNode("CENTRAL_NODE")
 # ==========================================================================================================
 YCPSWASYNConfig("${CPSW_PORT}", "", "", "${AUTO_GEN}", "${DICT_FILE}")
 
+# ==========================================
+# Load application specific configurations
+# ==========================================
+# Load the defautl configuration
+cpswLoadConfigFile("${MPS_ENV_FW_DEFAULTS}", "mmio")
+
 ########################################################################
 # BEGIN: Load the record databases
 #######################################################################
@@ -108,7 +115,7 @@ dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/conditions.db","BASE=${IOC
 cd iocBoot/sioc-sys2-mp01
 
 #======================================================================
-# Save/Restore 
+# Save/Restore
 #======================================================================
 set_requestfile_path("${IOC_DATA}/${IOC}/autosave-req")
 set_savefile_path("/${IOC_DATA}/${IOC}/autosave")
