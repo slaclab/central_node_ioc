@@ -50,6 +50,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_FAULT_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultIgnoredParam);
   createParam(MPS_FAULT_LATCHED_STRING, asynParamUInt32Digital, &_mpsFaultLatchedParam);
   createParam(MPS_FAULT_UNLATCH_STRING, asynParamUInt32Digital, &_mpsFaultUnlatchParam);
+  createParam(MPS_FAULT_STATE_STRING, asynParamUInt32Digital, &_mpsFaultStateParam);
+  createParam(MPS_FAULT_STATE_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultStateIgnoredParam);
   createParam(MPS_DEVICE_INPUT_LATCHED_STRING, asynParamUInt32Digital, &_mpsDeviceInputLatchedParam);
   createParam(MPS_DEVICE_INPUT_UNLATCH_STRING, asynParamUInt32Digital, &_mpsDeviceInputUnlatchParam);
   createParam(MPS_DEVICE_INPUT_BYPV_STRING, asynParamUInt32Digital, &_mpsDeviceInputBypassValueParam);
@@ -618,6 +620,42 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
 	  return asynError;
 	}
 	if (Engine::getInstance().getCurrentDb()->faults->at(addr)->ignored) {
+	  *value = 1;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
+      }
+    }
+  }
+  else if (_mpsFaultStateParam == pasynUser->reason) {
+    *value = 0;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->faultStates->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->faultStates->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: FaultState not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->faultStates->at(addr)->faulted) {
+	  *value = 1;
+	}
+      } catch (std::exception &e) {
+	status = asynError;
+      }
+    }
+  }
+  else if (_mpsFaultStateIgnoredParam == pasynUser->reason) {
+    *value = 0;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	if (Engine::getInstance().getCurrentDb()->faultStates->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->faultStates->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: FaultState not found, key=" << addr);
+	  return asynError;
+	}
+	if (Engine::getInstance().getCurrentDb()->faultStates->at(addr)->ignored) {
 	  *value = 1;
 	}
       } catch (std::exception &e) {

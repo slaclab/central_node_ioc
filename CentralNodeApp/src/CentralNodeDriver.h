@@ -25,6 +25,8 @@
 #define MPS_FAULT_IGNORED_STRING                   "MPS_FAULT_IGNORED"
 #define MPS_FAULT_LATCHED_STRING                   "MPS_FAULT_LATCHED"
 #define MPS_FAULT_UNLATCH_STRING                   "MPS_FAULT_UNLATCH"
+#define MPS_FAULT_STATE_STRING                     "MPS_FAULT_STATE"
+#define MPS_FAULT_STATE_IGNORED_STRING             "MPS_FAULT_STATE_IGNORED"
 #define MPS_DEVICE_INPUT_LATCHED_STRING            "MPS_DEVICE_INPUT_LATCHED"
 #define MPS_DEVICE_INPUT_UNLATCH_STRING            "MPS_DEVICE_INPUT_UNLATCH"
 #define MPS_DEVICE_INPUT_BYPV_STRING               "MPS_DEVICE_INPUT_BYPV"
@@ -140,6 +142,8 @@ public:
   int _mpsFaultIgnoredParam;
   int _mpsFaultLatchedParam;
   int _mpsFaultUnlatchParam;
+  int _mpsFaultStateParam;
+  int _mpsFaultStateIgnoredParam;
   int _mpsDeviceInputLatchedParam;
   int _mpsDeviceInputUnlatchParam;
   int _mpsDeviceInputBypassValueParam;
@@ -187,7 +191,6 @@ public:
   int _mpsEvalMaxParam;
   int _mpsEvalCycleAvgParam;
   int _mpsEvalCycleMaxParam;
-  int _mpsEvalClearParam;
   int _mpsUpdateAvgParam;
   int _mpsUpdateMaxParam;
   int _mpsUpdateClearParam;

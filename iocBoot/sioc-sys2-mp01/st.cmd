@@ -5,7 +5,6 @@
 
 < envPaths
 
-#epicsEnvSet("TOP", "/afs/slac/g/lcls/epics/iocTop/users/lpiccoli/central_node_ioc")
 epicsEnvSet("IOC","sioc-sys2-mp01")
 epicsEnvSet("IOC_PV","SIOC:SYS2:MP01")
 
@@ -28,7 +27,8 @@ epicsEnvSet("LOCATION","Twilight Zone")
 # ====================================================================
 epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
 
-epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
+epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics") # PROD
+#epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics") # DEV
 epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
 epicsEnvSet("MPS_ENV_FW_CONFIG", "firmware/AmcCarrierMpsCentralNode_project.yaml/000TopLevel.yaml")
@@ -41,8 +41,9 @@ epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 epicsEnvSet("YAML_FILE", "${MPS_ENV_FW_CONFIG}")
 
 # Central Node FPGA IP address
-epicsEnvSet("FPGA_IP", "10.0.0.102")
-#epicsEnvSet("FPGA_IP", "10.0.1.103")
+#epicsEnvSet("FPGA_IP", "10.0.1.105") # DEV
+epicsEnvSet("FPGA_IP", "10.0.0.102") # PROD
+#epicsEnvSet("FPGA_IP", "10.0.1.103") # DEV
 
 # Use Automatic generation of records from the YAML definition
 # 0 = No, 1 = Yes (using maps), 2 = Yes (using hash)
@@ -109,6 +110,7 @@ dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/device_inputs.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/analog_devices.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/destinations.db","BASE=${IOC_PV}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/faults.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/fault_states.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/apps.db","BASE=${IOC_PV}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/conditions.db","BASE=${IOC_PV}")
 

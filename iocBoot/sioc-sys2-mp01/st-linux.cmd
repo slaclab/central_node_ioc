@@ -1,4 +1,4 @@
-#!../../bin/rhel6-x86_64/CentralNode
+#!iocSpecificRelease/bin/rhel6-x86_64/CentralNode
 
 ## You may have to change CentralNode to something else
 ## everywhere it appears in this file
@@ -28,30 +28,33 @@ epicsEnvSet("LOCATION","Twilight Zone")
 # ====================================================================
 epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
 
+#epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
 epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics")
 epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
-epicsEnvSet("MPS_ENV_FW_CONFIG", "/data/${IOC}/yaml/000TopLevel.yaml")
-epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
+epicsEnvSet("MPS_ENV_FW_CONFIG", "firmware/AmcCarrierMpsCentralNode_project.yaml/000TopLevel.yaml")
+epicsEnvSet("MPS_ENV_FW_DEFAULTS", "firmware/AmcCarrierMpsCentralNode_project.yaml/config/defaults.yaml")
+epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-daemon2")
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
 epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 
 # Yaml File
 epicsEnvSet("YAML_FILE", "${MPS_ENV_FW_CONFIG}")
 
-# Central Node FPGA IP address 
-epicsEnvSet("FPGA_IP", "10.0.0.102")
+# Central Node FPGA IP address
+epicsEnvSet("FPGA_IP", "10.0.1.105")
+#epicsEnvSet("FPGA_IP", "10.0.0.102")
 #epicsEnvSet("FPGA_IP", "10.0.1.103")
 
 # Use Automatic generation of records from the YAML definition
-# 0 = No, 1 = Yes
+# 0 = No, 1 = Yes (using maps), 2 = Yes (using hash)
 epicsEnvSet("AUTO_GEN", 0 )
 
 # CPSW Port
 epicsEnvSet("CPSW_PORT", "CentralNodeCPSW")
 
 # Dictionary file for manual (empty string if none)
-epicsEnvSet("DICT_FILE", "/data/${IOC}/CentralNodeFirmware.dict")
+epicsEnvSet("DICT_FILE", "firmware/CentralNodeFirmware.dict")
 
 # ===================================================================================================================
 # Driver setup and initialization for YCPSWAsyn
@@ -64,20 +67,25 @@ epicsEnvSet("DICT_FILE", "/data/${IOC}/CentralNodeFirmware.dict")
 #    YAML Path,                 #directory where YAML includes can be found (optional)
 #    IP Address,                # OPTIONAL: Target FPGA IP Address. If not given it is taken from the YAML file
 # ==========================================================================================================
-#cpswLoadYamlFile("${YAML_FILE}", "NetIODev", "", "${FPGA_IP}")
+cpswLoadYamlFile("${YAML_FILE}", "NetIODev", "", "${FPGA_IP}")
 
 configureCentralNode("CENTRAL_NODE")
 
 ## Configure asyn port driver
 # YCPSWASYNConfig(
 #    Port Name,                 # the name given to this port driver
-#    Yaml Doc,                  # Path to the YAML file
 #    Root Path                  # OPTIONAL: Root path to start the generation. If empty, the Yaml root will be used
-#    IP Address,                # OPTIONAL: Target FPGA IP Address. If not given it is taken from the YAML file
 #    Record name Prefix,        # Record name prefix
-#    Record name Length Max,    # Record name maximum length (must be greater than lenght of prefix + 4)
+#    DB Autogeneration mode,    # Set autogeneration of records. 0: disabled, 1: Enable usig maps, 2: Enabled using hash names.
+#    Load dictionary,           # Dictionary file path with registers to load. An empty string will disable this function
 # ==========================================================================================================
-#YCPSWASYNConfig("${CPSW_PORT}", "${YAML_FILE}", "", "${FPGA_IP}", "", 40, "${AUTO_GEN}", "${DICT_FILE}")
+YCPSWASYNConfig("${CPSW_PORT}", "", "", "${AUTO_GEN}", "${DICT_FILE}")
+
+# ==========================================
+# Load application specific configurations
+# ==========================================
+# Load the defautl configuration
+cpswLoadConfigFile("${MPS_ENV_FW_DEFAULTS}", "mmio")
 
 ########################################################################
 # BEGIN: Load the record databases
@@ -96,17 +104,21 @@ dbLoadRecords("db/iocRelease.db","IOC=${IOC}")
 dbLoadRecords("db/CentralNode.db","IOC=${IOC_PV}")
 dbLoadRecords("db/Carrier.db","P=${IOC_PV}, PORT=${CPSW_PORT}")
 
+# Save/load configuration database
+dbLoadRecords("db/saveLoadConfig.db", "P=${IOC_PV}, PORT=${CPSW_PORT}")
+
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/device_inputs.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/analog_devices.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/destinations.db","BASE=${IOC_PV}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/faults.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/fault_states.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/apps.db","BASE=${IOC_PV}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/conditions.db","BASE=${IOC_PV}")
 
 cd iocBoot/sioc-sys2-mp01
 
 #======================================================================
-# Save/Restore 
+# Save/Restore
 #======================================================================
 set_requestfile_path("${IOC_DATA}/${IOC}/autosave-req")
 set_savefile_path("/${IOC_DATA}/${IOC}/autosave")

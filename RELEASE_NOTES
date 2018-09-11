@@ -9,6 +9,12 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-2-7:
+ * Addition of support for FaultState PVs
+ * st.cmd now loads the file fault_states.db (for FaultState PVs)
+ * Version compatible with mps_config-2018-09-10-a, earlier
+   mps_config versions don't have the fault_states.db file
+
 central_node_ioc-R1-2-6:
  * Version built against central_node_engine-R1-2-4, minor fix
    to the beam charge verification table readback ('mps show fw'

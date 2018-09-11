@@ -214,12 +214,6 @@ record(longin, "$(IOC):EVAL_MAX_TIME") {
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_EVAL_MAX_TIME")
 }
 
-record(bo, "$(IOC):EVAL_TIME_CLR") {
-    field(DESC, "Clear slow engine exec time tracker")
-    field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_EVAL_TIME_CLEAR")
-}
-
 record(longin, "$(IOC):EVALCYCLE_AVG_TIME") {
     field(DESC, "Slow engine average cycle time")
     field(DTYP, "asynInt32")
