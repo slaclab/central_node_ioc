@@ -93,6 +93,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_SW_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsSwErrClearParam);
   createParam(MPS_TO_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsToErrClearParam);
   createParam(MPS_MO_CONC_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsMoConcErrClearParam);
+  createParam(MPS_BEAM_FAULT_CLEAR_STRING, asynParamUInt32Digital, &_mpsBeamFaultClearParam);
   createParam(MPS_TIMEOUT_ENABLE_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableParam);
   createParam(MPS_TIMEOUT_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableRbvParam);
   createParam(MPS_EVALCYCLE_AVG_TIME_STRING, asynParamInt32, &_mpsEvalCycleAvgParam);
@@ -875,6 +876,10 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   }
   else if (_mpsMoConcErrClearParam == pasynUser->reason) {
     Firmware::getInstance().moConcErrClear();
+    return status;
+  }
+  else if (_mpsBeamFaultClearParam == pasynUser->reason) {
+    Firmware::getInstance().beamFaultClear();
     return status;
   }
   else if (_mpsSkipHeartbeatParam == pasynUser->reason) {

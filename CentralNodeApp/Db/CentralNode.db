@@ -198,6 +198,12 @@ record(bo, "$(IOC):MO_CONC_ERR_CLR") {
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_MO_CONC_ERR_CLEAR")
 }
 
+record(bo, "$(IOC):BEAM_FAULT_CLR") {
+    field(DESC, "Beam Fault Clear [PC and Charge violation]")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_BEAM_FAULT_CLEAR")
+}
+
 record(longin, "$(IOC):EVAL_AVG_TIME") {
     field(DESC, "Slow engine average exec time")
     field(DTYP, "asynInt32")

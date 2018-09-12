@@ -68,6 +68,7 @@
 #define MPS_SW_ERR_CLEAR_STRING                    "MPS_SW_ERR_CLEAR"
 #define MPS_TO_ERR_CLEAR_STRING                    "MPS_TO_ERR_CLEAR"
 #define MPS_MO_CONC_ERR_CLEAR_STRING               "MPS_MO_CONC_ERR_CLEAR"
+#define MPS_BEAM_FAULT_CLEAR_STRING                "MPS_BEAM_FAULT_CLEAR"
 #define MPS_TIMEOUT_ENABLE_STRING                  "MPS_TIMEOUT_ENABLE"
 #define MPS_TIMEOUT_ENABLE_RBV_STRING              "MPS_TIMEOUT_ENABLE_RBV"
 #define MPS_EVALCYCLE_AVG_TIME_STRING              "MPS_EVALCYCLE_AVG_TIME"
@@ -185,6 +186,7 @@ public:
   int _mpsSwErrClearParam;
   int _mpsToErrClearParam;
   int _mpsMoConcErrClearParam;
+  int _mpsBeamFaultClearParam;
   int _mpsTimeoutEnableParam;
   int _mpsTimeoutEnableRbvParam;
   int _mpsEvalAvgParam;
