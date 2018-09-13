@@ -9,6 +9,10 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-2-9:
+ * Build against central_node_engine-R1-3-1. MPS is not enabled
+   after configuration is loaded the first time.
+
 central_node_ioc-R1-2-8:
  * Build against central_node_engine-R1-3-0
  * Addition of PV to clear beam fault violations [$(IOC):BEAM_FAULT_CLEAR]
