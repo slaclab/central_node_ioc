@@ -5,7 +5,9 @@
 
 < envPaths
 
-epicsEnvSet("IOC","sioc-sys2-mp01")
+epicsEnvSet("IOC","sioc-b084-mp01")
+# Keep the PV name we have in PROD, where the IOC name 
+# is sioc-sys2-mp01
 epicsEnvSet("IOC_PV","SIOC:SYS2:MP01")
 
 pwd()
@@ -27,7 +29,7 @@ epicsEnvSet("LOCATION","Twilight Zone")
 # ====================================================================
 epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
 
-epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
+epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics") # DEV
 epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
 epicsEnvSet("MPS_ENV_FW_CONFIG", "firmware/AmcCarrierMpsCentralNode_project.yaml/000TopLevel.yaml")
