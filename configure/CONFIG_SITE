@@ -13,55 +13,45 @@
 # Normally CHECK_RELEASE should be set to YES.
 # Set CHECK_RELEASE to NO to disable checking completely.
 # Set CHECK_RELEASE to WARN to perform consistency checking but
-#   continue building anyway if conflicts are found.
+#   continue building even if conflicts are found.
 CHECK_RELEASE = YES
 
 # Set this when you only want to compile this application
 #   for a subset of the cross-compiled target architectures
 #   that Base is built for.
-#CROSS_COMPILER_TARGET_ARCHS = vxWorks-mpc8540 vxWorks-ppc604_long vxWorks-ppc604_altivec
-#CROSS_COMPILER_TARGET_ARCHS = RTEMS-beatnik RTEMS-mvme3100 RTEMS-uC5282 linuxRT-x86
-
-# If you only want to build for the host then uncomment the line below and no cross targets
-# will be built.  Remember EPICS will build for the HOST ARCH by default.
-CROSS_COMPILER_TARGET_ARCHS =  rhel-x86_64
-CROSS_COMPILER_TARGET_ARCHS =  linuxRT-x86_64
-BUILD_FOR_HOST_ARCH=""
+CROSS_COMPILER_TARGET_ARCHS = linuxRT-x86_64
 
 # To install files into a location other than $(TOP) define
 #   INSTALL_LOCATION here.
-#INSTALL_LOCATION=</path/name/to/install/top>
+#INSTALL_LOCATION=</absolute/path/to/install/top>
 
-# Set this when your IOC and the host use different paths
-#   to access the application. This will be needed to boot
-#   from a Microsoft FTP server or with some NFS mounts.
-# You must rebuild in the iocBoot directory for this to
-#   take effect.
-#IOCS_APPL_TOP = </IOC/path/to/application/top>
-IOCS_APPL_TOP  = $(INSTALL_LOCATION)
+# Set this when the IOC and build host use different paths
+#   to the install location. This may be needed to boot from
+#   a Microsoft FTP server say, or on some NFS configurations.
+#IOCS_APPL_TOP = </IOC's/absolute/path/to/install/top>
 
+# =======================================================
+# Let's install our IOC boot products:
+# envPaths and st.cmd
+# =======================================================
 INSTALL_LOCATION_STARTUP += $(INSTALL_LOCATION)/startup
 DIRECTORY_TARGETS += $(INSTALL_LOCATION_STARTUP)
 
-## =============================
-## Build Application Statically
-## =============================
+# =============================
+# Build Application Statically
+# =============================
 SHARED_LIBRARIES=NO
 STATIC_BUILD=YES
 
-# Location of Linux Kernel Modules:
-LINUX_KERNEL_MODULES=$(PACKAGE_SITE_TOP)/linuxKernel_Modules
-
+# =============================
+# Define the archiecture versions
+# =============================
 LINUXRT_BUILDROOT_VERSION=buildroot-2016.11.1
 LINUX_VERSION=rhel6
 
-# Let's reference some external packages needed by our build:
-
-# =============================================
-# Define the version of external  packages needed by this                      
-# IOC Application
-# =============================================
-include $(TOP)/RELEASE_SITE
+# ===================================
+# Support for external packages 
+# ===================================
 
 #=========================================================
 # BOOST

@@ -1,53 +1,20 @@
-# RELEASE - Location of external support modules
+# RELEASE.local
 #
-# IF YOU MAKE ANY CHANGES to this file you must subsequently
-# do a "gnumake rebuild" in this application's top level
-# directory.
-#
-# The build process does not check dependencies against files
-# that are outside this application, thus you should do a
-# "gnumake rebuild" in the top level directory after EPICS_BASE
-# or any other external module pointed to below is rebuilt.
-#
-# Host- or target-specific settings can be given in files named
-#  RELEASE.$(EPICS_HOST_ARCH).Common
-#  RELEASE.Common.$(T_A)
-#  RELEASE.$(EPICS_HOST_ARCH).$(T_A)
-#
-# This file should ONLY define paths to other support modules,
-# or include statements that pull in similar RELEASE files.
-# Build settings that are NOT module paths should appear in a
-# CONFIG_SITE file.
+# Read definitions of:
+#       EPICS_SITE_TOP
+#       BASE_MODULE_VERSION
+#       EPICS_MODULES
+# from one of the following options
+-include $(TOP)/RELEASE_SITE
 
-# If you don't want to install into $(TOP) then
-# define INSTALL_LOCATION_APP here
-#INSTALL_LOCATION_APP=<fullpathname>
-
-# EPICS Templates
-TEMPLATE_TOP=/afs/slac/g/lcls/epics/R3-14-12-4_1-1/modules/icdTemplates/icdTemplates-R1-2-1
-
-# =============================================================
-# All needed variables come in via the following include:
-# =============================================================
-
-include $(TOP)/RELEASE_SITE
-
-# =============================================================
-# Define location of the modules tree
-# =============================================================
-
-#EPICS_MODULES=$(MODULES_SITE_TOP)
-
-# ==============================================================
-# Define the cvs module version of EPICS BASE that you will use
-# =============================================================
-
-#BASE_MODULE_VERSION=$(EPICS_BASE_VER)
-
-# =============================================================
-# Define the version of modules needed by
-# IOC apps or other Support apps
-# =============================================================
+# ==========================================================
+# Define the version strings for all needed modules
+# Use naming pattern:
+#   FOO_MODULE_VERSION = R1.2
+# so scripts can extract version strings
+# Don't set your version to anything such as "test" that
+# could match a directory name.
+# ==========================================================
 ASYN_MODULE_VERSION=R4.31-0.1.0
 SEQ_MODULE_VERSION=R2.2.4-1.0
 AUTOSAVE_MODULE_VERSION=R5.7.1-0.1.0
@@ -57,9 +24,12 @@ MISCUTILS_MODULE_VERSION=R2.2.4
 YCPSWASYN_MODULE_VERSION=R3.0.1
 YAMLLOADER_MODULE_VERSION=R1.1.0
 
-# ============================================================
-#  Module Location
-# ============================================================
+# ==========================================================
+# Define module paths using pattern
+# FOO = $(EPICS_MODULES)/foo/$(FOO_MODULE_VERSION)
+#  or
+# FOO = /Full/Path/To/Development/Version
+# ==========================================================
 ASYN=$(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
 SNCSEQ=$(EPICS_MODULES)/seq/$(SEQ_MODULE_VERSION)
 AUTOSAVE=$(EPICS_MODULES)/autosave/$(AUTOSAVE_MODULE_VERSION)
@@ -69,14 +39,7 @@ MISCUTILS=$(EPICS_MODULES)/miscUtils/$(MISCUTILS_MODULE_VERSION)
 YCPSWASYN=$(EPICS_MODULES)/ycpswasyn/$(YCPSWASYN_MODULE_VERSION)
 YAMLLOADER=$(EPICS_MODULES)/yamlLoader/$(YAMLLOADER_MODULE_VERSION)
 
-# EPICS_BASE usually appears last so other apps can override stuff:
-##EPICS_BASE=/afs/slac/g/lcls/epics/base/base-R3-14-12-4_1-1
-
+# =====================================================================
+# Set EPICS_BASE last so it appears last in the DB, DBD, INCLUDE, and LIB search paths
+# ====================================================================
 EPICS_BASE=$(BASE_SITE_TOP)/$(BASE_MODULE_VERSION)
-
-# Location of Linux Kernel Modules:
-LINUX_KERNEL_MODULES=$(PACKAGE_SITE_TOP)/linuxKernel_Modules
-
-# Set RULES here if you want to take build rules from somewhere
-# other than EPICS_BASE:
-#RULES=/path/to/epics/support/module/rules/x-y
