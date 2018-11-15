@@ -1,24 +1,2 @@
 #RULES.ioc
 include $(CONFIG)/RULES.ioc
-
-IOCNAME := $(shell $(PERL) $(TOP)/configure/IocName.pl)
-STARTUP_FILES += $(TARGETS)
-#Automatically add st.cmd to files to be installed if it exists
-STARTUP_FILES += $(shell $(PERL) $(TOP)/configure/IocStCmd.pl)
-INSTALL_STARTUP += $(INSTALL_LOCATION_STARTUP)/$(IOCNAME)
-INSTALL_STARTUP_FILES = $(STARTUP_FILES:%= $(INSTALL_STARTUP)/%)
-STARTUP_PERMISSIONS = 555
-
-build$(DIVIDER)$(ARCH) build: build
-
-ifeq ($(filter $(ARCH),$(BUILD_ARCHS)),$(ARCH))
-build$(DIVIDER)$(ARCH) build: $(TARGETS)
-buildInstall$(DIVIDER)$(ARCH) buildInstall: $(INSTALL_STARTUP_FILES)
-else 
-build$(DIVIDER)$(ARCH) build:
-buildInstall$(DIVIDER)$(ARCH) buildInstall:
-endif
-
-$(INSTALL_STARTUP)/%: %
-	$(ECHO) "Installing startup file $@"
-	@$(INSTALL_PRODUCT) -d -m $(STARTUP_PERMISSIONS) $< $(INSTALL_STARTUP)
