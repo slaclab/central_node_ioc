@@ -5,7 +5,6 @@
 
 < envPaths
 
-epicsEnvSet("IOC","sioc-sys2-mp01")
 epicsEnvSet("IOC_PV","SIOC:SYS2:MP01")
 
 pwd()

@@ -5,7 +5,6 @@
 
 < envPaths
 
-epicsEnvSet("IOC","sioc-b084-mp01")
 # Keep the PV name we have in PROD, where the IOC name 
 # is sioc-sys2-mp01
 epicsEnvSet("IOC_PV","SIOC:SYS2:MP01")
