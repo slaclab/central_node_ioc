@@ -116,7 +116,7 @@ cd iocBoot/${IOC}
 # Save/Restore
 #======================================================================
 set_requestfile_path("${IOC_DATA}/${IOC}/autosave-req")
-set_savefile_path("/${IOC_DATA}/${IOC}/autosave")
+set_savefile_path("${IOC_DATA}/${IOC}/autosave")
 set_pass0_restoreFile("info_settings.sav")
 set_pass1_restoreFile("info_settings.sav")
 
