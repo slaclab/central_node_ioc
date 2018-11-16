@@ -110,7 +110,7 @@ dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/fault_states.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/apps.db","BASE=${IOC_PV}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/conditions.db","BASE=${IOC_PV}")
 
-cd iocBoot/sioc-sys2-mp01
+cd iocBoot/${IOC}
 
 #======================================================================
 # Save/Restore
