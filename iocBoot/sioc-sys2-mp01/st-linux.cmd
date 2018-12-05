@@ -1,4 +1,4 @@
-#!iocSpecificRelease/bin/rhel6-x86_64/CentralNode
+#!../../bin/rhel6-x86_64/CentralNode
 
 ## You may have to change CentralNode to something else
 ## everywhere it appears in this file
@@ -27,9 +27,12 @@ epicsEnvSet("LOCATION","Twilight Zone")
 # END: Additional environment variables
 # ====================================================================
 epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
+#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "import")
 
 #epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
-epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics")
+#epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics")
+epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/epics/iocTop/users/lpiccoli") # DEV
+
 epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
 epicsEnvSet("MPS_ENV_FW_CONFIG", "firmware/AmcCarrierMpsCentralNode_project.yaml/000TopLevel.yaml")
@@ -67,7 +70,7 @@ epicsEnvSet("DICT_FILE", "firmware/CentralNodeFirmware.dict")
 #    YAML Path,                 #directory where YAML includes can be found (optional)
 #    IP Address,                # OPTIONAL: Target FPGA IP Address. If not given it is taken from the YAML file
 # ==========================================================================================================
-cpswLoadYamlFile("${YAML_FILE}", "NetIODev", "", "${FPGA_IP}")
+#cpswLoadYamlFile("${YAML_FILE}", "NetIODev", "", "${FPGA_IP}")
 
 configureCentralNode("CENTRAL_NODE")
 
@@ -79,13 +82,13 @@ configureCentralNode("CENTRAL_NODE")
 #    DB Autogeneration mode,    # Set autogeneration of records. 0: disabled, 1: Enable usig maps, 2: Enabled using hash names.
 #    Load dictionary,           # Dictionary file path with registers to load. An empty string will disable this function
 # ==========================================================================================================
-YCPSWASYNConfig("${CPSW_PORT}", "", "", "${AUTO_GEN}", "${DICT_FILE}")
+#YCPSWASYNConfig("${CPSW_PORT}", "", "", "${AUTO_GEN}", "${DICT_FILE}")
 
 # ==========================================
 # Load application specific configurations
 # ==========================================
 # Load the defautl configuration
-cpswLoadConfigFile("${MPS_ENV_FW_DEFAULTS}", "mmio")
+#cpswLoadConfigFile("${MPS_ENV_FW_DEFAULTS}", "mmio")
 
 ########################################################################
 # BEGIN: Load the record databases

@@ -23,7 +23,7 @@ static Logger *centralNodeLogger;
 
 CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPath,
 				     std::string historyServer, int historyPort) :
-  asynPortDriver(portName, 100, CENTRAL_NODE_DRIVER_NUM_PARAMS,
+  asynPortDriver(portName, 5000, CENTRAL_NODE_DRIVER_NUM_PARAMS,
 		 asynOctetMask | asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask | asynUInt32DigitalMask | asynDrvUserMask, // interfaceMask
 		 asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask, // interruptMask
 		 ASYN_MULTIDEVICE,                       // asynFlags
@@ -103,10 +103,10 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_UPDATE_AVG_TIME_STRING, asynParamInt32, &_mpsUpdateAvgParam);
   createParam(MPS_UPDATE_MAX_TIME_STRING, asynParamInt32, &_mpsUpdateMaxParam);
   createParam(MPS_UPDATE_TIME_CLEAR_STRING, asynParamUInt32Digital, &_mpsUpdateClearParam);
-  createParam(MPS_FWUPDATDE_AVG_PERIOD_STRING, asynParamInt32, &_mpsFwUpdateAvgParam);
-  createParam(MPS_FWUPDATDE_MAX_PERIOD_STRING, asynParamInt32, &_mpsFwUpdateMaxParam);
-  createParam(MPS_WDUPDATDE_AVG_PERIOD_STRING, asynParamInt32, &_mpsWdUpdateAvgParam);
-  createParam(MPS_WDUPDATDE_MAX_PERIOD_STRING, asynParamInt32, &_mpsWdUpdateMaxParam);
+  createParam(MPS_FWUPDATE_AVG_PERIOD_STRING, asynParamInt32, &_mpsFwUpdateAvgParam);
+  createParam(MPS_FWUPDATE_MAX_PERIOD_STRING, asynParamInt32, &_mpsFwUpdateMaxParam);
+  createParam(MPS_WDUPDATE_AVG_PERIOD_STRING, asynParamInt32, &_mpsWdUpdateAvgParam);
+  createParam(MPS_WDUPDATE_MAX_PERIOD_STRING, asynParamInt32, &_mpsWdUpdateMaxParam);
   createParam(MPS_CONFIG_DB_SRC_STRING, asynParamOctet, &_mpsConfigDbSourceParam);
   createParam(MPS_CONFIG_DB_USER_STRING, asynParamOctet, &_mpsConfigDbUserParam);
   createParam(MPS_CONFIG_DB_DATE_STRING, asynParamOctet, &_mpsConfigDbDateParam);
@@ -116,6 +116,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_FW_SOFTWARE_WDOG_COUNTER_STRING, asynParamInt32, &_mpsFwSoftwareWdogCounterParam);
   createParam(MPS_FW_MONITOR_NOT_READY_COUNTER_STRING, asynParamInt32, &_mpsFwMonitorNotReadyCounterParam);
   createParam(MPS_SKIP_HEARTBEAT_STRING, asynParamUInt32Digital, &_mpsSkipHeartbeatParam);
+  createParam(MPS_FORCE_LINAC_PC0_STRING, asynParamUInt32Digital, &_mpsForceLinacPc0Param);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -125,7 +126,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   setIntegerParam(0, _mpsStateParam, MPS_STATE_IDLE);
 
   // Initialize bypass date strings
-  for (int i = 0; i < 100; ++i) {
+  for (int i = 0; i < 5000; ++i) {
     setStringParam(i, _mpsDeviceInputBypassExpirationDateStringParam, "Bypass date not set");
     setStringParam(i, _mpsAnalogDeviceBypassExpirationDateStringParam, "Bypass date not set");
   }
@@ -968,6 +969,18 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     Engine::getInstance().clearMaxTimers();
     return status;
   }
+  else if (_mpsForceLinacPc0Param == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      if (value != 0) {
+	Engine::getInstance().getCurrentDb()->forceBeamDestination(1, 1);
+      }
+      else {
+	Engine::getInstance().getCurrentDb()->forceBeamDestination(1, CLEAR_BEAM_CLASS);
+      }
+    }
+    return status;
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
     status = asynError;
@@ -1006,6 +1019,33 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
     } catch (std::exception ex) {
       std::cerr << "ERROR: Invalid database info" << std::endl;
       return asynError;
+    }
+  }
+
+  // Make sure the beamDestinationId and beamClassId for setting Linac to PC0 via PV is correct
+  {
+    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+    DbBeamClassMap::iterator beamClassIt = Engine::getInstance().getCurrentDb()->beamClasses->find(1);
+    if (beamClassIt == Engine::getInstance().getCurrentDb()->beamClasses->end()) {
+      std::cerr << "ERROR: Failed to find BeamClass with ID=1 (PC0), please check MPS database." << std::endl; 
+      return asynError;
+    }
+    else {
+      if ((*beamClassIt).second->name != "PC0") {
+	std::cerr << "ERROR: BeamClass with ID=1 is does not have name 'PC0', please check MPS database." << std::endl; 
+	return asynError;
+      }
+    }
+    DbBeamDestinationMap::iterator beamDestIt = Engine::getInstance().getCurrentDb()->beamDestinations->find(1);
+    if (beamDestIt == Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+      std::cerr << "ERROR: Failed to find BeamDestination with ID=1 (Linac), please check MPS database." << std::endl; 
+      return asynError;
+    }
+    else {
+      if ((*beamDestIt).second->name != "Linac") {
+	std::cerr << "ERROR: BeamDestination with ID=1 is does not have name 'Linac', please check MPS database." << std::endl; 
+	return asynError;
+      }
     }
   }
 

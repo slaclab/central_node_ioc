@@ -363,6 +363,16 @@ record(bo, "$(IOC):SKIP_HEARTBEAT") {
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SKIP_HEARTBEAT")
 }
 
+record(bo, "$(IOC):DISABLE_BEAM") {
+    field(DESC, "Enable/Disable gun shutter")
+    field(DTYP, "asynUInt32Digital")
+    field(VAL, "0")
+    field(PINI, "YES")
+    field(ZNAM, "BEAM ALLOWED")
+    field(ONAM, "BEAM DISABLED")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_FORCE_LINAC_PC0")
+}
+
 record(bi, "$(IOC):SW_LOSS_ERROR") {
     field(INP, "$(IOC):SoftwareLossError")
     field(PINI, "YES")

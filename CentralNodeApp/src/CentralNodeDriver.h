@@ -78,10 +78,10 @@
 #define MPS_UPDATE_AVG_TIME_STRING                 "MPS_UPDATE_AVG_TIME"
 #define MPS_UPDATE_MAX_TIME_STRING                 "MPS_UPDATE_MAX_TIME"
 #define MPS_UPDATE_TIME_CLEAR_STRING               "MPS_UPDATE_TIME_CLEAR"
-#define MPS_FWUPDATDE_AVG_PERIOD_STRING            "MPS_FWUPDATE_AVG_PERIOD"
-#define MPS_FWUPDATDE_MAX_PERIOD_STRING            "MPS_FWUPDATE_MAX_PERIOD"
-#define MPS_WDUPDATDE_AVG_PERIOD_STRING            "MPS_WDUPDATE_AVG_PERIOD"
-#define MPS_WDUPDATDE_MAX_PERIOD_STRING            "MPS_WDUPDATE_MAX_PERIOD"
+#define MPS_FWUPDATE_AVG_PERIOD_STRING             "MPS_FWUPDATE_AVG_PERIOD"
+#define MPS_FWUPDATE_MAX_PERIOD_STRING             "MPS_FWUPDATE_MAX_PERIOD"
+#define MPS_WDUPDATE_AVG_PERIOD_STRING             "MPS_WDUPDATE_AVG_PERIOD"
+#define MPS_WDUPDATE_MAX_PERIOD_STRING             "MPS_WDUPDATE_MAX_PERIOD"
 #define MPS_CONFIG_DB_SRC_STRING                   "MPS_CONFIG_DB_SRC"
 #define MPS_CONFIG_DB_USER_STRING                  "MPS_CONFIG_DB_USER"
 #define MPS_CONFIG_DB_DATE_STRING                  "MPS_CONFIG_DB_DATE"
@@ -91,6 +91,7 @@
 #define MPS_FW_SOFTWARE_WDOG_COUNTER_STRING        "MPS_FW_SOFTWARE_WDOG_COUNTER"
 #define MPS_FW_MONITOR_NOT_READY_COUNTER_STRING    "MPS_FW_MONITOR_NOT_READY_COUNTER"
 #define MPS_SKIP_HEARTBEAT_STRING                  "MPS_SKIP_HEARTBEAT"
+#define MPS_FORCE_LINAC_PC0_STRING                 "MPS_FORCE_LINAC_PC0"
 
 #define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
@@ -209,7 +210,8 @@ public:
   int _mpsFwSoftwareWdogCounterParam;
   int _mpsFwMonitorNotReadyCounterParam;
   int _mpsSkipHeartbeatParam;
-
+  int _mpsForceLinacPc0Param;
+  
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;
   int _testCheckFaultsParam;

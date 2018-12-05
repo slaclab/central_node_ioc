@@ -9,6 +9,10 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-2-10:
+ * Addition of $(IOC):DISABLE_BEAM PV: this allows operators to
+   disable the gun shutter.
+
 central_node_ioc-R1-2-9:
  * Build against central_node_engine-R1-3-1. MPS is not enabled
    after configuration is loaded the first time.
