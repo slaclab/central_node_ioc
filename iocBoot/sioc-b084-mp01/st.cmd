@@ -27,6 +27,7 @@ epicsEnvSet("LOCATION","Twilight Zone")
 # END: Additional environment variables
 # ====================================================================
 epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
+#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "import")
 
 epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics") # DEV
 epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")

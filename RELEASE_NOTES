@@ -9,6 +9,9 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-2-11:
+ * Build against central_node_engine-R1-4-0.
+
 central_node_ioc-R1-2-10:
  * Addition of $(IOC):DISABLE_BEAM PV: this allows operators to
    disable the gun shutter.
