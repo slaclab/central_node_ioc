@@ -390,3 +390,10 @@ record(bi, "$(IOC):SW_WD_ERROR") {
     field(OSV, "MAJOR")
     field(ZSV, "NO_ALARM")
 }
+
+record(calcout, "$(IOC):LINAC_TM_PC") {
+  field(INPA, "$(IOC):ConPowL")
+  field(SCAN, "1 second")
+  field(DESC, "LINAC Power Class to timing")
+  field(CALC, "A & 0xF")
+}
