@@ -9,6 +9,9 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-3-1-eic (EIC branch):
+ * Addition of PV for disabling AOM $(IOC):AOM_DISABLE
+
 central_node_ioc-R1-3-0-eic (EIC branch):
  * Build against central_node_engine-1-5-0-eic (branch)
  * Addition of $(IOC):LINAC_TM_PC containing PC sent to timing
