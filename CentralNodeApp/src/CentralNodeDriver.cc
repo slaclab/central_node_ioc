@@ -238,6 +238,7 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       Engine::getInstance().getCurrentDb()->unlatchAll();
     }
+    Engine::getInstance().clearSoftwareLatch();
   }
   else if (_mpsDeviceInputBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_DIGITAL, addr, 0, value);
