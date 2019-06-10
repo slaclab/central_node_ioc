@@ -9,6 +9,12 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-4-0-eic (EIC branch):
+  * Build agaist central_node_engine-R1-6-0-eic (branch)
+  * New central_node_engine has bug fixes for AOM/Shutter control
+  * The UNLATCHALL PV now also clears FW mitigation latched while
+    enabling AOM.
+
 central_node_ioc-R1-3-1-eic (EIC branch):
  * Addition of PV for disabling AOM $(IOC):AOM_DISABLE
 
