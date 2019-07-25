@@ -5,7 +5,7 @@
 
 < envPaths
 
-epicsEnvSet("IOC_PV","SIOC:SYS2:MP01")
+epicsEnvSet("IOC_PV","SIOC:SYS0:MP01")
 
 pwd()
 cd ${TOP}

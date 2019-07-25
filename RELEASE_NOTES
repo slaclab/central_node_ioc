@@ -9,6 +9,9 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-4-1-eic (EIC branch):
+  * Renamed SYS2 to SYS0
+
 central_node_ioc-R1-4-0-eic (EIC branch):
   * Build agaist central_node_engine-R1-6-0-eic (branch)
   * New central_node_engine has bug fixes for AOM/Shutter control
