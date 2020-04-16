@@ -9,6 +9,9 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+central_node_ioc-R1-4-2-eic (EIC branch):
+  * Update MCS file with version loaded in EIC.
+
 central_node_ioc-R1-4-1-eic (EIC branch):
   * Renamed SYS2 to SYS0
 
