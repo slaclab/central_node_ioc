@@ -6,8 +6,8 @@
 < envPaths
 
 #epicsEnvSet("TOP", "/afs/slac/g/lcls/epics/iocTop/users/lpiccoli/central_node_ioc")
-epicsEnvSet("IOC","sioc-sys2-mp01")
-epicsEnvSet("IOC_PV","SIOC:SYS2:MP01")
+epicsEnvSet("IOC","sioc-sys0-mp01")
+epicsEnvSet("IOC_PV","SIOC:SYS0:MP01")
 
 pwd()
 cd ${TOP}
@@ -118,7 +118,7 @@ dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/fault_states.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/apps.db","BASE=${IOC_PV}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/conditions.db","BASE=${IOC_PV}")
 
-cd iocBoot/sioc-sys2-mp01
+cd iocBoot/sioc-sys0-mp01
 
 #======================================================================
 # Save/Restore

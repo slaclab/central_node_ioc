@@ -7,7 +7,7 @@
 
 # Keep the PV name we have in PROD, where the IOC name
 # is sioc-sys2-mp01
-epicsEnvSet("IOC_PV","SIOC:SYS2:MP01")
+epicsEnvSet("IOC_PV","SIOC:SYS0:MP01")
 
 pwd()
 cd ${TOP}
