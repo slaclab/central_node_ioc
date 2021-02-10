@@ -46,18 +46,18 @@ STATIC_BUILD=YES
 # =============================
 # Define the archiecture versions
 # =============================
-LINUXRT_BUILDROOT_VERSION=buildroot-2016.11.1
+LINUXRT_BUILDROOT_VERSION=buildroot-2019.08
 LINUX_VERSION=rhel6
 
 # ===================================
-# Support for external packages 
+# Support for external packages
 # ===================================
 
 #=========================================================
 # BOOST
 #=========================================================
 BOOST_PACKAGE_NAME=boost
-BOOST_VERSION=1.63.0
+BOOST_VERSION=1.64.0
 BOOST_TOP=$(PACKAGE_SITE_TOP)/$(BOOST_PACKAGE_NAME)/$(BOOST_VERSION)
 BOOST_LIB = $(BOOST_TOP)/$(PKG_ARCH)/lib
 BOOST_INCLUDE = $(BOOST_TOP)/$(PKG_ARCH)/include
@@ -72,7 +72,7 @@ EASYLOGGINGPP_INCLUDE = $(EASYLOGGING)
 # Central Node Engine
 #=========================================================
 CENTRAL_NODE_ENGINE_NAME=central_node_engine
-CENTRAL_NODE_ENGINE_VERSION=central_node_engine-R1-4-1
+CENTRAL_NODE_ENGINE_VERSION=ESLMPS-66
 CENTRAL_NODE_ENGINE_TOP=$(PACKAGE_TOP)/$(CENTRAL_NODE_ENGINE_NAME)/$(CENTRAL_NODE_ENGINE_VERSION)
 #CENTRAL_NODE_ENGINE_TOP=/afs/slac/u/cd/lpiccoli/top/$(CENTRAL_NODE_ENGINE_NAME)
 CENTRAL_NODE_ENGINE_LIB=$(CENTRAL_NODE_ENGINE_TOP)/$(PKG_ARCH)/lib
@@ -82,7 +82,7 @@ CENTRAL_NODE_ENGINE_INCLUDE=$(CENTRAL_NODE_ENGINE_TOP)/$(PKG_ARCH)/include
 # YAML-CPP
 #=========================================================
 YAML_PACKAGE_NAME=yaml-cpp
-YAML_VERSION=yaml-cpp-0.5.3
+YAML_VERSION=yaml-cpp-0.5.3_boost-1.64.0
 YAML_TOP=$(PACKAGE_SITE_TOP)/$(YAML_PACKAGE_NAME)/$(YAML_VERSION)
 YAML_LIB= $(YAML_TOP)/$(PKG_ARCH)/lib
 YAML_INCLUDE=$(YAML_TOP)/$(PKG_ARCH)/include
@@ -91,7 +91,7 @@ YAML_INCLUDE=$(YAML_TOP)/$(PKG_ARCH)/include
 # CPSW
 #=========================================================
 CPSW_FRAMEWORK_PACKAGE_NAME=cpsw/framework
-CPSW_FRAMEWORK_VERSION=R3.6.4
+CPSW_FRAMEWORK_VERSION=R4.4.1
 CPSW_FRAMEWORK_TOP=$(PACKAGE_SITE_TOP)/$(CPSW_FRAMEWORK_PACKAGE_NAME)/$(CPSW_FRAMEWORK_VERSION)
 CPSW_FRAMEWORK_LIB = $(CPSW_FRAMEWORK_TOP)/$(PKG_ARCH)/lib
 CPSW_FRAMEWORK_INCLUDE = $(CPSW_FRAMEWORK_TOP)/$(PKG_ARCH)/include

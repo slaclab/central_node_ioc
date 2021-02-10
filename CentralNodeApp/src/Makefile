@@ -35,7 +35,7 @@ USR_LIBS_Linux += central_node_engine cpsw boost_system yaml-cpp
 # ================================================
 # Build the IOC application
 # ================================================
-# This will attempt to build an IOC application 
+# This will attempt to build an IOC application
 # for every target including the host computer.
 PROD_IOC = CentralNode
 
@@ -104,6 +104,14 @@ CentralNode_LIBS += yamlLoader
 CentralNode_LIBS += $(CEXP_LIBS)
 
 CentralNode_LIBS += $(EPICS_BASE_IOC_LIBS)
+
+# Link QSRV (pvAccess Server) if available
+ifdef EPICS_QSRV_MAJOR_VERSION
+  CentralNode_LIBS += qsrv
+  CentralNode_LIBS += $(EPICS_BASE_PVA_CORE_LIBS)
+  CentralNode_DBD  += PVAServerRegister.dbd
+  CentralNode_DBD  += qsrv.dbd
+endif
 
 #======================================================
 
