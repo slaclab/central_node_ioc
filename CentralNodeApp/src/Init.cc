@@ -83,7 +83,7 @@ static int configureCentralNode(const char *portName) {
   if (!testIoc) {
     Path root = cpswGetRoot();
     if (!root) {
-      std::cout << "There is no root from yaml loader, creating root now (file=" 
+      std::cout << "There is no root from yaml loader, creating root now (file="
 		<< fwFile << ")" << std::endl;
       Firmware::getInstance().createRoot(fwFile);
     }
@@ -140,7 +140,7 @@ static int mpsShowFaults() {
   return 0;
 }
 
-static void mpsShowFault(int id) {
+static void mpsShowFault(uint32_t id) {
   if (!Engine::getInstance().getCurrentDb()) {
     std::cerr << "ERROR: No database loaded" << std::endl;
     return;
@@ -148,7 +148,7 @@ static void mpsShowFault(int id) {
 
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbFaultMap::iterator fault = Engine::getInstance().getCurrentDb()->faults->find(id);
-  
+
   if (fault != Engine::getInstance().getCurrentDb()->faults->end()) {
     std::cout << (*fault).second << std::endl;
   }
@@ -177,7 +177,7 @@ static int mpsShowEngineInfo() {
 
 /*=== mpsShowUpdateBuffer command =======================================================*/
 
-static void mpsShowUpdateBuffer(int id) {
+static void mpsShowUpdateBuffer(uint32_t id) {
 
   if (id < 0) {
     std::cout << "*** mps show update command ***" << std::endl
@@ -207,7 +207,7 @@ static void mpsShowUpdateBuffer(int id) {
   }
   else {
     DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
-    
+
     if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
       std::cout << (*appCard).second->name << " [global id:"
 		<< (*appCard).second->globalId << "]:" << std::endl;
@@ -222,7 +222,7 @@ static void mpsShowUpdateBuffer(int id) {
 
 /*=== mpsShowConfigBuffer command =======================================================*/
 
-static void mpsShowConfigBuffer(int id) {
+static void mpsShowConfigBuffer(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mpsShowConfigBuffer or mpsscb command ***" << std::endl
 	      << "Usage: mpsscb <id>" << std::endl
@@ -243,7 +243,7 @@ static void mpsShowConfigBuffer(int id) {
   }
 
   DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
-    
+
   if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
     std::cout << (*appCard).second->name << " [global id:"
 	      << (*appCard).second->globalId << "]:" << std::endl;
@@ -254,7 +254,7 @@ static void mpsShowConfigBuffer(int id) {
 
 /*=== mpsShowDigitalDevice command =======================================================*/
 
-static void mpsShowDigitalDevice(int id) {
+static void mpsShowDigitalDevice(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mpsShowDigitalDevice or mpssdd command ***" << std::endl
 	      << "Usage: mpssdd <id>" << std::endl
@@ -270,7 +270,7 @@ static void mpsShowDigitalDevice(int id) {
 
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbDigitalDeviceMap::iterator device = Engine::getInstance().getCurrentDb()->digitalDevices->find(id);
-    
+
   if (device != Engine::getInstance().getCurrentDb()->digitalDevices->end()) {
     std::cout << (*device).second << std::endl;
   }
@@ -278,7 +278,7 @@ static void mpsShowDigitalDevice(int id) {
 
 /*=== mpsShowDeviceInput command =======================================================*/
 
-static void mpsShowDeviceInput(int id) {
+static void mpsShowDeviceInput(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mpsShowDeviceInput or mpssdi command ***" << std::endl
 	      << "Usage: mpssdi <id>" << std::endl
@@ -294,7 +294,7 @@ static void mpsShowDeviceInput(int id) {
 
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbDeviceInputMap::iterator device = Engine::getInstance().getCurrentDb()->deviceInputs->find(id);
-    
+
   if (device != Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
     std::cout << (*device).second << std::endl;
   }
@@ -302,7 +302,7 @@ static void mpsShowDeviceInput(int id) {
 
 /*=== mpsShowDigitalChannel command =======================================================*/
 
-static void mpsShowDigitalChannel(int id) {
+static void mpsShowDigitalChannel(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mpsShowDigitalChannel or mpssdc command ***" << std::endl
 	      << "Usage: mpssdc <id>" << std::endl
@@ -318,7 +318,7 @@ static void mpsShowDigitalChannel(int id) {
 
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbChannelMap::iterator channel = Engine::getInstance().getCurrentDb()->digitalChannels->find(id);
-    
+
   if (channel != Engine::getInstance().getCurrentDb()->digitalChannels->end()) {
     std::cout << (*channel).second << std::endl;
   }
@@ -326,7 +326,7 @@ static void mpsShowDigitalChannel(int id) {
 
 /*=== mpsShowAppCard command =======================================================*/
 
-static void mpsShowAppCard(int id) {
+static void mpsShowAppCard(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mps show app [id] ***" << std::endl
 	      << "  id: database Id for the application card - *not* the global app id!" << std::endl
@@ -341,7 +341,7 @@ static void mpsShowAppCard(int id) {
 
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbApplicationCardMap::iterator card = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
-    
+
   if (card != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
     std::cout << (*card).second << std::endl;
   }
@@ -349,7 +349,7 @@ static void mpsShowAppCard(int id) {
 
 /*=== mpsShowAnalogDevice command =======================================================*/
 
-static void mpsShowAnalogDevice(int id) {
+static void mpsShowAnalogDevice(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mpsShowAnalogDevice or mpssad command ***" << std::endl
 	      << "Usage: mpssad <id>" << std::endl
@@ -365,7 +365,7 @@ static void mpsShowAnalogDevice(int id) {
 
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbAnalogDeviceMap::iterator device = Engine::getInstance().getCurrentDb()->analogDevices->find(id);
-    
+
   if (device != Engine::getInstance().getCurrentDb()->analogDevices->end()) {
     std::cout << (*device).second << std::endl;
   }
@@ -373,7 +373,7 @@ static void mpsShowAnalogDevice(int id) {
 
 /*=== mpsShowMitigationDevice command =======================================================*/
 
-static void mpsShowMitigationDevice(int id) {
+static void mpsShowMitigationDevice(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mpsShowMitigationDevice or mpssmd command ***" << std::endl
 	      << "Usage: mpssmd <id>" << std::endl
@@ -385,7 +385,7 @@ static void mpsShowMitigationDevice(int id) {
     std::cerr << "ERROR: No database loaded" << std::endl;
     return;
   }
-  
+
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   if (id < 0) {
     std::cout << "This are the available mitigation devices: " << std::endl;
@@ -396,9 +396,9 @@ static void mpsShowMitigationDevice(int id) {
     std::cout << std::endl;
     return;
   }
-  
+
   DbBeamDestinationMap::iterator device = Engine::getInstance().getCurrentDb()->beamDestinations->find(id);
-    
+
   if (device != Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
     std::cout << (*device).second << std::endl;
   }
@@ -406,7 +406,7 @@ static void mpsShowMitigationDevice(int id) {
 
 /*=== mpsEnableApp command =======================================================*/
 
-static void mpsEnableApp(int id, int enableInt) {
+static void mpsEnableApp(uint32_t id, int enableInt) {
   if (id < 0) {
     std::cout << "*** mpsEnableApp or mpsea command ***" << std::endl
 	      << "Usage: mpsea <globalId> <enable>" << std::endl
@@ -416,8 +416,8 @@ static void mpsEnableApp(int id, int enableInt) {
 	      << "This command clears/sets the timeout enable bit for the"
 	      << "specified application card." << std::endl;
     return;
-  } 
-  
+  }
+
   if (!Engine::getInstance().getCurrentDb()) {
     std::cerr << "ERROR: No database loaded" << std::endl;
     return;
@@ -435,7 +435,7 @@ static void mpsEnableApp(int id, int enableInt) {
 
 /*=== mpsApp2Db command =======================================================*/
 
-static void mpsApp2Db(int id) {
+static void mpsApp2Db(uint32_t id) {
   if (id < 0) {
     std::cout << "Usage: mpsg2d <globalId>" << std::endl
 	      << "  globalId: unique application card id (0 to 1023)" << std::endl
@@ -445,7 +445,7 @@ static void mpsApp2Db(int id) {
 	      << "card database id and its attributes." << std::endl;
     return;
   }
-  
+
   if (!Engine::getInstance().getCurrentDb()) {
     std::cerr << "ERROR: No database loaded" << std::endl;
     return;
@@ -533,7 +533,7 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     }
     std::string option(args[1].sval);
     if (option == "db") {
-      int appId = args[2].ival;
+      uint32_t appId = args[2].ival;
       mpsApp2Db(appId);
     }
   }
@@ -556,7 +556,7 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     }
     std::string option(args[1].sval);
     if (option == "app") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       int enable = args[3].ival;
       mpsEnableApp(id, enable);
     }
@@ -584,39 +584,39 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       mpsShowFaults();
     }
     else if (option == "mit" || option == "mitigation") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       mpsShowMitigationDevice(id);
     }
     else if (option == "app") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       mpsShowAppCard(id);
     }
     else if (option == "ad" || option == "analog") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       mpsShowAnalogDevice(id);
     }
     else if (option == "cb" || option == "config") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       mpsShowConfigBuffer(id);
     }
     else if (option == "ub" || option == "update") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       mpsShowUpdateBuffer(id);
     }
     else if (option == "di" || option == "input") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       mpsShowDeviceInput(id);
     }
     else if (option == "dc" || option == "channel") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       mpsShowDigitalChannel(id);
     }
     else if (option == "dd" || option == "digital") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       mpsShowDigitalDevice(id);
     }
     else if (option == "fault") {
-      int id = args[2].ival;
+      uint32_t id = args[2].ival;
       mpsShowFault(id);
     }
     else {

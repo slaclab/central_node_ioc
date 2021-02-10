@@ -98,8 +98,6 @@
 #define TEST_CHECK_FAULTS_STRING               "TEST_CHECK_FAULTS"
 #define TEST_CHECK_BYPASS_STRING               "TEST_CHECK_BYPASS"
 
-const int CENTRAL_NODE_DRIVER_NUM_PARAMS = 100;
-
 enum CentralNodeState {
   MPS_STATE_IDLE,
   MPS_STATE_RUNNING,
@@ -130,7 +128,7 @@ public:
   void showFirmware();
   void showDatabaseInfo();
   void showEngineInfo();
-  
+
  private:
   std::string _configPath;
   uint32_t _inputUpdateTimeout;
@@ -211,14 +209,14 @@ public:
   int _mpsFwMonitorNotReadyCounterParam;
   int _mpsSkipHeartbeatParam;
   int _mpsForceLinacPc0Param;
-  
+
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;
   int _testCheckFaultsParam;
   int _testCheckBypassParam;
 
   //  CentralNodeState _mpsState;
-  
+
   asynStatus loadConfig(const char *config);
   asynStatus loadTestDeviceInputs(const char *testFileName);
   asynStatus loadTestAnalogDevices(const char *testFileName);

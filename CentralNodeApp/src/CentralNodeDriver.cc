@@ -23,7 +23,7 @@ static Logger *centralNodeLogger;
 
 CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPath,
 				     std::string historyServer, int historyPort) :
-  asynPortDriver(portName, 5000, CENTRAL_NODE_DRIVER_NUM_PARAMS,
+  asynPortDriver(portName, 5000,
 		 asynOctetMask | asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask | asynUInt32DigitalMask | asynDrvUserMask, // interfaceMask
 		 asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask, // interruptMask
 		 ASYN_MULTIDEVICE,                       // asynFlags
@@ -278,7 +278,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   else if (_mpsUpdateRateParam == pasynUser->reason) {
     *value = Engine::getInstance().getUpdateRate();
     return status;
-  } 
+  }
   else if (_mpsUpdateCounterParam == pasynUser->reason) {
     *value = Engine::getInstance().getUpdateCounter();
 
@@ -286,7 +286,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     setStringParam(0, _mpsEngineStartTimeStringParam, ctime(&startTime));
 
     return status;
-  } 
+  }
   else if (_mpsStateParam == pasynUser->reason) {
     getIntegerParam(_mpsStateParam, value);
     return status;
@@ -366,7 +366,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       }
 
       uint32_t fwMitigation[2];
-      
+
       Firmware::getInstance().getFirmwareMitigation(&fwMitigation[0]);
       *value = (fwMitigation[index] >> bitShift) & 0xF;
     } catch (std::exception &e) {
@@ -387,7 +387,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 	index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
 	bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
       }
-      
+
       uint32_t mitigation[2];
       Firmware::getInstance().getMitigation(&mitigation[0]);
       *value = (mitigation[index] >> bitShift) & 0xF;
@@ -396,7 +396,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     }
   }
   else if (_mpsLatchedMitigationParam == pasynUser->reason) {
-    try {	  
+    try {
       uint8_t index = 0;
       uint8_t bitShift = 0;
       {
@@ -410,7 +410,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 	index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
 	bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
       }
-      
+
       uint32_t mitigation[2];
       Firmware::getInstance().getLatchedMitigation(&mitigation[0]);
       *value = (mitigation[index] >> bitShift) & 0xF;
@@ -917,12 +917,12 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
 	uint32_t latchedValue = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->unlatch(mask);
-	
+
 	status = setUIntDigitalParam(addr, pasynUser->reason, latchedValue, mask);
 	LOG_TRACE("DRIVER", "Unlatch: "
 		  << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->channel->name
 		  << " latchedValue: " << latchedValue << ", unlatched: "
-		  << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue 
+		  << Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->latchedValue
 		  << " mask: " << mask);
       } catch (std::exception &e) {
 	status = asynError;
@@ -996,14 +996,14 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
   std::cout << "[" << ctime(&now) << "] INFO: Loading config " << fullName << std::endl;
   try {
     if (Engine::getInstance().loadConfig(fullName, _inputUpdateTimeout) != 0) {
-      std::cerr << "ERROR: Failed to load configuration " << fullName << std::endl; 
+      std::cerr << "ERROR: Failed to load configuration " << fullName << std::endl;
       return asynError;
     }
-  } catch (DbException ex) {
+  } catch (DbException &ex) {
     std::cerr << "ERROR: Exception loading config " << fullName << std::endl;
     std::cerr << ex.what() << std::endl;
     return asynError;
-  } catch (CentralNodeException ex) {
+  } catch (CentralNodeException &ex) {
     std::cerr << "ERROR: Exception loading config " << fullName << std::endl;
     std::cerr << ex.what() << std::endl;
     return asynError;
@@ -1016,7 +1016,7 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
       setStringParam(0, _mpsConfigDbUserParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->user.c_str());
       setStringParam(0, _mpsConfigDbDateParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->date.c_str());
       setStringParam(0, _mpsConfigDbSourceParam, Engine::getInstance().getCurrentDb()->databaseInfo->at(0)->source.c_str());
-    } catch (std::exception ex) {
+    } catch (std::exception &ex) {
       std::cerr << "ERROR: Invalid database info" << std::endl;
       return asynError;
     }
@@ -1027,23 +1027,23 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
     DbBeamClassMap::iterator beamClassIt = Engine::getInstance().getCurrentDb()->beamClasses->find(1);
     if (beamClassIt == Engine::getInstance().getCurrentDb()->beamClasses->end()) {
-      std::cerr << "ERROR: Failed to find BeamClass with ID=1 (PC0), please check MPS database." << std::endl; 
+      std::cerr << "ERROR: Failed to find BeamClass with ID=1 (PC0), please check MPS database." << std::endl;
       return asynError;
     }
     else {
       if ((*beamClassIt).second->name != "PC0") {
-	std::cerr << "ERROR: BeamClass with ID=1 is does not have name 'PC0', please check MPS database." << std::endl; 
+	std::cerr << "ERROR: BeamClass with ID=1 is does not have name 'PC0', please check MPS database." << std::endl;
 	return asynError;
       }
     }
     DbBeamDestinationMap::iterator beamDestIt = Engine::getInstance().getCurrentDb()->beamDestinations->find(1);
     if (beamDestIt == Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-      std::cerr << "ERROR: Failed to find BeamDestination with ID=1 (Linac), please check MPS database." << std::endl; 
+      std::cerr << "ERROR: Failed to find BeamDestination with ID=1 (Linac), please check MPS database." << std::endl;
       return asynError;
     }
     else {
       if ((*beamDestIt).second->name != "Linac") {
-	std::cerr << "ERROR: BeamDestination with ID=1 is does not have name 'Linac', please check MPS database." << std::endl; 
+	std::cerr << "ERROR: BeamDestination with ID=1 is does not have name 'Linac', please check MPS database." << std::endl;
 	return asynError;
       }
     }
@@ -1059,7 +1059,7 @@ asynStatus CentralNodeDriver::loadTestDeviceInputs(const char *testFilename) {
   std::ifstream testInputFile;
   testInputFile.open(fullName.c_str(), std::ifstream::in);
   if (!testInputFile.is_open()) {
-    std::cerr << "ERROR: Failed to load test input file " << fullName << std::endl; 
+    std::cerr << "ERROR: Failed to load test input file " << fullName << std::endl;
     return asynError;
   }
 
@@ -1070,14 +1070,14 @@ asynStatus CentralNodeDriver::loadTestDeviceInputs(const char *testFilename) {
       int deviceValue;
       testInputFile >> deviceId;
       testInputFile >> deviceValue;
-      
+
       try {
 	Engine::getInstance().getCurrentDb()->deviceInputs->at(deviceId)->update(deviceValue);
-      } catch (std::exception ex) {
+      } catch (std::exception &ex) {
 	std::cerr << "ERROR: Invalid device input ID: " << deviceId << std::endl;
 	status = asynError;
       }
-    } 
+    }
   }
 
   return status;
@@ -1090,7 +1090,7 @@ asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
   std::ifstream testInputFile;
   testInputFile.open(fullName.c_str(), std::ifstream::in);
   if (!testInputFile.is_open()) {
-    std::cerr << "ERROR: Failed to load test input file " << fullName << std::endl; 
+    std::cerr << "ERROR: Failed to load test input file " << fullName << std::endl;
     return asynError;
   }
 
@@ -1101,14 +1101,14 @@ asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
       int deviceValue;
       testInputFile >> deviceId;
       testInputFile >> deviceValue;
-      
+
       try {
 	Engine::getInstance().getCurrentDb()->analogDevices->at(deviceId)->update(deviceValue);
-      } catch (std::exception ex) {
+      } catch (std::exception &ex) {
 	std::cerr << "ERROR: Invalid analog device ID: " << deviceId << std::endl;
 	status = asynError;
       }
-    } 
+    }
   }
 
   return status;
