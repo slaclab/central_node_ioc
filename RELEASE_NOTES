@@ -10,6 +10,7 @@
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
 
+central_node_ioc-R1-5-0:
   * Merge changes from the EIC branch.
   * Update buildroot to version 2019.08.
   * Update CPSW to version R4.4.1. This implied update boost to version
