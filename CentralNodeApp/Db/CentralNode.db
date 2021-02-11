@@ -366,11 +366,21 @@ record(bo, "$(IOC):SKIP_HEARTBEAT") {
 record(bo, "$(IOC):DISABLE_BEAM") {
     field(DESC, "Enable/Disable gun shutter")
     field(DTYP, "asynUInt32Digital")
-    field(VAL, "0")
+    field(VAL, "1")
     field(PINI, "YES")
-    field(ZNAM, "BEAM ALLOWED")
-    field(ONAM, "BEAM DISABLED")
+    field(ZNAM, "Shutter Allowed")
+    field(ONAM, "Shutter Disabled")
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_FORCE_LINAC_PC0")
+}
+
+record(bo, "$(IOC):DISABLE_AOM") {
+    field(DESC, "Enable/Disable AOM")
+    field(DTYP, "asynUInt32Digital")
+    field(VAL, "1")
+    field(PINI, "YES")
+    field(ZNAM, "AOM Allowed")
+    field(ONAM, "AOM Disabled")
+    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_FORCE_AOM_PC0")
 }
 
 record(bi, "$(IOC):SW_LOSS_ERROR") {
@@ -389,4 +399,12 @@ record(bi, "$(IOC):SW_WD_ERROR") {
     field(ONAM, "SW_WD_ERROR")
     field(OSV, "MAJOR")
     field(ZSV, "NO_ALARM")
+}
+
+record(calcout, "$(IOC):LINAC_TM_PC") {
+  field(INPA, "$(IOC):ConPowL")
+  field(SCAN, "1 second")
+  field(DESC, "LINAC Power Class to timing")
+  field(CALC, "A & 0xF")
+  field(LLSV, "MAJOR")
 }

@@ -30,6 +30,25 @@
   * Rename SYS2 to SYS0.
   * Add the display directory to the gitignore file.
 
+central_node_ioc-R1-4-2-eic (EIC branch):
+  * Update MCS file with version loaded in EIC.
+
+central_node_ioc-R1-4-1-eic (EIC branch):
+  * Renamed SYS2 to SYS0
+
+central_node_ioc-R1-4-0-eic (EIC branch):
+  * Build agaist central_node_engine-R1-6-0-eic (branch)
+  * New central_node_engine has bug fixes for AOM/Shutter control
+  * The UNLATCHALL PV now also clears FW mitigation latched while
+    enabling AOM.
+
+central_node_ioc-R1-3-1-eic (EIC branch):
+ * Addition of PV for disabling AOM $(IOC):AOM_DISABLE
+
+central_node_ioc-R1-3-0-eic (EIC branch):
+ * Build against central_node_engine-1-5-0-eic (branch)
+ * Addition of $(IOC):LINAC_TM_PC containing PC sent to timing
+
 central_node_ioc-R1-2-12:
  * Build against central_node_engine-R1-4-1.
 

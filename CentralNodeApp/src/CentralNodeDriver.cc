@@ -117,6 +117,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_FW_MONITOR_NOT_READY_COUNTER_STRING, asynParamInt32, &_mpsFwMonitorNotReadyCounterParam);
   createParam(MPS_SKIP_HEARTBEAT_STRING, asynParamUInt32Digital, &_mpsSkipHeartbeatParam);
   createParam(MPS_FORCE_LINAC_PC0_STRING, asynParamUInt32Digital, &_mpsForceLinacPc0Param);
+  createParam(MPS_FORCE_AOM_PC0_STRING, asynParamUInt32Digital, &_mpsForceAomPc0Param);
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -237,6 +238,7 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       Engine::getInstance().getCurrentDb()->unlatchAll();
     }
+    Engine::getInstance().clearSoftwareLatch();
   }
   else if (_mpsDeviceInputBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_DIGITAL, addr, 0, value);
@@ -973,10 +975,24 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       if (value != 0) {
+	// First parameter is the mechanical shutter DB ID
 	Engine::getInstance().getCurrentDb()->forceBeamDestination(1, 1);
       }
       else {
 	Engine::getInstance().getCurrentDb()->forceBeamDestination(1, CLEAR_BEAM_CLASS);
+      }
+    }
+    return status;
+  }
+  else if (_mpsForceAomPc0Param == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      if (value != 0) {
+	// First parameter is the AOM DB ID
+	Engine::getInstance().getCurrentDb()->forceBeamDestination(2, 1);
+      }
+      else {
+	Engine::getInstance().getCurrentDb()->forceBeamDestination(2, CLEAR_BEAM_CLASS);
       }
     }
     return status;
