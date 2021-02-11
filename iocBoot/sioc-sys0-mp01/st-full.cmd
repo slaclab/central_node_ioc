@@ -20,7 +20,7 @@ epicsEnvSet("ENGINEER","Curly Johnson")
 epicsEnvSet("LOCATION","Twilight Zone")
 
 # tag log messages with IOC name
-# How to escape the "sioc-sys2-mp01" as the PERL program
+# How to escape the "sioc-sys0-mp01" as the PERL program
 # will try to repplace it.
 # So, uncomment the following and remove the backslash
 #epicsEnvSet("EPICS\_IOC\_LOG_CLIENT_INET","${IOC}")
