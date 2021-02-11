@@ -25,6 +25,10 @@
     - ycpswasyn to version R3.3.3.
     - yamlLoader to version R2.1.0.
   * Fix all compilation warnings.
+  * Fix bug in YAML file, which is caught by the new version of CPSW.
+  * Fix path to the DEV version of PHYSICS_TOP.
+  * Rename SYS2 to SYS0.
+  * Add the display directory to the gitignore file.
 
 central_node_ioc-R1-2-12:
  * Build against central_node_engine-R1-4-1.
