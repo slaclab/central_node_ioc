@@ -10,6 +10,7 @@
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
 
+  * Merge changes from the EIC branch.
   * Update buildroot to version 2019.08.
   * Update CPSW to version R4.4.1. This implied update boost to version
     1.64.0 and yaml-cpp to version yaml-cpp-0.5.3_boost-1.64.0.
