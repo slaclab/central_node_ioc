@@ -9,6 +9,23 @@
 #  Auth: xx-Dec-2012, XXX         (xxx)
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
+
+  * Update buildroot to version 2019.08.
+  * Update CPSW to version R4.4.1. This implied update boost to version
+    1.64.0 and yaml-cpp to version yaml-cpp-0.5.3_boost-1.64.0.
+  * Update central_node_engine to version central_node_engine-R1-7-0.
+  * Update EPICS base to version R7.0.3.1-1.0. This implied updating
+    all EPICS modules to the latest version:
+    - asyn too version R4.32-1.0.0.
+    - seq to version R2.2.4-1.2.
+    - autosave to version R5.8-2.1.0.
+    - caPutLog to version R3.7-1.0.0.
+    - iocAdmin to version R3.1.16-1.3.2.
+    - miscUtils to version R2.2.5.
+    - ycpswasyn to version R3.3.3.
+    - yamlLoader to version R2.1.0.
+  * Fix all compilation warnings.
+
 central_node_ioc-R1-2-12:
  * Build against central_node_engine-R1-4-1.
 
@@ -36,10 +53,10 @@ central_node_ioc-R1-2-7:
 central_node_ioc-R1-2-6:
  * Version built against central_node_engine-R1-2-4, minor fix
    to the beam charge verification table readback ('mps show fw'
-   command) 
+   command)
 
 central_node_ioc-R1-2-5:
- * Version built against central_node_engine-R1-2-3, the only 
+ * Version built against central_node_engine-R1-2-3, the only
    difference to previous version is that the beam charge table
    is now populated with values from the configuration database
    (as opposed to hardcoded test numbers).
@@ -63,11 +80,11 @@ central_node_ioc-R1-2-3:
    the INP address calculated by the scripts that export
    information from the MPS database. When number of seconds
    reaches zero the string is set back to 'Not Bypassed'
- 
+
 central_node_ioc-R1-2-2:
  * build against central_node_engine-R1-2-2
  * Addition (again) of code to retrieve status of ignore
-   condition for analog integrator (used for TORO DIFF 
+   condition for analog integrator (used for TORO DIFF
    for EIC)
 
 central_node_ioc-R1-2-1:
