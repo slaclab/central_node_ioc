@@ -41,8 +41,12 @@ epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3") # DEV
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
 epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 
+# Location to download the YAML file from the FPGA
+epicsEnvSet("YAML_DIR","${IOC_DATA}/${IOC}/yaml")
+
 # Yaml File
 epicsEnvSet("YAML_FILE", "${MPS_ENV_FW_CONFIG}")
+#epicsEnvSet("YAML_FILE", "${YAML_DIR}/000TopLevel.yaml")
 
 # Central Node FPGA IP address
 epicsEnvSet("FPGA_IP", "10.0.0.102")
@@ -60,6 +64,13 @@ epicsEnvSet("DICT_FILE", "firmware/CentralNodeFirmware.dict")
 # ===================================================================================================================
 # Driver setup and initialization for YCPSWAsyn
 # ===================================================================================================================
+
+## Configure the Yaml Downloader Driver
+# DownloadYamlFile(
+#    IP Address,        # Target FPGA IP Address
+#    Destination Path,  # The destination folder where the YAML file will be written
+# ==========================================================================================================
+DownloadYamlFile("${FPGA_IP}", "${YAML_DIR}")
 
 ## Configure the Yaml Loader Driver
 # cpswLoadYamlFile(

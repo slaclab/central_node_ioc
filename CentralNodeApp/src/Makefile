@@ -12,16 +12,18 @@ USR_CXXFLAGS += -std=c++0x
 #==================================================================================
 
 # Support for CPSW
-USR_INCLUDES = -I$(BOOST_INCLUDE) -I$(CPSW_FRAMEWORK_INCLUDE) -I$(YAML_INCLUDE)
+USR_INCLUDES = $(addprefix -I,$(BOOST_INCLUDE) $(CPSW_FRAMEWORK_INCLUDE) $(YAML_INCLUDE) $(YAMLREADER_INCLUDE) $(DEVICELIB_INCLUDE))
 #==================================================================================
 
 #======================================================
 # PATH TO "NON EPICS" EXTERNAL PACKAGES: USER LIBRARIES
 #======================================================
 # Support for CPSW
+deviceLib_DIR = $(DEVICELIB_LIB)
 cpsw_DIR = $(CPSW_FRAMEWORK_LIB)
 boost_system_DIR = $(BOOST_LIB)
 yaml-cpp_DIR = $(YAML_LIB)
+yamlReader_DIR  = $(YAMLREADER_LIB)
 
 # Central Node Engine Lib
 USR_INCLUDES += -I$(CENTRAL_NODE_ENGINE_INCLUDE)
@@ -30,7 +32,7 @@ central_node_engine_DIR = $(CENTRAL_NODE_ENGINE_LIB)
 # ======================================================
 # LINK "NON EPICS" EXTERNAL PACKAGE LIBRARIES STATICALLY
 #=======================================================
-USR_LIBS_Linux += central_node_engine cpsw boost_system yaml-cpp
+USR_LIBS_Linux += central_node_engine yamlReader deviceLib cpsw boost_system yaml-cpp
 
 # ================================================
 # Build the IOC application
@@ -54,6 +56,7 @@ CentralNode_DBD += caPutLog.dbd
 CentralNode_DBD += asyn.dbd
 CentralNode_DBD += ycpswasyn.dbd
 CentralNode_DBD += yamlLoader.dbd
+CentralNode_DBD += yamlDownloader.dbd
 CentralNode_DBD += $(CEXP_DBDS)
 
 # ================================================================================
@@ -99,6 +102,7 @@ CentralNode_LIBS += caPutLog
 
 CentralNode_LIBS += ycpswasyn
 CentralNode_LIBS += yamlLoader
+CentralNode_LIBS += yamlDownloader
 
 # Needed to link cexpsh() support
 CentralNode_LIBS += $(CEXP_LIBS)
