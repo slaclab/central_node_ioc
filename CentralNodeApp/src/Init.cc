@@ -474,6 +474,35 @@ static void mpsApp2Db(uint32_t id) {
   }
 }
 
+/*=== mpsSetPCStreamDebug command ================================================*/
+
+static void mpsSetPCStreamDebug(int enableInt) {
+  if (!Engine::getInstance().getCurrentDb()) {
+    std::cerr << "ERROR: No database loaded" << std::endl;
+    return;
+  }
+
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+  bool enable = false;
+  if (enableInt > 0) {
+    enable = true;
+  }
+  Engine::getInstance().getCurrentDb()->PCChangeSetDebug(enable);
+}
+
+/*=== mpsPrintPCCounter command ==================================================*/
+
+static void mpsPrintPCCounter() {
+  if (!Engine::getInstance().getCurrentDb()) {
+    std::cerr << "ERROR: No database loaded" << std::endl;
+    return;
+  }
+
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+  Engine::getInstance().getCurrentDb()->printPCCounters();
+}
+
 /*=== mps command =======================================================*/
 
 static void printHelp() {
@@ -482,6 +511,8 @@ static void printHelp() {
 	      << "  app db [id]            : convert app dd to database id" << std::endl
 	      << "  print bypass           : print bypass queue" << std::endl
 	      << "  enable app [id] [en]   : id=appId, en=1 enable, en=0 disable" << std::endl
+          << "  debug" << std::endl
+          << "  |- pcstream [en]       : Power class stream debug, en=1 enable, en=0 disable" << std::endl
 	      << "  show" << std::endl
 	      << "  |- show database       : print database info" << std::endl
 	      << "  |- show engine         : print slow engine info" << std::endl
@@ -489,7 +520,7 @@ static void printHelp() {
 	      << "  |- show destination    : print beam destination info" << std::endl
 	      << "  |- show faults         : print current MPS faults" << std::endl
 	      << "  |- show app [id]       : print application card info" << std::endl
-    	      << "  |- show digital [id]   : print digital device info" << std::endl
+          << "  |- show digital [id]   : print digital device info" << std::endl
 	      << "  |- show input [id]     : print device input info (for digital devices)" << std::endl
 	      << "  |- show channel [id]   : print channel info (for digital devices)" << std::endl
 	      << "  |- show analog [id]    : show analog device info" << std::endl
@@ -497,6 +528,7 @@ static void printHelp() {
 	      << "  |- show update [id]    : print latest MPS update message for app" << std::endl
 	      << "  |- show fault [id]     : print fault info" << std::endl
 	      << "  |- show mitigation [id]: print mitigation device info" << std::endl
+          << "  |- show pccounters     : print power class change counters" << std::endl
 	      << "" << std::endl
 	      << "*** The id specified to the mps command is the database id   ***" << std::endl
 	      << "*** Use id=-1 for additional help (e.g. 'mps show fault -1') ***" << std::endl;
@@ -618,6 +650,25 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     else if (option == "fault") {
       uint32_t id = args[2].ival;
       mpsShowFault(id);
+    }
+    else if (option == "pccounters") {
+      mpsPrintPCCounter();
+    }
+    else {
+      std::cout << "ERROR: unknown option \"" << option << "\"" << std::endl;
+      return;
+    }
+  }
+  else if (command == "debug") {
+    if (args[1].sval == NULL) {
+      std::cout << "ERROR: missing option" << std::endl;
+      printHelp();
+      return;
+    }
+    std::string option(args[1].sval);
+    if (option == "pcstream") {
+        int enable = args[2].ival;
+        mpsSetPCStreamDebug(enable);
     }
     else {
       std::cout << "ERROR: unknown option \"" << option << "\"" << std::endl;
