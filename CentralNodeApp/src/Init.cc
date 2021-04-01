@@ -491,6 +491,18 @@ static void mpsSetPCStreamDebug(int enableInt) {
   Engine::getInstance().getCurrentDb()->PCChangeSetDebug(enable);
 }
 
+/*=== mpsPrintPCCounter command ==================================================*/
+
+static void mpsPrintPCCounter() {
+  if (!Engine::getInstance().getCurrentDb()) {
+    std::cerr << "ERROR: No database loaded" << std::endl;
+    return;
+  }
+
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+  Engine::getInstance().getCurrentDb()->printPCCounters();
+}
+
 /*=== mps command =======================================================*/
 
 static void printHelp() {
@@ -516,6 +528,7 @@ static void printHelp() {
 	      << "  |- show update [id]    : print latest MPS update message for app" << std::endl
 	      << "  |- show fault [id]     : print fault info" << std::endl
 	      << "  |- show mitigation [id]: print mitigation device info" << std::endl
+          << "  |- show pccounters     : print power class change counters" << std::endl
 	      << "" << std::endl
 	      << "*** The id specified to the mps command is the database id   ***" << std::endl
 	      << "*** Use id=-1 for additional help (e.g. 'mps show fault -1') ***" << std::endl;
@@ -637,6 +650,9 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     else if (option == "fault") {
       uint32_t id = args[2].ival;
       mpsShowFault(id);
+    }
+    else if (option == "pccounters") {
+      mpsPrintPCCounter();
     }
     else {
       std::cout << "ERROR: unknown option \"" << option << "\"" << std::endl;
