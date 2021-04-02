@@ -37,6 +37,9 @@ epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
 epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 
+# Point 'YAML_PATH' to the yaml_fixes directory
+epicsEnvSet("YAML_PATH", "${TOP}/firmware/yaml_fixes")
+
 # Location to download the YAML file from the FPGA
 epicsEnvSet("YAML_DIR","${IOC_DATA}/${IOC}/yaml")
 
@@ -45,7 +48,7 @@ epicsEnvSet("MPS_ENV_FW_CONFIG", "${YAML_DIR}/000TopLevel.yaml")
 
 # Defaults Yaml file
 #epicsEnvSet("MPS_ENV_FW_DEFAULTS", "${YAML_DIR}/config/defaults.yaml")
-epicsEnvSet("MPS_ENV_FW_DEFAULTS", "firmware/AmcCarrierMpsCentralNode_project.yaml/config/defaults.yaml")
+epicsEnvSet("MPS_ENV_FW_DEFAULTS", "${YAML_PATH}/config/defaults.yaml")
 
 # Central Node FPGA IP address
 epicsEnvSet("FPGA_IP", "10.0.0.102")
