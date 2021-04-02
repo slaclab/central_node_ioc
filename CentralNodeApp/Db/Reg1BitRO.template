@@ -1,9 +1,9 @@
 record(bi,      "$(P):$(R)") {
-    field(DTYP, "asynInt32")
+    field(DTYP, "$(DTYP)")
     field(DESC, "$(DESC)")
     field(PINI, "YES")
     field(SCAN, "$(SCAN)")
-    field(INP,  "@asyn($(PORT),0)$(PARAM)")
+    field(INP,  "@asynMask($(PORT),0,1)$(PARAM)")
     field(ZNAM, "$(ZNAM)")
     field(ONAM, "$(ONAM)")
 }
