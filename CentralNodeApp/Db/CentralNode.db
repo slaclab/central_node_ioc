@@ -199,7 +199,7 @@ record(bo, "$(IOC):MO_CONC_ERR_CLR") {
 }
 
 record(bo, "$(IOC):BEAM_FAULT_CLR") {
-    field(DESC, "Beam Fault Clear [PC and Charge violation]")
+    field(DESC, "Beam Fault Clear [PC and Charge fault]")
     field(DTYP, "asynUInt32Digital")
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_BEAM_FAULT_CLEAR")
 }
