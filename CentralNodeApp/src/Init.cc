@@ -512,7 +512,7 @@ static void printHelp() {
 	      << "  print bypass           : print bypass queue" << std::endl
 	      << "  enable app [id] [en]   : id=appId, en=1 enable, en=0 disable" << std::endl
           << "  debug" << std::endl
-          << "  |- pcstream [en]       : Power class stream debug, en=1 enable, en=0 disable" << std::endl
+          << "  |- debug pcstream [en] : Power class stream debug, en=1 enable, en=0 disable" << std::endl
 	      << "  show" << std::endl
 	      << "  |- show database       : print database info" << std::endl
 	      << "  |- show engine         : print slow engine info" << std::endl

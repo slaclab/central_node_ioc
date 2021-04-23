@@ -1,0 +1,11 @@
+# Config File Generated: 2017-06-30.03:33:29
+- AmcCarrierCore:
+    - AxiSy56040:
+        - OutputConfig: !<value>
+            - RTM_TIMING_IN0
+            - RTM_TIMING_IN1
+            - RTM_TIMING_IN1
+            - FPGA_TIMING_IN
+    - AmcCarrierTiming:
+        - TimingFrameRx:
+            - ClkSel: !<value> 1

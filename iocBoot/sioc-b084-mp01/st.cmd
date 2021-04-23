@@ -26,23 +26,29 @@ epicsEnvSet("LOCATION","Twilight Zone")
 
 # END: Additional environment variables
 # ====================================================================
-epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
-#epicsEnvSet("MPS_ENV_DATABASE_VERSION", "import")
 
-#epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics") # DEV
-#epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration-R1-0-0")
-epicsEnvSet("PHYSICS_TOP", "/afs/slac/u/cd/lpiccoli/lcls2") # DEV
-epicsEnvSet("MPS_ENV_CONFIG_VERSION", "mps_configuration")
+# MPS Database location
+epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics")
+epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
-epicsEnvSet("MPS_ENV_FW_CONFIG", "firmware/AmcCarrierMpsCentralNode_project.yaml/000TopLevel.yaml")
-epicsEnvSet("MPS_ENV_FW_DEFAULTS", "firmware/AmcCarrierMpsCentralNode_project.yaml/config/defaults.yaml")
-#epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-daemon2") # PROD
-epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3") # DEV
+
+# MPS history server configurations
+epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
 epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 
-# Yaml File
-epicsEnvSet("YAML_FILE", "${MPS_ENV_FW_CONFIG}")
+# Point 'YAML_PATH' to the yaml_fixes directory
+epicsEnvSet("YAML_PATH", "${TOP}/firmware/yaml_fixes")
+
+# Location to download the YAML file from the FPGA
+epicsEnvSet("YAML_DIR","${IOC_DATA}/${IOC}/yaml")
+
+# Yaml File (Note: The CN IOC needs this variable to be called "MPS_ENV_FW_CONFIG")
+epicsEnvSet("MPS_ENV_FW_CONFIG", "${YAML_DIR}/000TopLevel.yaml")
+
+# Defaults Yaml file
+#epicsEnvSet("MPS_ENV_FW_DEFAULTS", "${YAML_DIR}/config/defaults.yaml")
+epicsEnvSet("MPS_ENV_FW_DEFAULTS", "${YAML_PATH}/config/defaults.yaml")
 
 # Central Node FPGA IP address
 epicsEnvSet("FPGA_IP", "10.0.0.102")
@@ -61,6 +67,13 @@ epicsEnvSet("DICT_FILE", "firmware/CentralNodeFirmware.dict")
 # Driver setup and initialization for YCPSWAsyn
 # ===================================================================================================================
 
+## Configure the Yaml Downloader Driver
+# DownloadYamlFile(
+#    IP Address,        # Target FPGA IP Address
+#    Destination Path,  # The destination folder where the YAML file will be written
+# ==========================================================================================================
+DownloadYamlFile("${FPGA_IP}", "${YAML_DIR}")
+
 ## Configure the Yaml Loader Driver
 # cpswLoadYamlFile(
 #    Yaml Doc,                  # Path to the YAML hierarchy description file
@@ -68,7 +81,7 @@ epicsEnvSet("DICT_FILE", "firmware/CentralNodeFirmware.dict")
 #    YAML Path,                 #directory where YAML includes can be found (optional)
 #    IP Address,                # OPTIONAL: Target FPGA IP Address. If not given it is taken from the YAML file
 # ==========================================================================================================
-cpswLoadYamlFile("${YAML_FILE}", "NetIODev", "", "${FPGA_IP}")
+cpswLoadYamlFile("${MPS_ENV_FW_CONFIG}", "NetIODev", "", "${FPGA_IP}")
 
 configureCentralNode("CENTRAL_NODE")
 
