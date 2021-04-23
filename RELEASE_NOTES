@@ -10,6 +10,16 @@
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
 
+  * Add support for the yamlDownloader module, and use it to download the
+    YAML files from the FPGA, instead of a local copy of the YAML files.
+  * Add the yaml_fixes directory to hold local patched YAML files,
+    and point CPSW's YAML_DIR env var to it.
+  * Load the database from the PHYSICS_TOP location.
+  * Fix a DESC field which was too long.
+  * Update the YCPSWASYN register mapping, according to changes in the new YAML files.
+  * Update FW to version bb27bcd.
+  * Update the central_node_engine to version central_node_engine-R1-8-0.
+
 central_node_ioc-R1-5-0:
   * Merge changes from the EIC branch.
   * Update buildroot to version 2019.08.
