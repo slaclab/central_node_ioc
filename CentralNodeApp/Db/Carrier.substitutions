@@ -23,7 +23,6 @@ file "RegisterIn.template" { pattern
 { $(P), FpgaVersion,         "FPGA firmware version number",                "YES",  "Passive",  $(PORT),   "",   FpgaVersion       }
 { $(P), UpTimeCnt,           "Seconds since last reset",                    "YES",  "1 second", $(PORT),   "s",  UpTimeCnt         }
 { $(P), DeviceId,            "Device identification",                       "YES",  "Passive",  $(PORT),   "",   DeviceId          }
-{ $(P), PGP_RX_REM_RDY_0,    "Pgp2bAxi 0 Rx Remote Link Ready",             "YES",  "Passive",  $(PORT),   "",   PGP_RxRemLinkReady_0 }
 { $(P), PGP_RX_FRAME_CNT_0,  "Pgp2bAxi 0 RX Frame Count",                   "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_0 }
 { $(P), PGP_RX_FRAME_ERR_CNT_0, "Pgp2bAxi 0 RX Frame Error Count",          "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_0 }
 { $(P), PGP_RX_CLK_0,        "Pgp2bAxi 0 RX Clock Frequency",               "YES",  "1 second", $(PORT),   "Hz", PGP_RxClkFreq_0   }
@@ -154,6 +153,7 @@ file "Reg1BitRO.template" { pattern
 { PGP_RX_PHY_RDY_0,   "Pgp2bAxi 0 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_0       }
 { PGP_TX_PHY_RDY_0,     "Pgp2bAxi 0 TX Phy is Ready",           "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_0       }
 { PGP_RX_LOC_RDY_0,     "Pgp2bAxi 0 Rx Local Link Ready",       "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_0 }
+{ PGP_RX_REM_RDY_0,   "Pgp2bAxi 0 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_0   }
 { PGP_TX_LINK_RDY_0,  "Pgp2bAxi 0 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_0      }
 }
 
