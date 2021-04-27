@@ -139,6 +139,9 @@ Pgp2bAxi: &Pgp2bAxi
       sizeBits: 1
       lsBit: 3
       mode: RO
+      enums:
+        - { name: "Not ready", value: 0 }
+        - { name: "Ready",     value: 1 }
       description: "Rx Remote Link Ready"
     #########################################################
     TxLinkReady:
