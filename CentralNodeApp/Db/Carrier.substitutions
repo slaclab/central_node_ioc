@@ -26,6 +26,12 @@ file "RegisterIn.template" { pattern
 { $(P), RxRemLinkReady,      "RX remote link ready",                        "YES",  "Passive",  $(PORT),   "",   PGP_RxRemLinkReady_0 }
 { $(P), RxFrameCount,        "RX frame count",                              "YES",  "1 second", $(PORT),   "",   PGP_RxFrameCount_0   }
 { $(P), RxFrameErrorCount,   "RX frame error count",                        "YES",  "1 second", $(PORT),   "",   PGP_RxFrameErrorCount_0 }
+{ $(P), RxClkFreq,           "Pgp2bAxi 0 RX Clock Frequency",               "YES",  "1 second", $(PORT),   "Hz", PGP_RxClkFreq_0   }
+{ $(P), RxLinkDownCount,     "Pgp2bAxi 0 RX Link Down Count",               "YES",  "1 second", $(PORT),   "",   PGP_RxLinkDownCount_0 }
+{ $(P), RxLinkErrorCount,    "Pgp2bAxi 0 RX Link Error Count",              "YES",  "1 second", $(PORT),   "",   PGP_RxLinkErrorCount_0 }
+{ $(P), TxClkFreq,           "Pgp2bAxi 0 TX Clock Frequency",               "YES",  "1 second", $(PORT),   "Hz", PGP_TxClkFreq_0 }
+{ $(P), TxFrameCount,        "Pgp2bAxi 0 TX Frame Count",                   "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_0 }
+{ $(P), TxFrameErrorCount,   "Pgp2bAxi 0 TX Frame Error Count",             "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_0 }
 { $(P), FrameVersion,        "Received timing frame version",               "YES",  "1 second", $(PORT),   "",   FrameVersion      }
 { $(P), VersionErr,          "Version check error",                         "YES",  "1 second", $(PORT),   "",   VersionErr        }
 { $(P), SoftwareLossError,   "Software packet loss error",                  "YES",  "1 second", $(PORT),   "",   SoftwareLossError }
@@ -148,6 +154,7 @@ file "Reg1BitRO.template" { pattern
 { RxPhyReady,         "RX phy is ready",                        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_0       }
 { TxPhyReady,         "TX phy is ready",                        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_0       }
 { RxLocalLinkReady,   "RX local link ready",                    "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_0 }
+{ TxLinkReady,        "Pgp2bAxi 0 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_0      }
 }
 
 #======================================
@@ -199,6 +206,7 @@ file "RegisterCommand.template" { pattern
 { $(P), SwErrClear,       "Clear software error",              "NO",   "Passive",  $(PORT),    SwErrClear     }
 { $(P), ToErrClear,       "Clear the latched timeout error",   "NO",   "Passive",  $(PORT),    ToErrClear     }
 { $(P), EvalLatchClear,   "Clear PowerLevel Latch",            "NO",   "Passive",  $(PORT),    EvalLatchClear     }
+{ $(P), ResetCounters,    "Pgp2bAxi 0 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_0 }
 }
 
 

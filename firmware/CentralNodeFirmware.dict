@@ -45,6 +45,14 @@
 /mmio/MpsCentralApplication/Pgp2bAxi[0]/RxRemLinkReady                                                    PGP_RxRemLinkReady_0
 /mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameCount                                                      PGP_RxFrameCount_0
 /mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/ResetCounters                                                     PGP_ResetCounters_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxClkFreq                                                         PGP_RxClkFreq_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxLinkDownCount                                                   PGP_RxLinkDownCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxClkFreq                                                         PGP_TxClkFreq_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxFrameCount                                                      PGP_TxFrameCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxLinkReady                                                       PGP_TxLinkReady_0
 
 # =============================
 # Central Node Core
