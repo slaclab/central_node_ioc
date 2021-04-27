@@ -5,13 +5,20 @@
 ########################################################################################################################
 # Register path                                                                                           Asyn parm name
 ########################################################################################################################
-# Shared registers
+
+# =============================
+# AxiVersion
+# =============================
 /mmio/AmcCarrierCore/AxiVersion/BuildStamp                                                                BuildStamp
 /mmio/AmcCarrierCore/AxiVersion/FpgaVersion                                                               FpgaVersion
 /mmio/AmcCarrierCore/AxiVersion/DeviceDna                                                                 DeviceDna
 /mmio/AmcCarrierCore/AxiVersion/ScratchPad                                                                ScratchPad
 /mmio/AmcCarrierCore/AxiVersion/UpTimeCnt                                                                 UpTimeCnt
 /mmio/AmcCarrierCore/AxiVersion/DeviceId                                                                  DeviceId
+
+# =============================
+# Timing
+# =============================
 /mmio/AmcCarrierCore/AxiSy56040/OutputConfig[0]                                                           TIM_CB_OUT_0
 /mmio/AmcCarrierCore/AxiSy56040/OutputConfig[1]                                                           TIM_CB_OUT_1
 /mmio/AmcCarrierCore/AxiSy56040/OutputConfig[2]                                                           TIM_CB_OUT_2
@@ -28,12 +35,20 @@
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxPolarity                                            RxPolarity
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/FrameVersion                                          FrameVersion
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/VersionErr                                            VersionErr
+
+# =============================
+# Pgp2bAxi
+# =============================
 /mmio/MpsCentralApplication/Pgp2bAxi[0]/RxPhyReady                                                        RxPhyReady
 /mmio/MpsCentralApplication/Pgp2bAxi[0]/TxPhyReady                                                        TxPhyReady
 /mmio/MpsCentralApplication/Pgp2bAxi[0]/RxLocalLinkReady                                                  RxLocalLinkReady
 /mmio/MpsCentralApplication/Pgp2bAxi[0]/RxRemLinkReady                                                    RxRemLinkReady
 /mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameCount                                                      RxFrameCount
 /mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameErrorCoumt                                                 RxFrameErrorCount
+
+# =============================
+# Central Node Core
+# =============================
 /mmio/MpsCentralApplication/MpsCentralNodeCore/Enable                                                     Enable
 /mmio/MpsCentralApplication/MpsCentralNodeCore/Switch                                                     Switch
 /mmio/MpsCentralApplication/MpsCentralNodeCore/DualCoreEn                                                 DualCoreEn
@@ -82,3 +97,4 @@
 /mmio/MpsCentralApplication/MpsCentralNodeCore/TimePowH                                                   TimePowH
 /mmio/MpsCentralApplication/MpsCentralNodeCore/ConPowL                                                    ConPowL
 /mmio/MpsCentralApplication/MpsCentralNodeCore/ConPowH                                                    ConPowH
+
