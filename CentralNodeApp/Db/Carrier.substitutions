@@ -23,9 +23,9 @@ file "RegisterIn.template" { pattern
 { $(P), FpgaVersion,         "FPGA firmware version number",                "YES",  "Passive",  $(PORT),   "",   FpgaVersion       }
 { $(P), UpTimeCnt,           "Seconds since last reset",                    "YES",  "1 second", $(PORT),   "s",  UpTimeCnt         }
 { $(P), DeviceId,            "Device identification",                       "YES",  "Passive",  $(PORT),   "",   DeviceId          }
-{ $(P), RxRemLinkReady,      "RX remote link ready",                        "YES",  "Passive",  $(PORT),   "",   RxRemLinkReady    }
-{ $(P), RxFrameCount,        "RX frame count",                              "YES",  "1 second", $(PORT),   "",   RxFrameCount      }
-{ $(P), RxFrameErrorCount,   "RX frame error count",                        "YES",  "1 second", $(PORT),   "",   RxFrameErrorCount }
+{ $(P), RxRemLinkReady,      "RX remote link ready",                        "YES",  "Passive",  $(PORT),   "",   PGP_RxRemLinkReady_0 }
+{ $(P), RxFrameCount,        "RX frame count",                              "YES",  "1 second", $(PORT),   "",   PGP_RxFrameCount_0   }
+{ $(P), RxFrameErrorCount,   "RX frame error count",                        "YES",  "1 second", $(PORT),   "",   PGP_RxFrameErrorCount_0 }
 { $(P), FrameVersion,        "Received timing frame version",               "YES",  "1 second", $(PORT),   "",   FrameVersion      }
 { $(P), VersionErr,          "Version check error",                         "YES",  "1 second", $(PORT),   "",   VersionErr        }
 { $(P), SoftwareLossError,   "Software packet loss error",                  "YES",  "1 second", $(PORT),   "",   SoftwareLossError }
@@ -143,11 +143,11 @@ file "RegisterEnumBOutRBV.template" { pattern
 # 1-bit Register with ScalVal_RO interfaces
 #======================================
 file "Reg1BitRO.template" { pattern
-{ R,                  DESC,                                     ZNAM,           ONAM,       SCAN,           DTYP,                  PARAM                }
-{ TIM_LINK_STAT       "Timing Rx link status",                  "Non-locked",   "Locked",   "1 second",     "asynInt32",           TIM_RX_LINK          }
-{ RxPhyReady,         "RX phy is ready",                        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   RxPhyReady           }
-{ TxPhyReady,         "TX phy is ready",                        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   TxPhyReady           }
-{ RxLocalLinkReady,   "RX local link ready",                    "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   RxLocalLinkReady     }
+{ R,                  DESC,                                     ZNAM,           ONAM,       SCAN,           DTYP,                  PARAM                  }
+{ TIM_LINK_STAT       "Timing Rx link status",                  "Non-locked",   "Locked",   "1 second",     "asynInt32",           TIM_RX_LINK            }
+{ RxPhyReady,         "RX phy is ready",                        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_0       }
+{ TxPhyReady,         "TX phy is ready",                        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_0       }
+{ RxLocalLinkReady,   "RX local link ready",                    "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_0 }
 }
 
 #======================================

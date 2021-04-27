@@ -39,12 +39,12 @@
 # =============================
 # Pgp2bAxi
 # =============================
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxPhyReady                                                        RxPhyReady
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxPhyReady                                                        TxPhyReady
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxLocalLinkReady                                                  RxLocalLinkReady
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxRemLinkReady                                                    RxRemLinkReady
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameCount                                                      RxFrameCount
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameErrorCoumt                                                 RxFrameErrorCount
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxPhyReady                                                        PGP_RxPhyReady_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxPhyReady                                                        PGP_TxPhyReady_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxRemLinkReady                                                    PGP_RxRemLinkReady_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameCount                                                      PGP_RxFrameCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_0
 
 # =============================
 # Central Node Core
