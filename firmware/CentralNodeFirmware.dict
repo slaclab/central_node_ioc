@@ -5,13 +5,20 @@
 ########################################################################################################################
 # Register path                                                                                           Asyn parm name
 ########################################################################################################################
-# Shared registers
+
+# =============================
+# AxiVersion
+# =============================
 /mmio/AmcCarrierCore/AxiVersion/BuildStamp                                                                BuildStamp
 /mmio/AmcCarrierCore/AxiVersion/FpgaVersion                                                               FpgaVersion
 /mmio/AmcCarrierCore/AxiVersion/DeviceDna                                                                 DeviceDna
 /mmio/AmcCarrierCore/AxiVersion/ScratchPad                                                                ScratchPad
 /mmio/AmcCarrierCore/AxiVersion/UpTimeCnt                                                                 UpTimeCnt
 /mmio/AmcCarrierCore/AxiVersion/DeviceId                                                                  DeviceId
+
+# =============================
+# Timing
+# =============================
 /mmio/AmcCarrierCore/AxiSy56040/OutputConfig[0]                                                           TIM_CB_OUT_0
 /mmio/AmcCarrierCore/AxiSy56040/OutputConfig[1]                                                           TIM_CB_OUT_1
 /mmio/AmcCarrierCore/AxiSy56040/OutputConfig[2]                                                           TIM_CB_OUT_2
@@ -28,12 +35,224 @@
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxPolarity                                            RxPolarity
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/FrameVersion                                          FrameVersion
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/VersionErr                                            VersionErr
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxPhyReady                                                        RxPhyReady
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxPhyReady                                                        TxPhyReady
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxLocalLinkReady                                                  RxLocalLinkReady
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxRemLinkReady                                                    RxRemLinkReady
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameCount                                                      RxFrameCount
-/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameErrorCoumt                                                 RxFrameErrorCount
+
+# =============================
+# Pgp2bAxi
+# =============================
+# Channel 0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxPhyReady                                                        PGP_RxPhyReady_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxPhyReady                                                        PGP_TxPhyReady_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxRemLinkReady                                                    PGP_RxRemLinkReady_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameCount                                                      PGP_RxFrameCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/ResetCounters                                                     PGP_ResetCounters_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxClkFreq                                                         PGP_RxClkFreq_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxLinkDownCount                                                   PGP_RxLinkDownCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxClkFreq                                                         PGP_TxClkFreq_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxFrameCount                                                      PGP_TxFrameCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_0
+/mmio/MpsCentralApplication/Pgp2bAxi[0]/TxLinkReady                                                       PGP_TxLinkReady_0
+# Channel 1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/RxPhyReady                                                        PGP_RxPhyReady_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/TxPhyReady                                                        PGP_TxPhyReady_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/RxRemLinkReady                                                    PGP_RxRemLinkReady_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/RxFrameCount                                                      PGP_RxFrameCount_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/ResetCounters                                                     PGP_ResetCounters_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/RxClkFreq                                                         PGP_RxClkFreq_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/RxLinkDownCount                                                   PGP_RxLinkDownCount_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/TxClkFreq                                                         PGP_TxClkFreq_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/TxFrameCount                                                      PGP_TxFrameCount_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_1
+/mmio/MpsCentralApplication/Pgp2bAxi[1]/TxLinkReady                                                       PGP_TxLinkReady_1
+# Channel 2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/RxPhyReady                                                        PGP_RxPhyReady_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/TxPhyReady                                                        PGP_TxPhyReady_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/RxRemLinkReady                                                    PGP_RxRemLinkReady_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/RxFrameCount                                                      PGP_RxFrameCount_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/ResetCounters                                                     PGP_ResetCounters_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/RxClkFreq                                                         PGP_RxClkFreq_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/RxLinkDownCount                                                   PGP_RxLinkDownCount_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/TxClkFreq                                                         PGP_TxClkFreq_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/TxFrameCount                                                      PGP_TxFrameCount_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_2
+/mmio/MpsCentralApplication/Pgp2bAxi[2]/TxLinkReady                                                       PGP_TxLinkReady_2
+# Channel 3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/RxPhyReady                                                        PGP_RxPhyReady_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/TxPhyReady                                                        PGP_TxPhyReady_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/RxRemLinkReady                                                    PGP_RxRemLinkReady_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/RxFrameCount                                                      PGP_RxFrameCount_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/ResetCounters                                                     PGP_ResetCounters_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/RxClkFreq                                                         PGP_RxClkFreq_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/RxLinkDownCount                                                   PGP_RxLinkDownCount_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/TxClkFreq                                                         PGP_TxClkFreq_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/TxFrameCount                                                      PGP_TxFrameCount_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_3
+/mmio/MpsCentralApplication/Pgp2bAxi[3]/TxLinkReady                                                       PGP_TxLinkReady_3
+# Channel 4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/RxPhyReady                                                        PGP_RxPhyReady_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/TxPhyReady                                                        PGP_TxPhyReady_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/RxRemLinkReady                                                    PGP_RxRemLinkReady_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/RxFrameCount                                                      PGP_RxFrameCount_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/ResetCounters                                                     PGP_ResetCounters_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/RxClkFreq                                                         PGP_RxClkFreq_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/RxLinkDownCount                                                   PGP_RxLinkDownCount_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/TxClkFreq                                                         PGP_TxClkFreq_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/TxFrameCount                                                      PGP_TxFrameCount_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_4
+/mmio/MpsCentralApplication/Pgp2bAxi[4]/TxLinkReady                                                       PGP_TxLinkReady_4
+# Channel 5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/RxPhyReady                                                        PGP_RxPhyReady_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/TxPhyReady                                                        PGP_TxPhyReady_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/RxRemLinkReady                                                    PGP_RxRemLinkReady_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/RxFrameCount                                                      PGP_RxFrameCount_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/ResetCounters                                                     PGP_ResetCounters_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/RxClkFreq                                                         PGP_RxClkFreq_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/RxLinkDownCount                                                   PGP_RxLinkDownCount_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/TxClkFreq                                                         PGP_TxClkFreq_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/TxFrameCount                                                      PGP_TxFrameCount_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_5
+/mmio/MpsCentralApplication/Pgp2bAxi[5]/TxLinkReady                                                       PGP_TxLinkReady_5
+# Channel 6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/RxPhyReady                                                        PGP_RxPhyReady_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/TxPhyReady                                                        PGP_TxPhyReady_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/RxRemLinkReady                                                    PGP_RxRemLinkReady_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/RxFrameCount                                                      PGP_RxFrameCount_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/ResetCounters                                                     PGP_ResetCounters_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/RxClkFreq                                                         PGP_RxClkFreq_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/RxLinkDownCount                                                   PGP_RxLinkDownCount_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/TxClkFreq                                                         PGP_TxClkFreq_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/TxFrameCount                                                      PGP_TxFrameCount_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_6
+/mmio/MpsCentralApplication/Pgp2bAxi[6]/TxLinkReady                                                       PGP_TxLinkReady_6
+# Channel 7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/RxPhyReady                                                        PGP_RxPhyReady_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/TxPhyReady                                                        PGP_TxPhyReady_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/RxRemLinkReady                                                    PGP_RxRemLinkReady_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/RxFrameCount                                                      PGP_RxFrameCount_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/ResetCounters                                                     PGP_ResetCounters_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/RxClkFreq                                                         PGP_RxClkFreq_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/RxLinkDownCount                                                   PGP_RxLinkDownCount_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/TxClkFreq                                                         PGP_TxClkFreq_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/TxFrameCount                                                      PGP_TxFrameCount_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_7
+/mmio/MpsCentralApplication/Pgp2bAxi[7]/TxLinkReady                                                       PGP_TxLinkReady_7
+# Channel 8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/RxPhyReady                                                        PGP_RxPhyReady_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/TxPhyReady                                                        PGP_TxPhyReady_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/RxRemLinkReady                                                    PGP_RxRemLinkReady_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/RxFrameCount                                                      PGP_RxFrameCount_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/ResetCounters                                                     PGP_ResetCounters_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/RxClkFreq                                                         PGP_RxClkFreq_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/RxLinkDownCount                                                   PGP_RxLinkDownCount_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/TxClkFreq                                                         PGP_TxClkFreq_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/TxFrameCount                                                      PGP_TxFrameCount_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_8
+/mmio/MpsCentralApplication/Pgp2bAxi[8]/TxLinkReady                                                       PGP_TxLinkReady_8
+# Channel 9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/RxPhyReady                                                        PGP_RxPhyReady_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/TxPhyReady                                                        PGP_TxPhyReady_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/RxLocalLinkReady                                                  PGP_RxLocalLinkReady_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/RxRemLinkReady                                                    PGP_RxRemLinkReady_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/RxFrameCount                                                      PGP_RxFrameCount_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/RxFrameErrorCoumt                                                 PGP_RxFrameErrorCount_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/ResetCounters                                                     PGP_ResetCounters_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/RxClkFreq                                                         PGP_RxClkFreq_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/RxLinkDownCount                                                   PGP_RxLinkDownCount_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/RxLinkErrorCount                                                  PGP_RxLinkErrorCount_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/TxClkFreq                                                         PGP_TxClkFreq_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/TxFrameCount                                                      PGP_TxFrameCount_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/TxFrameErrorCount                                                 PGP_TxFrameErrorCount_9
+/mmio/MpsCentralApplication/Pgp2bAxi[9]/TxLinkReady                                                       PGP_TxLinkReady_9
+# Channel 10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/RxPhyReady                                                       PGP_RxPhyReady_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/TxPhyReady                                                       PGP_TxPhyReady_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/RxLocalLinkReady                                                 PGP_RxLocalLinkReady_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/RxRemLinkReady                                                   PGP_RxRemLinkReady_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/RxFrameCount                                                     PGP_RxFrameCount_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/RxFrameErrorCoumt                                                PGP_RxFrameErrorCount_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/ResetCounters                                                    PGP_ResetCounters_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/RxClkFreq                                                        PGP_RxClkFreq_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/RxLinkDownCount                                                  PGP_RxLinkDownCount_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/RxLinkErrorCount                                                 PGP_RxLinkErrorCount_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/TxClkFreq                                                        PGP_TxClkFreq_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/TxFrameCount                                                     PGP_TxFrameCount_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/TxFrameErrorCount                                                PGP_TxFrameErrorCount_10
+/mmio/MpsCentralApplication/Pgp2bAxi[10]/TxLinkReady                                                      PGP_TxLinkReady_10
+# Channel 11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/RxPhyReady                                                       PGP_RxPhyReady_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/TxPhyReady                                                       PGP_TxPhyReady_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/RxLocalLinkReady                                                 PGP_RxLocalLinkReady_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/RxRemLinkReady                                                   PGP_RxRemLinkReady_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/RxFrameCount                                                     PGP_RxFrameCount_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/RxFrameErrorCoumt                                                PGP_RxFrameErrorCount_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/ResetCounters                                                    PGP_ResetCounters_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/RxClkFreq                                                        PGP_RxClkFreq_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/RxLinkDownCount                                                  PGP_RxLinkDownCount_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/RxLinkErrorCount                                                 PGP_RxLinkErrorCount_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/TxClkFreq                                                        PGP_TxClkFreq_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/TxFrameCount                                                     PGP_TxFrameCount_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/TxFrameErrorCount                                                PGP_TxFrameErrorCount_11
+/mmio/MpsCentralApplication/Pgp2bAxi[11]/TxLinkReady                                                      PGP_TxLinkReady_11
+# Channel 12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/RxPhyReady                                                       PGP_RxPhyReady_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/TxPhyReady                                                       PGP_TxPhyReady_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/RxLocalLinkReady                                                 PGP_RxLocalLinkReady_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/RxRemLinkReady                                                   PGP_RxRemLinkReady_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/RxFrameCount                                                     PGP_RxFrameCount_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/RxFrameErrorCoumt                                                PGP_RxFrameErrorCount_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/ResetCounters                                                    PGP_ResetCounters_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/RxClkFreq                                                        PGP_RxClkFreq_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/RxLinkDownCount                                                  PGP_RxLinkDownCount_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/RxLinkErrorCount                                                 PGP_RxLinkErrorCount_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/TxClkFreq                                                        PGP_TxClkFreq_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/TxFrameCount                                                     PGP_TxFrameCount_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/TxFrameErrorCount                                                PGP_TxFrameErrorCount_12
+/mmio/MpsCentralApplication/Pgp2bAxi[12]/TxLinkReady                                                      PGP_TxLinkReady_12
+# Channel 13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/RxPhyReady                                                       PGP_RxPhyReady_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/TxPhyReady                                                       PGP_TxPhyReady_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/RxLocalLinkReady                                                 PGP_RxLocalLinkReady_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/RxRemLinkReady                                                   PGP_RxRemLinkReady_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/RxFrameCount                                                     PGP_RxFrameCount_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/RxFrameErrorCoumt                                                PGP_RxFrameErrorCount_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/ResetCounters                                                    PGP_ResetCounters_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/RxClkFreq                                                        PGP_RxClkFreq_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/RxLinkDownCount                                                  PGP_RxLinkDownCount_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/RxLinkErrorCount                                                 PGP_RxLinkErrorCount_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/TxClkFreq                                                        PGP_TxClkFreq_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/TxFrameCount                                                     PGP_TxFrameCount_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/TxFrameErrorCount                                                PGP_TxFrameErrorCount_13
+/mmio/MpsCentralApplication/Pgp2bAxi[13]/TxLinkReady                                                      PGP_TxLinkReady_13
+
+# =============================
+# Central Node Core
+# =============================
 /mmio/MpsCentralApplication/MpsCentralNodeCore/Enable                                                     Enable
 /mmio/MpsCentralApplication/MpsCentralNodeCore/Switch                                                     Switch
 /mmio/MpsCentralApplication/MpsCentralNodeCore/DualCoreEn                                                 DualCoreEn
@@ -82,3 +301,4 @@
 /mmio/MpsCentralApplication/MpsCentralNodeCore/TimePowH                                                   TimePowH
 /mmio/MpsCentralApplication/MpsCentralNodeCore/ConPowL                                                    ConPowL
 /mmio/MpsCentralApplication/MpsCentralNodeCore/ConPowH                                                    ConPowH
+
