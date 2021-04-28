@@ -23,14 +23,6 @@ file "RegisterIn.template" { pattern
 { $(P), FpgaVersion,         "FPGA firmware version number",                "YES",  "Passive",  $(PORT),   "",   FpgaVersion       }
 { $(P), UpTimeCnt,           "Seconds since last reset",                    "YES",  "1 second", $(PORT),   "s",  UpTimeCnt         }
 { $(P), DeviceId,            "Device identification",                       "YES",  "Passive",  $(PORT),   "",   DeviceId          }
-{ $(P), PGP_RX_FRAME_CNT_0,  "Pgp2bAxi 0 RX Frame Count",                   "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_0 }
-{ $(P), PGP_RX_FRAME_ERR_CNT_0, "Pgp2bAxi 0 RX Frame Error Count",          "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_0 }
-{ $(P), PGP_RX_CLK_0,        "Pgp2bAxi 0 RX Clock Frequency",               "YES",  "1 second", $(PORT),   "Hz", PGP_RxClkFreq_0   }
-{ $(P), PGP_RX_LINK_DOWN_CNT_0, "Pgp2bAxi 0 RX Link Down Count",            "YES",  "1 second", $(PORT),   "",   PGP_RxLinkDownCount_0 }
-{ $(P), PGP_RX_LINK_ERR_CNT_0, "Pgp2bAxi 0 RX Link Error Count",            "YES",  "1 second", $(PORT),   "",   PGP_RxLinkErrorCount_0 }
-{ $(P), PGP_TX_CLK_0,        "Pgp2bAxi 0 TX Clock Frequency",               "YES",  "1 second", $(PORT),   "Hz", PGP_TxClkFreq_0 }
-{ $(P), PGP_TX_FRAME_CNT_0,  "Pgp2bAxi 0 TX Frame Count",                   "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_0 }
-{ $(P), PGP_TX_FRAME_ERR_CNT_0, "Pgp2bAxi 0 TX Frame Error Count",          "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_0 }
 { $(P), FrameVersion,        "Received timing frame version",               "YES",  "1 second", $(PORT),   "",   FrameVersion      }
 { $(P), VersionErr,          "Version check error",                         "YES",  "1 second", $(PORT),   "",   VersionErr        }
 { $(P), SoftwareLossError,   "Software packet loss error",                  "YES",  "1 second", $(PORT),   "",   SoftwareLossError }
@@ -51,6 +43,118 @@ file "RegisterIn.template" { pattern
 { $(P), TimePowH,            "PowerClass from timing (upper 32 bits)",      "YES",  "1 second", $(PORT),   "",   TimePowH }
 { $(P), ConPowL,             "PowerClass send by MPS (lower 32 bits)",      "YES",  "1 second", $(PORT),   "",   ConPowL }
 { $(P), ConPowH,             "PowerClass send by MPS (upper 32 bits)",      "YES",  "1 second", $(PORT),   "",   ConPowH }
+{ $(P), PGP_RX_FRAME_CNT_0,      "Pgp2bAxi 0 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_0       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_0,  "Pgp2bAxi 0 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_0  }
+{ $(P), PGP_RX_CLK_0,            "Pgp2bAxi 0 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_0          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_0,  "Pgp2bAxi 0 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_0    }
+{ $(P), PGP_RX_LINK_ERR_CNT_0,   "Pgp2bAxi 0 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_0   }
+{ $(P), PGP_TX_CLK_0,            "Pgp2bAxi 0 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_0          }
+{ $(P), PGP_TX_FRAME_CNT_0,      "Pgp2bAxi 0 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_0       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_0,  "Pgp2bAxi 0 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_0  }
+{ $(P), PGP_RX_FRAME_CNT_1,      "Pgp2bAxi 1 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_1       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_1,  "Pgp2bAxi 1 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_1  }
+{ $(P), PGP_RX_CLK_1,            "Pgp2bAxi 1 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_1          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_1,  "Pgp2bAxi 1 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_1    }
+{ $(P), PGP_RX_LINK_ERR_CNT_1,   "Pgp2bAxi 1 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_1   }
+{ $(P), PGP_TX_CLK_1,            "Pgp2bAxi 1 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_1          }
+{ $(P), PGP_TX_FRAME_CNT_1,      "Pgp2bAxi 1 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_1       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_1,  "Pgp2bAxi 1 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_1  }
+{ $(P), PGP_RX_FRAME_CNT_2,      "Pgp2bAxi 2 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_2       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_2,  "Pgp2bAxi 2 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_2  }
+{ $(P), PGP_RX_CLK_2,            "Pgp2bAxi 2 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_2          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_2,  "Pgp2bAxi 2 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_2    }
+{ $(P), PGP_RX_LINK_ERR_CNT_2,   "Pgp2bAxi 2 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_2   }
+{ $(P), PGP_TX_CLK_2,            "Pgp2bAxi 2 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_2          }
+{ $(P), PGP_TX_FRAME_CNT_2,      "Pgp2bAxi 2 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_2       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_2,  "Pgp2bAxi 2 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_2  }
+{ $(P), PGP_RX_FRAME_CNT_3,      "Pgp2bAxi 3 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_3       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_3,  "Pgp2bAxi 3 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_3  }
+{ $(P), PGP_RX_CLK_3,            "Pgp2bAxi 3 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_3          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_3,  "Pgp2bAxi 3 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_3    }
+{ $(P), PGP_RX_LINK_ERR_CNT_3,   "Pgp2bAxi 3 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_3   }
+{ $(P), PGP_TX_CLK_3,            "Pgp2bAxi 3 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_3          }
+{ $(P), PGP_TX_FRAME_CNT_3,      "Pgp2bAxi 3 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_3       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_3,  "Pgp2bAxi 3 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_3  }
+{ $(P), PGP_RX_FRAME_CNT_4,      "Pgp2bAxi 4 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_4       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_4,  "Pgp2bAxi 4 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_4  }
+{ $(P), PGP_RX_CLK_4,            "Pgp2bAxi 4 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_4          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_4,  "Pgp2bAxi 4 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_4    }
+{ $(P), PGP_RX_LINK_ERR_CNT_4,   "Pgp2bAxi 4 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_4   }
+{ $(P), PGP_TX_CLK_4,            "Pgp2bAxi 4 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_4          }
+{ $(P), PGP_TX_FRAME_CNT_4,      "Pgp2bAxi 4 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_4       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_4,  "Pgp2bAxi 4 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_4  }
+{ $(P), PGP_RX_FRAME_CNT_5,      "Pgp2bAxi 5 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_5       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_5,  "Pgp2bAxi 5 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_5  }
+{ $(P), PGP_RX_CLK_5,            "Pgp2bAxi 5 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_5          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_5,  "Pgp2bAxi 5 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_5    }
+{ $(P), PGP_RX_LINK_ERR_CNT_5,   "Pgp2bAxi 5 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_5   }
+{ $(P), PGP_TX_CLK_5,            "Pgp2bAxi 5 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_5          }
+{ $(P), PGP_TX_FRAME_CNT_5,      "Pgp2bAxi 5 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_5       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_5,  "Pgp2bAxi 5 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_5  }
+{ $(P), PGP_RX_FRAME_CNT_6,      "Pgp2bAxi 6 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_6       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_6,  "Pgp2bAxi 6 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_6  }
+{ $(P), PGP_RX_CLK_6,            "Pgp2bAxi 6 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_6          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_6,  "Pgp2bAxi 6 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_6    }
+{ $(P), PGP_RX_LINK_ERR_CNT_6,   "Pgp2bAxi 6 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_6   }
+{ $(P), PGP_TX_CLK_6,            "Pgp2bAxi 6 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_6          }
+{ $(P), PGP_TX_FRAME_CNT_6,      "Pgp2bAxi 6 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_6       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_6,  "Pgp2bAxi 6 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_6  }
+{ $(P), PGP_RX_FRAME_CNT_7,      "Pgp2bAxi 7 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_7       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_7,  "Pgp2bAxi 7 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_7  }
+{ $(P), PGP_RX_CLK_7,            "Pgp2bAxi 7 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_7          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_7,  "Pgp2bAxi 7 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_7    }
+{ $(P), PGP_RX_LINK_ERR_CNT_7,   "Pgp2bAxi 7 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_7   }
+{ $(P), PGP_TX_CLK_7,            "Pgp2bAxi 7 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_7          }
+{ $(P), PGP_TX_FRAME_CNT_7,      "Pgp2bAxi 7 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_7       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_7,  "Pgp2bAxi 7 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_7  }
+{ $(P), PGP_RX_FRAME_CNT_8,      "Pgp2bAxi 8 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_8       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_8,  "Pgp2bAxi 8 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_8  }
+{ $(P), PGP_RX_CLK_8,            "Pgp2bAxi 8 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_8          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_8,  "Pgp2bAxi 8 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_8    }
+{ $(P), PGP_RX_LINK_ERR_CNT_8,   "Pgp2bAxi 8 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_8   }
+{ $(P), PGP_TX_CLK_8,            "Pgp2bAxi 8 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_8          }
+{ $(P), PGP_TX_FRAME_CNT_8,      "Pgp2bAxi 8 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_8       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_8,  "Pgp2bAxi 8 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_8  }
+{ $(P), PGP_RX_FRAME_CNT_9,      "Pgp2bAxi 9 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_9       }
+{ $(P), PGP_RX_FRAME_ERR_CNT_9,  "Pgp2bAxi 9 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_9  }
+{ $(P), PGP_RX_CLK_9,            "Pgp2bAxi 9 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_9          }
+{ $(P), PGP_RX_LINK_DOWN_CNT_9,  "Pgp2bAxi 9 RX Link Down Count",           "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_9    }
+{ $(P), PGP_RX_LINK_ERR_CNT_9,   "Pgp2bAxi 9 RX Link Error Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_9   }
+{ $(P), PGP_TX_CLK_9,            "Pgp2bAxi 9 TX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_9          }
+{ $(P), PGP_TX_FRAME_CNT_9,      "Pgp2bAxi 9 TX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_9       }
+{ $(P), PGP_TX_FRAME_ERR_CNT_9,  "Pgp2bAxi 9 TX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_9  }
+{ $(P), PGP_RX_FRAME_CNT_10,     "Pgp2bAxi 10 RX Frame Count",              "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_10      }
+{ $(P), PGP_RX_FRAME_ERR_CNT_10, "Pgp2bAxi 10 RX Frame Error Count",        "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_10 }
+{ $(P), PGP_RX_CLK_10,           "Pgp2bAxi 10 RX Clock Frequency",          "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_10         }
+{ $(P), PGP_RX_LINK_DOWN_CNT_10, "Pgp2bAxi 10 RX Link Down Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_10   }
+{ $(P), PGP_RX_LINK_ERR_CNT_10,  "Pgp2bAxi 10 RX Link Error Count",         "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_10  }
+{ $(P), PGP_TX_CLK_10,           "Pgp2bAxi 10 TX Clock Frequency",          "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_10         }
+{ $(P), PGP_TX_FRAME_CNT_10,     "Pgp2bAxi 10 TX Frame Count",              "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_10      }
+{ $(P), PGP_TX_FRAME_ERR_CNT_10, "Pgp2bAxi 10 TX Frame Error Count",        "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_10 }
+{ $(P), PGP_RX_FRAME_CNT_11,     "Pgp2bAxi 11 RX Frame Count",              "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_11      }
+{ $(P), PGP_RX_FRAME_ERR_CNT_11, "Pgp2bAxi 11 RX Frame Error Count",        "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_11 }
+{ $(P), PGP_RX_CLK_11,           "Pgp2bAxi 11 RX Clock Frequency",          "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_11         }
+{ $(P), PGP_RX_LINK_DOWN_CNT_11, "Pgp2bAxi 11 RX Link Down Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_11   }
+{ $(P), PGP_RX_LINK_ERR_CNT_11,  "Pgp2bAxi 11 RX Link Error Count",         "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_11  }
+{ $(P), PGP_TX_CLK_11,           "Pgp2bAxi 11 TX Clock Frequency",          "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_11         }
+{ $(P), PGP_TX_FRAME_CNT_11,     "Pgp2bAxi 11 TX Frame Count",              "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_11      }
+{ $(P), PGP_TX_FRAME_ERR_CNT_11, "Pgp2bAxi 11 TX Frame Error Count",        "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_11 }
+{ $(P), PGP_RX_FRAME_CNT_12,     "Pgp2bAxi 12 RX Frame Count",              "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_12      }
+{ $(P), PGP_RX_FRAME_ERR_CNT_12, "Pgp2bAxi 12 RX Frame Error Count",        "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_12 }
+{ $(P), PGP_RX_CLK_12,           "Pgp2bAxi 12 RX Clock Frequency",          "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_12         }
+{ $(P), PGP_RX_LINK_DOWN_CNT_12, "Pgp2bAxi 12 RX Link Down Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_12   }
+{ $(P), PGP_RX_LINK_ERR_CNT_12,  "Pgp2bAxi 12 RX Link Error Count",         "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_12  }
+{ $(P), PGP_TX_CLK_12,           "Pgp2bAxi 12 TX Clock Frequency",          "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_12         }
+{ $(P), PGP_TX_FRAME_CNT_12,     "Pgp2bAxi 12 TX Frame Count",              "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_12      }
+{ $(P), PGP_TX_FRAME_ERR_CNT_12, "Pgp2bAxi 12 TX Frame Error Count",        "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_12 }
+{ $(P), PGP_RX_FRAME_CNT_13,     "Pgp2bAxi 13 RX Frame Count",              "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_13      }
+{ $(P), PGP_RX_FRAME_ERR_CNT_13, "Pgp2bAxi 13 RX Frame Error Count",        "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_13 }
+{ $(P), PGP_RX_CLK_13,           "Pgp2bAxi 13 RX Clock Frequency",          "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_13         }
+{ $(P), PGP_RX_LINK_DOWN_CNT_13, "Pgp2bAxi 13 RX Link Down Count",          "YES",  "1 second", $(PORT),   "",       PGP_RxLinkDownCount_13   }
+{ $(P), PGP_RX_LINK_ERR_CNT_13,  "Pgp2bAxi 13 RX Link Error Count",         "YES",  "1 second", $(PORT),   "",       PGP_RxLinkErrorCount_13  }
+{ $(P), PGP_TX_CLK_13,           "Pgp2bAxi 13 TX Clock Frequency",          "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_13         }
+{ $(P), PGP_TX_FRAME_CNT_13,     "Pgp2bAxi 13 TX Frame Count",              "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_13      }
+{ $(P), PGP_TX_FRAME_ERR_CNT_13, "Pgp2bAxi 13 TX Frame Error Count",        "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_13 }
 }
 
 # Array of register
@@ -148,13 +252,78 @@ file "RegisterEnumBOutRBV.template" { pattern
 # 1-bit Register with ScalVal_RO interfaces
 #======================================
 file "Reg1BitRO.template" { pattern
-{ R,                  DESC,                                     ZNAM,           ONAM,       SCAN,           DTYP,                  PARAM                  }
-{ TIM_LINK_STAT       "Timing Rx link status",                  "Non-locked",   "Locked",   "1 second",     "asynInt32",           TIM_RX_LINK            }
-{ PGP_RX_PHY_RDY_0,   "Pgp2bAxi 0 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_0       }
-{ PGP_TX_PHY_RDY_0,     "Pgp2bAxi 0 TX Phy is Ready",           "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_0       }
-{ PGP_RX_LOC_RDY_0,     "Pgp2bAxi 0 Rx Local Link Ready",       "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_0 }
-{ PGP_RX_REM_RDY_0,   "Pgp2bAxi 0 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_0   }
-{ PGP_TX_LINK_RDY_0,  "Pgp2bAxi 0 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_0      }
+{ R,                  DESC,                                     ZNAM,           ONAM,       SCAN,           DTYP,                  PARAM                   }
+{ TIM_LINK_STAT       "Timing Rx link status",                  "Non-locked",   "Locked",   "1 second",     "asynInt32",           TIM_RX_LINK             }
+{ PGP_RX_PHY_RDY_0,   "Pgp2bAxi 0 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_0        }
+{ PGP_TX_PHY_RDY_0,   "Pgp2bAxi 0 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_0        }
+{ PGP_RX_LOC_RDY_0,   "Pgp2bAxi 0 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_0  }
+{ PGP_RX_REM_RDY_0,   "Pgp2bAxi 0 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_0    }
+{ PGP_TX_LINK_RDY_0,  "Pgp2bAxi 0 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_0       }
+{ PGP_RX_PHY_RDY_1,   "Pgp2bAxi 1 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_1        }
+{ PGP_TX_PHY_RDY_1,   "Pgp2bAxi 1 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_1        }
+{ PGP_RX_LOC_RDY_1,   "Pgp2bAxi 1 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_1  }
+{ PGP_RX_REM_RDY_1,   "Pgp2bAxi 1 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_1    }
+{ PGP_TX_LINK_RDY_1,  "Pgp2bAxi 1 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_1       }
+{ PGP_RX_PHY_RDY_2,   "Pgp2bAxi 2 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_2        }
+{ PGP_TX_PHY_RDY_2,   "Pgp2bAxi 2 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_2        }
+{ PGP_RX_LOC_RDY_2,   "Pgp2bAxi 2 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_2  }
+{ PGP_RX_REM_RDY_2,   "Pgp2bAxi 2 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_2    }
+{ PGP_TX_LINK_RDY_2,  "Pgp2bAxi 2 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_2       }
+{ PGP_RX_PHY_RDY_3,   "Pgp2bAxi 3 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_3        }
+{ PGP_TX_PHY_RDY_3,   "Pgp2bAxi 3 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_3        }
+{ PGP_RX_LOC_RDY_3,   "Pgp2bAxi 3 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_3  }
+{ PGP_RX_REM_RDY_3,   "Pgp2bAxi 3 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_3    }
+{ PGP_TX_LINK_RDY_3,  "Pgp2bAxi 3 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_3       }
+{ PGP_RX_PHY_RDY_4,   "Pgp2bAxi 4 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_4        }
+{ PGP_TX_PHY_RDY_4,   "Pgp2bAxi 4 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_4        }
+{ PGP_RX_LOC_RDY_4,   "Pgp2bAxi 4 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_4  }
+{ PGP_RX_REM_RDY_4,   "Pgp2bAxi 4 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_4    }
+{ PGP_TX_LINK_RDY_4,  "Pgp2bAxi 4 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_4       }
+{ PGP_RX_PHY_RDY_5,   "Pgp2bAxi 5 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_5        }
+{ PGP_TX_PHY_RDY_5,   "Pgp2bAxi 5 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_5        }
+{ PGP_RX_LOC_RDY_5,   "Pgp2bAxi 5 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_5  }
+{ PGP_RX_REM_RDY_5,   "Pgp2bAxi 5 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_5    }
+{ PGP_TX_LINK_RDY_5,  "Pgp2bAxi 5 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_5       }
+{ PGP_RX_PHY_RDY_6,   "Pgp2bAxi 6 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_6        }
+{ PGP_TX_PHY_RDY_6,   "Pgp2bAxi 6 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_6        }
+{ PGP_RX_LOC_RDY_6,   "Pgp2bAxi 6 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_6  }
+{ PGP_RX_REM_RDY_6,   "Pgp2bAxi 6 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_6    }
+{ PGP_TX_LINK_RDY_6,  "Pgp2bAxi 6 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_6       }
+{ PGP_RX_PHY_RDY_7,   "Pgp2bAxi 7 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_7        }
+{ PGP_TX_PHY_RDY_7,   "Pgp2bAxi 7 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_7        }
+{ PGP_RX_LOC_RDY_7,   "Pgp2bAxi 7 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_7  }
+{ PGP_RX_REM_RDY_7,   "Pgp2bAxi 7 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_7    }
+{ PGP_TX_LINK_RDY_7,  "Pgp2bAxi 7 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_7       }
+{ PGP_RX_PHY_RDY_8,   "Pgp2bAxi 8 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_8        }
+{ PGP_TX_PHY_RDY_8,   "Pgp2bAxi 8 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_8        }
+{ PGP_RX_LOC_RDY_8,   "Pgp2bAxi 8 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_8  }
+{ PGP_RX_REM_RDY_8,   "Pgp2bAxi 8 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_8    }
+{ PGP_TX_LINK_RDY_8,  "Pgp2bAxi 8 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_8       }
+{ PGP_RX_PHY_RDY_9,   "Pgp2bAxi 9 RX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_9        }
+{ PGP_TX_PHY_RDY_9,   "Pgp2bAxi 9 TX Phy is Ready",             "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_9        }
+{ PGP_RX_LOC_RDY_9,   "Pgp2bAxi 9 Rx Local Link Ready",         "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_9  }
+{ PGP_RX_REM_RDY_9,   "Pgp2bAxi 9 Rx Remote Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_9    }
+{ PGP_TX_LINK_RDY_9,  "Pgp2bAxi 9 Tx Link Ready",               "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_9       }
+{ PGP_RX_PHY_RDY_10,  "Pgp2bAxi 10 RX Phy is Ready",            "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_10       }
+{ PGP_TX_PHY_RDY_10,  "Pgp2bAxi 10 TX Phy is Ready",            "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_10       }
+{ PGP_RX_LOC_RDY_10,  "Pgp2bAxi 10 Rx Local Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_10 }
+{ PGP_RX_REM_RDY_10,  "Pgp2bAxi 10 Rx Remote Link Ready",       "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_10   }
+{ PGP_TX_LINK_RDY_10, "Pgp2bAxi 10 Tx Link Ready",              "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_10      }
+{ PGP_RX_PHY_RDY_11,  "Pgp2bAxi 11 RX Phy is Ready",            "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_11       }
+{ PGP_TX_PHY_RDY_11,  "Pgp2bAxi 11 TX Phy is Ready",            "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_11       }
+{ PGP_RX_LOC_RDY_11,  "Pgp2bAxi 11 Rx Local Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_11 }
+{ PGP_RX_REM_RDY_11,  "Pgp2bAxi 11 Rx Remote Link Ready",       "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_11   }
+{ PGP_TX_LINK_RDY_11, "Pgp2bAxi 11 Tx Link Ready",              "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_11      }
+{ PGP_RX_PHY_RDY_12,  "Pgp2bAxi 12 RX Phy is Ready",            "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_12       }
+{ PGP_TX_PHY_RDY_12,  "Pgp2bAxi 12 TX Phy is Ready",            "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_12       }
+{ PGP_RX_LOC_RDY_12,  "Pgp2bAxi 12 Rx Local Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_12 }
+{ PGP_RX_REM_RDY_12,  "Pgp2bAxi 12 Rx Remote Link Ready",       "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_12   }
+{ PGP_TX_LINK_RDY_12, "Pgp2bAxi 12 Tx Link Ready",              "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_12      }
+{ PGP_RX_PHY_RDY_13,  "Pgp2bAxi 13 RX Phy is Ready",            "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxPhyReady_13       }
+{ PGP_TX_PHY_RDY_13,  "Pgp2bAxi 13 TX Phy is Ready",            "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxPhyReady_13       }
+{ PGP_RX_LOC_RDY_13,  "Pgp2bAxi 13 Rx Local Link Ready",        "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxLocalLinkReady_13 }
+{ PGP_RX_REM_RDY_13,  "Pgp2bAxi 13 Rx Remote Link Ready",       "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_RxRemLinkReady_13   }
+{ PGP_TX_LINK_RDY_13, "Pgp2bAxi 13 Tx Link Ready",              "Not ready",    "Ready",    "1 second",     "asynUInt32Digital",   PGP_TxLinkReady_13      }
 }
 
 #======================================
@@ -206,7 +375,20 @@ file "RegisterCommand.template" { pattern
 { $(P), SwErrClear,       "Clear software error",              "NO",   "Passive",  $(PORT),    SwErrClear     }
 { $(P), ToErrClear,       "Clear the latched timeout error",   "NO",   "Passive",  $(PORT),    ToErrClear     }
 { $(P), EvalLatchClear,   "Clear PowerLevel Latch",            "NO",   "Passive",  $(PORT),    EvalLatchClear     }
-{ $(P), PGP_CNTRST_0,     "Pgp2bAxi 0 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_0 }
+{ $(P), PGP_CNTRST_0,     "Pgp2bAxi 0 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_0  }
+{ $(P), PGP_CNTRST_1,     "Pgp2bAxi 1 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_1  }
+{ $(P), PGP_CNTRST_2,     "Pgp2bAxi 2 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_2  }
+{ $(P), PGP_CNTRST_3,     "Pgp2bAxi 3 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_3  }
+{ $(P), PGP_CNTRST_4,     "Pgp2bAxi 4 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_4  }
+{ $(P), PGP_CNTRST_5,     "Pgp2bAxi 5 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_5  }
+{ $(P), PGP_CNTRST_6,     "Pgp2bAxi 6 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_6  }
+{ $(P), PGP_CNTRST_7,     "Pgp2bAxi 7 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_7  }
+{ $(P), PGP_CNTRST_8,     "Pgp2bAxi 8 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_8  }
+{ $(P), PGP_CNTRST_9,     "Pgp2bAxi 9 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_9  }
+{ $(P), PGP_CNTRST_10,    "Pgp2bAxi 10 reset counters",        "NO",   "Passive",  $(PORT),    PGP_ResetCounters_10 }
+{ $(P), PGP_CNTRST_11,    "Pgp2bAxi 11 reset counters",        "NO",   "Passive",  $(PORT),    PGP_ResetCounters_11 }
+{ $(P), PGP_CNTRST_12,    "Pgp2bAxi 12 reset counters",        "NO",   "Passive",  $(PORT),    PGP_ResetCounters_12 }
+{ $(P), PGP_CNTRST_13,    "Pgp2bAxi 13 reset counters",        "NO",   "Passive",  $(PORT),    PGP_ResetCounters_13 }
 }
 
 
@@ -225,4 +407,4 @@ file "RegisterStream.template" {pattern
 
 file "RegisterStream16.template" {pattern
 { P,            R,          DESC,                           NELM,        PINI,  PORT,  PARAM         }
-}
+
