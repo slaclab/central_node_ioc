@@ -1,23 +1,20 @@
-#!../../bin/linuxRT-x86_64/CentralNode
-
 # ====================================================================
 #
-# SIOC:SYS0:MP01 Specific Start Up
+# Generic MPS Central Node Start Up for PROD
 #
 # ====================================================================
 
-< envPaths
+# ====================================================================
+# Setup environment variables specific to the PROD environment
+# ====================================================================
+# MPS Database location
+epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
+
+# MPS history server configurations
+epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-daemon2")
 
 # ====================================================================
-# Setup environment variables specific to this IOC
+# Load the common Central Node startup
 # ====================================================================
-# Keep the PV name we have in PROD
-epicsEnvSet("IOC_PV",   "SIOC:SYS0:MP01")
-epicsEnvSet("LOCATION", "GUNB")
-epicsEnvSet("FPGA_IP",  "10.0.0.102")
-
-# ====================================================================
-# Load the common Central Node startup for PROD
-# ====================================================================
- < ${TOP}/iocBoot/common/central_node_prod.cmd
+ < ${TOP}/iocBoot/common/central_node.cmd
 
