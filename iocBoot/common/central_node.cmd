@@ -1,22 +1,22 @@
 # ====================================================================
 #
-# Generic MPS Central Node Start Up
+# Generic MPS Central Node Start Up for All Facilities
 #
 # ====================================================================
 
 # ====================================================================
-# Setup some additional environment variables
+# Setup some additional common environment variables
 # ====================================================================
 # Environment variables for IOC Admin
 epicsEnvSet("ENGINEER","Jeremy Mock")
 
 # MPS Database location
-epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics")
+# Note: PHYSICS_TOP is defined in the facility specific script.
 epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
 
 # MPS history server configurations
-epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
+# Note: MPS_ENV_HISTORY_HOST is defined in the facility specific script.
 epicsEnvSet("MPS_ENV_HISTORY_PORT", "3356")
 epicsEnvSet("MPS_ENV_UPDATE_TIMEOUT", "3499")
 

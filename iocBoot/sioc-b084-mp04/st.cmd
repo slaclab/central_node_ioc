@@ -16,7 +16,7 @@ epicsEnvSet("LOCATION", "B084")
 epicsEnvSet("FPGA_IP",  "10.0.0.103")
 
 # ====================================================================
-# Load the common Central Node startup
+# Load the common Central Node startup for DEV
 # ====================================================================
- < ${TOP}/iocBoot/common/central_node.cmd
+ < ${TOP}/iocBoot/common/central_node_dev.cmd
 
