@@ -37,8 +37,11 @@ epicsEnvSet("MPS_ENV_FW_DEFAULTS", "${YAML_PATH}/config/defaults.yaml")
 # 0 = No, 1 = Yes (using maps), 2 = Yes (using hash)
 epicsEnvSet("AUTO_GEN", 0 )
 
-# CPSW Port
+# CPSW Ports
 epicsEnvSet("CPSW_PORT", "CentralNodeCPSW")
+epicsEnvSet("TPRTRIGGER_PORT","TPRTRIGGER_PORT")
+epicsEnvSet("TPRPATTERN_PORT","TPRPATTERN_PORT")
+epicsEnvSet("CROSSBARCTRL_PORT","CROSSBARCTRL_PORT")
 
 # Dictionary file for manual (empty string if none)
 epicsEnvSet("DICT_FILE", "firmware/CentralNodeFirmware.dict")
@@ -90,6 +93,21 @@ configureCentralNode("CENTRAL_NODE")
 #    Load dictionary,           # Dictionary file path with registers to load. An empty string will disable this function
 YCPSWASYNConfig("${CPSW_PORT}", "", "", "${AUTO_GEN}", "${DICT_FILE}")
 
+## Configure the tprTrigger driver
+# tprTriggerAsynDriverConfigure(
+#    Port name,                 # The name given to this port driver
+#    Root path)                 # Root path to the AmcCarrierCore register area
+tprTriggerAsynDriverConfigure("${TPRTRIGGER_PORT}", "mmio/AmcCarrierCore")
+
+## Configure the tprPattern driver
+# tprPatternAsynDriverConfigure(
+#    Port name,                 # The name given to this port driver
+#    Root path,                 # Root path to the AmcCarrierCore register area
+#    Stream name)               # Name of the timing stream
+#tprPatternAsynDriverConfigure("${TPRPATTERN_PORT}", "mmio/AmcCarrierCore", "tstream")
+
+## Configure the crossbarControl driver
+crossbarControlAsynDriverConfigure("${CROSSBARCTRL_PORT}", "mmio/AmcCarrierCore/AxiSy56040")
 
 # ====================================================================
 # Load application specific configurations
@@ -115,17 +133,26 @@ dbLoadRecords("db/iocRelease.db","IOC=${IOC}")
 dbLoadRecords("db/CentralNode.db","IOC=${IOC_PV}")
 dbLoadRecords("db/Carrier.db","P=${IOC_PV}, PORT=${CPSW_PORT}")
 
+# crossbarControl
+dbLoadRecords("db/crossbarCtrl.db", "DEV=${IOC_PV},PORT=${CROSSBARCTRL_PORT}")
+
+# tprTrigger database
+dbLoadRecords("db/tprTrig.db", "PORT=${TPRTRIGGER_PORT},LOCA=${LOCATION},IOC_UNIT=MP${LOCATION_INDEX},INST=${CARD_INDEX}")
+
+# tprPattern database
+#dbLoadRecords("db/tprPattern.db", "PORT=${TPRPATTERN_PORT},LOCA=${LOCATION},IOC_UNIT=MP${LOCATION_INDEX},INST=${CARD_INDEX}")
+
 # Save/load configuration database
 dbLoadRecords("db/saveLoadConfig.db", "P=${IOC_PV}, PORT=${CPSW_PORT}")
 
 # Central Node database, from the MPS configuration database
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/device_inputs.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/analog_devices.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/destinations.db","BASE=${IOC_PV}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/faults.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/fault_states.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/apps.db","BASE=${IOC_PV}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/conditions.db","BASE=${IOC_PV}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/device_inputs.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/analog_devices.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/destinations.db","BASE=${IOC_PV}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/fault_states.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/apps.db","BASE=${IOC_PV}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/conditions.db","BASE=${IOC_PV}")
 
 # ====================================================================
 # Setup autosave/restore
