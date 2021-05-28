@@ -12,9 +12,13 @@
 # Setup environment variables specific to this IOC
 # ====================================================================
 # Keep the PV name we have in PROD
-epicsEnvSet("IOC_PV",   "SIOC:SYS0:MP01")
+epicsEnvSet("LOCATION_INDEX","01")
+epicsEnvSet("IOC_PV",   "SIOC:SYS0:MP${LOCATION_INDEX}")
 epicsEnvSet("LOCATION", "B084")
 epicsEnvSet("FPGA_IP",  "10.0.0.102")
+epicsEnvSet("CN_INDEX", "1")
+epicsEnvSet("CARD_INDEX","1")
+
 
 # ====================================================================
 # Load the common Central Node startup for DEV
