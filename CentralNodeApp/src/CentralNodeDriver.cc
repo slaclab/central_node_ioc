@@ -23,7 +23,7 @@ static Logger *centralNodeLogger;
 
 CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPath,
 				     std::string historyServer, int historyPort) :
-  asynPortDriver(portName, 5000,
+  asynPortDriver(portName, 10000,
 		 asynOctetMask | asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask | asynUInt32DigitalMask | asynDrvUserMask, // interfaceMask
 		 asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask, // interruptMask
 		 ASYN_MULTIDEVICE,                       // asynFlags

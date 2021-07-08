@@ -71,6 +71,13 @@ IOCRELEASE_DB += iocRelease.db
 # Install Database to support reading the status of the autosave package:
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 
+# Install Database for tprTrigger module
+DB_INSTALLS += $(TPRTRIGGER)/db/tprTrig.db
+DB_INSTALLS += $(TPRTRIGGER)/db/tprDeviceNamePV.db
+
+# Install Database for crossbarControl module
+DB_INSTALLS += $(CROSSBARCONTROL)/db/crossbarCtrl.db
+
 # =======================================================================
 
 #----------------------------------------------------

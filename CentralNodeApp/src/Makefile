@@ -24,6 +24,7 @@ cpsw_DIR = $(CPSW_FRAMEWORK_LIB)
 boost_system_DIR = $(BOOST_LIB)
 yaml-cpp_DIR = $(YAML_LIB)
 yamlReader_DIR  = $(YAMLREADER_LIB)
+hpstpr_DIR = $(HPSTPR_LIB)
 
 # Central Node Engine Lib
 USR_INCLUDES += -I$(CENTRAL_NODE_ENGINE_INCLUDE)
@@ -32,7 +33,7 @@ central_node_engine_DIR = $(CENTRAL_NODE_ENGINE_LIB)
 # ======================================================
 # LINK "NON EPICS" EXTERNAL PACKAGE LIBRARIES STATICALLY
 #=======================================================
-USR_LIBS_Linux += central_node_engine yamlReader deviceLib cpsw boost_system yaml-cpp
+USR_LIBS_Linux += central_node_engine yamlReader deviceLib cpsw boost_system yaml-cpp hpstpr
 
 # ================================================
 # Build the IOC application
@@ -57,6 +58,9 @@ CentralNode_DBD += asyn.dbd
 CentralNode_DBD += ycpswasyn.dbd
 CentralNode_DBD += yamlLoader.dbd
 CentralNode_DBD += yamlDownloader.dbd
+CentralNode_DBD += tprTriggerAsynDriver.dbd
+CentralNode_DBD += tprPatternAsynDriver.dbd
+CentralNode_DBD += crossbarControl.dbd
 CentralNode_DBD += $(CEXP_DBDS)
 
 # ================================================================================
@@ -89,7 +93,6 @@ CentralNode_SRCS_vxWorks += -nil-
 # =====================================================
 # Link in the code from other libraries
 # =====================================================
-CentralNode_LIBS += asyn
 
 # Needed to link in iocAdmin support
 CentralNode_LIBS += devIocStats
@@ -103,6 +106,10 @@ CentralNode_LIBS += caPutLog
 CentralNode_LIBS += ycpswasyn
 CentralNode_LIBS += yamlLoader
 CentralNode_LIBS += yamlDownloader
+CentralNode_LIBS += crossbarControl
+CentralNode_LIBS += tprPattern
+CentralNode_LIBS += tprTrigger
+CentralNode_LIBS += asyn
 
 # Needed to link cexpsh() support
 CentralNode_LIBS += $(CEXP_LIBS)
