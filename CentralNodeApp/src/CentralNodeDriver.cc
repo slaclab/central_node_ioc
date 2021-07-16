@@ -1043,12 +1043,12 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
     DbBeamClassMap::iterator beamClassIt = Engine::getInstance().getCurrentDb()->beamClasses->find(1);
     if (beamClassIt == Engine::getInstance().getCurrentDb()->beamClasses->end()) {
-      std::cerr << "ERROR: Failed to find BeamClass with ID=1 (PC0), please check MPS database." << std::endl;
+      std::cerr << "ERROR: Failed to find BeamClass with ID=1 (BC0), please check MPS database." << std::endl;
       return asynError;
     }
     else {
-      if ((*beamClassIt).second->name != "PC0") {
-	std::cerr << "ERROR: BeamClass with ID=1 is does not have name 'PC0', please check MPS database." << std::endl;
+      if ((*beamClassIt).second->name != "BC0") {
+	std::cerr << "ERROR: BeamClass with ID=1 is does not have name 'BC0', please check MPS database." << std::endl;
 	return asynError;
       }
     }
