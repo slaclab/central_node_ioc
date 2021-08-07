@@ -1,0 +1,146 @@
+##############################################################################
+## This file is part of 'LCLS2 MPS Firmware'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'LCLS2 MPS Firmware', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once MpsAsmCore.yaml
+
+MpsAsmCore: &MpsAsmCore
+  class:       MMIODev
+  configPrio:  1
+  description: Mps Mitigation Core
+  size:        0x340
+  children:
+    mpsAmcDest:
+      at:
+        offset:    00000
+        nelms:     4
+        stride:    4
+      class:       IntField
+      sizeBits:    4
+      lsBit:       0
+      mode:        RW
+      enums:
+        - { name: "AMC00",          value: 0 }
+        - { name: "AMC01",          value: 1 }
+        - { name: "AMC10",          value: 2 }
+        - { name: "AMC11",          value: 3 }
+        - { name: "AOM permit",     value: 4 }
+        - { name: "Trigger select", value: 5 }
+      description: "AMC destination out of 6 option"
+    #########################################################
+    mpsOpenSrs:
+      class: IntField
+      at:
+        offset: 0x010
+      sizeBits: 6
+      lsBit: 0
+      mode: RW
+      description: "Open shutter signal selection out of 64 inputs"
+    #########################################################
+    mpsCloseSrs:
+      class: IntField
+      at:
+        offset: 0x014
+      sizeBits: 6
+      lsBit: 0
+      mode: RW
+      description: "Closed shutter signal selection out of 64 inputs"
+    #########################################################
+    shtrSrs:
+      class: IntField
+      at:
+        offset: 0x018
+      sizeBits: 4
+      lsBit: 0
+      mode: RW
+      description: "Shutter signal selection out of 8 possible"
+    #########################################################
+    mpsAmcDout:
+      class: IntField
+      at:
+        offset: 0x01C
+      sizeBits: 4
+      lsBit: 0
+      mode: RO
+      description: "State of the 4 AMC lines"
+    #########################################################
+    aomPermit:
+      class: IntField
+      at:
+        offset: 0x01C
+      sizeBits: 1
+      lsBit: 4
+      mode: RO
+      enums:
+        - { name: "Disabled", value: 0 }
+        - { name: "Enabled",  value: 1 }
+      description: "State of AOM permit line"
+    #########################################################
+    trgSelect:
+      class: IntField
+      at:
+        offset: 0x01C
+      sizeBits: 1
+      lsBit: 5
+      mode: RO
+      enums:
+        - { name: "Disabled", value: 0 }
+        - { name: "Enabled",  value: 1 }
+      description: "State of trigger select line"
+    #########################################################
+    shutter:
+      class: IntField
+      at:
+        offset: 0x01C
+      sizeBits: 1
+      lsBit: 6
+      mode: RO
+      enums:
+        - { name: "Disabled", value: 0 }
+        - { name: "Enabled",  value: 1 }
+      description: "State of shutter input line"
+    #########################################################
+    shtrClose:
+      class: IntField
+      at:
+        offset: 0x01C
+      sizeBits: 1
+      lsBit: 7
+      mode: RO
+      enums:
+        - { name: "Not closed", value: 0 }
+        - { name: "Closed",     value: 1 }
+      description: "State of shutter closed input line"
+    ########################################################
+    shtrOpen:
+      class: IntField
+      at:
+        offset: 0x01D
+      sizeBits: 1
+      lsBit: 0
+      mode: RO
+      enums:
+        - { name: "Not opened", value: 0 }
+        - { name: "Opened",     value: 1 }
+      description: "State of shutter open input line"
+    ########################################################
+    stateSM:
+      class: IntField
+      at:
+        offset: 0x01D
+      sizeBits: 2
+      lsBit: 1
+      mode: RO
+      enums:
+        - { name: "Block",  value: 0 }
+        - { name: "Local",  value: 1 }
+        - { name: "Permit", value: 2 }
+      description: "State of SM"
+    ########################################################
+

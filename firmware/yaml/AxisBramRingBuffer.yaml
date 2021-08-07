@@ -1,0 +1,68 @@
+##############################################################################
+## This file is part of 'LCLS2 Common Carrier Core'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'LCLS2 Common Carrier Core', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once AxisBramRingBuffer.yaml
+
+AxisBramRingBuffer: &AxisBramRingBuffer
+  name: AxisBramRingBuffer
+  description: AxisBramRingBuffer Module
+  class: MMIODev
+  configPrio: 1
+  size: 0x100
+  metadata:
+    numAppCh: &numAppCh 1
+  #########
+  children:
+  #########
+    #########################################################
+    TDEST:
+      at:
+        offset: 0x0
+        stride: 4
+        nelms: *numAppCh
+      class: IntField
+      name: TDEST
+      sizeBits: 8
+      lsBit: 0
+      mode: RW
+      description: "AXI stream TDEST"
+    #########################################################
+    SwTrig:
+      at:
+        offset: 0xF8
+      class: IntField
+      name: SwTrig
+      # sizeBits: 1
+      lsBit: 0
+      mode: WO
+      # CPSW requires all WO variables to be 32-bit size and 32-bit aligned
+      sizeBits: 32
+      description: "Software Trigger"
+    #########################################################
+    Enable:
+      at:
+        offset: 0xFC
+      class: IntField
+      name: Enable
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Enable for triggers"
+    #########################################################
+    CmdSwTrig:
+      name: CmdSwTrig
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: "Command for Software Trigger"
+      sequence:
+      - entry: SwTrig
+        value: 0x1
+    #########################################################

@@ -74,7 +74,8 @@ DownloadYamlFile("${FPGA_IP}", "${YAML_DIR}")
 #    Root Device,               # Root Device Name (optional; default = 'root')
 #    YAML Path,                 #directory where YAML includes can be found (optional)
 #    IP Address,                # OPTIONAL: Target FPGA IP Address. If not given it is taken from the YAML file
-cpswLoadYamlFile("${MPS_ENV_FW_CONFIG}", "NetIODev", "", "${FPGA_IP}")
+#cpswLoadYamlFile("${MPS_ENV_FW_CONFIG}", "NetIODev", "", "${FPGA_IP}")
+cpswLoadYamlFile("${TOP}/firmware/yaml/000TopLevel.yaml", "NetIODev", "", "${FPGA_IP}")
 
 # Load efautl configuration
 cpswLoadConfigFile("${MPS_ENV_FW_DEFAULTS}", "mmio")

@@ -1,0 +1,1025 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'SLAC Firmware Standard Library', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once MpsCentralNodeConfig.yaml
+
+MpsCentralNodeConfig: &MpsCentralNodeConfig
+  class: MMIODev
+  configPrio: 1
+  description: Central Node Configuration
+  size: 0x100000
+  ########
+  children:
+  ########
+    #########################################################
+    #   Fault Evaluation Configuration
+    #########################################################
+    AppId0:
+      class: IntField
+      at:
+        offset: 0x0
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId0."
+    #########################################################
+    AppId1:
+      class: IntField
+      at:
+        offset: 0x100
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId1."
+    #########################################################
+    AppId2:
+      class: IntField
+      at:
+        offset: 0x200
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId2."
+    #########################################################
+    AppId3:
+      class: IntField
+      at:
+        offset: 0x300
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId3."
+    #########################################################
+    AppId4:
+      class: IntField
+      at:
+        offset: 0x400
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId4."
+    #########################################################
+    AppId5:
+      class: IntField
+      at:
+        offset: 0x500
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId5."
+    #########################################################
+    AppId6:
+      class: IntField
+      at:
+        offset: 0x600
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId6."
+    #########################################################
+    AppId7:
+      class: IntField
+      at:
+        offset: 0x700
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId7."
+    #########################################################
+    AppId8:
+      class: IntField
+      at:
+        offset: 0x800
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId8."
+    #########################################################
+    AppId9:
+      class: IntField
+      at:
+        offset: 0x900
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId9."
+    ################################################
+    AppId10:
+      class: IntField
+      at:
+        offset: 0xa00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId10."
+    #########################################################
+    AppId11:
+      class: IntField
+      at:
+        offset: 0xb00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId11."
+    #########################################################
+    AppId12:
+      class: IntField
+      at:
+        offset: 0xc00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId12."
+    #########################################################
+    AppId13:
+      class: IntField
+      at:
+        offset: 0xd00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId13."
+    #########################################################
+    AppId14:
+      class: IntField
+      at:
+        offset: 0xe00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId14."
+    #########################################################
+    AppId15:
+      class: IntField
+      at:
+        offset: 0xf00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId15."
+    #########################################################
+    AppId16:
+      class: IntField
+      at:
+        offset: 0x1000
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId16."
+    #########################################################
+    AppId17:
+      class: IntField
+      at:
+        offset: 0x1100
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId17."
+    #########################################################
+    AppId18:
+      class: IntField
+      at:
+        offset: 0x1200
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId18."
+    #########################################################
+    AppId19:
+      class: IntField
+      at:
+        offset: 0x1300
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId19."
+    #########################################################
+    AppId20:
+      class: IntField
+      at:
+        offset: 0x1400
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId20."
+    #########################################################
+    AppId21:
+      class: IntField
+      at:
+        offset: 0x1500
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId21."
+    #########################################################
+    AppId22:
+      class: IntField
+      at:
+        offset: 0x1600
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId22."
+    #########################################################
+    AppId23:
+      class: IntField
+      at:
+        offset: 0x1700
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId23."
+    #########################################################
+    AppId24:
+      class: IntField
+      at:
+        offset: 0x1800
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId24."
+    #########################################################
+    AppId25:
+      class: IntField
+      at:
+        offset: 0x1900
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId25."
+    #########################################################
+    AppId26:
+      class: IntField
+      at:
+        offset: 0x1a00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId26."
+    #########################################################
+    AppId27:
+      class: IntField
+      at:
+        offset: 0x1b00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId27."
+    #########################################################
+    AppId28:
+      class: IntField
+      at:
+        offset: 0x1c00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId28."
+    #########################################################
+    AppId29:
+      class: IntField
+      at:
+        offset: 0x1d00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId29."
+    #########################################################
+    AppId30:
+      class: IntField
+      at:
+        offset: 0x1e00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId30."
+    #########################################################
+    AppId31:
+      class: IntField
+      at:
+        offset: 0x1f00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId31."
+    #########################################################
+    AppId32:
+      class: IntField
+      at:
+        offset: 0x2000
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId32."
+    #########################################################
+    AppId33:
+      class: IntField
+      at:
+        offset: 0x2100
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId33."
+    #########################################################
+    AppId34:
+      class: IntField
+      at:
+        offset: 0x2200
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId34."
+    #########################################################
+    AppId35:
+      class: IntField
+      at:
+        offset: 0x2300
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId35."
+    #########################################################
+    AppId36:
+      class: IntField
+      at:
+        offset: 0x2400
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId36."
+    #########################################################
+    AppId37:
+      class: IntField
+      at:
+        offset: 0x2500
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId37."
+    #########################################################
+    AppId38:
+      class: IntField
+      at:
+        offset: 0x2600
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId38."
+    #########################################################
+    AppId39:
+      class: IntField
+      at:
+        offset: 0x2700
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId39."
+    ################################################
+    AppId40:
+      class: IntField
+      at:
+        offset: 0x2800
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId40."
+    #########################################################
+    AppId41:
+      class: IntField
+      at:
+        offset: 0x2900
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId41."
+    #########################################################
+    AppId42:
+      class: IntField
+      at:
+        offset: 0x2a00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId42."
+    #########################################################
+    AppId43:
+      class: IntField
+      at:
+        offset: 0x2b00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId43."
+    #########################################################
+    AppId44:
+      class: IntField
+      at:
+        offset: 0x2c00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId44."
+    #########################################################
+    AppId45:
+      class: IntField
+      at:
+        offset: 0x2d00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId45."
+    #########################################################
+    AppId46:
+      class: IntField
+      at:
+        offset: 0x2e00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId46."
+    #########################################################
+    AppId47:
+      class: IntField
+      at:
+        offset: 0x2f00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId47."
+    #########################################################
+    AppId48:
+      class: IntField
+      at:
+        offset: 0x3000
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId48."
+    #########################################################
+    AppId49:
+      class: IntField
+      at:
+        offset: 0x3100
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId49."
+    ################################################
+    AppId50:
+      class: IntField
+      at:
+        offset: 0x3200
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId50."
+    #########################################################
+    AppId51:
+      class: IntField
+      at:
+        offset: 0x3300
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId51."
+    #########################################################
+    AppId52:
+      class: IntField
+      at:
+        offset: 0x3400
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId52."
+    #########################################################
+    AppId53:
+      class: IntField
+      at:
+        offset: 0x3500
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId53."
+    #########################################################
+    AppId54:
+      class: IntField
+      at:
+        offset: 0x3600
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId54."
+    #########################################################
+    AppId55:
+      class: IntField
+      at:
+        offset: 0x3700
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId55."
+    #########################################################
+    AppId56:
+      class: IntField
+      at:
+        offset: 0x3800
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId56."
+    #########################################################
+    AppId57:
+      class: IntField
+      at:
+        offset: 0x3900
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId57."
+    #########################################################
+    AppId58:
+      class: IntField
+      at:
+        offset: 0x3a00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId58."
+    #########################################################
+    AppId59:
+      class: IntField
+      at:
+        offset: 0x3b00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId59."
+    ################################################
+    AppId60:
+      class: IntField
+      at:
+        offset: 0x3c00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId60."
+    #########################################################
+    AppId61:
+      class: IntField
+      at:
+        offset: 0x3d00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId61."
+    #########################################################
+    AppId62:
+      class: IntField
+      at:
+        offset: 0x3e00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId62."
+    #########################################################
+    AppId63:
+      class: IntField
+      at:
+        offset: 0x3f00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId63."
+    #########################################################
+    AppId64:
+      class: IntField
+      at:
+        offset: 0x4000
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId64."
+    #########################################################
+    AppId65:
+      class: IntField
+      at:
+        offset: 0x4100
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId65."
+    #########################################################
+    AppId66:
+      class: IntField
+      at:
+        offset: 0x4200
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId66."
+    #########################################################
+    AppId67:
+      class: IntField
+      at:
+        offset: 0x4300
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId67."
+    #########################################################
+    AppId68:
+      class: IntField
+      at:
+        offset: 0x4400
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId68."
+    #########################################################
+    AppId69:
+      class: IntField
+      at:
+        offset: 0x4500
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId69."
+    ################################################
+    AppId70:
+      class: IntField
+      at:
+        offset: 0x4600
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId70."
+    #########################################################
+    AppId71:
+      class: IntField
+      at:
+        offset: 0x4700
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId71."
+    #########################################################
+    AppId72:
+      class: IntField
+      at:
+        offset: 0x4800
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId72."
+    #########################################################
+    AppId73:
+      class: IntField
+      at:
+        offset: 0x4900
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId73."
+    #########################################################
+    AppId74:
+      class: IntField
+      at:
+        offset: 0x4a00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId74."
+    #########################################################
+    AppId75:
+      class: IntField
+      at:
+        offset: 0x4b00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId75."
+    #########################################################
+    AppId76:
+      class: IntField
+      at:
+        offset: 0x4c00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId76."
+    #########################################################
+    AppId77:
+      class: IntField
+      at:
+        offset: 0x4d00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId77."
+    #########################################################
+    AppId78:
+      class: IntField
+      at:
+        offset: 0x4e00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId78."
+    #########################################################
+    AppId79:
+      class: IntField
+      at:
+        offset: 0x4f00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId79."
+    ################################################
+    AppId80:
+      class: IntField
+      at:
+        offset: 0x5000
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId80."
+    #########################################################
+    AppId81:
+      class: IntField
+      at:
+        offset: 0x5100
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId81."
+    #########################################################
+    AppId82:
+      class: IntField
+      at:
+        offset: 0x5200
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId82."
+    #########################################################
+    AppId83:
+      class: IntField
+      at:
+        offset: 0x5300
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId83."
+    #########################################################
+    AppId84:
+      class: IntField
+      at:
+        offset: 0x5400
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId84."
+    #########################################################
+    AppId85:
+      class: IntField
+      at:
+        offset: 0x5500
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId85."
+    #########################################################
+    AppId86:
+      class: IntField
+      at:
+        offset: 0x5600
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId86."
+    #########################################################
+    AppId87:
+      class: IntField
+      at:
+        offset: 0x5700
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId87."
+    #########################################################
+    AppId88:
+      class: IntField
+      at:
+        offset: 0x5800
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId88."
+    #########################################################
+    AppId89:
+      class: IntField
+      at:
+        offset: 0x5900
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId89."
+    ################################################
+    AppId90:
+      class: IntField
+      at:
+        offset: 0x5a00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId90."
+    #########################################################
+    AppId91:
+      class: IntField
+      at:
+        offset: 0x5b00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId91."
+    #########################################################
+    AppId92:
+      class: IntField
+      at:
+        offset: 0x5c00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId92."
+    #########################################################
+    AppId93:
+      class: IntField
+      at:
+        offset: 0x5d00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId93."
+    #########################################################
+    AppId94:
+      class: IntField
+      at:
+        offset: 0x5e00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId94."
+    #########################################################
+    AppId95:
+      class: IntField
+      at:
+        offset: 0x5f00
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId95."
+    #########################################################
+    AppId96:
+      class: IntField
+      at:
+        offset: 0x6000
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId96."
+    #########################################################
+    AppId97:
+      class: IntField
+      at:
+        offset: 0x6100
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId97."
+    #########################################################
+    AppId98:
+      class: IntField
+      at:
+        offset: 0x6200
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId98."
+    #########################################################
+    AppId99:
+      class: IntField
+      at:
+        offset: 0x6300
+        stride: 4
+        nelms: 42
+      sizeBits: 32
+      mode: RW
+      description: "AppId99."
+    ################################################
+
+

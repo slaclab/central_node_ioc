@@ -1,0 +1,129 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'SLAC Firmware Standard Library', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once Adt7420.yaml
+
+Adt7420: &Adt7420
+  class: MMIODev
+  configPrio: 1
+  description: "Adt7420 Module"
+  size: 0x30
+  #########
+  children:
+    #########################################################
+    TempMSByte:
+      at:
+        offset: 0x00
+      class: IntField
+      name: TempMSByte
+      sizeBits: 8
+      mode: RO
+      description: "Temperature value most significant byte (Byte Address = 0x00: AXI-Lite: 0x00)"
+    #########################################################
+    TempLSByte:
+      at:
+        offset: 0x04
+      class: IntField
+      name: TempLSByte
+      sizeBits: 8
+      mode: RO
+      description: "Temperature value least significant byte (Byte Address = 0x01: AXI-Lite: 0x04)"
+    #########################################################
+    Status:
+      at:
+        offset: 0x08
+      class: IntField
+      name: Status
+      sizeBits: 8
+      mode: RO
+      description: "Status Register (Byte Address = 0x02: AXI-Lite: 0x08)"
+    #########################################################
+    Config:
+      at:
+        offset: 0x0C
+      class: IntField
+      name: Config
+      sizeBits: 8
+      mode: RW
+      description: "Config Register (Byte Address = 0x03: AXI-Lite: 0x0C)"
+    #########################################################
+    THighMSByte:
+      at:
+        offset: 0x10
+      class: IntField
+      name: THighMSByte
+      sizeBits: 8
+      mode: RW
+      description: "THIGH setpoint most significant byte (Byte Address = 0x04: AXI-Lite: 0x10)"
+    #########################################################
+    THighLSByte:
+      at:
+        offset: 0x14
+      class: IntField
+      name: THighLSByte
+      sizeBits: 8
+      mode: RW
+      description: "THIGH setpoint least significant byte (Byte Address = 0x05: AXI-Lite: 0x14)"
+    #########################################################
+    TLowMSByte:
+      at:
+        offset: 0x18
+      class: IntField
+      name: TLowMSByte
+      sizeBits: 8
+      mode: RW
+      description: "TLOW setpoint most significant byte (Byte Address = 0x06: AXI-Lite: 0x18)"
+    #########################################################
+    TLowLSByte:
+      at:
+        offset: 0x1C
+      class: IntField
+      name: TLowLSByte
+      sizeBits: 8
+      mode: RW
+      description: "TLOW setpoint least significant byte (Byte Address = 0x07: AXI-Lite: 0x1C)"
+    #########################################################
+    TCritMSByte:
+      at:
+        offset: 0x20
+      class: IntField
+      name: TCritMSByte
+      sizeBits: 8
+      mode: RW
+      description: "TCRIT setpoint most significant byte (Byte Address = 0x08: AXI-Lite: 0x20)"
+    #########################################################
+    TCritLSByte:
+      at:
+        offset: 0x24
+      class: IntField
+      name: TCritLSByte
+      sizeBits: 8
+      mode: RW
+      description: "TCRIT setpoint least significant byte (Byte Address = 0x09: AXI-Lite: 0x24)"
+    #########################################################
+    THyst:
+      at:
+        offset: 0x28
+      class: IntField
+      name: THyst
+      sizeBits: 8
+      mode: RW
+      description: "THYST setpoint (Byte Address = 0x0A: AXI-Lite: 0x28)"
+    #########################################################
+    ID:
+      at:
+        offset: 0x2C
+      class: IntField
+      name: ID
+      sizeBits: 8
+      mode: RO
+      description: "ID Register (Byte Address = 0x0B: AXI-Lite: 0x2C)"
+    #########################################################
+

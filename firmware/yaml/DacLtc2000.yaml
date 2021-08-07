@@ -1,0 +1,141 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'SLAC Firmware Standard Library', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once DacLtc2000.yaml
+
+DacLtc2000: &DacLtc2000
+  class: MMIODev
+  configPrio: 1
+  description: Ltc2000 Parallel DAC Module
+  size: 0x100
+  children:
+    LvdsDacReg_0x0001:
+      at:
+        offset: 0x004
+      class: IntField
+      name: LvdsDacReg_0x0001
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x0002:
+      at:
+        offset: 0x008
+      class: IntField
+      name: LvdsDacReg_0x0002
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x0003:
+      at:
+        offset: 0x00C
+      class: IntField
+      name: LvdsDacReg_0x0003
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x0004:
+      at:
+        offset: 0x010
+      class: IntField
+      name: LvdsDacReg_0x0004
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x0007:
+      at:
+        offset: 0x01C
+      class: IntField
+      name: LvdsDacReg_0x0007
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x0008:
+      at:
+        offset: 0x020
+      class: IntField
+      name: LvdsDacReg_0x0008
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x0009:
+      at:
+        offset: 0x024
+      class: IntField
+      name: LvdsDacReg_0x0009
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x0018:
+      at:
+        offset: 0x060
+      class: IntField
+      name: LvdsDacReg_0x0018
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x0019:
+      at:
+        offset: 0x064
+      class: IntField
+      name: LvdsDacReg_0x0019
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x001E:
+      at:
+        offset: 0x078
+      class: IntField
+      name: LvdsDacReg_0x001E
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    LvdsDacReg_0x001F:
+      at:
+        offset: 0x07C
+      class: IntField
+      name: LvdsDacReg_0x001F
+      sizeBits: 8
+      mode: RW
+      description: Ltc2000 Registers
+    #########################################################
+    #
+    #   Status registers
+    #
+    #########################################################
+    AutoPhaseSelect:
+      at:
+        offset: 0x014
+      class: IntField
+      name: AutoPhaseSelect
+      sizeBits: 8
+      mode: RO
+      description: 'Synchronizer Phase Select. Selects phase of internal data multiplexer.
+        SYNC_PS is read-only when SYNC_MSYN = 0. (Datasheet: Table 6).'
+    #########################################################
+    PhaseComparator:
+      at:
+        offset: 0x018
+      class: IntField
+      name: PhaseComparator
+      sizeBits: 8
+      mode: RO
+      description: 'SYNC_PH indicates the phase of the LVDS data clock (DCKIP/N) relative
+        to the DAC sample clock (CKP/N) divider used to control the data multiplexer
+        (Datasheet: Table 6).'

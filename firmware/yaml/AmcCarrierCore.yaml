@@ -1,0 +1,227 @@
+##############################################################################
+## This file is part of 'LCLS2 Common Carrier Core'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'LCLS2 Common Carrier Core', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once AmcCarrierCore.yaml
+#include AxiVersion.yaml
+#include AxiEmpty.yaml
+#include AxiSysMonUltraScale.yaml
+#include AxiMicronN25Q.yaml
+#include AxiSy56040.yaml
+#include GenericMemory.yaml
+#include AmcCarrierBsi.yaml
+#include AmcCarrierTiming.yaml
+#include AmcCarrierBsa.yaml
+#include EthMacPhy.yaml
+#include UdpEngineClient.yaml
+#include UdpEngineServer.yaml
+#include RssiCore.yaml
+#include AxiMemTester.yaml
+#include AppMps.yaml
+#include AxiCdcm6208.yaml
+
+AmcCarrierCore: &AmcCarrierCore
+  name: AmcCarrierCore
+  description: AmcCarrierCore
+  class: MMIODev
+  configPrio: 1
+  size: 0x80000000 # 2GB address space for core firmware
+  #########
+  children:
+  #########
+    ##################################################
+    AMC_CARRIER_CORE_VERSION_C:
+      at:
+        offset: 0x00000400
+      class: IntField
+      mode: RO
+      description: AMC Carrier Core Version Number
+    ##################################################
+    CPSW_TARBALL_ADDR_C:
+      at:
+        offset: 0x00000404
+      class: IntField
+      mode: RO
+      description: PROM MCS CPSW tarball base address
+    ##################################################
+    AxiVersion:
+      <<: *AxiVersion
+      at:
+        offset: 0x00000000
+    ##################################################
+    AxiSysMonUltraScale:
+      <<: *AxiSysMonUltraScale
+      at:
+        offset: 0x01000000
+    ##################################################
+    AxiMicronN25Q:
+      <<: *AxiMicronN25Q
+      at:
+        offset: 0x02000000
+    ##################################################
+    AxiSy56040:
+      <<: *AxiSy56040
+      at:
+        offset: 0x03000000
+      children:
+        OutputConfig:
+          enums:
+            - { name: RTM_TIMING_IN0, value: 0 }
+            - { name: FPGA_TIMING_IN, value: 1 }
+            - { name: BP_TIMING_IN,   value: 2 }
+            - { name: RTM_TIMING_IN1, value: 3 }
+          description: "Crossbar Mux Selection"
+      description: |
+        Timing Crossbar:
+        -----------------------------------------------------------------
+        OutputConfig[0] = 0x0: Connects RTM_TIMING_OUT0 to RTM_TIMING_IN0
+        OutputConfig[0] = 0x1: Connects RTM_TIMING_OUT0 to FPGA_TIMING_IN
+        OutputConfig[0] = 0x2: Connects RTM_TIMING_OUT0 to BP_TIMING_IN
+        OutputConfig[0] = 0x3: Connects RTM_TIMING_OUT0 to RTM_TIMING_IN1
+        -----------------------------------------------------------------
+        OutputConfig[1] = 0x0: Connects FPGA_TIMING_OUT to RTM_TIMING_IN0
+        OutputConfig[1] = 0x1: Connects FPGA_TIMING_OUT to FPGA_TIMING_IN
+        OutputConfig[1] = 0x2: Connects FPGA_TIMING_OUT to BP_TIMING_IN
+        OutputConfig[1] = 0x3: Connects FPGA_TIMING_OUT to RTM_TIMING_IN1
+        -----------------------------------------------------------------
+        OutputConfig[2] = 0x0: Connects Backplane DIST0 to RTM_TIMING_IN0
+        OutputConfig[2] = 0x1: Connects Backplane DIST0 to FPGA_TIMING_IN
+        OutputConfig[2] = 0x2: Connects Backplane DIST0 to BP_TIMING_IN
+        OutputConfig[2] = 0x3: Connects Backplane DIST0 to RTM_TIMING_IN1
+        -----------------------------------------------------------------
+        OutputConfig[3] = 0x0: Connects Backplane DIST1 to RTM_TIMING_IN0
+        OutputConfig[3] = 0x1: Connects Backplane DIST1 to FPGA_TIMING_IN
+        OutputConfig[3] = 0x2: Connects Backplane DIST1 to BP_TIMING_IN
+        OutputConfig[3] = 0x3: Connects Backplane DIST1 to RTM_TIMING_IN1
+        -----------------------------------------------------------------
+    ##################################################
+    # Axi24LC64FT:
+      # at:
+        # offset: 0x04000000
+      # class: MMIODev
+      # size: 0x2000
+      # description: AMC Carrier core's Non-volatile memory (100k endurance)
+      # children:
+        # MemoryArray:
+          # <<: *MemoryArray
+          # at:
+            # offset: 0x0
+            # nelms: 0x800
+            # stride: 4
+          # sizeBits: 32
+      # instantiate: false
+   ##################################################
+    # AxiCdcm6208:
+      # <<: *AxiCdcm6208
+      # at:
+        # offset: 0x05000000
+    ##################################################
+    # DdrSpd:
+      # at:
+        # offset: 0x06000000
+      # size: 0x400
+      # class: MMIODev
+      # description: Lookup tool at www.micron.com/spd
+      # children:
+        # MemoryArray:
+          # <<: *MemoryArray
+          # at:
+            # offset: 0x0
+            # nelms: 0x100
+            # stride: 4
+          # sizeBits: 8
+          # mode: RO # Read only
+    ##################################################
+    AmcCarrierBsi:
+      <<: *AmcCarrierBsi
+      at:
+        offset: 0x07000000
+    ##################################################
+    AmcCarrierTiming:
+      <<: *AmcCarrierTiming
+      at:
+        offset: 0x08000000
+    ##################################################
+    AmcCarrierBsa:
+      <<: *AmcCarrierBsa
+      at:
+        offset: 0x09000000
+    ##################################################
+    BpUdpClient:
+      <<: *UdpEngineClient
+      at:
+        offset: 0x0A000000
+      description: "Backplane UDP Client for Application ASYNC Messaging"
+    ##################################################
+    BpUdpSrvXvc:
+      <<: *UdpEngineServer
+      at:
+        offset: 0x0A000800
+      description: "Backplane UDP Server: Xilinx XVC"
+    ##################################################
+    BpUdpSrvFsbl:
+      <<: *UdpEngineServer
+      at:
+        offset: 0x0A000808
+      description: "Backplane UDP Server: FSBL Legacy SRPv0 register access"
+    ##################################################
+    BpUdpSrvRssiAsyncMsg:
+      <<: *UdpEngineServer
+      at:
+        offset: 0x0A000810
+      description: "Backplane UDP Server: Legacy Non-interleaved RSSI for Register access and ASYNC messages"
+    ##################################################
+    BpUdpSrvRssiData:
+      <<: *UdpEngineServer
+      at:
+        offset: 0x0A000818
+      description: "Backplane UDP Server: Legacy Non-interleaved RSSI for bulk data transfer"
+    ##################################################
+    BpUdpSrvRssiInterleaved:
+      <<: *UdpEngineServer
+      at:
+        offset: 0x0A000830
+      description: "Backplane UDP Server: Interleaved RSSI"
+    ##################################################
+    BpUdpServer:
+      <<: *UdpEngineServer
+      at:
+        offset: 0x0A000820
+      description: "Backplane UDP Server for Application ASYNC Messaging"
+    ##################################################
+    TimingUdpServer:
+      <<: *UdpEngineServer
+      at:
+        offset: 0x0A000828
+      description: "Backplane UDP Server for Timing ASYNC Messaging"
+    ##################################################
+    SwRssiServer:
+      <<: *RssiCore
+      at:
+        offset: 0x0A010000
+        nelms: 2
+        stride: 0x1000
+      description: "Backplane UDP Server: Legacy Non-interleaved RSSI"
+    ##################################################
+    RssiServerInterleaved:
+      <<: *RssiCore
+      at:
+        offset: 0x0A020000
+      description: "Backplane UDP Server: Interleaved RSSI"
+    ##################################################
+    AxiMemTester:
+      <<: *AxiMemTester
+      at:
+        offset: 0x0B000000
+    ##################################################
+    AppMps:
+      <<: *AppMps
+      at:
+        offset: 0x0C000000
+    ##################################################

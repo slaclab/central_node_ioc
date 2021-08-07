@@ -1,0 +1,656 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'SLAC Firmware Standard Library', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once MpsCentralNodeCore.yaml
+#include GenericMemory.yaml
+
+MpsCentralNodeCore: &MpsCentralNodeCore
+  class: MMIODev
+  configPrio: 1
+  description: Central Node Configuration
+  size: 0x10000000
+  ########
+  children:
+  ########
+    #########################################################
+    #   Monitor Engine
+    #########################################################
+    Enable:
+      class: IntField
+      at:
+        offset: 0x0
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "General Enable. Enables the message stream. None of the modules can function without enabling this first."
+    #########################################################
+    Switch:
+      class: IntField
+      at:
+        offset: 0x0
+      sizeBits: 1
+      lsBit: 1
+      mode: RW
+      description: "Switch the configturation buffer (Ping-pong buffer). The switch will occur on the rising edce of this signal. Important to do after writing in the configuration and before enabling."
+    #########################################################
+    MonitorClear:
+      class: IntField
+      at:
+        offset: 0x0
+      sizeBits: 1
+      lsBit: 2
+      mode: RW
+      description: "Clear the monitor block status counters. The clearing will occur on the rising edce of this signal. Important if monitoring status error counters non zero this has to be performed to achieve MonitorReady."
+    #########################################################
+    DualCoreEn:
+      class: IntField
+      at:
+        offset: 0x0
+      sizeBits: 1
+      lsBit: 3
+      mode: RW
+      description: "Dual-Core '1' vs. Single-Core '0'. If enabled the timeout will be checked on the Mitigation Message Concentrator"
+    #########################################################
+    MoConcTout:
+      class: IntField
+      at:
+        offset: 0x4
+      sizeBits: 16
+      mode: RW
+      description: "Mitigation Message Concentrator watchdog Timeout. In micro seconds."
+    #########################################################
+    ToAppIDSel0:
+      class: IntField
+      at:
+        offset: 0x8
+      sizeBits: 10
+      mode: RW
+      description: "Select one of the 1024 AppId to monitor Timeout time."
+    #########################################################
+    ToAppIDSel1:
+      class: IntField
+      at:
+        offset: 0xC
+      sizeBits: 10
+      mode: RW
+      description: "Select one of the 1024 AppId to monitor Timeout time."
+    #########################################################
+    MonitorReady:
+      class: IntField
+      at:
+        offset: 0x100
+      sizeBits: 1
+      lsBit: 0
+      mode: RO
+      description: "Monitor Ready status. Important if this status is not OK no beam will be allowed. OK condition enable and toEnable and evEnable and swEnable and not swErr_i and not toutErr_i and not dropCounter and not overCounter and not PauseCounter and not ErrorCounter."
+    #########################################################
+    MonitorRxErrCnt:
+      class: IntField
+      at:
+        offset: 0x104
+        stride: 4
+        nelms: 12
+      sizeBits: 8
+      mode: RO
+      description: "MPS Update Message Receiver counter (Non-revolving 8-bit)."
+    #########################################################
+    MonitorPauseCnt:
+      class: IntField
+      at:
+        offset: 0x105
+        stride: 4
+        nelms: 12
+      sizeBits: 8
+      mode: RO
+      description: "Partitioner Message Pause Backpreassure Counter (Non-revolving 8-bit)."
+    #########################################################
+    MonitorOvflCnt:
+      class: IntField
+      at:
+        offset: 0x106
+        stride: 4
+        nelms: 12
+      sizeBits: 8
+      mode: RO
+      description: "Partitioner Message Fifo Overflow Counter (Non-revolving 8-bit)."
+    #########################################################
+    MonitorDropCnt:
+      class: IntField
+      at:
+        offset: 0x107
+        stride: 4
+        nelms: 12
+      sizeBits: 8
+      mode: RO
+      description: "Partitioner Message Drop Counter (Non-revolving 8-bit)."
+    #########################################################
+    MonitorConcWdErr:
+      class: IntField
+      at:
+        offset: 0x150
+      lsBit: 0
+      sizeBits: 3
+      mode: RO
+      description: "Mitigation message Concentrator Watchdog Error. Note one of the MonitorReady conditions."
+    #########################################################
+    MonitorConcStallErr:
+      class: IntField
+      at:
+        offset: 0x151
+      lsBit: 0
+      sizeBits: 3
+      mode: RO
+      description: "Mitigation message Concentrator Timstamp Stall Error. Note one of the MonitorReady conditions."
+    #########################################################
+    MonitorConcExtRxErr:
+      class: IntField
+      at:
+        offset: 0x154
+      lsBit: 0
+      sizeBits: 8
+      mode: RO
+      description: "External mitigation message receiver Error Counter (Non-revolving 8-bit). Note one of the MonitorReady conditions."
+    #########################################################
+    #   Timeout Engine
+    #########################################################
+    TimeoutEnable:
+      class: IntField
+      at:
+        offset: 0x01000
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Enable Application Timeout Engine. Note one of the MonitorReady conditions."
+    #########################################################
+    TimeoutClear:
+      class: IntField
+      at:
+        offset: 0x01000
+      sizeBits: 1
+      lsBit: 1
+      mode: RW
+      description: "Clear the latched timeout error. The clearing will occur on the rising edce of this signal."
+    #########################################################
+    TimeoutTime:
+      class: IntField
+      at:
+        offset: 0x01004
+      sizeBits: 3
+      lsBit: 0
+      mode: RW
+      description: "Application timeout setting. In micro seconds. Range from 0 us to 7 us."
+    #########################################################
+    TimeoutMask:
+      class: IntField
+      at:
+        offset: 0x01008
+        stride: 4
+        nelms: 32
+      sizeBits: 32
+      mode: RW
+      description: "1024 Bit Application Mask. 1 - App Timeout Active/Enabled, 0 - App Timeout Inactive/Masked."
+    #########################################################
+    TimestampErrStatus:
+      class: IntField
+      at:
+        offset: 0x01100
+      sizeBits: 1
+      lsBit: 1
+      mode: RO
+      description: "Time stamp Bit Error. 1 - App Timestamp Error, 0 - App Timestamp Ok."
+    #########################################################
+    TimeoutErrStatus:
+      class: IntField
+      at:
+        offset: 0x01100
+      sizeBits: 1
+      lsBit: 0
+      mode: RO
+      description: "Tout Bit Error. 1 - App Timeout Error, 0 - App Timeout Ok."
+    #########################################################
+    TimeoutErrIndex:
+      class: IntField
+      at:
+        offset: 0x01104
+        stride: 4
+        nelms: 32
+      sizeBits: 32
+      mode: RO
+      description: "1024 Bit Error. 1 - App Timeout Error, 0 - App Timeout Ok."
+    #########################################################
+    TimeoutMsgVer:
+      class: IntField
+      at:
+        offset: 0x01200
+      sizeBits: 5
+      lsBit: 0
+      mode: RW
+      description: "MPS Message version (5 bits). If the version is wrong, it is not accpted and the App ID times out."
+    #########################################################
+    TimeoutSelAppIdMaxCnt:
+      class: IntField
+      at:
+        offset: 0x01204
+        stride: 4
+        nelms: 2
+      sizeBits: 16
+      mode: RO
+      description: "Monitor maximum AppID timeout intervals in channels selected by ToAppIDSel in 4nSec clocks "
+    #########################################################
+    #   Evaluation Engine
+    #########################################################
+    EvaluationEnable:
+      class: IntField
+      at:
+        offset: 0x02000
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Enable Evaluation Engine. Note one of the MonitorReady conditions. This Bit does not affect the Evaluation engine operation. The Power Levels should be first checked and then the module should be enabled to enable MPS."
+    #########################################################
+    EvaluationClear:
+      class: IntField
+      at:
+        offset: 0x02000
+      sizeBits: 1
+      lsBit: 1
+      mode: RW
+      description: "Clear the latched power levels error. The clearing will occur on the rising edce of this signal."
+    #########################################################
+    EvaluationSwPowerLevel:
+      class: IntField
+      at:
+        offset: 0x02004
+        stride: 4
+        nelms: 2
+      sizeBits: 32
+      mode: RW
+      description: "Allowed power levels from Software. 16 x 4-bit for all the destinations."
+    #########################################################
+    EvaluationTimeStamp:
+      class: IntField
+      at:
+        offset: 0x02100
+      sizeBits: 16
+      mode: RO
+      description: "Not much relevance. Just to see that the mitigation message timestamp is incrementing."
+    #########################################################
+    EvaluationFwPowerLevel:
+      class: IntField
+      at:
+        offset: 0x02104
+        stride: 4
+        nelms: 2
+      sizeBits: 32
+      mode: RO
+      description: "Current power levels from Fast Mitigation Firmware. 16 x 4-bit for all the destinations."
+    #########################################################
+    EvaluationLatchedPowerLevel:
+      class: IntField
+      at:
+        offset: 0x0210C
+        stride: 4
+        nelms: 2
+      sizeBits: 32
+      mode: RO
+      description: "Current lowest latched power levels from Fast Mitigation Firmware. 16 x 4-bit for all the destinations."
+    #########################################################
+    EvaluationPowerLevel:
+      class: IntField
+      at:
+        offset: 0x02114
+        stride: 4
+        nelms: 2
+      sizeBits: 32
+      mode: RO
+      description: "Current power levels applied to mitigation messages. 16 x 4-bit for all the destinations."
+    #########################################################
+    EvaluationPc0TransCnt:
+      class: IntField
+      at:
+        offset: 0x2200
+        stride: 4
+        nelms: 16
+      sizeBits: 32
+      mode: RO
+      description: "count transition to PC0 for Allowed class"
+    #########################################################
+    MonitorPc0FwTransCnt:
+      class: IntField
+      at:
+        offset: 0x2240
+        stride: 4
+        nelms: 16
+      sizeBits: 32
+      mode: RO
+      description: "count transition to PC0 for FW Allowed class"
+    #########################################################
+    #   Software Engine
+    #########################################################
+    SoftwareEnable:
+      class: IntField
+      at:
+        offset: 0x03000
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Enable Software Engine. If enabled the 50k byte SW messages will be generated with 360Hz. Note one of the MonitorReady conditions."
+    #########################################################
+    SoftwareClear:
+      class: IntField
+      at:
+        offset: 0x03000
+      sizeBits: 1
+      lsBit: 1
+      mode: RW
+      description: "Clear the latched packet loss Error And Error Counter. The clearing will occur on the rising edce of this signal."
+    #########################################################
+    SoftwareWdHeartbeat:
+      class: IntField
+      at:
+        offset: 0x03000
+      sizeBits: 1
+      lsBit: 2
+      mode: RW
+      description: "Software watchdog heartbeat. The Watchdog timer will timeout if the Heartbeat is not received."
+    #########################################################
+    SoftwareWdTime:
+      class: IntField
+      at:
+        offset: 0x03004
+      sizeBits: 32
+      lsBit: 0
+      mode: RW
+      description: "Watchdog timeout setting. In micro seconds."
+    #########################################################
+    SoftwareBusy:
+      class: IntField
+      at:
+        offset: 0x03100
+      sizeBits: 1
+      lsBit: 0
+      mode: RO
+      description: "Software Engine Busy. Waiting for pause to clear."
+    #########################################################
+    SoftwarePause:
+      class: IntField
+      at:
+        offset: 0x03100
+      sizeBits: 1
+      lsBit: 1
+      mode: RO
+      description: "Software Engine Pause back-pressure signal."
+    #########################################################
+    SoftwareWdError:
+      class: IntField
+      at:
+        offset: 0x03100
+      sizeBits: 1
+      lsBit: 2
+      mode: RO
+      description: "Software watchdog Error. Note one of the MonitorReady conditions."
+    #########################################################
+    SoftwareLossError:
+      class: IntField
+      at:
+        offset: 0x03100
+      sizeBits: 1
+      lsBit: 3
+      mode: RO
+      description: "Software packet loss Error. Note one of the MonitorReady conditions."
+    #########################################################
+    SoftwareWdErrorLatched:
+      class: IntField
+      at:
+        offset: 0x03100
+      sizeBits: 1
+      lsBit: 4
+      mode: RO
+      description: "Software watchdog Error. Latched version of SoftwareWdError since it reset by software heart beat"
+    #########################################################
+    SoftwareLossCnt:
+      class: IntField
+      at:
+        offset: 0x03104
+      sizeBits: 32
+      mode: RO
+      description: "Number of packets lost(Non-revolving 32-bit)."
+    #########################################################
+    SoftwareOvflCnt:
+      class: IntField
+      at:
+        offset: 0x03108
+      sizeBits: 32
+      mode: RO
+      description: "Number of axi-fifo overflows (Non-revolving 32-bit)."
+    #########################################################
+    SoftwareBwidthCnt:
+      class: IntField
+      at:
+        offset: 0x0310C
+      sizeBits: 32
+      mode: RO
+      description: "Number of clock cycles needed for SW packet to be transferred(32-bit)."
+    #########################################################
+    SoftwareBwidthMax:
+      class: IntField
+      at:
+        offset: 0x03110
+      sizeBits: 32
+      mode: RO
+      description: "Number of maximum clock cycles needed for SW packet to be transferred(32-bit)."
+    #########################################################
+    SoftwarePauseCnt:
+      class: IntField
+      at:
+        offset: 0x03114
+      sizeBits: 32
+      mode: RO
+      description: "Number of pulse clock cycles during transfer/busy(32-bit)."
+    #########################################################
+    SoftwarePauseMax:
+      class: IntField
+      at:
+        offset: 0x03118
+      sizeBits: 32
+      mode: RO
+      description: "Number of max pulse clock cycles during transfer/busy(32-bit)."
+    #########################################################
+    SoftwareHbUpCntMax:
+      class: IntField
+      at:
+        offset: 0x0311C
+      sizeBits: 32
+      mode: RO
+      description: "Number of max pulse clock cycles bettween received Heartbeats(32-bit)."
+    #########################################################
+    #   Timing Checker
+    #########################################################
+    BeamIntTime:
+      class: IntField
+      at:
+        offset: 0x04000
+        nelms:  16
+        stride: 12
+      sizeBits: 32
+      mode: RW
+      description: "Integration time for each power level in 1uS."
+    #########################################################
+    BeamMinPeriod:
+      class: IntField
+      at:
+        offset: 0x04004
+        nelms:  16
+        stride: 12
+      sizeBits: 32
+      mode: RW
+      description: "Min period for each power level in 1uS."
+    #########################################################
+    BeamIntCharge:
+      class: IntField
+      at:
+        offset: 0x04008
+        nelms:  16
+        stride: 12
+      sizeBits: 32
+      mode: RW
+      description: "Integration max charge for each power level"
+    #########################################################
+    BeamFaultReason:
+      class: IntField
+      at:
+        offset: 0x04100
+      sizeBits: 32
+      mode: RO
+      description: "Beam fault reason vector."
+    #########################################################
+    BeamFaultClr:
+      class: IntField
+      at:
+        offset: 0x04104
+      sizeBits: 1
+      mode: RW
+      description: "Beam fault clear strobe."
+    #########################################################
+    BeamFaultEn:
+      class: IntField
+      at:
+        offset: 0x04108
+      sizeBits: 1
+      mode: RW
+      description: "Beam fault enable."
+    #########################################################
+    TimePowL:
+      class: IntField
+      at:
+        offset: 0x04110
+      sizeBits: 32
+      mode: RO
+      description: "Power class being received from the timing system (lower 32 bits)"
+    #########################################################
+    TimePowH:
+      class: IntField
+      at:
+        offset: 0x04114
+      sizeBits: 32
+      mode: RO
+      description: "Power class being received from the timing system (upper 32 bits)"
+    #########################################################
+    ConPowL:
+      class: IntField
+      at:
+        offset: 0x04118
+      sizeBits: 32
+      mode: RO
+      description: "Final power class being send by MPS (lower 32 bits)"
+    #########################################################
+    ConPowH:
+      class: IntField
+      at:
+        offset: 0x0411C
+      sizeBits: 32
+      mode: RO
+      description: "Final power class being send by MPS (upper 32 bits)"
+    #########################################################
+    MonitorChrgPowVtnCnt:
+      class: IntField
+      at:
+        offset: 0x4200
+        stride: 4
+        nelms: 16
+      sizeBits: 32
+      mode: RO
+      description: "Charge and Power class Violation counter"
+    #########################################################
+    #  Commands
+    #########################################################
+    EvalLatchClear:
+      name: EvalLatchClear
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Clear PowerLevel Latch
+      sequence:
+      - entry: EvaluationClear
+        value: 0x1
+      - entry: EvaluationClear
+        value: 0x0
+    #########################################################
+    MonErrClear:
+      name: MonErrClear
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Clear Error
+      sequence:
+      - entry: MonitorClear
+        value: 0x1
+      - entry: MonitorClear
+        value: 0x0
+    #########################################################
+    SwErrClear:
+      name: SwErrClear
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Clear Error
+      sequence:
+      - entry: SoftwareClear
+        value: 0x1
+      - entry: SoftwareClear
+        value: 0x0
+    #########################################################
+    SwHeartbeat:
+      name: SwHeartbeat
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Send Heartbeat
+      sequence:
+      - entry: SoftwareWdHeartbeat
+        value: 0x1
+      - entry: SoftwareWdHeartbeat
+        value: 0x0
+    #########################################################
+    ToErrClear:
+      name: ToErrClear
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Clear Error
+      sequence:
+      - entry: TimeoutClear
+        value: 0x1
+      - entry: TimeoutClear
+        value: 0x0
+    #########################################################
+    SwitchConfig:
+      name: SwitchConfig
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Switch the software configuration
+      sequence:
+      - entry: Switch
+        value: 0x1
+      - entry: Switch
+        value: 0x0
+    #########################################################
+    MoConcErrClear:
+      name: MoConcErrClear
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Clear Concentrator Error
+      sequence:
+      - entry: MonErrClear
+        value: 0x1
+      - entry: MonErrClear
+        value: 0x0

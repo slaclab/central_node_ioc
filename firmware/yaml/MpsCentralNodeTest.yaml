@@ -1,0 +1,252 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'SLAC Firmware Standard Library', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once MpsCentralNodeTest.yaml
+
+MpsCentralNodeTest: &MpsCentralNodeTest
+  class: MMIODev
+  configPrio: 1
+  description: Central Node Tester
+  size: 0x10000
+  ########
+  children:
+  ########
+    #########################################################
+    #   Control
+    #########################################################
+    enable:
+      class: IntField
+      at:
+        offset: 0x0
+      sizeBits: 1
+      lsBit: 0
+      mode: RW
+      description: "Enable sending of messages."
+    #########################################################
+    beamIDStall:
+      class: IntField
+      at:
+        offset: 0x0
+      sizeBits: 1
+      lsBit: 1
+      mode: RW
+      description: "Stall the beam ID."
+    #########################################################
+    Switch:
+      class: IntField
+      at:
+        offset: 0x0
+      sizeBits: 1
+      lsBit: 2
+      mode: RW
+      description: "Switch configuration."
+    #########################################################
+    Clear:
+      class: IntField
+      at:
+        offset: 0x0
+      sizeBits: 1
+      lsBit: 3
+      mode: RW
+      description: "Clear errors."
+    #########################################################
+    AppIdMask:
+      class: IntField
+      at:
+        offset: 0x4
+        stride: 4
+        nelms: 1
+      mode: RW
+      description: "Mask the App IDs. to enable or disable sending."
+    #########################################################
+    #   Status
+    #########################################################
+    errCnt:
+      class: IntField
+      at:
+        offset: 0x100
+      mode: RO
+      description: "errCnt"
+    #########################################################
+    beamID:
+      class: IntField
+      at:
+        offset: 0x104
+      sizeBits: 16
+      mode: RO
+      description: "beamID"
+    #########################################################
+    mitBeamId:
+      class: IntField
+      at:
+        offset: 0x108
+      sizeBits: 16
+      mode: RO
+      description: "mitBeamId"
+    #########################################################
+    PowerLevel:
+      class: IntField
+      at:
+        offset: 0x10C
+        stride: 4
+        nelms: 2
+      sizeBits: 32
+      mode: RO
+      description: "Current power levels from Fast Mitigation Firmware. 16 x 4-bit for all the destinations."
+    #########################################################
+    #   Configuration
+    #########################################################
+    message0:
+      class: IntField
+      at:
+        offset: 0x1000
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App0."
+    #########################################################
+    message1:
+      class: IntField
+      at:
+        offset: 0x1020
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App1."
+    #########################################################
+    message2:
+      class: IntField
+      at:
+        offset: 0x1040
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App2."
+    #########################################################
+    message3:
+      class: IntField
+      at:
+        offset: 0x1060
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App3."
+    #########################################################
+    message4:
+      class: IntField
+      at:
+        offset: 0x1080
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App4."
+    #########################################################
+    message5:
+      class: IntField
+      at:
+        offset: 0x10A0
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App5."
+    #########################################################
+    message6:
+      class: IntField
+      at:
+        offset: 0x10C0
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App6."
+    #########################################################
+    message7:
+      class: IntField
+      at:
+        offset: 0x10E0
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App7."
+    #########################################################
+    message8:
+      class: IntField
+      at:
+        offset: 0x1100
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App8."
+    #########################################################
+    message9:
+      class: IntField
+      at:
+        offset: 0x1120
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App9."
+    #########################################################
+    message10:
+      class: IntField
+      at:
+        offset: 0x1140
+        stride: 4
+        nelms: 7
+      sizeBits: 32
+      mode: RW
+      description: "message of App10."
+    #########################################################
+    #   Commands
+    #########################################################
+    BeamIdStall:
+      name: BeamIdStall
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Stall Beam Id
+      sequence:
+      - entry: beamIDStall
+        value: 0x1
+      - entry: beamIDStall
+        value: 0x0
+    #########################################################
+    SwitchConf:
+      name: SwitchConf
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Switch two page memory
+      sequence:
+      - entry: Switch
+        value: 0x1
+      - entry: Switch
+        value: 0x0
+    #########################################################
+    ClearErrors:
+      name: ClearErrors
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Clear timeout error
+      sequence:
+      - entry: Clear
+        value: 0x1
+      - entry: Clear
+        value: 0x0

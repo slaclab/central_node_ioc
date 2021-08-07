@@ -1,0 +1,71 @@
+##############################################################################
+## This file is part of 'SLAC Firmware Standard Library'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'SLAC Firmware Standard Library', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once MpsConcentratorReg.yaml
+MpsConcentratorReg: &MpsConcentratorReg
+  class: MMIODev
+  configPrio: 1
+  description: MPS Concentrator Module
+  size: 0x10000
+  ########
+  children:
+  ########
+    #########################################################
+    GtRxPolarity:
+      class: IntField
+      at:
+        offset: 0x000
+      sizeBits: 4
+      lsBit: 0
+      mode: RW
+      description: "GtRxPolarity"
+    #########################################################
+    GtTxPolarity:
+      class: IntField
+      at:
+        offset: 0x0004
+      sizeBits: 4
+      lsBit: 0
+      mode: RW
+      description: "GtTxPolarity"
+    #########################################################
+    GtTxPreCursor:
+      class: IntField
+      at:
+        offset: 0x0080
+        stride: 4
+        nelms: 4
+      sizeBits: 5
+      lsBit: 0
+      mode: RW
+      description: "GtTxPreCursor"
+    #########################################################
+    GtTxPostCursor:
+      class: IntField
+      at:
+        offset: 0x0100
+        stride: 4
+        nelms: 4
+      sizeBits: 5
+      lsBit: 0
+      mode: RW
+      description: "GtTxPostCursor"
+    #########################################################
+    GtTxDiffCtrl:
+      class: IntField
+      at:
+        offset: 0x0180
+        stride: 4
+        nelms: 4
+      sizeBits: 4
+      lsBit: 0
+      mode: RW
+      description: "GtTxDiffCtrl"
+

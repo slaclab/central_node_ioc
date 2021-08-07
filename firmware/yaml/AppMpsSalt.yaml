@@ -1,0 +1,304 @@
+##############################################################################
+## This file is part of 'LCLS2 Common Carrier Core'.
+## It is subject to the license terms in the LICENSE.txt file found in the
+## top-level directory of this distribution and at:
+##    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+## No part of 'LCLS2 Common Carrier Core', including this file,
+## may be copied, modified, propagated, or distributed except according to
+## the terms contained in the LICENSE.txt file.
+##############################################################################
+#schemaversion 3.0.0
+#once AppMpsSalt.yaml
+
+AppMpsSalt: &AppMpsSalt
+  name: AppMpsSalt
+  description: AmcCarrier MPS PHY Module
+  class: MMIODev
+  configPrio: 1
+  size: 0x1000
+  children:
+    #########################################################
+    MpsTxLinkUpCnt:
+      at:
+        offset: 0x000
+      class: IntField
+      name: MpsTxLinkUpCnt
+      mode: RO
+      sizeBits: 32
+      description: MPS TX LinkUp Counter
+    #########################################################
+    MpsRxLinkUpCnt:
+      at:
+        offset: 0x004
+        stride: 4
+        nelms: 14
+      class: IntField
+      name: MpsRxLinkUpCnt
+      mode: RO
+      sizeBits: 32
+      description: MPS RX LinkUp Counter[13:0]
+    #########################################################
+    MpsTxPktSentCnt:
+      at:
+        offset: 0x080
+      class: IntField
+      name: MpsTxPktSentCnt
+      mode: RO
+      sizeBits: 32
+      description: MPS TX Packet Sent Counter
+    #########################################################
+    MpsRxPktRcvdCnt:
+      at:
+        offset: 0x084
+        stride: 4
+        nelms: 14
+      class: IntField
+      name: MpsRxPktRcvdCnt
+      mode: RO
+      sizeBits: 32
+      description: MPS RX Packet Received Counter[13:0]
+    #########################################################
+    MpsTxEofeSentCnt:
+      at:
+        offset: 0x100
+      class: IntField
+      name: MpsTxEofeSentCnt
+      mode: RO
+      sizeBits: 32
+      description: MPS TX EOFE Sent Counter
+    #########################################################
+    MpsRxErrDetCnt:
+      at:
+        offset: 0x104
+        stride: 4
+        nelms: 14
+      class: IntField
+      name: MpsRxErrDetCnt
+      mode: RO
+      sizeBits: 32
+      description: MPS RX Error Detected Counter[13:0]
+    #########################################################
+    MpsTxPktPeriod:
+      at:
+        offset: 0x180
+      class: IntField
+      name: MpsTxPktPeriod
+      mode: RO
+      sizeBits: 32
+      description: MPS TX Period between packets
+    #########################################################
+    MpsRxPktPeriod:
+      at:
+        offset: 0x184
+        stride: 4
+        nelms: 14
+      class: IntField
+      name: MpsRxPktPeriod
+      mode: RO
+      sizeBits: 32
+      description: Min MPS RX[13:0] Period between packets
+    #########################################################
+    MpsTxPktPeriodMax:
+      at:
+        offset: 0x200
+      class: IntField
+      name: MpsTxPktPeriodMax
+      mode: RO
+      sizeBits: 32
+      description: Max MPS TX Period between packets
+    #########################################################
+    MpsRxPktPeriodMax:
+      at:
+        offset: 0x204
+        stride: 4
+        nelms: 14
+      class: IntField
+      name: MpsRxPktPeriodMax
+      mode: RO
+      sizeBits: 32
+      description: Max MPS RX[13:0] Period between packets
+    #########################################################
+    MpsTxPktPeriodMin:
+      at:
+        offset: 0x280
+      class: IntField
+      name: MpsTxPktPeriodMin
+      mode: RO
+      sizeBits: 32
+      description: Min MPS TX Period between packets
+    #########################################################
+    MpsRxPktPeriodMin:
+      at:
+        offset: 0x284
+        stride: 4
+        nelms: 14
+      class: IntField
+      name: MpsRxPktPeriodMin
+      mode: RO
+      sizeBits: 32
+      description: Min MPS RX[13:0] Period between packets
+    #########################################################
+    MpsTxLinkUP:
+      at:
+        offset: 0x700
+      class: IntField
+      name: MpsTxLinkUP
+      mode: RO
+      lsBit: 0
+      sizeBits: 1
+      description: MPS TX LinkUp
+    #########################################################
+    MpsRxLinkUP:
+      at:
+        offset: 0x700
+      class: IntField
+      name: MpsRxLinkUP
+      mode: RO
+      lsBit: 1
+      sizeBits: 14
+      description: MPS TX LinkUp[13:0]
+    #########################################################
+    MPS_SLOT_G:
+      at:
+        offset: 0x704
+      class: IntField
+      name: MPS_SLOT_G
+      mode: RO
+      lsBit: 0
+      sizeBits: 1
+      description: MPS_SLOT_G
+    #########################################################
+    APP_TYPE_G:
+      at:
+        offset: 0x708
+      class: IntField
+      name: APP_TYPE_G
+      mode: RO
+      lsBit: 0
+      sizeBits: 7
+      description: See AmcCarrierPkg.vhd for definition
+    #########################################################
+    MpsPllLocked:
+      at:
+        offset: 0x714
+      class: IntField
+      name: MpsPllLocked
+      mode: RO
+      lsBit: 0
+      sizeBits: 1
+      description: MPS PLL Lock Status
+    #########################################################
+    DiagnosticStrbCnt:
+      at:
+        offset: 0x718
+      class: IntField
+      name: DiagnosticStrbCnt
+      mode: RO
+      lsBit: 0
+      sizeBits: 32
+      description: Counts the diagnostic strobes
+    #########################################################
+    MpsPllLockCnt:
+      at:
+        offset: 0x71C
+      class: IntField
+      name: MpsPllLockCnt
+      mode: RO
+      lsBit: 0
+      sizeBits: 32
+      description: Counts the PLL Lock events
+    #########################################################
+#    BypFirstBerDet:
+#      at:
+#        offset: 0xFD0
+#      class: IntField
+#      name: BypFirstBerDet
+#      mode: RW
+#      lsBit: 0
+#      sizeBits: 1
+#      description: BypFirstBerDet
+#    #########################################################
+#    MinEyeWidth:
+#      at:
+#        offset: 0xFD4
+#      class: IntField
+#      name: MinEyeWidth
+#      mode: RW
+#      lsBit: 0
+#      sizeBits: 8
+#      description: MinEyeWidth
+#    #########################################################
+#    LockingCntCfg:
+#      at:
+#        offset: 0xFD8
+#      class: IntField
+#      name: LockingCntCfg
+#      mode: RW
+#      lsBit: 0
+#      sizeBits: 23
+#      description: LockingCntCfg
+    #########################################################
+    MpsChEnable:
+      at:
+        offset: 0xFEC
+      class: IntField
+      name: MpsChEnable
+      mode: RW
+      lsBit: 0
+      sizeBits: 15
+      description: MPS RX SALT Channel enable bitmask
+    #########################################################
+    RollOverEn:
+      at:
+        offset: 0xFF0
+      class: IntField
+      name: RollOverEn
+      mode: RW
+      lsBit: 0
+      sizeBits: 15
+      description: Status Counter Roll Over Enable
+    #########################################################
+    CntRst:
+      at:
+        offset: 0xFF4
+      class: IntField
+      name: CntRst
+      mode: WO
+      lsBit: 0
+      # sizeBits: 1
+      # CPSW requires all WO variables to be 32-bit size and 32-bit aligned
+      sizeBits: 32
+      description: Status Counter Reset
+    #########################################################
+    PllRst:
+      at:
+        offset: 0xFF8
+      class: IntField
+      name: PllRst
+      mode: WO
+      lsBit: 0
+      # sizeBits: 1
+      # CPSW requires all WO variables to be 32-bit size and 32-bit aligned
+      sizeBits: 32
+      description: PLL Reset
+    #########################################################
+    RstCnt:
+      name: RstCnt
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: Reset all the status counters
+      sequence:
+      - entry: CntRst
+        value: 0x1
+    #########################################################
+    RstPll:
+      name: RstPll
+      class: SequenceCommand
+      at:
+        offset: 0x0
+      description: PLL Reset Command
+      sequence:
+      - entry: PllRst
+        value: 0x1
+    #########################################################
