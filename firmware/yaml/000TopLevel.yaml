@@ -43,17 +43,20 @@ mmio: &mmio
                 nelms: 14
     ##################################################
 stream: &stream
-  SRP:
-    protocolVersion: SRP_UDP_NONE
   UDP:
     <<: *udpParams
     port: 8194
-    numRxThreads: 2
   RSSI:
     <<: *rssiParams
-  depack: yes
+  depack:
+    <<: *depackParams
+    protocolVersion: DEPACKETIZER_V0
   TDESTMux:
+    <<: *tdestmuxParams
     TDEST: 0xC0
+    stripHeader: no
+  SRP:
+    protocolVersion: SRP_UDP_NONE
 
 NetIODev:
   ipAddr: 10.0.1.105
@@ -63,16 +66,19 @@ NetIODev:
     mmio:
       <<: *mmio
       at:
-        SRP:
-          protocolVersion: SRP_UDP_V3
         UDP:
           <<: *udpParams
           port: 8193
         RSSI:
           <<: *rssiParams
-        depack: yes
+        depack:
+          <<: *depackParams
+          protocolVersion: DEPACKETIZER_V0
         TDESTMux:
+          <<: *tdestmuxParams
           TDEST: 0
+        SRP:
+          protocolVersion: SRP_UDP_V3
     Stream0:
       class: Field
       at:
@@ -121,3 +127,4 @@ NetIODev:
         <<: *stream
         TDESTMux:
           TDEST: 0xC7
+
