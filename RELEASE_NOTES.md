@@ -3,16 +3,25 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
-
+* __central_node_ioc-R2-0-0__:
+  * Update FW to version `7ef9f2d`.
+  * Update the central_node_engine to version `central_node_engine-R2-0-0`.
+  * Update `MpsCentralNodeConfig.yaml` to support all 1024 apps.
+  * Improve evaluation processing pipeline.
+  * Fixes/Improvements for the dual CN operation.
+  * Cleanup `sioc-sys0-mp01` startup script.
+  * Expose Pgp2bAxi counter for all 14 channels.
+  * Create second DEV IOC for the dual-carrier configuration.
   * Add support for the `yamlDownloader` module, and use it to download the
     YAML files from the FPGA, instead of a local copy of the YAML files.
   * Add the `yaml_fixes` directory to hold local patched YAML files,
     and point CPSW's `YAML_DIR` env var to it.
   * Load the database from the `PHYSICS_TOP` location.
   * Fix a DESC field which was too long.
-  * Update the YCPSWASYN register mapping, according to changes in the new YAML files.
-  * Update FW to version `bb27bcd`.
-  * Update the central_node_engine to version `central_node_engine-R1-8-0`.
+  * Update the YCPSWASYN register mapping, according to changes in the new
+    YAML files.
+  * Add new options to the `mps` shell command, to get information about
+    the power class changes info.
 
 * __central_node_ioc-R1-5-0__:
   * Merge changes from the EIC branch.
