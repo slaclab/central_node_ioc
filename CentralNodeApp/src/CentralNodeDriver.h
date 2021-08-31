@@ -94,10 +94,12 @@
 #define MPS_FORCE_LINAC_PC0_STRING                 "MPS_FORCE_LINAC_PC0"
 #define MPS_FORCE_AOM_PC0_STRING                   "MPS_FORCE_AOM_PC0"
 
-#define TEST_DEVICE_INPUT_STRING               "TEST_DEVICE_INPUT"
-#define TEST_ANALOG_DEVICE_STRING              "TEST_ANALOG_DEVICE"
-#define TEST_CHECK_FAULTS_STRING               "TEST_CHECK_FAULTS"
-#define TEST_CHECK_BYPASS_STRING               "TEST_CHECK_BYPASS"
+#define TEST_DEVICE_INPUT_STRING                   "TEST_DEVICE_INPUT"
+#define TEST_ANALOG_DEVICE_STRING                  "TEST_ANALOG_DEVICE"
+#define TEST_CHECK_FAULTS_STRING                   "TEST_CHECK_FAULTS"
+#define TEST_CHECK_BYPASS_STRING                   "TEST_CHECK_BYPASS"
+
+#define MPS_APP_TIMEOUT_ENABLE_STRING              "MPS_APP_TIMEOUT_ENABLE"
 
 enum CentralNodeState {
   MPS_STATE_IDLE,
@@ -216,6 +218,8 @@ public:
   int _testAnalogDeviceParam;
   int _testCheckFaultsParam;
   int _testCheckBypassParam;
+
+  int _mpsAppTimeoutEnableParam;
 
   //  CentralNodeState _mpsState;
 
