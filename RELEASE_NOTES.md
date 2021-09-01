@@ -3,7 +3,7 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
-
+* __central_node_ioc-R2-1-1__:
   * Update `central_node_engine` to version `central_node_engine-R2-1-1`.
 
 * __central_node_ioc-R2-1-0__:
