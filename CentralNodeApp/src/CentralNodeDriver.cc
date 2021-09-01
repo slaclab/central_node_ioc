@@ -124,6 +124,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(TEST_CHECK_FAULTS_STRING, asynParamInt32, &_testCheckFaultsParam);
   createParam(TEST_CHECK_BYPASS_STRING, asynParamInt32, &_testCheckBypassParam);
 
+  createParam(MPS_APP_TIMEOUT_ENABLE_STRING, asynParamUInt32Digital, &_mpsAppTimeoutEnableParam);
+
   setIntegerParam(0, _mpsStateParam, MPS_STATE_IDLE);
 
   // Initialize bypass date strings
@@ -556,6 +558,13 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     if (Firmware::getInstance().getTimeoutEnable()) *value = 1; else *value = 0;
     return status;
   }
+  else if (_mpsAppTimeoutEnableParam == pasynUser->reason) {
+    if (addr >= FW_NUM_APPLICATION_MASKS)
+      return asynError;
+
+    *value = Firmware::getInstance().getAppTimeoutEnable(addr);
+    return status;
+  }
 
 
   if (!Engine::getInstance().isInitialized()) {
@@ -888,6 +897,13 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   else if (_mpsSkipHeartbeatParam == pasynUser->reason) {
     //Firmware::getInstance()._skipHeartbeat = value;
     // TO BE DONE: Is this neccesary? If so, we need to reimplement it.
+    return status;
+  }
+  else if (_mpsAppTimeoutEnableParam == pasynUser->reason) {
+    if (addr >= FW_NUM_APPLICATION_MASKS)
+      return asynError;
+
+    Firmware::getInstance().setAppTimeoutEnable(addr, !!value);
     return status;
   }
 
