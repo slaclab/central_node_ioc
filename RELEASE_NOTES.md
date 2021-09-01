@@ -3,6 +3,10 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+
+  * Update `central_node_engine` to version `central_node_engine-R2-1-0`.
+  * Add support to read and write the app timeout enable bits.
+
 * __central_node_ioc-R2-0-0__:
   * Update FW to version `7ef9f2d`.
   * Update the central_node_engine to version `central_node_engine-R2-0-0`.
