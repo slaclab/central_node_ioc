@@ -241,6 +241,7 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
       Engine::getInstance().getCurrentDb()->unlatchAll();
     }
     Engine::getInstance().clearSoftwareLatch();
+    Firmware::getInstance().evalLatchClear();
   }
   else if (_mpsDeviceInputBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_DIGITAL, addr, 0, value);
@@ -945,6 +946,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       } catch (std::exception &e) {
 	status = asynError;
       }
+    Firmware::getInstance().evalLatchClear();
     }
   }
   else if (_mpsFaultUnlatchParam == pasynUser->reason) {
@@ -1074,7 +1076,7 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
       return asynError;
     }
     else {
-      if ((*beamDestIt).second->name != "Linac") {
+      if ((*beamDestIt).second->name != "LINAC") {
 	std::cerr << "ERROR: BeamDestination with ID=1 is does not have name 'Linac', please check MPS database." << std::endl;
 	return asynError;
       }

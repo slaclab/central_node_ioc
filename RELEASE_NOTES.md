@@ -3,6 +3,10 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R2-2-0__:
+  * Update `central_node_engine` to version `central_node_engine-R2-2-0`.
+  * Change unlatch all function to unlatch soft faults and FW faults.
+
 * __central_node_ioc-R2-1-1__:
   * Update `central_node_engine` to version `central_node_engine-R2-1-1`.
 
