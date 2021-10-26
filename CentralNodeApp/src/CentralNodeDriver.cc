@@ -118,6 +118,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_SKIP_HEARTBEAT_STRING, asynParamUInt32Digital, &_mpsSkipHeartbeatParam);
   createParam(MPS_FORCE_LINAC_PC0_STRING, asynParamUInt32Digital, &_mpsForceLinacPc0Param);
   createParam(MPS_FORCE_AOM_PC0_STRING, asynParamUInt32Digital, &_mpsForceAomPc0Param);
+  createParam(MPS_FORCE_DEST_STRING, asynParamUInt32Digital, &_mpsForceDestBeamClass);
+
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
   createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
@@ -1011,6 +1013,19 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       }
       else {
 	Engine::getInstance().getCurrentDb()->forceBeamDestination(2, CLEAR_BEAM_CLASS);
+      }
+    }
+    return status;
+  }
+  else if (_mpsForceDestBeamClass == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      if (value != 0) {
+	// First parameter is the mechanical shutter DB ID
+	Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, value);
+      }
+      else {
+	Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, CLEAR_BEAM_CLASS);
       }
     }
     return status;
