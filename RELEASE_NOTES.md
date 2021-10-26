@@ -3,6 +3,10 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R2-3-0__:
+  * Add function to Central Node Driver to allow force any destination to any power class
+    * No new PVs - the PVs will be generated for each destination by mps_database
+
 * __central_node_ioc-R2-2-1__:
   * Update `central_node_engine` to version `central_node_engine-R2-2-1`.
 

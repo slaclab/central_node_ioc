@@ -93,6 +93,8 @@
 #define MPS_SKIP_HEARTBEAT_STRING                  "MPS_SKIP_HEARTBEAT"
 #define MPS_FORCE_LINAC_PC0_STRING                 "MPS_FORCE_LINAC_PC0"
 #define MPS_FORCE_AOM_PC0_STRING                   "MPS_FORCE_AOM_PC0"
+#define MPS_FORCE_DEST_STRING                      "MPS_FORCE_DEST"
+
 
 #define TEST_DEVICE_INPUT_STRING                   "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING                  "TEST_ANALOG_DEVICE"
@@ -213,6 +215,7 @@ public:
   int _mpsSkipHeartbeatParam;
   int _mpsForceLinacPc0Param;
   int _mpsForceAomPc0Param;
+  int _mpsForceDestBeamClass;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;
