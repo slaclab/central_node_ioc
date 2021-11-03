@@ -11,7 +11,6 @@
 # ====================================================================
 # Setup environment variables specific to this IOC
 # ====================================================================
-# Keep the PV name we have in PROD
 epicsEnvSet("LOCATION_INDEX","01")
 epicsEnvSet("IOC_PV",   "SIOC:SYS0:MP${LOCATION_INDEX}")
 epicsEnvSet("LOCATION", "B084")

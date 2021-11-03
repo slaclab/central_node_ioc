@@ -22,4 +22,3 @@ epicsEnvSet("CARD_INDEX","1")
 # Load the common Central Node startup for PROD
 # ====================================================================
  < ${TOP}/iocBoot/common/central_node_prod.cmd
-
