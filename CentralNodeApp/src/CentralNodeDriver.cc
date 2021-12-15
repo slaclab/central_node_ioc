@@ -48,8 +48,6 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_SW_MITIGATION_STRING, asynParamInt32, &_mpsSwMitigationParam);
   createParam(MPS_FAULT_STRING, asynParamUInt32Digital, &_mpsFaultParam);
   createParam(MPS_FAULT_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultIgnoredParam);
-  createParam(MPS_FAULT_LATCHED_STRING, asynParamUInt32Digital, &_mpsFaultLatchedParam);
-  createParam(MPS_FAULT_UNLATCH_STRING, asynParamUInt32Digital, &_mpsFaultUnlatchParam);
   createParam(MPS_FAULT_STATE_STRING, asynParamUInt32Digital, &_mpsFaultStateParam);
   createParam(MPS_FAULT_STATE_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultStateIgnoredParam);
   createParam(MPS_DEVICE_INPUT_LATCHED_STRING, asynParamUInt32Digital, &_mpsDeviceInputLatchedParam);
@@ -337,6 +335,21 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       }
     }
   }
+  else if (_mpsFaultParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+      	    Engine::getInstance().getCurrentDb()->faults->end()) {
+     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+      	  return asynError;
+      	}
+        *value = Engine::getInstance().getCurrentDb()->faults->at(addr)->value;
+      } catch (std::exception &e) {
+        	status = asynError;
+      }
+    }
+  }
   else if (_mpsAnalogDeviceBypassStatusParam ==  pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
@@ -568,8 +581,6 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     *value = Firmware::getInstance().getAppTimeoutEnable(addr);
     return status;
   }
-
-
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
     //    LOG_TRACE("DRIVER", "ERROR: Database not initialized");
@@ -602,24 +613,6 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
 	}
 	// Non-zero *value means threshold exceeded
 	*value = Engine::getInstance().getCurrentDb()->analogDevices->at(addr)->value & mask;
-      } catch (std::exception &e) {
-	status = asynError;
-      }
-    }
-  }
-  else if (_mpsFaultParam == pasynUser->reason) {
-    *value = 0;
-    {
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      try {
-	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
-	    Engine::getInstance().getCurrentDb()->faults->end()) {
-	  LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
-	  return asynError;
-	}
-	if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
-	  *value = 1;
-	}
       } catch (std::exception &e) {
 	status = asynError;
       }
@@ -726,19 +719,6 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
 	  return asynError;
 	}
 	*value = Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue;
-      } catch (std::exception &e) {
-	status = asynError;
-      }
-    }
-  }
-  else if (_mpsFaultLatchedParam == pasynUser->reason) {
-    *value = 0;
-    {
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      try {
-	if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultLatched) {
-	  *value = 1;
-	}
       } catch (std::exception &e) {
 	status = asynError;
       }
@@ -949,16 +929,6 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 	status = asynError;
       }
     Firmware::getInstance().evalLatchClear();
-    }
-  }
-  else if (_mpsFaultUnlatchParam == pasynUser->reason) {
-    {
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      try {
-	Engine::getInstance().getCurrentDb()->faults->at(addr)->unlatch();
-      } catch (std::exception &e) {
-	status = asynError;
-      }
     }
   }
   else if (_mpsDeviceInputBypassValueParam == pasynUser->reason) {
