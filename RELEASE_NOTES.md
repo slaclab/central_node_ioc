@@ -3,6 +3,11 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R2-4-0__:
+  * Remove fault state PVs
+  * Remove unlatching of faults
+  * build against central_node_engine_R2-4-0
+
 * __central_node_ioc-R2-3-0__:
   * Add function to Central Node Driver to allow force any destination to any power class
     * No new PVs - the PVs will be generated for each destination by mps_database
