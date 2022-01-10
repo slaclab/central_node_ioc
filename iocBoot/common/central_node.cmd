@@ -12,7 +12,7 @@ epicsEnvSet("ENGINEER","Jeremy Mock")
 
 # MPS Database location
 # Note: PHYSICS_TOP is defined in the facility specific script.
-epicsEnvSet("MPS_ENV_DATABASE_VERSION", "current")
+epicsEnvSet("MPS_ENV_DATABASE_VERSION", "laser")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
 
 # MPS history server configurations
@@ -150,7 +150,6 @@ dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/device_input
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/analog_devices.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/destinations.db","BASE=${IOC_PV}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/fault_states.db")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/apps.db","BASE=${IOC_PV}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/conditions.db","BASE=${IOC_PV}")
 

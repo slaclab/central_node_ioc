@@ -3,6 +3,11 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+*__central_node_ioc-R2-5-0__:
+  * Build against central_node_engine-R2-5-0 which adds support for digital ignore conditions
+  * Upgrade timing modules and timing package per timing team
+  * Stop loading fault_states.db - this is no longer needed
+
 * __central_node_ioc-R2-4-0__:
   * Remove fault state PVs
   * Remove unlatching of faults
