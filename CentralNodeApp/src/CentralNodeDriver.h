@@ -94,7 +94,8 @@
 #define MPS_FORCE_LINAC_PC0_STRING                 "MPS_FORCE_LINAC_PC0"
 #define MPS_FORCE_AOM_PC0_STRING                   "MPS_FORCE_AOM_PC0"
 #define MPS_FORCE_DEST_STRING                      "MPS_FORCE_DEST"
-
+#define MPS_FINAL_MITIGATION_STRING                "MPS_FINAL_BC"
+#define MPS_FW_RESET_ALL_STRING                    "MPS_FW_RESET_ALL"
 
 #define TEST_DEVICE_INPUT_STRING                   "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING                  "TEST_ANALOG_DEVICE"
@@ -180,6 +181,7 @@ public:
   int _mpsUpdateCounterParam;
   int _mpsEngineStartTimeStringParam;
   int _mpsLatchedMitigationParam;
+  int _mpsFinalBeamClassParam;
   int _mpsMitigationUnlatchParam;
   int _mpsAppStatusParam;
   int _mpsAppTimestampLowBitsParam;
@@ -216,6 +218,7 @@ public:
   int _mpsForceLinacPc0Param;
   int _mpsForceAomPc0Param;
   int _mpsForceDestBeamClass;
+  int _mpsFwResetAll;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;
