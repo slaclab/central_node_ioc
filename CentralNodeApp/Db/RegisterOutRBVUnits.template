@@ -1,0 +1,21 @@
+#==================================================================
+# Record example for reading back from an IntField, RW, 1 element,
+# no encoding register.
+# It is a longin record with type asynInt32.
+# The INP field has the form @asyn(PORT,ADDR)PARAM where:
+#  - PORT  : The asyn port name. It must match the port name given
+#            when calling "YCPSWASYNConfig" on st.cmd
+#  - PARAM : The asyn parameter name. It must be defined in the
+#            dictionary file and assigned to a register.
+#  - ADDR  : Address based on the type of register.
+#            For IntField, RW, without encoding is 1.
+#==================================================================
+
+record(longin,  "$(P):$(R)") {
+    field(DTYP, "asynInt32")
+    field(DESC, "$(DESC)")
+    field(PINI, "$(PINI)")
+    field(SCAN, "$(SCAN)")
+    field(EGU,  "$(EGU)")
+    field(INP,  "@asyn($(PORT),1)$(PARAM)")
+}
