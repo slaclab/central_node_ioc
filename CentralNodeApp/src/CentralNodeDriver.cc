@@ -81,6 +81,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_SW_UPDATE_COUNTER_STRING, asynParamInt32, &_mpsUpdateCounterParam);
   createParam(MPS_ENGINE_START_TIME_STRING_STRING, asynParamOctet, &_mpsEngineStartTimeStringParam);
   createParam(MPS_LATCHED_MITIGATION_STRING, asynParamInt32, &_mpsLatchedMitigationParam);
+  createParam(MPS_FINAL_MITIGATION_STRING, asynParamInt32, &_mpsFinalBeamClassParam);
   createParam(MPS_MITIGATION_UNLATCH_STRING, asynParamUInt32Digital, &_mpsMitigationUnlatchParam);
   createParam(MPS_APP_STATUS_STRING, asynParamUInt32Digital, &_mpsAppStatusParam);
   createParam(MPS_APP_TIMESTAMP_LOW_BITS_STRING, asynParamInt32, &_mpsAppTimestampLowBitsParam);
@@ -114,9 +115,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_FW_SOFTWARE_WDOG_COUNTER_STRING, asynParamInt32, &_mpsFwSoftwareWdogCounterParam);
   createParam(MPS_FW_MONITOR_NOT_READY_COUNTER_STRING, asynParamInt32, &_mpsFwMonitorNotReadyCounterParam);
   createParam(MPS_SKIP_HEARTBEAT_STRING, asynParamUInt32Digital, &_mpsSkipHeartbeatParam);
-  createParam(MPS_FORCE_LINAC_PC0_STRING, asynParamUInt32Digital, &_mpsForceLinacPc0Param);
-  createParam(MPS_FORCE_AOM_PC0_STRING, asynParamUInt32Digital, &_mpsForceAomPc0Param);
   createParam(MPS_FORCE_DEST_STRING, asynParamUInt32Digital, &_mpsForceDestBeamClass);
+  createParam(MPS_FW_RESET_ALL_STRING, asynParamUInt32Digital, &_mpsFwResetAll);
 
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
@@ -433,6 +433,30 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
 
       uint32_t mitigation[2];
       Firmware::getInstance().getLatchedMitigation(&mitigation[0]);
+      *value = (mitigation[index] >> bitShift) & 0xF;
+    } catch (std::exception &e) {
+      status = asynError;
+    }
+  }
+  else if (_mpsFinalBeamClassParam == pasynUser->reason) {
+    try {
+      uint8_t index = 0;
+      uint8_t bitShift = 0;
+      {
+	std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+	if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+
+	  return asynError;
+	}
+	index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
+	bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
+      }
+
+      uint32_t mitigation[2];
+      Firmware::getInstance().getFinalBcL(&mitigation[1]);
+      Firmware::getInstance().getFinalBcH(&mitigation[0]);
       *value = (mitigation[index] >> bitShift) & 0xF;
     } catch (std::exception &e) {
       status = asynError;
@@ -877,6 +901,15 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     Firmware::getInstance().beamFaultClear();
     return status;
   }
+  else if (_mpsFwResetAll == pasynUser->reason) {
+    Firmware::getInstance().beamFaultClear(); 
+    Firmware::getInstance().evalLatchClear(); 
+    Firmware::getInstance().monErrClear();
+    Firmware::getInstance().swErrClear();
+    Firmware::getInstance().moConcErrClear();
+    Firmware::getInstance().toErrClear();
+    return status;
+  }
   else if (_mpsSkipHeartbeatParam == pasynUser->reason) {
     //Firmware::getInstance()._skipHeartbeat = value;
     // TO BE DONE: Is this neccesary? If so, we need to reimplement it.
@@ -959,32 +992,6 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   }
   else if (_mpsUpdateClearParam == pasynUser->reason) {
     Engine::getInstance().clearMaxTimers();
-    return status;
-  }
-  else if (_mpsForceLinacPc0Param == pasynUser->reason) {
-    {
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      if (value != 0) {
-	// First parameter is the mechanical shutter DB ID
-	Engine::getInstance().getCurrentDb()->forceBeamDestination(1, 1);
-      }
-      else {
-	Engine::getInstance().getCurrentDb()->forceBeamDestination(1, CLEAR_BEAM_CLASS);
-      }
-    }
-    return status;
-  }
-  else if (_mpsForceAomPc0Param == pasynUser->reason) {
-    {
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      if (value != 0) {
-	// First parameter is the AOM DB ID
-	Engine::getInstance().getCurrentDb()->forceBeamDestination(2, 1);
-      }
-      else {
-	Engine::getInstance().getCurrentDb()->forceBeamDestination(2, CLEAR_BEAM_CLASS);
-      }
-    }
     return status;
   }
   else if (_mpsForceDestBeamClass == pasynUser->reason) {

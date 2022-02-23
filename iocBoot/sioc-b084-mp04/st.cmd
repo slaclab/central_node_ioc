@@ -18,9 +18,15 @@ epicsEnvSet("LOCATION", "B084")
 epicsEnvSet("FPGA_IP",  "10.0.0.103")
 epicsEnvSet("CN_INDEX", "2")
 epicsEnvSet("CARD_INDEX","1")
+epicsEnvSet("MPS_VERSION","current")
 
 # ====================================================================
 # Load the common Central Node startup for DEV
 # ====================================================================
  < ${TOP}/iocBoot/common/central_node_dev.cmd
 
+dbpf ${IOC_PV}:ENABLE 0
+dbpf ${IOC_PV}:EVALUATION_ENABLE 0
+dbpf ${IOC_PV}:SW_ENABLE 0
+dbpf ${IOC_PV}:TIMING_CHECK_ENABLE 0
+dbpf ${IOC_PV}:TIMEOUT_ENABLE 0

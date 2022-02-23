@@ -3,6 +3,11 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R3-0-0__:
+  * Build against central_node_engine-R2-6-0 which fixes a problem in history sender
+  * Load additional database files related to faults to handle per destination faults from autogen
+  * Add additional PVs to monitor CN status (bandwidth on PGP lanes, etc.)
+
 * __central_node_ioc-R2-5-0__:
   * Build against central_node_engine-R2-5-0 which adds support for digital ignore conditions
   * Upgrade timing modules and timing package per timing team

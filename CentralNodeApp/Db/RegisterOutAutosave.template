@@ -16,5 +16,6 @@ record(longout, "$(P):$(R)") {
     field(PINI, "$(PINI)")
     field(SCAN, "$(SCAN)")
     field(OUT,  "@asyn($(PORT),1)$(PARAM)")
+    field(EGU,  "$(EGU)")
     info(autosaveFields, "VAL")
 }
