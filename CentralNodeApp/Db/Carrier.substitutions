@@ -41,8 +41,6 @@ file "RegisterIn.template" { pattern
 { $(P), SoftwareOvflCnt,     "Number of axi-fifo overflows",                "YES",  "1 second", $(PORT),   "",   SoftwareOvflCnt }
 { $(P), TimePowL,            "PowerClass from timing (lower 32 bits)",      "YES",  "1 second", $(PORT),   "",   TimePowL }
 { $(P), TimePowH,            "PowerClass from timing (upper 32 bits)",      "YES",  "1 second", $(PORT),   "",   TimePowH }
-{ $(P), ConPowL,             "PowerClass send by MPS (lower 32 bits)",      "YES",  "1 second", $(PORT),   "",   ConPowL }
-{ $(P), ConPowH,             "PowerClass send by MPS (upper 32 bits)",      "YES",  "1 second", $(PORT),   "",   ConPowH }
 { $(P), PGP_RX_FRAME_CNT_0,      "Pgp2bAxi 0 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_0       }
 { $(P), PGP_RX_FRAME_ERR_CNT_0,  "Pgp2bAxi 0 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_0  }
 { $(P), PGP_RX_CLK_0,            "Pgp2bAxi 0 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_0          }
@@ -155,6 +153,114 @@ file "RegisterIn.template" { pattern
 { $(P), PGP_TX_CLK_13,           "Pgp2bAxi 13 TX Clock Frequency",          "YES",  "1 second", $(PORT),   "Hz",     PGP_TxClkFreq_13         }
 { $(P), PGP_TX_FRAME_CNT_13,     "Pgp2bAxi 13 TX Frame Count",              "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameCount_13      }
 { $(P), PGP_TX_FRAME_ERR_CNT_13, "Pgp2bAxi 13 TX Frame Error Count",        "YES",  "1 second", $(PORT),   "frames", PGP_TxFrameErrorCount_13 }
+{ $(P), MONITOR_RX_ERR_CNT_0,    "PGP 0 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt0         }
+{ $(P), MONITOR_RX_ERR_CNT_1,    "PGP 1 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt1         }
+{ $(P), MONITOR_RX_ERR_CNT_2,    "PGP 2 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt2         }
+{ $(P), MONITOR_RX_ERR_CNT_3,    "PGP 3 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt3         }
+{ $(P), MONITOR_RX_ERR_CNT_4,    "PGP 4 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt4         }
+{ $(P), MONITOR_RX_ERR_CNT_5,    "PGP 5 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt5         }
+{ $(P), MONITOR_RX_ERR_CNT_6,    "PGP 6 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt6         }
+{ $(P), MONITOR_RX_ERR_CNT_7,    "PGP 7 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt7         }
+{ $(P), MONITOR_RX_ERR_CNT_8,    "PGP 8 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt8         }
+{ $(P), MONITOR_RX_ERR_CNT_9,    "PGP 9 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt9         }
+{ $(P), MONITOR_RX_ERR_CNT_10,   "PGP 10 RX error count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt10        }
+{ $(P), MONITOR_RX_ERR_CNT_11,   "PGP 11 RX error count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt11        }
+{ $(P), MONITOR_PAUSE_CNT_0,     "PGP 0 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt0         }
+{ $(P), MONITOR_PAUSE_CNT_1,     "PGP 1 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt1         }
+{ $(P), MONITOR_PAUSE_CNT_2,     "PGP 2 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt2         }
+{ $(P), MONITOR_PAUSE_CNT_3,     "PGP 3 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt3         }
+{ $(P), MONITOR_PAUSE_CNT_4,     "PGP 4 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt4         }
+{ $(P), MONITOR_PAUSE_CNT_5,     "PGP 5 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt5         }
+{ $(P), MONITOR_PAUSE_CNT_6,     "PGP 6 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt6         }
+{ $(P), MONITOR_PAUSE_CNT_7,     "PGP 7 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt7         }
+{ $(P), MONITOR_PAUSE_CNT_8,     "PGP 8 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt8         }
+{ $(P), MONITOR_PAUSE_CNT_9,     "PGP 9 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt9         }
+{ $(P), MONITOR_PAUSE_CNT_10,    "PGP 10 Pause count must be 0",            "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt10        }
+{ $(P), MONITOR_PAUSE_CNT_11,    "PGP 11 Pause count must be 0",            "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt11        }
+{ $(P), MONITOR_OVERFLOW_CNT_0,  "PGP 0 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt0          }
+{ $(P), MONITOR_OVERFLOW_CNT_1,  "PGP 1 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt1          }
+{ $(P), MONITOR_OVERFLOW_CNT_2,  "PGP 2 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt2          }
+{ $(P), MONITOR_OVERFLOW_CNT_3,  "PGP 3 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt3          }
+{ $(P), MONITOR_OVERFLOW_CNT_4,  "PGP 4 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt4          }
+{ $(P), MONITOR_OVERFLOW_CNT_5,  "PGP 5 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt5          }
+{ $(P), MONITOR_OVERFLOW_CNT_6,  "PGP 6 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt6          }
+{ $(P), MONITOR_OVERFLOW_CNT_7,  "PGP 7 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt7          }
+{ $(P), MONITOR_OVERFLOW_CNT_8,  "PGP 8 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt8          }
+{ $(P), MONITOR_OVERFLOW_CNT_9,  "PGP 9 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt9          }
+{ $(P), MONITOR_OVERFLOW_CNT_10, "PGP 10 Overflow count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt10         }
+{ $(P), MONITOR_OVERFLOW_CNT_11, "PGP 11 Overflow count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt11         }
+{ $(P), MONITOR_DROP_CNT_0,      "PGP 0 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt0          }
+{ $(P), MONITOR_DROP_CNT_1,      "PGP 1 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt1          }
+{ $(P), MONITOR_DROP_CNT_2,      "PGP 2 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt2          }
+{ $(P), MONITOR_DROP_CNT_3,      "PGP 3 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt3          }
+{ $(P), MONITOR_DROP_CNT_4,      "PGP 4 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt4          }
+{ $(P), MONITOR_DROP_CNT_5,      "PGP 5 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt5          }
+{ $(P), MONITOR_DROP_CNT_6,      "PGP 6 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt6          }
+{ $(P), MONITOR_DROP_CNT_7,      "PGP 7 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt7          }
+{ $(P), MONITOR_DROP_CNT_8,      "PGP 8 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt8          }
+{ $(P), MONITOR_DROP_CNT_9,      "PGP 9 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt9          }
+{ $(P), MONITOR_DROP_CNT_10,     "PGP 10 Drop count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorDropCnt10         }
+{ $(P), MONITOR_DROP_CNT_11,     "PGP 11 Drop count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorDropCnt11         }
+}
+
+#======================================
+# Registers with ScalVal interfaces
+#======================================
+# Single register
+file "RegisterOutRBVUnits.template" { pattern
+{ P,          R,              DESC,                                         PINI,   SCAN,       PORT,      EGU,            PARAM              }
+{ $(P), TimeoutTimeRBV,          "Application timeout setting, in usec",    "YES",  "1 second", $(PORT),   "us",     TimeoutTime              }
+{ $(P), MonitorConcToutRBV,      "Mitigation Msg Concentrator wdog Tout",   "YES",  "1 second", $(PORT),   "us",     MonitorConcTout          }
+{ $(P), SoftwareWdTimeRBV,       "Watchdog timeout setting, in usec",       "YES",  "1 second", $(PORT),   "us",     SoftwareWdTime           }
+}
+
+# Single register with AI records
+file "RegRO_Analog.template" { pattern
+{ R,                           DESC,                                     PINI,   SCAN,           EGU,     LINR,     EGUL,       EGUF,       PREC,    PARAM                   }
+{ PGP_RX_MON_BANDWIDTH_0,      "PGP 0 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_0    }
+{ PGP_RX_MON_BANDWIDTH_MAX_0,  "PGP 0 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_0 }
+{ PGP_RX_MON_BANDWIDTH_MIN_0,  "PGP 0 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_0 }
+{ PGP_RX_MON_BANDWIDTH_1,      "PGP 1 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_1    }
+{ PGP_RX_MON_BANDWIDTH_MAX_1,  "PGP 1 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_1 }
+{ PGP_RX_MON_BANDWIDTH_MIN_1,  "PGP 1 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_1 }
+{ PGP_RX_MON_BANDWIDTH_2,      "PGP 2 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_2    }
+{ PGP_RX_MON_BANDWIDTH_MAX_2,  "PGP 2 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_2 }
+{ PGP_RX_MON_BANDWIDTH_MIN_2,  "PGP 2 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_2 }
+{ PGP_RX_MON_BANDWIDTH_3,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_3    }
+{ PGP_RX_MON_BANDWIDTH_MAX_3,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_3 }
+{ PGP_RX_MON_BANDWIDTH_MIN_3,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_3 }
+{ PGP_RX_MON_BANDWIDTH_4,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_4    }
+{ PGP_RX_MON_BANDWIDTH_MAX_4,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_4 }
+{ PGP_RX_MON_BANDWIDTH_MIN_4,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_4 }
+{ PGP_RX_MON_BANDWIDTH_5,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_5    }
+{ PGP_RX_MON_BANDWIDTH_MAX_5,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_5 }
+{ PGP_RX_MON_BANDWIDTH_MIN_5,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_5 }
+{ PGP_RX_MON_BANDWIDTH_6,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_6    }
+{ PGP_RX_MON_BANDWIDTH_MAX_6,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_6 }
+{ PGP_RX_MON_BANDWIDTH_MIN_6,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_6 }
+{ PGP_RX_MON_BANDWIDTH_7,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_7    }
+{ PGP_RX_MON_BANDWIDTH_MAX_7,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_7 }
+{ PGP_RX_MON_BANDWIDTH_MIN_7,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_7 }
+{ PGP_RX_MON_BANDWIDTH_8,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_8    }
+{ PGP_RX_MON_BANDWIDTH_MAX_8,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_8 }
+{ PGP_RX_MON_BANDWIDTH_MIN_8,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_8 }
+{ PGP_RX_MON_BANDWIDTH_9,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_9    }
+{ PGP_RX_MON_BANDWIDTH_MAX_9,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_9 }
+{ PGP_RX_MON_BANDWIDTH_MIN_9,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_9 }
+{ PGP_RX_MON_BANDWIDTH_10,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_10   }
+{ PGP_RX_MON_BANDWIDTH_MAX_10, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_10}
+{ PGP_RX_MON_BANDWIDTH_MIN_10, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_10}
+{ PGP_RX_MON_BANDWIDTH_11,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_11   }
+{ PGP_RX_MON_BANDWIDTH_MAX_11, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_11}
+{ PGP_RX_MON_BANDWIDTH_MIN_11, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_11}
+{ PGP_RX_MON_BANDWIDTH_12,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_12   }
+{ PGP_RX_MON_BANDWIDTH_MAX_12, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_12}
+{ PGP_RX_MON_BANDWIDTH_MIN_12, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_12}
+{ PGP_RX_MON_BANDWIDTH_13,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_13   }
+{ PGP_RX_MON_BANDWIDTH_MAX_13, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_13}
+{ PGP_RX_MON_BANDWIDTH_MIN_13, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_13}
+{ APP_TIMEOUT_0,               "Time in 4 ns ticks",                    "YES",  "1 second",     "us"  , "LINEAR"    "0",        "262.140"  , 3,      TimeoutSelAppIdMaxCnt0  }
+{ APP_TIMEOUT_1,               "Time in 4 ns ticks",                    "YES",  "1 second",     "us"  , "LINEAR"    "0",        "262.140"  , 3,      TimeoutSelAppIdMaxCnt1  }
 }
 
 # Array of register
@@ -185,23 +291,24 @@ file "RegisterOut.template" { pattern
 { $(P), RxPolarity,       ""                                            "NO",   "Passive",  $(PORT),    RxPolarity }
 { $(P), Enable,           "General Enable. Enables message stream",     "NO",   "Passive",  $(PORT),    Enable     }
 { $(P), Switch,           "Switch the configuration buffer",            "NO",   "Passive",  $(PORT),    Switch     }
-{ $(P), DualCoreEn,       "Dual-Core '1' vs. Single-Core '0'",          "NO",   "Passive",  $(PORT),    DualCoreEn     }
 { $(P), SoftwareEnable,   "Enable software eval engine updates",        "NO",   "Passive",  $(PORT),    SoftwareEnable     }
 { $(P), EvaluationEnable, "Enable evaluation engine",                   "NO",   "Passive",  $(PORT),    EvaluationEnable     }
 { $(P), BeamFaultEn,      "Beam fault enable",                          "NO",   "Passive",  $(PORT),    BeamFaultEn     }
 { $(P), TimeoutEnable,    "Enable application timeout engine",          "NO",   "Passive",  $(PORT),    TimeoutEnable     }
-#{ $(P), MonitorConcTout,  "Mitigation Msg Concentrator wdog Tout",      "NO",   "Passive",  $(PORT),    MonitorConcTout     }
 { $(P), SoftwareClear,    "Clear software counters",                    "NO",   "Passive",  $(PORT),    SoftwareClear     }
 { $(P), TimeoutMsgVer,    "MPS Message version (5 bits)",               "NO",   "Passive",  $(PORT),    TimeoutMsgVer  }
 #{ $(P), SoftwareWdTime,   "Watchdog timeout setting, in usec",          "NO",   "Passive",  $(PORT),    SoftwareWdTime  }
 #{ $(P), TimeoutTime,      "Application timeout setting, in usec",       "NO",   "Passive",  $(PORT),    TimeoutTime  }
+{ $(P), TO_APP_SEL_0,      "App ID to monitor timeout",                  "NO",   "Passive",  $(PORT),    ToAppIDSel0  }
+{ $(P), TO_APP_SEL_1,      "App ID to monitor timeout",                  "NO",   "Passive",  $(PORT),    ToAppIDSel1  }
+
 }
 
 file "RegisterOutAutosave.template" { pattern
-{ P,        R,              DESC,                                       PINI,   SCAN,       PORT,  PARAM       }
-{ $(P), MonitorConcTout,  "Mitigation Msg Concentrator wdog Tout",      "YES",   "Passive",  $(PORT),    MonitorConcTout     }
-{ $(P), SoftwareWdTime,   "Watchdog timeout setting, in usec",          "YES",   "Passive",  $(PORT),    SoftwareWdTime  }
-{ $(P), TimeoutTime,      "Application timeout setting, in usec",       "YES",   "Passive",  $(PORT),    TimeoutTime  }
+{ P,        R,              DESC,                                        PINI,    SCAN,       PORT,  EGU,          PARAM       }
+{ $(P), MonitorConcTout,  "Mitigation Msg Concentrator wdog Tout",      "YES",   "Passive",  $(PORT), "us",    MonitorConcTout }
+{ $(P), SoftwareWdTime,   "Watchdog timeout setting, in usec",          "YES",   "Passive",  $(PORT), "us",    SoftwareWdTime  }
+{ $(P), TimeoutTime,      "Application timeout setting, in usec",       "YES",   "Passive",  $(PORT), "us",    TimeoutTime     }
 }
 
 file "RegisterOutRBV.template" { pattern
@@ -210,15 +317,13 @@ file "RegisterOutRBV.template" { pattern
 { $(P), RxPolarityRBV,      ""                                            "YES",  "1 second",  $(PORT),    RxPolarity      }
 { $(P), EnableRBV,          "General Enable. Enables message stream",     "YES",  "1 second",  $(PORT),    Enable          }
 { $(P), SwitchRBV,          "Switch the configuration buffer       ",     "YES",  "1 second",  $(PORT),    Switch          }
-{ $(P), DualCoreEnRBV,      "Dual-Core '1' vs. Single-Core '0'",          "YES",  "1 second",  $(PORT),    DualCoreEn     }
-{ $(P), MonitorConcToutRBV, "Mitigation Msg Concentrator wdog Tout",      "YES",  "1 second",  $(PORT),    MonitorConcTout     }
 { $(P), BeamFaultEnRBV,     "Beam fault enable",                          "YES",  "1 second",  $(PORT),    BeamFaultEn }
 { $(P), SoftwareEnableRBV,  "Enable software eval engine updates",        "YES",  "1 second",  $(PORT),    SoftwareEnable  }
 { $(P), TimeoutEnableRBV,   "Enable application timeout engine",          "YES",  "1 second",  $(PORT),    TimeoutEnable  }
-{ $(P), TimeoutTimeRBV,     "Application timeout setting, in usec",       "YES",  "1 second",  $(PORT),    TimeoutTime  }
 { $(P), TimeoutMsgVerRBV,   "MPS Message version (5 bits)",               "YES",  "1 second",  $(PORT),    TimeoutMsgVer  }
 { $(P), EvaluationEnableRBV,"Enable evaluation engine",                   "YES",  "1 second",  $(PORT),    EvaluationEnable  }
-{ $(P), SoftwareWdTimeRBV,  "Watchdog timeout setting, in usec",          "YES",  "1 second",  $(PORT),    SoftwareWdTime  }
+{ $(P), TO_APP_SEL_0_RBV,   "App ID to monitor timeout",                  "YES",  "1 second",  $(PORT),    ToAppIDSel0  }
+{ $(P), TO_APP_SEL_1_RBV,   "App ID to monitor timeout",                  "YES",  "1 second",  $(PORT),    ToAppIDSel1  }
 }
 
 # Array of register
@@ -231,10 +336,6 @@ file "RegisterArrayOutRBV.template" { pattern
 { $(P), EvaluationFwPowerLevel,      "Allowed power levels from firmware",           2,    "Passive",   0, $(PORT), EvaluationFwPowerLevel }
 { $(P), EvaluationLatchedPowerLevel, "Latched power levels from firmware",           2,    "Passive",   0, $(PORT), EvaluationLatchedPowerLevel}
 { $(P), EvaluationPowerLevel,        "Actual power levels",                          2,    "Passive",   0, $(PORT), EvaluationPowerLevel }
-{ $(P), MonitorRxErrCnt,             "MPS update message receiver counter",          12,   "Passive",   0, $(PORT), MonitorRxErrCnt }
-{ $(P), MonitorPauseCnt,             "Partitioner msg pause backpreassure cnt",      12,   "Passive",   0, $(PORT), MonitorPauseCnt }
-{ $(P), MonitorOvflCnt,              "Partitioner msg fifo overflow cnt",            12,   "Passive",   0, $(PORT), MonitorOvflCnt }
-{ $(P), MonitorDropCnt,              "Partitioner msg drop cnt",                     12,   "Passive",   0, $(PORT), MonitorDropCnt }
 { $(P), TimeoutErrIndex,             "Timeout bit status per application",           32,   "Passive",   0, $(PORT), TimeoutErrIndex }
 { $(P), TimeoutMask,                 "1024 Bit Application Mask",                    32,   "Passive",   1, $(PORT), TimeoutMask }
 }
@@ -331,8 +432,9 @@ file "Reg1BitRO.template" { pattern
 #======================================
 file "Reg1BitRW.template" { pattern
 { R,                  DESC,                                     ZNAM,       ONAM,       SCAN,          PARAM                    }
-{ TIM_CLK_SRC,        "Timinig source",                         "LCLS-1",   "LCLS-2",   "1 second",    TIM_CLK_SEL              }
+{ TIM_CLK_SRC,        "Timinig source",                         "NC",      "SC",      "1 second",    TIM_CLK_SEL              }
 { BeamFaultClr,       "Beam fault clear strobe"                 "Clear",    "Clear",    "1 second",    BeamFaultClr             }
+{ DUAL_CORE_EN,       "Dual-Core '1' vs. Single-Core '0'",      "Single",  "Dual",   "1 second",    DualCoreEn     }
 }
 
 #======================================
@@ -371,10 +473,6 @@ file "RegisterDoubleOutRBV.template" { pattern
 #======================================
 file "RegisterCommand.template" { pattern
 { P,            R,            DESC,                            PINI,   SCAN,       PORT,   PARAM   }
-{ $(P), MonErrClear,      "Clear monitor error",               "NO",   "Passive",  $(PORT),    MonErrClear     }
-{ $(P), SwErrClear,       "Clear software error",              "NO",   "Passive",  $(PORT),    SwErrClear     }
-{ $(P), ToErrClear,       "Clear the latched timeout error",   "NO",   "Passive",  $(PORT),    ToErrClear     }
-{ $(P), EvalLatchClear,   "Clear PowerLevel Latch",            "NO",   "Passive",  $(PORT),    EvalLatchClear     }
 { $(P), PGP_CNTRST_0,     "Pgp2bAxi 0 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_0  }
 { $(P), PGP_CNTRST_1,     "Pgp2bAxi 1 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_1  }
 { $(P), PGP_CNTRST_2,     "Pgp2bAxi 2 reset counters",         "NO",   "Passive",  $(PORT),    PGP_ResetCounters_2  }
