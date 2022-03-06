@@ -1053,23 +1053,23 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
     DbBeamClassMap::iterator beamClassIt = Engine::getInstance().getCurrentDb()->beamClasses->find(1);
     if (beamClassIt == Engine::getInstance().getCurrentDb()->beamClasses->end()) {
-      std::cerr << "ERROR: Failed to find BeamClass with ID=1 (BC0), please check MPS database." << std::endl;
+      std::cerr << "ERROR: Failed to find BeamClass with ID=1 (Beam Off), please check MPS database." << std::endl;
       return asynError;
     }
     else {
-      if ((*beamClassIt).second->name != "BC0") {
-	std::cerr << "ERROR: BeamClass with ID=1 is does not have name 'BC0', please check MPS database." << std::endl;
+      if ((*beamClassIt).second->name != "Beam Off") {
+	std::cerr << "ERROR: BeamClass with ID=1 is does not have name 'Beam Off', please check MPS database." << std::endl;
 	return asynError;
       }
     }
-    DbBeamDestinationMap::iterator beamDestIt = Engine::getInstance().getCurrentDb()->beamDestinations->find(1);
+    DbBeamDestinationMap::iterator beamDestIt = Engine::getInstance().getCurrentDb()->beamDestinations->find(3);
     if (beamDestIt == Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-      std::cerr << "ERROR: Failed to find BeamDestination with ID=1 (Linac), please check MPS database." << std::endl;
+      std::cerr << "ERROR: Failed to find BeamDestination with ID=3 (DUMPBSY), please check MPS database." << std::endl;
       return asynError;
     }
     else {
-      if ((*beamDestIt).second->name != "LINAC") {
-	std::cerr << "ERROR: BeamDestination with ID=1 is does not have name 'Linac', please check MPS database." << std::endl;
+      if ((*beamDestIt).second->name != "DUMPBSY") {
+	std::cerr << "ERROR: BeamDestination with ID=3 is does not have name 'DUMPBSY', please check MPS database." << std::endl;
 	return asynError;
       }
     }

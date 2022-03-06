@@ -1,0 +1,38 @@
+#==================================================================
+# This template converts raw values from FW registers into real values
+# about the beam class.  Soft PVs that do calculations only
+# Input PVs are in Carrier.substitutions
+#   P - IOC Prefix
+#   BC - Beam Class Number
+#==================================================================
+
+record(ai, "$(P):TPG_SECOND") {
+  field(VAL, "910000")
+  field(DESC, "Number of frames per TPG Second")
+  field(EGU,  "Frames")
+}
+record(calc, "$(P):BC$(BC)_INTEGRATION_TIME_TPGS") {
+  field(CALC, "((A&0xFFF0000)>>16)*1000+(A&0xFFF)+1")
+  field(DESC, "BC$(BC) Chrg Int time TPG Second units")
+  field(INPA, "$(P):BC$(BC)_INTEGRATION_TIME_RAW_RBV")
+  field(SCAN, "1 second")
+  field(FLNK, "$(P):BC$(BC)_INTEGRATION_TIME")
+}
+record(calc, "$(P):BC$(BC)_INTEGRATION_TIME") {
+  field(INPA, "$(P):BC$(BC)_INTEGRATION_TIME_TPGS")
+  field(INPB, "$(P):TPG_SECOND")
+  field(CALC, "A/B")
+  field(EGU,  "s")
+  field(PREC, "3")
+  field(DESC, "BC$(BC) Charge Integration Time in s")
+  field(FLNK, "$(P):BC$(BC)_MINIMUM_PERIOD")
+}
+record(calc, "$(P):BC$(BC)_MINIMUM_PERIOD") {
+  field(INPA, "$(P):BC$(BC)_MINIMUM_PERIOD_RAW")
+  field(INPB, "$(P):TPG_SECOND")
+  field(CALC, "(A+1)/B")
+  field(EGU,  "s")
+  field(DESC, "BC$(BC) Min Bunch Spacing (s)")
+  field(PREC, "3")
+}
+

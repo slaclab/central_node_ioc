@@ -3,6 +3,11 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R3-1-0__:
+  * Add additional diagnostic counter PVs
+  * Add alarm limits to some scal val register inputs
+  * build against central_node_engine-R3-0-0
+
 * __central_node_ioc-R3-0-0__:
   * Build against central_node_engine-R2-6-0 which fixes a problem in history sender
   * Load additional database files related to faults to handle per destination faults from autogen
