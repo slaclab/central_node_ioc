@@ -429,6 +429,8 @@ record(calc, "$(IOC):MONITOR_RX_ERR") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(INPA, "$(IOC):MONITOR_RX_ERR_CNT")
+    field(LOW, "0")
+    field(LSV, "MAJOR")
 }
 
 record(calc, "$(IOC):MONITOR_PAUSE_CNT") {
@@ -458,6 +460,8 @@ record(calc, "$(IOC):MONITOR_PAUSE") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(INPA, "$(IOC):MONITOR_PAUSE_CNT")
+    field(LOW, "0")
+    field(LSV, "MAJOR")
 }
 
 record(calc, "$(IOC):MONITOR_OVERFLOW_CNT") {
@@ -487,6 +491,8 @@ record(calc, "$(IOC):MONITOR_OVERFLOW") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(INPA, "$(IOC):MONITOR_OVERFLOW_CNT")
+    field(LOW, "0")
+    field(LSV, "MAJOR")
 }
 
 record(calc, "$(IOC):MONITOR_DROP_CNT") {
@@ -516,6 +522,8 @@ record(calc, "$(IOC):MONITOR_DROP") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(INPA, "$(IOC):MONITOR_DROP_CNT")
+    field(LOW, "0")
+    field(LSV, "MAJOR")
 }
 
 record(calc, "$(IOC):SW_ERR") {
@@ -524,6 +532,8 @@ record(calc, "$(IOC):SW_ERR") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(INPA, "$(IOC):SoftwareLossError")
+    field(LOW, "0")
+    field(LSV, "MAJOR")
 }
 
 record(calc, "$(IOC):TO_ERR") {
@@ -532,5 +542,7 @@ record(calc, "$(IOC):TO_ERR") {
     field(PINI, "YES")
     field(SCAN, "1 second")
     field(INPA, "$(IOC):TimeoutErrStatus")
+    field(LOW, "0")
+    field(LSV, "MAJOR")
 }
 
