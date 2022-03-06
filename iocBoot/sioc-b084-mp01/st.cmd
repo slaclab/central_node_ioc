@@ -14,10 +14,10 @@
 epicsEnvSet("LOCATION_INDEX","03")
 epicsEnvSet("IOC_PV",   "SIOC:SYS0:MP${LOCATION_INDEX}")
 epicsEnvSet("LOCATION", "SYS0")
-epicsEnvSet("FPGA_IP",  "10.0.1.103")
+epicsEnvSet("FPGA_IP",  "10.0.1.102")
 epicsEnvSet("CN_INDEX", "3")
 epicsEnvSet("CARD_INDEX","1")
-epicsEnvSet("MPS_VERSION","gun")
+epicsEnvSet("MPS_VERSION","current")
 
 
 # ====================================================================
