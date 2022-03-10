@@ -3,6 +3,10 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R3-2-0__:
+  * New FW version to fix problem with MpsTimingMonitor
+  * Add counters to monitor MpsTimingMonitor errors
+
 * __central_node_ioc-R3-1-0__:
   * Add additional diagnostic counter PVs
   * Add alarm limits to some scal val register inputs

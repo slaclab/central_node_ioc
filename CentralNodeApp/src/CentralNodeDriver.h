@@ -96,6 +96,7 @@
 #define MPS_FORCE_DEST_STRING                      "MPS_FORCE_DEST"
 #define MPS_FINAL_MITIGATION_STRING                "MPS_FINAL_BC"
 #define MPS_FW_RESET_ALL_STRING                    "MPS_FW_RESET_ALL"
+#define MPS_TIMING_BC_STRING                       "MPS_TIMING_BC"
 
 #define TEST_DEVICE_INPUT_STRING                   "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING                  "TEST_ANALOG_DEVICE"
@@ -219,6 +220,7 @@ public:
   int _mpsForceAomPc0Param;
   int _mpsForceDestBeamClass;
   int _mpsFwResetAll;
+  int _mpsTimingBCparam;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;
