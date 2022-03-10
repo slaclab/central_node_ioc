@@ -391,6 +391,12 @@
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamMinPeriod[13]                                          BeamMinPeriod13
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamMinPeriod[14]                                          BeamMinPeriod14
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamMinPeriod[15]                                          BeamMinPeriod15
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorChrgPowVtnCnt[0]                                    MonitorChrgPowVtnCnt0
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorChrgPowVtnCnt[1]                                    MonitorChrgPowVtnCnt1
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorChrgPowVtnCnt[2]                                    MonitorChrgPowVtnCnt2
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorChrgPowVtnCnt[3]                                    MonitorChrgPowVtnCnt3
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorChrgPowVtnCnt[4]                                    MonitorChrgPowVtnCnt4
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorChrgPowVtnCnt[5]                                    MonitorChrgPowVtnCnt5
 
 # =============================
 # PgpRxStreamMon (bandwidth monitoring)

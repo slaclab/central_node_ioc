@@ -117,6 +117,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_SKIP_HEARTBEAT_STRING, asynParamUInt32Digital, &_mpsSkipHeartbeatParam);
   createParam(MPS_FORCE_DEST_STRING, asynParamUInt32Digital, &_mpsForceDestBeamClass);
   createParam(MPS_FW_RESET_ALL_STRING, asynParamUInt32Digital, &_mpsFwResetAll);
+  createParam(MPS_TIMING_BC_STRING, asynParamInt32, &_mpsTimingBCparam);
 
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
@@ -278,7 +279,6 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     } catch (std::exception &e) {
       status = asynError;
     }
-    return status;
   }
   else if (_mpsUpdateRateParam == pasynUser->reason) {
     *value = Engine::getInstance().getUpdateRate();
@@ -457,6 +457,30 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       uint32_t mitigation[2];
       Firmware::getInstance().getFinalBcL(&mitigation[1]);
       Firmware::getInstance().getFinalBcH(&mitigation[0]);
+      *value = (mitigation[index] >> bitShift) & 0xF;
+    } catch (std::exception &e) {
+      status = asynError;
+    }
+  }
+  else if (_mpsTimingBCparam == pasynUser->reason) {
+    try {
+      uint8_t index = 0;
+      uint8_t bitShift = 0;
+      {
+	std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+	if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+	    Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
+	  LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+
+	  return asynError;
+	}
+	index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
+	bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
+      }
+
+      uint32_t mitigation[2];
+      Firmware::getInstance().getTimingBcL(&mitigation[1]);
+      Firmware::getInstance().getTimingBcH(&mitigation[0]);
       *value = (mitigation[index] >> bitShift) & 0xF;
     } catch (std::exception &e) {
       status = asynError;

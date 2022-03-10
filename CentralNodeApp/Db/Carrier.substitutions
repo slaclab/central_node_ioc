@@ -27,7 +27,7 @@ file "RegisterIn.template" { pattern
 { $(P), VersionErr,          "Version check error",                         "YES",  "1 second", $(PORT),   "",   VersionErr        }
 { $(P), SoftwareLossError,   "Software packet loss error",                  "YES",  "1 second", $(PORT),   "",   SoftwareLossError }
 { $(P), SoftwareBwidthCount, "Software bandwidth counter",                  "YES",  "1 second", $(PORT),   "",   SoftwareBwidthCnt }
-{ $(P), BeamFaultReason,     "Beam fault reason vector",                    "YES",  "1 second", $(PORT),   "",   BeamFaultReason  }
+{ $(P), FAULT_REASON,        "Beam fault reason vector",                    "YES",  "1 second", $(PORT),   "",   BeamFaultReason  }
 { $(P), MonitorReady,        "Must be OK to allow beam",                    "YES",  "1 second", $(PORT),   "",   MonitorReady      }
 { $(P), MonitorConcWdErr,    "Concentrator watchdog error",                 "YES",  "1 second", $(PORT),   "",   MonitorConcWdErr }
 { $(P), MonitorConcStallErr, "Mitigation message conc tstamp stall err",    "YES",  "1 second", $(PORT),   "",   MonitorConcStallErr }
@@ -206,9 +206,15 @@ file "RegisterInAlarm.template" { pattern
 { $(P), MONITOR_DROP_CNT_9,      "PGP 9 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt9, 1,    MAJOR, "",  NO_ALARM          }
 { $(P), MONITOR_DROP_CNT_10,     "PGP 10 Drop count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorDropCnt10, 1,    MAJOR, "",  NO_ALARM         }
 { $(P), MONITOR_DROP_CNT_11,     "PGP 11 Drop count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorDropCnt11, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MonitorConcExtRxErr, "External mitg msg recvr Err Cnt",             "YES",  "1 second", $(PORT),   "",   MonitorConcExtRxErr, 1,    MAJOR, "",  NO_ALARM }
-{ $(P), SoftwareLossCount,   "Software packet loss counter",                "YES",  "1 second", $(PORT),   "",   SoftwareLossCnt, 1,    MAJOR, "",  NO_ALARM }
-{ $(P), SoftwareOvflCnt,     "Number of axi-fifo overflows",                "YES",  "1 second", $(PORT),   "",   SoftwareOvflCnt, 1,    MAJOR, "",  NO_ALARM }
+{ $(P), MonitorConcExtRxErr, "External mitg msg recvr Err Cnt",             "YES",  "1 second", $(PORT),   "",       MonitorConcExtRxErr,   1,    MAJOR, "",  NO_ALARM    }
+{ $(P), SoftwareLossCount,   "Software packet loss counter",                "YES",  "1 second", $(PORT),   "",       SoftwareLossCnt,       1,    MAJOR, "",  NO_ALARM    }
+{ $(P), SoftwareOvflCnt,     "Number of axi-fifo overflows",                "YES",  "1 second", $(PORT),   "",       SoftwareOvflCnt,       1,    MAJOR, "",  NO_ALARM    }
+{ $(P), LASER_BC_VIOLATION_CNT,      "LASER dest BC violation cnt",         "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt0, 1,    MAJOR, "",  NO_ALARM    }
+{ $(P), DIAG0_BC_VIOLATION_CNT,      "DIAG0 dest BC violation cnt",         "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt1, 1,    MAJOR, "",  NO_ALARM    }
+{ $(P), DUMPBSY_BC_VIOLATION_CNT,    "DUMPBSY dest BC violation cnt",       "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt2, 1,    MAJOR, "",  NO_ALARM    }
+{ $(P), DUMPHXR_BC_VIOLATION_CNT,    "DUMPHXR dest BC violation cnt",       "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt3, 1,    MAJOR, "",  NO_ALARM    }
+{ $(P), DUMPSXR_BC_VIOLATION_CNT,    "DUMPSXR dest BC violation cnt",       "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt4, 1,    MAJOR, "",  NO_ALARM    }
+{ $(P), LESA_BC_VIOLATION_CNT,       "LESA dest BC violation cnt",          "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt5, 1,    MAJOR, "",  NO_ALARM    }
 }
 
 #======================================
