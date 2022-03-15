@@ -3,6 +3,10 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R3-2-1__:
+  * Build against central_node_engine-R3-1-1
+      * Fix bug for multiple ignore conditions
+
 * __central_node_ioc-R3-2-0__:
   * New FW version to fix problem with MpsTimingMonitor
   * Add counters to monitor MpsTimingMonitor errors
