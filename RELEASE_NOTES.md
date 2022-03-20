@@ -3,6 +3,9 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R3-2-2__:
+  * Add script for auto archive
+
 * __central_node_ioc-R3-2-1__:
   * Build against central_node_engine-R3-1-1
       * Fix bug for multiple ignore conditions
