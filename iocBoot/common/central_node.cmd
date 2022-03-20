@@ -210,3 +210,10 @@ cd("${TOP}")
 create_monitor_set("info_positions.req", 5 )
 create_monitor_set("info_settings.req" , 5 )
 
+#////////////////////////////////////////#
+#Run script to generate archiver files   #
+#////////////////////////////////////////#
+cd(${TOP}/iocBoot/common/)
+system("./makeArchive.sh ${IOC} &")
+cd(${TOP})
+
