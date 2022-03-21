@@ -130,8 +130,8 @@ dbLoadRecords("db/iocAdminScanMon.db","IOC=${IOC_PV}")
 # versions of software your IOC is referencing
 # The python parser is part of iocAdmin
 dbLoadRecords("db/iocRelease.db","IOC=${IOC}")
-dbLoadRecords("db/CentralNode.db","IOC=${IOC_PV}")
-dbLoadRecords("db/Carrier.db","P=${IOC_PV}, PORT=${CPSW_PORT}")
+dbLoadRecords("db/CentralNode.db","IOC=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("db/Carrier.db","P=${IOC_PV}, PORT=${CPSW_PORT},ASG1=${ASG1},ASG2=${ASG2}")
 
 # crossbarControl
 dbLoadRecords("db/crossbarCtrl.db", "DEV=${IOC_PV},PORT=${CROSSBARCTRL_PORT}")
@@ -146,19 +146,19 @@ dbLoadRecords("db/tprTrig.db", "PORT=${TPRTRIGGER_PORT},LOCA=${LOCATION},IOC_UNI
 dbLoadRecords("db/saveLoadConfig.db", "P=${IOC_PV}, PORT=${CPSW_PORT}")
 
 # Central Node database, from the MPS configuration database
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/device_inputs.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/analog_devices.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/device_inputs.db","ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/analog_devices.db","ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/destinations.db","BASE=${IOC_PV}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/apps.db","BASE=${IOC_PV}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/conditions.db","BASE=${IOC_PV}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_diag0.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_dumpbsy.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_dumphxr.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_dumpsxr.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_lesa.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_laser.db")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/fault_bypass.db")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults.db","ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/apps.db","BASE=${IOC_PV},,ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/conditions.db","BASE=${IOC_PV},,ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_diag0.db","ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_dumpbsy.db","ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_dumphxr.db","ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_dumpsxr.db","ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_lesa.db","ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_laser.db","ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/fault_bypass.db","ASG1=${ASG1},ASG2=${ASG2}")
 
 # ====================================================================
 # Setup autosave/restore
