@@ -1,7 +1,8 @@
 record(stringout, "$(IOC):CONFIG_LOAD") {
     field(DESC, "Load Algorithm")
     field(DTYP, "asynOctetWrite")
-    field(OUT, "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_LOAD")
+    field(OUT,  "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_LOAD")
+    field(ASG,  "$(ASG2)")
 }
 
 record(stringout, "$(IOC):Test:DEVICE_INPUT") {
@@ -40,7 +41,8 @@ record(longout, "$(IOC):Test:CHECK_BYPASS") {
 record(longout, "$(IOC):UNLATCHALL") {
     field(DESC, "Unlatch all faults and inputs")
     field(DTYP, "asynInt32")
-    field(OUT, "@asyn(CENTRAL_NODE 0 0)MPS_UNLATCH_ALL")
+    field(OUT,  "@asyn(CENTRAL_NODE 0 0)MPS_UNLATCH_ALL")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bo, "$(IOC):ENABLE") {
@@ -50,6 +52,7 @@ record(bo, "$(IOC):ENABLE") {
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
     field(VAL,  "0")
+    field(ASG,  "$(ASG2)")
 }
 
 record(bo, "$(IOC):EVALUATION_ENABLE") {
@@ -59,12 +62,14 @@ record(bo, "$(IOC):EVALUATION_ENABLE") {
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
     field(VAL,  "0")
+    field(ASG,  "$(ASG2)")
 }
 
 record(bo, "$(IOC):MITIGATION_UNLH") {
     field(DESC, "Unlatch mitigation")
     field(DTYP, "asynUInt32Digital")
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_MITIGATION_UNLATCH")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bi, "$(IOC):ENABLE_RBV") {
@@ -97,6 +102,7 @@ record(bo, "$(IOC):SW_ENABLE") {
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
     field(VAL,  "0")
+    field(ASG,  "$(ASG2)")
 }
 
 record(bi, "$(IOC):SW_ENABLE_RBV") {
@@ -132,6 +138,7 @@ record(bo, "$(IOC):TIMING_CHECK_ENABLE") {
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
     field(VAL,  "0")
+    field(ASG,  "$(ASG2)")
 }
 
 record(bi, "$(IOC):TIMING_CHECK_ENABLE_RBV") {
@@ -151,6 +158,7 @@ record(bo, "$(IOC):TIMEOUT_ENABLE") {
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TIMEOUT_ENABLE")
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
+    field(ASG,  "$(ASG2)")
 }
 
 record(bi, "$(IOC):TIMEOUT_ENABLE_RBV") {
@@ -185,37 +193,43 @@ record(stringin, "$(IOC):ENGINE_START_TIME_STR") {
 record(bo, "$(IOC):MON_ERR_CLR") {
     field(DESC, "Monitor Error Clear Cmd")
     field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_MON_ERR_CLEAR")
+    field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_MON_ERR_CLEAR")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bo, "$(IOC):SW_ERR_CLR") {
     field(DESC, "Software Error Clear Cmd")
     field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SW_ERR_CLEAR")
+    field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_SW_ERR_CLEAR")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bo, "$(IOC):TO_ERR_CLR") {
     field(DESC, "Timeout Error Clear Cmd")
     field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TO_ERR_CLEAR")
+    field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_TO_ERR_CLEAR")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bo, "$(IOC):MO_CONC_ERR_CLR") {
     field(DESC, "Monitor Conc Error Clear Cmd")
     field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_MO_CONC_ERR_CLEAR")
+    field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_MO_CONC_ERR_CLEAR")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bo, "$(IOC):BEAM_FAULT_CLR") {
     field(DESC, "Beam Fault Clear [PC and Charge fault]")
     field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_BEAM_FAULT_CLEAR")
+    field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_BEAM_FAULT_CLEAR")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bo, "$(IOC):RESET_ALL") {
     field(DESC, "Reset ALL FW latches")
     field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_FW_RESET_ALL")
+    field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_FW_RESET_ALL")
+    field(ASG,  "$(ASG1)")
 }
 
 record(longin, "$(IOC):EVAL_AVG_TIME") {
@@ -269,7 +283,8 @@ record(longin, "$(IOC):UPDATE_MAX_TIME") {
 record(bo, "$(IOC):UPDATE_TIME_CLR") {
     field(DESC, "Clear slow engine input time tracker")
     field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_UPDATE_TIME_CLEAR")
+    field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_UPDATE_TIME_CLEAR")
+    field(ASG,  "$(ASG1)")
 }
 
 record(longin, "$(IOC):FWUPDATE_AVG_PERIOD") {
@@ -384,6 +399,7 @@ record(bi, "$(IOC):SW_LOSS_ERROR") {
     field(ONAM, "SW_LOSS_ERROR")
     field(OSV, "MAJOR")
     field(ZSV, "NO_ALARM")
+    field(SCAN, "1 second")
 }
 
 record(bi, "$(IOC):SW_WD_ERROR") {
@@ -393,6 +409,7 @@ record(bi, "$(IOC):SW_WD_ERROR") {
     field(ONAM, "SW_WD_ERROR")
     field(OSV, "MAJOR")
     field(ZSV, "NO_ALARM")
+    field(SCAN, "1 second")
 }
 
 record(calc, "$(IOC):MONITOR_RX_ERR_CNT") {

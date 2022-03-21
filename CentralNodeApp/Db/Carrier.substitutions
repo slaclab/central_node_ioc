@@ -372,11 +372,11 @@ file "RegisterOut.template" { pattern
 
 }
 
-file "RegisterOutAutosave.template" { pattern
-{ P,        R,              DESC,                                        PINI,    SCAN,       PORT,  EGU,          PARAM       }
-{ $(P), MonitorConcTout,  "Mitigation Msg Concentrator wdog Tout",      "YES",   "Passive",  $(PORT), "us",    MonitorConcTout }
-{ $(P), SoftwareWdTime,   "Watchdog timeout setting, in usec",          "YES",   "Passive",  $(PORT), "us",    SoftwareWdTime  }
-{ $(P), TimeoutTime,      "Application timeout setting, in usec",       "YES",   "Passive",  $(PORT), "us",    TimeoutTime     }
+file "RegisterOutAutosaveAsg.template" { pattern
+{ P,        R,              DESC,                                        PINI,    SCAN,       PORT,  EGU,   ASG,        PARAM           }
+{ $(P), MonitorConcTout,  "Mitigation Msg Concentrator wdog Tout",      "YES",   "Passive",  $(PORT), "us", $(ASG1),    MonitorConcTout }
+{ $(P), SoftwareWdTime,   "Watchdog timeout setting, in usec",          "YES",   "Passive",  $(PORT), "us", $(ASG1),    SoftwareWdTime  }
+{ $(P), TimeoutTime,      "Application timeout setting, in usec",       "YES",   "Passive",  $(PORT), "us", $(ASG1),    TimeoutTime     }
 }
 
 file "RegisterOutRBV.template" { pattern

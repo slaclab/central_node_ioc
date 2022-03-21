@@ -3,6 +3,10 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R3-3-0__:
+  * Add Channel Access Security for inital running
+  * Add unlatch all function call to end of loadConfig()
+
 * __central_node_ioc-R3-2-2__:
   * Add script for auto archive
 
