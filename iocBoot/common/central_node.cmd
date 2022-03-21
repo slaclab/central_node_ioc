@@ -151,7 +151,7 @@ dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/analog_devic
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/destinations.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults.db","ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/apps.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/conditions.db","BASE=${IOC_PV},,ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/conditions.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_diag0.db","ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_dumpbsy.db","ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults_dumphxr.db","ASG1=${ASG1},ASG2=${ASG2}")
