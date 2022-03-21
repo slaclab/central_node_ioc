@@ -1098,6 +1098,11 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
       }
     }
   }
+  //unlatch all faults
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+  Engine::getInstance().getCurrentDb()->unlatchAll();
+  Engine::getInstance().clearSoftwareLatch();
+  Firmware::getInstance().evalLatchClear();
 
   return asynSuccess;
 }
