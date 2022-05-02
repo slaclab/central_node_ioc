@@ -1088,12 +1088,12 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
     }
     DbBeamDestinationMap::iterator beamDestIt = Engine::getInstance().getCurrentDb()->beamDestinations->find(3);
     if (beamDestIt == Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-      std::cerr << "ERROR: Failed to find BeamDestination with ID=3 (DUMPBSY), please check MPS database." << std::endl;
+      std::cerr << "ERROR: Failed to find BeamDestination with ID=3 (SC_BSYD), please check MPS database." << std::endl;
       return asynError;
     }
     else {
-      if ((*beamDestIt).second->name != "DUMPBSY") {
-	std::cerr << "ERROR: BeamDestination with ID=3 is does not have name 'DUMPBSY', please check MPS database." << std::endl;
+      if ((*beamDestIt).second->name != "SC_BSYD") {
+	std::cerr << "ERROR: BeamDestination with ID=3 is does not have name 'SC_BSYD', please check MPS database." << std::endl;
 	return asynError;
       }
     }
