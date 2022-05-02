@@ -35,6 +35,7 @@
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxPolarity                                            RxPolarity
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/FrameVersion                                          FrameVersion
 /mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/VersionErr                                            VersionErr
+/mmio/AmcCarrierCore/AmcCarrierTiming/TimingFrameRx/RxDown                                                RxDown
 
 # =============================
 # Pgp2bAxi
@@ -265,6 +266,7 @@
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamMinPeriod                                              BeamMinPeriod
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamIntCharge                                              BeamIntCharge
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamFaultReason                                            BeamFaultReason
+/mmio/MpsCentralApplication/MpsCentralNodeCore/BeamFaultReasonMsb                                         BeamFaultReasonMsb
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamFaultEn                                                BeamFaultEn
 /mmio/MpsCentralApplication/MpsCentralNodeCore/BeamFaultClr                                               BeamFaultClr
 /mmio/MpsCentralApplication/MpsCentralNodeCore/EvaluationSwPowerLevel                                     EvaluationSwPowerLevel
