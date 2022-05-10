@@ -3,6 +3,9 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R3-5-0__:
+  * New FW version to fix MpsTimingCheck (R4.8.0)
+
 * __central_node_ioc-R3-4-0__:
   * Add register for reading MSB of BeamFaultReason from MpsTimingCheck
   * New FW to fix BC transition to stop facility fault
