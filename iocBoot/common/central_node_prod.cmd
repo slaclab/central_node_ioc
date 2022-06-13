@@ -14,8 +14,11 @@ epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
 epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-daemon2")
 
 # Set ASG groups
-epicsEnvSet("ASG1", "MCC")
-epicsEnvSet("ASG2", "EOICDESK")
+#epicsEnvSet("ASG1", "MCC")
+#epicsEnvSet("ASG2", "EOICDESK")
+
+epicsEnvSet("ASG1", "")
+epicsEnvSet("ASG2", "")
 
 # ====================================================================
 # Load the common Central Node startup
