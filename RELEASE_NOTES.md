@@ -3,6 +3,13 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R3-6-0__:
+  * Build against central_node_engine-R3-2-0
+    * Implement 1 second gate around unlatch all command - can be pressed just once
+      per second
+    * Fix problem with force_bc and soft_permit talking to same asyn parameter:
+      * Can now revoke permit and not overwrite it with force BC
+
 * __central_node_ioc-R3-5-0__:
   * New FW version to fix MpsTimingCheck (R4.8.0)
 
