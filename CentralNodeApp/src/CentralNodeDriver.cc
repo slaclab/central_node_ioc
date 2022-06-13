@@ -116,6 +116,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_FW_MONITOR_NOT_READY_COUNTER_STRING, asynParamInt32, &_mpsFwMonitorNotReadyCounterParam);
   createParam(MPS_SKIP_HEARTBEAT_STRING, asynParamUInt32Digital, &_mpsSkipHeartbeatParam);
   createParam(MPS_FORCE_DEST_STRING, asynParamUInt32Digital, &_mpsForceDestBeamClass);
+  createParam(MPS_SW_PERMIT_DEST_STRING, asynParamUInt32Digital, &_mpsSoftPermitDestBeamClass);
   createParam(MPS_FW_RESET_ALL_STRING, asynParamUInt32Digital, &_mpsFwResetAll);
   createParam(MPS_TIMING_BC_STRING, asynParamInt32, &_mpsTimingBCparam);
 
@@ -237,12 +238,15 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
     Engine::getInstance().checkFaults();
   }
   else if (_mpsUnlatchAllParam == pasynUser -> reason) {
-    {
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      Engine::getInstance().getCurrentDb()->unlatchAll();
+    if ( Engine::getInstance().unlatchAllowed() ){
+      {
+        std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+        Engine::getInstance().getCurrentDb()->unlatchAll();
+      }
+      Engine::getInstance().clearSoftwareLatch();
+      Firmware::getInstance().evalLatchClear();
     }
-    Engine::getInstance().clearSoftwareLatch();
-    Firmware::getInstance().evalLatchClear();
+    Engine::getInstance().startLatchTimeout();
   }
   else if (_mpsDeviceInputBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_DIGITAL, addr, 0, value);
@@ -1027,6 +1031,19 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       }
       else {
 	Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, CLEAR_BEAM_CLASS);
+      }
+    }
+    return status;
+  }
+  else if (_mpsSoftPermitDestBeamClass == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      if (value != 0) {
+	// First parameter is the mechanical shutter DB ID
+	Engine::getInstance().getCurrentDb()->softPermitDestination(addr, value);
+      }
+      else {
+	Engine::getInstance().getCurrentDb()->softPermitDestination(addr, CLEAR_BEAM_CLASS);
       }
     }
     return status;
