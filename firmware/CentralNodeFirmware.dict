@@ -325,7 +325,8 @@
 /mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcWdErr                                           MonitorConcWdErr
 /mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcStallErr                                        MonitorConcStallErr
 /mmio/MpsCentralApplication/MpsCentralNodeCore/MoConcTout                                                 MonitorConcTout
-/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcExtRxErr                                        MonitorConcExtRxErr
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcExtRxErr0                                       MonitorConcExtRxErr0
+/mmio/MpsCentralApplication/MpsCentralNodeCore/MonitorConcExtRxErr1                                       MonitorConcExtRxErr1
 /mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutEnable                                              TimeoutEnable
 /mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutTime                                                TimeoutTime
 /mmio/MpsCentralApplication/MpsCentralNodeCore/TimeoutMask                                                TimeoutMask

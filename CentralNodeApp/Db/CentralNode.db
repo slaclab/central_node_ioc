@@ -556,3 +556,51 @@ record(calc, "$(IOC):TO_ERR") {
     field(LSV, "MAJOR")
 }
 
+record(mbbo, "$(IOC):CN_CHAIN_EN") {
+  field(DTYP, "Raw Soft Channel")
+  field(SCAN, "Passive")
+  field(OMSL, "supervisory")
+  field(OUT,  "$(IOC):DUAL_CORE_EN")
+  field(FLNK, "$(IOC):DUAL_CORE_EN")
+  field(ZRVL, "0")
+  field(ZRST, "Off")
+  field(ONVL, "1")
+  field(ONST, "Input 0")
+  field(TWVL, "2")
+  field(TWST, "Input 1")
+  field(THVL, "3")
+  field(THST, "Input 0 & 1")
+}
+
+record(mbbi, "$(IOC):CN_CHAIN_EN_RBV") {
+  field(DTYP, "Raw Soft Channel")
+  field(SCAN, "1 second")
+  field(INP,  "$(IOC):DUAL_CORE_EN_RBV")
+  field(ZRVL, "0")
+  field(ZRST, "Off")
+  field(ONVL, "1")
+  field(ONST, "Input 0")
+  field(TWVL, "2")
+  field(TWST, "Input 1")
+  field(THVL, "3")
+  field(THST, "Input 0 & 1")
+}
+
+record(mbbi, "$(IOC):CN_CHAIN_ERR") {
+  field(DTYP, "Raw Soft Channel")
+  field(SCAN, "1 second")
+  field(INP,  "$(IOC):MonitorConcWdErr")
+  field(ZRVL, "0")
+  field(ZRST, "No Error")
+  field(ZRSV, "NO_ALARM")
+  field(ONVL, "2")
+  field(ONST, "Input 0 Broken")
+  field(ONSV, "MAJOR")
+  field(TWVL, "8")
+  field(TWST, "Input 1 Broken")
+  field(TWSV, "MAJOR")
+  field(THVL, "10")
+  field(THST, "Both Inputs Broken")
+  field(THSV, "MAJOR")
+}
+

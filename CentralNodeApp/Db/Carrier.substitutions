@@ -207,7 +207,8 @@ file "RegisterInAlarm.template" { pattern
 { $(P), MONITOR_DROP_CNT_9,      "PGP 9 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt9, 1,    MAJOR, "",  NO_ALARM          }
 { $(P), MONITOR_DROP_CNT_10,     "PGP 10 Drop count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorDropCnt10, 1,    MAJOR, "",  NO_ALARM         }
 { $(P), MONITOR_DROP_CNT_11,     "PGP 11 Drop count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorDropCnt11, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MonitorConcExtRxErr,     "External mitg msg recvr Err Cnt",             "YES",  "1 second", $(PORT),   "",       MonitorConcExtRxErr,   1,    MAJOR, "",  NO_ALARM    }
+{ $(P), MonitorConcExtRxErr0,    "External mitg msg recvr Err Cnt",         "YES",  "1 second", $(PORT),   "",       MonitorConcExtRxErr0,   1,    MAJOR, "",  NO_ALARM    }
+{ $(P), MonitorConcExtRxErr1,    "External mitg msg recvr Err Cnt",         "YES",  "1 second", $(PORT),   "",       MonitorConcExtRxErr1,   1,    MAJOR, "",  NO_ALARM    }
 { $(P), SoftwareLossCount,       "Software packet loss counter",                "YES",  "1 second", $(PORT),   "",       SoftwareLossCnt,       1,    MAJOR, "",  NO_ALARM    }
 { $(P), SoftwareOvflCnt,         "Number of axi-fifo overflows",                "YES",  "1 second", $(PORT),   "",       SoftwareOvflCnt,       1,    MAJOR, "",  NO_ALARM    }
 { $(P), LASER_BC_VIOLATION_CNT,  "LASER dest BC violation cnt",         "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt0, 1,    MAJOR, "",  NO_ALARM    }
@@ -350,6 +351,7 @@ file "RegRW.template" { pattern
 { $(P), BC13_MINIMUM_PERIOD_RAW,        "Beam Class 13 Minimum Period",      "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod13      }
 { $(P), BC14_MINIMUM_PERIOD_RAW,        "Beam Class 14 Minimum Period",      "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod14      }
 { $(P), BC15_MINIMUM_PERIOD_RAW,        "Beam Class 15 Minimum Period",      "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod15      }
+{ $(P), DUAL_CORE_EN,                   "Dual-Core '1' vs. Single-Core '0'", "YES",  "1 second", $(PORT),   "",       DualCoreEn           }
 }
 
 #======================================
@@ -500,7 +502,6 @@ file "Reg1BitRW.template" { pattern
 { R,                  DESC,                                     ZNAM,       ONAM,       SCAN,          PARAM                    }
 { TIM_CLK_SRC,        "Timinig source",                         "NC",       "SC",       "1 second",    TIM_CLK_SEL              }
 { BeamFaultClr,       "Beam fault clear strobe"                 "Clear",    "Clear",    "1 second",    BeamFaultClr             }
-{ DUAL_CORE_EN,       "Dual-Core '1' vs. Single-Core '0'",      "Single",   "Dual",     "1 second",    DualCoreEn               }
 { TIMING_RX_ERR,      "TPR Rx Err: 1=Err",                      "OK",       "Error",    "1 second",    RxDown                   }
 }
 
@@ -513,6 +514,7 @@ file "Reg2BitsRW.template" { pattern
 { TIM_SRC_FPGA,   "Timing source for FPGA",                 "RTM_0",    "FPGA",     "Backplane",    "RTM_1",    "1 second",    TIM_CB_OUT_1              }
 { TIM_SRC_BP,     "Timing source for Backplane",            "RTM_0",    "FPGA",     "Backplane",    "RTM_1",    "1 second",    TIM_CB_OUT_2              }
 { TIM_SRC_RTM1,   "Timing source for RTM #1",               "RTM_0",    "FPGA",     "Backplane",    "RTM_1",    "1 second",    TIM_CB_OUT_3              }
+#{ DUAL_CORE_EN,   "Dual-Core '1' vs. Single-Core '0'",      "Single",   "PGP 1",    "PGP 0",        "Both PGP", "1 second",    DualCoreEn                }
 }
 
 #======================================
