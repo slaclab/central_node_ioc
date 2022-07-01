@@ -22,6 +22,7 @@
 #define MPS_ANALOG_DEVICE_STRING                   "MPS_ANALOG_DEVICE"
 #define MPS_SW_MITIGATION_STRING                   "MPS_SW_MITIGATION"
 #define MPS_FAULT_STRING                           "MPS_FAULT"
+#define MPS_FAULT_DISPLAY_STRING                   "MPS_FAULT_DISPLAY"
 #define MPS_FAULT_IGNORED_STRING                   "MPS_FAULT_IGNORED"
 #define MPS_FAULT_LATCHED_STRING                   "MPS_FAULT_LATCHED"
 #define MPS_FAULT_UNLATCH_STRING                   "MPS_FAULT_UNLATCH"
@@ -29,6 +30,7 @@
 #define MPS_FAULT_STATE_IGNORED_STRING             "MPS_FAULT_STATE_IGNORED"
 #define MPS_DEVICE_INPUT_LATCHED_STRING            "MPS_DEVICE_INPUT_LATCHED"
 #define MPS_DEVICE_INPUT_UNLATCH_STRING            "MPS_DEVICE_INPUT_UNLATCH"
+#define MPS_DEVICE_INPUT_UNLATCH_FAST_STRING       "MPS_DEVICE_INPUT_FAST_UNLATCH"
 #define MPS_DEVICE_INPUT_BYPV_STRING               "MPS_DEVICE_INPUT_BYPV"
 #define MPS_DEVICE_INPUT_BYPS_STRING               "MPS_DEVICE_INPUT_BYPS"
 #define MPS_DEVICE_INPUT_BYPEXPDATE_STRING         "MPS_DEVICE_INPUT_BYPEXPDATE"
@@ -147,6 +149,7 @@ public:
   int _mpsAnalogDeviceParam;
   int _mpsSwMitigationParam;
   int _mpsFaultParam;
+  int _mpsFaultDisplayParam;
   int _mpsFaultIgnoredParam;
   int _mpsFaultLatchedParam;
   int _mpsFaultUnlatchParam;
@@ -154,6 +157,7 @@ public:
   int _mpsFaultStateIgnoredParam;
   int _mpsDeviceInputLatchedParam;
   int _mpsDeviceInputUnlatchParam;
+  int _mpsDeviceInputUnlatchFastParam;
   int _mpsDeviceInputBypassValueParam;
   int _mpsDeviceInputBypassStatusParam;
   int _mpsDeviceInputBypassExpirationDateParam;

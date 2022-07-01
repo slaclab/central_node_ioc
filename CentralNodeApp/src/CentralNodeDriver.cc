@@ -47,11 +47,13 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceParam);
   createParam(MPS_SW_MITIGATION_STRING, asynParamInt32, &_mpsSwMitigationParam);
   createParam(MPS_FAULT_STRING, asynParamUInt32Digital, &_mpsFaultParam);
+  createParam(MPS_FAULT_DISPLAY_STRING, asynParamUInt32Digital, &_mpsFaultDisplayParam);
   createParam(MPS_FAULT_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultIgnoredParam);
   createParam(MPS_FAULT_STATE_STRING, asynParamUInt32Digital, &_mpsFaultStateParam);
   createParam(MPS_FAULT_STATE_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultStateIgnoredParam);
   createParam(MPS_DEVICE_INPUT_LATCHED_STRING, asynParamUInt32Digital, &_mpsDeviceInputLatchedParam);
   createParam(MPS_DEVICE_INPUT_UNLATCH_STRING, asynParamUInt32Digital, &_mpsDeviceInputUnlatchParam);
+  createParam(MPS_DEVICE_INPUT_UNLATCH_FAST_STRING, asynParamUInt32Digital, &_mpsDeviceInputUnlatchFastParam);
   createParam(MPS_DEVICE_INPUT_BYPV_STRING, asynParamUInt32Digital, &_mpsDeviceInputBypassValueParam);
   createParam(MPS_DEVICE_INPUT_BYPS_STRING, asynParamUInt32Digital, &_mpsDeviceInputBypassStatusParam);
   createParam(MPS_DEVICE_INPUT_BYPEXPDATE_STRING, asynParamInt32, &_mpsDeviceInputBypassExpirationDateParam);
@@ -688,6 +690,24 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
+  else if (_mpsFaultDisplayParam == pasynUser->reason) {
+    {
+      *value = 0;
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+      	    Engine::getInstance().getCurrentDb()->faults->end()) {
+     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+      	  return asynError;
+      	}
+	      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultedDisplay) {
+          *value = 1;
+        }
+      } catch (std::exception &e) {
+        	status = asynError;
+      }
+    }
+  }
   else if (_mpsFaultStateParam == pasynUser->reason) {
     *value = 0;
     {
@@ -972,6 +992,22 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       } catch (std::exception &e) {
 	status = asynError;
       }
+    }
+  }
+  else if (_mpsDeviceInputUnlatchFastParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+	Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->unlatch();
+	status = setUIntDigitalParam(addr, pasynUser->reason,
+				     Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue, mask);
+	LOG_TRACE("DRIVER", "Unlatch: "
+		  << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->channel->name
+		  << " value: " << Engine::getInstance().getCurrentDb()->deviceInputs->at(addr)->latchedValue);
+      } catch (std::exception &e) {
+	status = asynError;
+      }
+    Firmware::getInstance().evalLatchClear();
     }
   }
   else if (_mpsAnalogDeviceUnlatchParam == pasynUser->reason) {
