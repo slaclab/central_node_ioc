@@ -3,6 +3,13 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R3-7-0__:
+  * Build against central_node_engine-R3-3-0
+  * Upgrade FW to R4.8.3
+    * Allows central node to connect to 2 other central nodes
+    * Add some PVs to support enabling and reading back status of central node chain.
+  * Add _FLT PV that is true when the fault is faulted and false when it is not
+
 * __central_node_ioc-R3-6-0__:
   * Build against central_node_engine-R3-2-0
     * Implement 1 second gate around unlatch all command - can be pressed just once
