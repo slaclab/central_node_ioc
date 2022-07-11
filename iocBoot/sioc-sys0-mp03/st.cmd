@@ -17,7 +17,11 @@ epicsEnvSet("LOCATION", "SYS0")
 epicsEnvSet("FPGA_IP",  "10.0.1.102")
 epicsEnvSet("CN_INDEX", "3")
 epicsEnvSet("CARD_INDEX","1")
-epicsEnvSet("MPS_VERSION","current")
+epicsEnvSet("MPS_VERSION","injector")
+
+# Set ASG groups
+epicsEnvSet("ASG1", "MCC")
+epicsEnvSet("ASG2", "EOICDESK")
 
 # ====================================================================
 # Load the common Central Node startup for PROD

@@ -3,6 +3,16 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-0-0__:
+  * First version for 100 MeV Program
+  * Build against central_node_engine-R4-0-0
+  * Change ASG for some PVs
+  * Create an MPS ASG for the 100 MeV PV
+  * Create the 100 MeV PV
+  * Fix bug with bypass exp timer for analog faults
+  * Move where the ASG is defined in startup file
+  * Run sioc-sys0-mp03 with "injector" configuration
+
 * __central_node_ioc-R3-7-0__:
   * Build against central_node_engine-R3-3-0
   * Upgrade FW to R4.8.3

@@ -100,6 +100,7 @@
 #define MPS_FINAL_MITIGATION_STRING                "MPS_FINAL_BC"
 #define MPS_FW_RESET_ALL_STRING                    "MPS_FW_RESET_ALL"
 #define MPS_TIMING_BC_STRING                       "MPS_TIMING_BC"
+#define MPS_MAX_BEAM_CLASS_STRING                  "MPS_MAX_BEAM_CLASS"
 
 #define TEST_DEVICE_INPUT_STRING                   "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING                  "TEST_ANALOG_DEVICE"
@@ -227,6 +228,7 @@ public:
   int _mpsSoftPermitDestBeamClass;
   int _mpsFwResetAll;
   int _mpsTimingBCparam;
+  int _mpsMaxPermitDestBeamClass;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;

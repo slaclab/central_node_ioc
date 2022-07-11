@@ -121,6 +121,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_SW_PERMIT_DEST_STRING, asynParamUInt32Digital, &_mpsSoftPermitDestBeamClass);
   createParam(MPS_FW_RESET_ALL_STRING, asynParamUInt32Digital, &_mpsFwResetAll);
   createParam(MPS_TIMING_BC_STRING, asynParamInt32, &_mpsTimingBCparam);
+  createParam(MPS_MAX_BEAM_CLASS_STRING, asynParamUInt32Digital, &_mpsMaxPermitDestBeamClass);
 
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
@@ -133,7 +134,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   setIntegerParam(0, _mpsStateParam, MPS_STATE_IDLE);
 
   // Initialize bypass date strings
-  for (int i = 0; i < 5000; ++i) {
+  for (int i = 0; i < 10000; ++i) {
     setStringParam(i, _mpsDeviceInputBypassExpirationDateStringParam, "Bypass date not set");
     setStringParam(i, _mpsAnalogDeviceBypassExpirationDateStringParam, "Bypass date not set");
   }
@@ -1084,6 +1085,19 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     }
     return status;
   }
+  else if (_mpsMaxPermitDestBeamClass == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      if (value != 0) {
+	// First parameter is the mechanical shutter DB ID
+	Engine::getInstance().getCurrentDb()->setMaxPermit(addr, 6);
+      }
+      else {
+	Engine::getInstance().getCurrentDb()->setMaxPermit(addr, CLEAR_BEAM_CLASS);
+      }
+    }
+    return status;
+  }
   else {
     LOG_TRACE("DRIVER", "Unknown parameter, ignoring request");
     status = asynError;
@@ -1223,7 +1237,8 @@ asynStatus CentralNodeDriver::loadTestAnalogDevices(const char *testFilename) {
 }
 
 int CentralNodeDriver::getParamStringOffset(int deviceIndex, int thresholdIndex) {
-  return deviceIndex * 4 + thresholdIndex;
+  int totalDevices = Engine::getInstance().getCurrentDb()->getTotalDeviceCount();
+  return deviceIndex + (totalDevices * thresholdIndex);
 }
 
 /**

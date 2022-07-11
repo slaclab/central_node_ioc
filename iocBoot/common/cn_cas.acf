@@ -1,0 +1,127 @@
+#==============================================================
+#
+# User Access Groups
+
+UAG( Eoicdesk)
+        {
+        eoicdesk
+        }
+
+UAG( ControlRoom)
+        {
+        physics,
+        eoicdesk,
+        jmock
+        }
+UAG( MPS) { jmock, ding, zhoufeng }
+#
+# Host Access Groups
+#
+HAG( Eoicdesk)
+        {
+	opi35
+        }
+HAG(SRV) { ldap-test }
+HAG( ControlRoom)
+        {
+	opi10,
+	opi11,
+	opi12,
+	opi13,
+	opi14,
+	opi15,
+	opi16,
+	opi17,
+	opi20,
+	opi21,
+	opi22,
+	opi23,
+	opi24,
+	opi25,
+	opi26,
+	opi30,
+	opi31,
+	opi32,
+	opi33,
+	opi34,
+	opi35,
+	opi40,
+	opi41,
+	opi42,
+	opi43,
+	opi44,
+	opi45,
+	opi46,
+	opi47,
+  ldap-test
+        }
+
+#
+# Read/write access available to all users, all hosts
+#
+
+ASG( DEFAULT)
+        {
+        RULE( 1, READ)
+        RULE( 1, WRITE)
+        }
+#
+# Read/write access available to all users, all LCLS hosts
+# Write logged with caPutLog for enabled IOCs and PVs
+#
+ASG( CAPUTLOG)
+        {
+        RULE( 1, READ)
+        RULE( 1, WRITE, TRAPWRITE)
+        }
+
+#
+#
+# Read access available to all users, all hosts
+# Write access available to none
+#
+
+ASG( NOWRITE)
+	{
+	RULE( 1, READ)
+	}
+
+#
+# Read access available to all users, all hosts
+# Write access available for eoicdesk account at control room eoicdesk workstation
+#
+
+ASG( EOICDESK)
+	{
+	RULE( 1, READ)
+	RULE( 1, WRITE, TRAPWRITE)
+		{
+		UAG(Eoicdesk)
+		HAG(Eoicdesk)
+		}
+	}
+
+#
+# Read access available to all users, all hosts
+# Write access available to control room user accounts at control room OPI workstations
+#
+
+ASG( MCC)
+	{
+	RULE( 1, READ)
+	RULE( 1, WRITE, TRAPWRITE)
+		{
+		UAG(ControlRoom)
+		HAG(ControlRoom)
+		}
+	}
+
+ASG( MPS) {
+     RULE(1, READ)
+     RULE(1, WRITE, TRAPWRITE) {
+         UAG(MPS)
+         HAG(SRV)
+     }
+  }
+
+

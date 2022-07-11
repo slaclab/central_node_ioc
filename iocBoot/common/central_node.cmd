@@ -174,7 +174,10 @@ set_pass1_restoreFile("info_settings.sav")
 # This is required if you use caPutLog.
 # Set access security filea
 # Load common LCLS Access Configuration File
-< ${ACF_INIT}
+#< ${ACF_INIT}
+
+# Load local CAS file until after 100 MeV program
+asSetFilename("${TOP}/iocBoot/common/cn_cas.acf")
 
 # ====================================================================
 # IOC Init

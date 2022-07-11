@@ -2,7 +2,7 @@ record(stringout, "$(IOC):CONFIG_LOAD") {
     field(DESC, "Load Algorithm")
     field(DTYP, "asynOctetWrite")
     field(OUT,  "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_LOAD")
-    field(ASG,  "$(ASG2)")
+    field(ASG,  "$(ASG1)")
 }
 
 record(stringout, "$(IOC):Test:DEVICE_INPUT") {
@@ -52,7 +52,7 @@ record(bo, "$(IOC):ENABLE") {
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
     field(VAL,  "0")
-    field(ASG,  "$(ASG2)")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bo, "$(IOC):EVALUATION_ENABLE") {
@@ -62,7 +62,7 @@ record(bo, "$(IOC):EVALUATION_ENABLE") {
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
     field(VAL,  "0")
-    field(ASG,  "$(ASG2)")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bo, "$(IOC):MITIGATION_UNLH") {
@@ -102,7 +102,7 @@ record(bo, "$(IOC):SW_ENABLE") {
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
     field(VAL,  "0")
-    field(ASG,  "$(ASG2)")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bi, "$(IOC):SW_ENABLE_RBV") {
@@ -138,7 +138,7 @@ record(bo, "$(IOC):TIMING_CHECK_ENABLE") {
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
     field(VAL,  "0")
-    field(ASG,  "$(ASG2)")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bi, "$(IOC):TIMING_CHECK_ENABLE_RBV") {
@@ -158,7 +158,7 @@ record(bo, "$(IOC):TIMEOUT_ENABLE") {
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TIMEOUT_ENABLE")
     field(ONAM, "Enabled")
     field(ZNAM, "Disabled")
-    field(ASG,  "$(ASG2)")
+    field(ASG,  "$(ASG1)")
 }
 
 record(bi, "$(IOC):TIMEOUT_ENABLE_RBV") {
@@ -570,6 +570,7 @@ record(mbbo, "$(IOC):CN_CHAIN_EN") {
   field(TWST, "Input 1")
   field(THVL, "3")
   field(THST, "Input 0 & 1")
+  field(ASG,  "${ASG1}")
 }
 
 record(mbbi, "$(IOC):CN_CHAIN_EN_RBV") {
@@ -602,5 +603,17 @@ record(mbbi, "$(IOC):CN_CHAIN_ERR") {
   field(THVL, "10")
   field(THST, "Both Inputs Broken")
   field(THSV, "MAJOR")
+}
+
+record(mbbo, "$(IOC):SC_BSYD_MAX_PERMIT") {
+    field(DESC, "Set BC of BSYD to 120Hz max")
+    field(DTYP, "asynUInt32Digital")
+    field(VAL, "0")
+    field(ZRST, "Full Allowed")
+    field(ZRVL,"0")
+    field(ONST, "120Hz Only")
+    field(ONVL,"1")
+    field(OUT, "@asynMask(CENTRAL_NODE 3 1 0)MPS_MAX_BEAM_CLASS")
+    field(ASG,  "EOICDESK")
 }
 
