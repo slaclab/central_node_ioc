@@ -2,7 +2,7 @@ record(stringout, "$(IOC):CONFIG_LOAD") {
     field(DESC, "Load Algorithm")
     field(DTYP, "asynOctetWrite")
     field(OUT,  "@asyn(CENTRAL_NODE 0 0)MPS_CONFIG_LOAD")
-    field(ASG,  "$(ASG1)")
+    field(ASG,  "$(ASG2)")
 }
 
 record(stringout, "$(IOC):Test:DEVICE_INPUT") {

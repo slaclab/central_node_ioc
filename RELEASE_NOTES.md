@@ -3,6 +3,11 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-0-1__:
+  * Change :CONFIG_LOAD ASG to EOICDESK
+  * Add dbpf command at end of st.cmd in sioc-sys0-mp03
+    to force 120 Hz only mode on boot up
+
 * __central_node_ioc-R4-0-0__:
   * First version for 100 MeV Program
   * Build against central_node_engine-R4-0-0
