@@ -3,6 +3,9 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-0-2__:
+  * Build against central_node_enging-R4-0-1 to fix analog ignore condition FW reload
+
 * __central_node_ioc-R4-0-1__:
   * Change :CONFIG_LOAD ASG to EOICDESK
   * Add dbpf command at end of st.cmd in sioc-sys0-mp03
