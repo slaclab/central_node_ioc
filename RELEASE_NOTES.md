@@ -3,6 +3,11 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-1-0__:
+  * Build against central_node_enging-R4-1-0 to apply maximum BC to all destinations instead of just SC_BSYD
+  * add ASG to cn1 and cn2
+  * Point all prod IOCs to "current" release
+
 * __central_node_ioc-R4-0-2__:
   * Build against central_node_enging-R4-0-1 to fix analog ignore condition FW reload
 
