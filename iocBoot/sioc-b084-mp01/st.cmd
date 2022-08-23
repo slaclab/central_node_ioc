@@ -17,7 +17,7 @@ epicsEnvSet("LOCATION", "SYS0")
 epicsEnvSet("FPGA_IP",  "10.0.1.102")
 epicsEnvSet("CN_INDEX", "3")
 epicsEnvSet("CARD_INDEX","1")
-epicsEnvSet("MPS_VERSION","bare")
+epicsEnvSet("MPS_VERSION","current")
 
 
 # ====================================================================

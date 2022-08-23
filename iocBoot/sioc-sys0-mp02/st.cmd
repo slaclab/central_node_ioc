@@ -19,6 +19,10 @@ epicsEnvSet("CN_INDEX", "2")
 epicsEnvSet("CARD_INDEX","1")
 epicsEnvSet("MPS_VERSION","current")
 
+# Set ASG groups
+epicsEnvSet("ASG1", "MCC")
+epicsEnvSet("ASG2", "EOICDESK")
+
 # ====================================================================
 # Load the common Central Node startup for PROD
 # ====================================================================

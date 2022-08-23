@@ -17,7 +17,7 @@ epicsEnvSet("LOCATION", "SYS0")
 epicsEnvSet("FPGA_IP",  "10.0.1.102")
 epicsEnvSet("CN_INDEX", "3")
 epicsEnvSet("CARD_INDEX","1")
-epicsEnvSet("MPS_VERSION","injector")
+epicsEnvSet("MPS_VERSION","current")
 
 # Set ASG groups
 epicsEnvSet("ASG1", "MCC")
@@ -33,4 +33,3 @@ dbpf ${IOC_PV}:EVALUATION_ENABLE 0
 dbpf ${IOC_PV}:SW_ENABLE 0
 dbpf ${IOC_PV}:TIMING_CHECK_ENABLE 0
 dbpf ${IOC_PV}:TIMEOUT_ENABLE 0
-dbpf ${IOC_PV}:SC_BSYD_MAX_PERMIT 1
