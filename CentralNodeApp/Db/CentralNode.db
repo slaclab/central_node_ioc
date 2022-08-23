@@ -605,14 +605,14 @@ record(mbbi, "$(IOC):CN_CHAIN_ERR") {
   field(THSV, "MAJOR")
 }
 
-record(mbbo, "$(IOC):SC_BSYD_MAX_PERMIT") {
-    field(DESC, "Set BC of BSYD to 120Hz max")
+record(mbbo, "$(IOC):MAX_PERMIT") {
+    field(DESC, "Set BC to 120Hz max")
     field(DTYP, "asynUInt32Digital")
-    field(VAL, "0")
-    field(ZRST, "Full Allowed")
+    field(ZRST, "120Hz Only")
     field(ZRVL,"0")
-    field(ONST, "120Hz Only")
+    field(ONST, "Full Allow")
     field(ONVL,"1")
+    field(PINI, "YES")
     field(OUT, "@asynMask(CENTRAL_NODE 3 1 0)MPS_MAX_BEAM_CLASS")
     field(ASG,  "EOICDESK")
 }

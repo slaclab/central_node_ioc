@@ -1063,7 +1063,6 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       if (value != 0) {
-	// First parameter is the mechanical shutter DB ID
 	Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, value);
       }
       else {
@@ -1076,7 +1075,6 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       if (value != 0) {
-	// First parameter is the mechanical shutter DB ID
 	Engine::getInstance().getCurrentDb()->softPermitDestination(addr, value);
       }
       else {
@@ -1088,12 +1086,11 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   else if (_mpsMaxPermitDestBeamClass == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      if (value != 0) {
-	// First parameter is the mechanical shutter DB ID
-	Engine::getInstance().getCurrentDb()->setMaxPermit(addr, 6);
+      if (value == 0) {
+	Engine::getInstance().getCurrentDb()->setMaxPermit(6);
       }
       else {
-	Engine::getInstance().getCurrentDb()->setMaxPermit(addr, CLEAR_BEAM_CLASS);
+	Engine::getInstance().getCurrentDb()->setMaxPermit(CLEAR_BEAM_CLASS);
       }
     }
     return status;
@@ -1170,6 +1167,7 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
   Engine::getInstance().getCurrentDb()->unlatchAll();
   Engine::getInstance().clearSoftwareLatch();
   Firmware::getInstance().evalLatchClear();
+  Engine::getInstance().getCurrentDb()->setMaxPermit(6);
 
   return asynSuccess;
 }
