@@ -4,6 +4,7 @@ Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
 * __central_node_ioc-R4-2-1__:
+  * Reactivate CAS for MAX_PERMIT
 
 * __central_node_ioc-R4-2-0__:
   * Build against central_node_engine-R4-2-0
