@@ -3,6 +3,14 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-2-0__:
+  * Build against central_node_engine-R4-2-0
+    * Add status for device / fault / app card being disconnected
+    * Add status for device / fault / app card being desired offline (mode switch)
+  * Add PV _FLT_TEST (temporary name) to publish worst case fault state db id of fault - for gui
+  * Change MAX_PERMIT PV to be an mbbi that allows eoicdesk to specify maximum operating beam class
+  * Upgrade FW to 4.8.6 (no changes to CN, but for consistency)
+
 * __central_node_ioc-R4-1-1__:
   * Build against central_node_engine-R4-1-0
     * Remove LASER from MAX permit constraint.
