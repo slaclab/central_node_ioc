@@ -3,6 +3,8 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-2-1__:
+
 * __central_node_ioc-R4-2-0__:
   * Build against central_node_engine-R4-2-0
     * Add status for device / fault / app card being disconnected

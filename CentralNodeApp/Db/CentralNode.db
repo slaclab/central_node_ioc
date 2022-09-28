@@ -610,7 +610,7 @@ record(mbbo, "$(IOC):MAX_PERMIT") {
     field(DTYP, "asynUInt32Digital")
     field(PINI, "YES")
     field(OUT, "@asynMask(CENTRAL_NODE 3 1 0)MPS_MAX_BEAM_CLASS")
-    #field(ASG,  "EOICDESK")
+    field(ASG,  "EOICDESK")
     field(VAL, "0")
     field(ZRST, "Full")
     field(ZRVL,"0")
