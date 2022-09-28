@@ -22,7 +22,9 @@
 #define MPS_ANALOG_DEVICE_STRING                   "MPS_ANALOG_DEVICE"
 #define MPS_SW_MITIGATION_STRING                   "MPS_SW_MITIGATION"
 #define MPS_FAULT_STRING                           "MPS_FAULT"
+#define MPS_FAULT_TEST_STRING                      "MPS_FAULT_TEST"
 #define MPS_FAULT_DISPLAY_STRING                   "MPS_FAULT_DISPLAY"
+#define MPS_FAULT_ACTIVE_STRING                    "MPS_FAULT_ACTIVE"
 #define MPS_FAULT_IGNORED_STRING                   "MPS_FAULT_IGNORED"
 #define MPS_FAULT_LATCHED_STRING                   "MPS_FAULT_LATCHED"
 #define MPS_FAULT_UNLATCH_STRING                   "MPS_FAULT_UNLATCH"
@@ -150,7 +152,9 @@ public:
   int _mpsAnalogDeviceParam;
   int _mpsSwMitigationParam;
   int _mpsFaultParam;
+  int _mpsFaultParamTest;
   int _mpsFaultDisplayParam;
+  int _mpsFaultActiveParam;
   int _mpsFaultIgnoredParam;
   int _mpsFaultLatchedParam;
   int _mpsFaultUnlatchParam;

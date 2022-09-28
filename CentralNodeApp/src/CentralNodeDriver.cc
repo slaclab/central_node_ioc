@@ -47,7 +47,9 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceParam);
   createParam(MPS_SW_MITIGATION_STRING, asynParamInt32, &_mpsSwMitigationParam);
   createParam(MPS_FAULT_STRING, asynParamUInt32Digital, &_mpsFaultParam);
+  createParam(MPS_FAULT_TEST_STRING, asynParamInt32, &_mpsFaultParamTest);
   createParam(MPS_FAULT_DISPLAY_STRING, asynParamUInt32Digital, &_mpsFaultDisplayParam);
+  createParam(MPS_FAULT_ACTIVE_STRING, asynParamUInt32Digital, &_mpsFaultActiveParam);
   createParam(MPS_FAULT_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultIgnoredParam);
   createParam(MPS_FAULT_STATE_STRING, asynParamUInt32Digital, &_mpsFaultStateParam);
   createParam(MPS_FAULT_STATE_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultStateIgnoredParam);
@@ -352,6 +354,21 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       	  return asynError;
       	}
         *value = Engine::getInstance().getCurrentDb()->faults->at(addr)->value;
+      } catch (std::exception &e) {
+        	status = asynError;
+      }
+    }
+  }
+  else if (_mpsFaultParamTest == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+      	    Engine::getInstance().getCurrentDb()->faults->end()) {
+     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+      	  return asynError;
+      	}
+        *value = Engine::getInstance().getCurrentDb()->faults->at(addr)->displayState;
       } catch (std::exception &e) {
         	status = asynError;
       }
@@ -709,6 +726,24 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
+  else if (_mpsFaultActiveParam == pasynUser->reason) {
+    {
+      *value = 0;
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+      	    Engine::getInstance().getCurrentDb()->faults->end()) {
+     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+      	  return asynError;
+      	}
+	      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultActive) {
+          *value = 1;
+        }
+      } catch (std::exception &e) {
+        	status = asynError;
+      }
+    }
+  }
   else if (_mpsFaultStateParam == pasynUser->reason) {
     *value = 0;
     {
@@ -957,6 +992,13 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     Firmware::getInstance().swErrClear();
     Firmware::getInstance().moConcErrClear();
     Firmware::getInstance().toErrClear();
+    if ( Engine::getInstance().unlatchAllowed() ){
+      {
+        std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+        Engine::getInstance().getCurrentDb()->unlatchAll();
+      }
+      Engine::getInstance().clearSoftwareLatch();
+    }
     return status;
   }
   else if (_mpsSkipHeartbeatParam == pasynUser->reason) {
@@ -1086,8 +1128,8 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   else if (_mpsMaxPermitDestBeamClass == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      if (value == 0) {
-	Engine::getInstance().getCurrentDb()->setMaxPermit(6);
+      if (value != 0) {
+	Engine::getInstance().getCurrentDb()->setMaxPermit(value);
       }
       else {
 	Engine::getInstance().getCurrentDb()->setMaxPermit(CLEAR_BEAM_CLASS);
@@ -1167,8 +1209,6 @@ asynStatus CentralNodeDriver::loadConfig(const char *config) {
   Engine::getInstance().getCurrentDb()->unlatchAll();
   Engine::getInstance().clearSoftwareLatch();
   Firmware::getInstance().evalLatchClear();
-  Engine::getInstance().getCurrentDb()->setMaxPermit(6);
-
   return asynSuccess;
 }
 
