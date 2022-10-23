@@ -110,6 +110,7 @@
 #define TEST_CHECK_BYPASS_STRING                   "TEST_CHECK_BYPASS"
 
 #define MPS_APP_TIMEOUT_ENABLE_STRING              "MPS_APP_TIMEOUT_ENABLE"
+#define MPS_APP_LOGIC_ENABLE_STRING              "MPS_APP_LOGIC_ENABLE"
 
 enum CentralNodeState {
   MPS_STATE_IDLE,
@@ -240,6 +241,7 @@ public:
   int _testCheckBypassParam;
 
   int _mpsAppTimeoutEnableParam;
+  int _mpsAppLogicEnableParam;
 
   //  CentralNodeState _mpsState;
 
