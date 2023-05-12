@@ -17,6 +17,6 @@ record(longout, "$(P):$(R)") {
     field(SCAN, "$(SCAN)")
     field(OUT,  "@asyn($(PORT),1)$(PARAM)")
     field(EGU,  "$(EGU)")
-    field(ASG,  "$(ASG)")
-    info(autosaveFields, "VAL")
+    field(DOL,  "SIOC:SYS0:MP00:$(R) CPP MSI")
+    field(OMSL, "closed_loop")
 }
