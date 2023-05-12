@@ -42,7 +42,8 @@ record(longout, "$(IOC):UNLATCHALL") {
     field(DESC, "Unlatch all faults and inputs")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn(CENTRAL_NODE 0 0)MPS_UNLATCH_ALL")
-    field(ASG,  "$(ASG1)")
+    field(DOL,  "$(GLOBAL):UNLATCHALL CPP MSI")
+    field(OMSL, "closed_loop")
 }
 
 record(bo, "$(IOC):ENABLE") {
@@ -122,6 +123,14 @@ record(longin, "$(IOC):SW_UPDATE_RATE") {
     field(SCAN, "1 second")
     field(EGU, "Hz")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_SW_UPDATE_RATE")
+    field(HIGH, "361")
+    field(HSV,  "MINOR")
+    field(HIHI, "362")
+    field(HHSV, "MAJOR")
+    field(LOW,  "359")
+    field(LSV,  "MINOR")
+    field(LOLO, "358")
+    field(LLSV, "MAJOR")
 }
 
 record(longin, "$(IOC):SW_UPDATE_COUNTER") {
@@ -194,49 +203,55 @@ record(bo, "$(IOC):MON_ERR_CLR") {
     field(DESC, "Monitor Error Clear Cmd")
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_MON_ERR_CLEAR")
-    field(ASG,  "$(ASG1)")
+    field(DOL,  "$(GLOBAL):MON_ERR_CLR CPP MSI")
+    field(OMSL, "closed_loop")
 }
 
 record(bo, "$(IOC):SW_ERR_CLR") {
     field(DESC, "Software Error Clear Cmd")
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_SW_ERR_CLEAR")
-    field(ASG,  "$(ASG1)")
+    field(DOL,  "$(GLOBAL):SW_ERR_CLR CPP MSI")
+    field(OMSL, "closed_loop")
 }
 
 record(bo, "$(IOC):TO_ERR_CLR") {
     field(DESC, "Timeout Error Clear Cmd")
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_TO_ERR_CLEAR")
-    field(ASG,  "$(ASG1)")
+    field(DOL,  "$(GLOBAL):TO_ERR_CLR CPP MSI")
+    field(OMSL, "closed_loop")
 }
 
 record(bo, "$(IOC):MO_CONC_ERR_CLR") {
     field(DESC, "Monitor Conc Error Clear Cmd")
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_MO_CONC_ERR_CLEAR")
-    field(ASG,  "$(ASG1)")
+    field(DOL,  "$(GLOBAL):MO_CONC_ERR_CLR CPP MSI")
+    field(OMSL, "closed_loop")
 }
 
 record(bo, "$(IOC):BEAM_FAULT_CLR") {
     field(DESC, "Beam Fault Clear [PC and Charge fault]")
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_BEAM_FAULT_CLEAR")
-    field(ASG,  "$(ASG1)")
+    field(DOL,  "$(GLOBAL):BEAM_FAULT_CLR CPP MSI")
+    field(OMSL, "closed_loop")
 }
 
 record(bo, "$(IOC):RESET_ALL") {
     field(DESC, "Reset ALL FW latches")
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_FW_RESET_ALL")
-    field(ASG,  "$(ASG1)")
+    field(DOL,  "$(GLOBAL):RESET_ALL CPP MSI")
+    field(OMSL, "closed_loop")
 }
 
 record(longin, "$(IOC):EVAL_AVG_TIME") {
     field(DESC, "Slow engine average exec time")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_EVAL_AVG_TIME")
 }
 
@@ -244,7 +259,7 @@ record(longin, "$(IOC):EVAL_MAX_TIME") {
     field(DESC, "Slow engine max exec time")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_EVAL_MAX_TIME")
 }
 
@@ -252,7 +267,7 @@ record(longin, "$(IOC):EVALCYCLE_AVG_TIME") {
     field(DESC, "Slow engine average cycle time")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_EVALCYCLE_AVG_TIME")
 }
 
@@ -260,7 +275,7 @@ record(longin, "$(IOC):EVALCYCLE_MAX_TIME") {
     field(DESC, "Slow engine max cycle time")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_EVALCYCLE_MAX_TIME")
 }
 
@@ -268,7 +283,7 @@ record(longin, "$(IOC):UPDATE_AVG_TIME") {
     field(DESC, "")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_UPDATE_AVG_TIME")
 }
 
@@ -276,7 +291,7 @@ record(longin, "$(IOC):UPDATE_MAX_TIME") {
     field(DESC, "")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_UPDATE_MAX_TIME")
 }
 
@@ -284,14 +299,15 @@ record(bo, "$(IOC):UPDATE_TIME_CLR") {
     field(DESC, "Clear slow engine input time tracker")
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_UPDATE_TIME_CLEAR")
-    field(ASG,  "$(ASG1)")
+    field(DOL,  "$(GLOBAL):UPDATE_TIME_CLR CPP MSI")
+    field(OMSL, "closed_loop")
 }
 
 record(longin, "$(IOC):FWUPDATE_AVG_PERIOD") {
     field(DESC, "")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FWUPDATE_AVG_PERIOD")
 }
 
@@ -299,7 +315,7 @@ record(longin, "$(IOC):FWUPDATE_MAX_PERIOD") {
     field(DESC, "")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FWUPDATE_MAX_PERIOD")
 }
 
@@ -307,7 +323,7 @@ record(longin, "$(IOC):WDUPDATE_AVG_PERIOD") {
     field(DESC, "")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_WDUPDATE_AVG_PERIOD")
 }
 
@@ -315,7 +331,7 @@ record(longin, "$(IOC):WDUPDATE_MAX_PERIOD") {
     field(DESC, "")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_WDUPDATE_MAX_PERIOD")
 }
 
@@ -372,7 +388,7 @@ record(longin, "$(IOC):SoftwareWdErrorCounter") {
     field(DESC, "Inc. when software wd error is non-zero")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FW_SOFTWARE_WDOG_COUNTER")
 }
 
@@ -380,7 +396,7 @@ record(longin, "$(IOC):MonitorNotReadyCounter") {
     field(DESC, "Increases when FW not ready for beam")
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
-    field(EGU, "usec")
+    field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FW_MONITOR_NOT_READY_COUNTER")
 }
 
@@ -559,7 +575,8 @@ record(calc, "$(IOC):TO_ERR") {
 record(mbbo, "$(IOC):CN_CHAIN_EN") {
   field(DTYP, "Raw Soft Channel")
   field(SCAN, "Passive")
-  field(OMSL, "supervisory")
+  field(OMSL, "closed_loop")
+  field(DOL,  "$(GLOBAL):CN_CHAIN_EN CPP MSI")
   field(OUT,  "$(IOC):DUAL_CORE_EN")
   field(FLNK, "$(IOC):DUAL_CORE_EN")
   field(ZRVL, "0")
@@ -570,7 +587,6 @@ record(mbbo, "$(IOC):CN_CHAIN_EN") {
   field(TWST, "Input 1")
   field(THVL, "3")
   field(THST, "Input 0 & 1")
-  field(ASG,  "${ASG1}")
 }
 
 record(mbbi, "$(IOC):CN_CHAIN_EN_RBV") {
@@ -579,12 +595,16 @@ record(mbbi, "$(IOC):CN_CHAIN_EN_RBV") {
   field(INP,  "$(IOC):DUAL_CORE_EN_RBV")
   field(ZRVL, "0")
   field(ZRST, "Off")
+  field(ZRSV, "MAJOR")
   field(ONVL, "1")
   field(ONST, "Input 0")
+  field(ONSV, "MINOR")
   field(TWVL, "2")
   field(TWST, "Input 1")
+  field(TWSV, "MINOR")
   field(THVL, "3")
   field(THST, "Input 0 & 1")
+  field(THSV, "NO_ALARM")
 }
 
 record(mbbi, "$(IOC):CN_CHAIN_ERR") {
@@ -605,42 +625,86 @@ record(mbbi, "$(IOC):CN_CHAIN_ERR") {
   field(THSV, "MAJOR")
 }
 
+record(calc, "$(IOC):CONC_ERROR_CALC") {
+    field(DESC, "Monitor Drop Cnt Must be 0")
+    field(CALC, "((A+B+C+D)=0)?1:0")
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(INPA, "$(IOC):MonitorConcExtRxErr0")
+    field(INPB, "$(IOC):MonitorConcExtRxErr1")
+    field(INPC, "$(IOC):MonitorConcStallErr")
+    field(INPD, "$(IOC):MonitorConcWdErr")
+    field(FLNK, "$(IOC):MON_CONC_READY")
+}
+
+record(bi,  "$(IOC):MON_CONC_READY") {
+    field(DESC, "CN Concentrator Ready")
+    field(ZNAM, "Not Ready")
+    field(ZSV,  "MAJOR")
+    field(ONAM, "Ready")
+    field(OSV,  "NO_ALARM")
+    field(INP,  "$(IOC):CONC_ERROR_CALC NPP MSI")
+}
+
+record(calc, "$(IOC):MON_CONC_WD_ERR") {
+    field(DESC, "CN Concentrator WD Error")
+    field(CALC, "A<1?1:0")
+    field(PINI, "YES")
+    field(SCAN, "1 second")
+    field(INPA, "$(IOC):MonitorConcWdErr")
+    field(LOW, "0")
+    field(LSV, "MAJOR")
+}    
+
+record(bi, "$(IOC):ALL_APP_STATUS_RBV") {
+    field(DESC, "All Applications Status")
+    field(DTYP, "asynUInt32Digital")
+    field(SCAN, "1 second")
+    field(ZNAM, "App Timeouts Disabled")
+    field(ONAM, "Normal Operation")
+    field(ZSV,  "MAJOR")
+    field(OSV,  "NO_ALARM")
+    field(INP,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_TEST_MODE")
+    field(VAL,  "0")
+}
+
 record(mbbo, "$(IOC):MAX_PERMIT") {
     field(DESC, "Set BC to 120Hz max")
     field(DTYP, "asynUInt32Digital")
     field(PINI, "YES")
-    field(OUT, "@asynMask(CENTRAL_NODE 3 1 0)MPS_MAX_BEAM_CLASS")
-    field(ASG,  "EOICDESK")
-    field(VAL, "0")
+    field(OUT,  "@asynMask(CENTRAL_NODE 3 1 0)MPS_MAX_BEAM_CLASS")
+    field(DOL,  "$(GLOBAL):MAX_PERMIT CPP MSI")
+    field(OMSL, "closed_loop")
+    field(VAL,  "0")
     field(ZRST, "Full")
-    field(ZRVL,"0")
+    field(ZRVL, "0")
     field(ONST, "Beam Off")
-    field(ONVL,"1")
+    field(ONVL, "1")
     field(TWST, "Kicker STBY")
-    field(TWVL,"2")
+    field(TWVL, "2")
     field(THST, "BC1Hz")
-    field(THVL,"3")
+    field(THVL, "3")
     field(FRST, "BC10Hz")
-    field(FRVL,"4")
+    field(FRVL, "4")
     field(FVST, "Diagnostic")
-    field(FVVL,"5")
+    field(FVVL, "5")
     field(SXST, "BC120Hz")
-    field(SXVL,"6")
+    field(SXVL, "6")
     field(SVST, "Tuning")
-    field(SVVL,"7")
+    field(SVVL, "7")
     field(EIST, "1% MAP")
-    field(EIVL,"8")
+    field(EIVL, "8")
     field(NIST, "5% MAP")
-    field(NIVL,"9")
+    field(NIVL, "9")
     field(TEST, "10% MAP")
-    field(TEVL,"10")
+    field(TEVL, "10")
     field(ELST, "25% MAP")
-    field(ELVL,"11")
+    field(ELVL, "11")
     field(TVST, "50% MAP")
-    field(TVVL,"12")
+    field(TVVL, "12")
     field(TTST, "100% MAP")
-    field(TTVL,"13")
+    field(TTVL, "13")
     field(FTST, "Full")
-    field(FTVL,"14")
+    field(FTVL, "14")
 }
 
