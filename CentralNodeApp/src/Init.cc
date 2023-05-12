@@ -404,6 +404,16 @@ static void mpsShowMitigationDevice(uint32_t id) {
   }
 }
 
+/*=== mpsShowTestMode command ==================================================*/
+
+static void mpsShowTestMode() {
+  std::string mode = "All Apps Disabled - Test Mode";
+  if (pCNDriver->getTestMode()) {
+    mode = "Normal Operation";
+  }
+  std::cout << "Test Mode Flag: " << mode << std::endl;
+}
+
 /*=== mpsEnableApp command =======================================================*/
 
 static void mpsEnableApp(uint32_t id, int enableInt) {
@@ -431,6 +441,47 @@ static void mpsEnableApp(uint32_t id, int enableInt) {
   }
   Firmware::getInstance().setAppTimeoutEnable(id, enable);
   Firmware::getInstance().writeAppTimeoutMask();
+}
+
+/*=== mpsEnableAllApp command =======================================================*/
+
+static void mpsEnableAllApp(int enableInt) {
+  if (enableInt < 0) {
+    std::cout << "*** mpsEnableApp or mpsea command ***" << std::endl
+	      << "Usage: mpsEnableAllApp <enable>" << std::endl
+	      << "  enable: 0 to disable, 1 to enable timeouts" << std::endl
+	      << "" << std::endl
+	      << "This command clears/sets the timeout enable bit for all"
+	      << "the application cards in this central node." << std::endl;
+    return;
+  }
+  if (!Engine::getInstance().getCurrentDb()) {
+    std::cerr << "ERROR: No database loaded" << std::endl;
+    return;
+  }
+
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+  bool enable = false;
+  if (enableInt < 1) {
+    pCNDriver->setTestMode(0);
+  }
+  else {
+    pCNDriver->setTestMode(1);
+  }
+  uint32_t id;
+  DbApplicationCardMap::iterator applicationCardIt;
+  for (applicationCardIt = Engine::getInstance().getCurrentDb()->applicationCards->begin();
+       applicationCardIt != Engine::getInstance().getCurrentDb()->applicationCards->end();
+       ++applicationCardIt) {
+          if (enableInt > 0) {
+            enable = (*applicationCardIt).second->hasInputs;
+          }
+          id = (*applicationCardIt).second->number;
+          Firmware::getInstance().setAppTimeoutEnable(id, enable);
+          Firmware::getInstance().writeAppTimeoutMask();
+  }
+  mpsShowTestMode();
 }
 
 /*=== mpsApp2Db command =======================================================*/
@@ -510,7 +561,7 @@ static void printHelp() {
 	      << "  help                   : print this help" << std::endl
 	      << "  app db [id]            : convert app dd to database id" << std::endl
 	      << "  print bypass           : print bypass queue" << std::endl
-	      << "  enable app [id] [en]   : id=appId, en=1 enable, en=0 disable" << std::endl
+	      << "  enable app [id] [en]   : id=appId, use 1024 for all, en=1 enable, en=0 disable" << std::endl
           << "  debug" << std::endl
           << "  |- debug pcstream [en] : Power class stream debug, en=1 enable, en=0 disable" << std::endl
 	      << "  show" << std::endl
@@ -528,7 +579,8 @@ static void printHelp() {
 	      << "  |- show update [id]    : print latest MPS update message for app" << std::endl
 	      << "  |- show fault [id]     : print fault info" << std::endl
 	      << "  |- show mitigation [id]: print mitigation device info" << std::endl
-          << "  |- show pccounters     : print power class change counters" << std::endl
+        << "  |- show test           : print All App Disable Flag (test mode)" << std::endl
+        << "  |- show pccounters     : print power class change counters" << std::endl
 	      << "" << std::endl
 	      << "*** The id specified to the mps command is the database id   ***" << std::endl
 	      << "*** Use id=-1 for additional help (e.g. 'mps show fault -1') ***" << std::endl;
@@ -590,7 +642,11 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     if (option == "app") {
       uint32_t id = args[2].ival;
       int enable = args[3].ival;
-      mpsEnableApp(id, enable);
+      if (id > 1023) {
+        mpsEnableAllApp(enable);
+      } else {
+        mpsEnableApp(id, enable);
+      }
     }
   }
   else if (command == "show" || command == "s") {
@@ -650,6 +706,9 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     else if (option == "fault") {
       uint32_t id = args[2].ival;
       mpsShowFault(id);
+    }
+    else if (option == "test") {
+      mpsShowTestMode();
     }
     else if (option == "pccounters") {
       mpsPrintPCCounter();
