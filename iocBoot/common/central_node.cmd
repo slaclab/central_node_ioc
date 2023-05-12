@@ -9,11 +9,17 @@
 # ====================================================================
 # Environment variables for IOC Admin
 epicsEnvSet("ENGINEER","Jeremy Mock")
+epicsEnvSet("LOCATION_INDEX","MP0${CN_INDEX}")
+epicsEnvSet("INST","0")
+epicsEnvSet("TPR","TPR:${LOCATION}:${LOCATION_INDEX}:${INST}")
+epicsEnvSet("IOC_PV",   "SIOC:${LOCATION}:${LOCATION_INDEX}")
+epicsEnvSet("FPGA_IP",  "10.0.1.10${SLOT}")
 
 # MPS Database location
 # Note: PHYSICS_TOP is defined in the facility specific script.
 epicsEnvSet("MPS_ENV_DATABASE_VERSION", "${MPS_VERSION}")
 epicsEnvSet("MPS_ENV_CONFIG_PATH", "${PHYSICS_TOP}/mps_configuration/${MPS_ENV_DATABASE_VERSION}")
+
 
 # MPS history server configurations
 # Note: MPS_ENV_HISTORY_HOST is defined in the facility specific script.
@@ -42,6 +48,7 @@ epicsEnvSet("CPSW_PORT", "CentralNodeCPSW")
 epicsEnvSet("TPRTRIGGER_PORT","TPRTRIGGER_PORT")
 epicsEnvSet("TPRPATTERN_PORT","TPRPATTERN_PORT")
 epicsEnvSet("CROSSBARCTRL_PORT","CROSSBARCTRL_PORT")
+epicsEnvSet("GLOBAL","SIOC:SYS0:MP00")
 
 # Dictionary file for manual (empty string if none)
 epicsEnvSet("DICT_FILE", "firmware/CentralNodeFirmware.dict")
@@ -130,17 +137,18 @@ dbLoadRecords("db/iocAdminScanMon.db","IOC=${IOC_PV}")
 # versions of software your IOC is referencing
 # The python parser is part of iocAdmin
 dbLoadRecords("db/iocRelease.db","IOC=${IOC}")
-dbLoadRecords("db/CentralNode.db","IOC=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("db/CentralNode.db","IOC=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2},GLOBAL=${GLOBAL}")
 dbLoadRecords("db/Carrier.db","P=${IOC_PV}, PORT=${CPSW_PORT},ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("db/timing_rx_error.db", "P=${TPR}, PORT=${CPSW_PORT}")
 
 # crossbarControl
-dbLoadRecords("db/crossbarCtrl.db", "DEV=${IOC_PV},PORT=${CROSSBARCTRL_PORT}")
+dbLoadRecords("db/crossbarCtrl.db", "DEV=${TPR},PORT=${CROSSBARCTRL_PORT}")
 
 # tprTrigger database
-dbLoadRecords("db/tprTrig.db", "PORT=${TPRTRIGGER_PORT},LOCA=${LOCATION},IOC_UNIT=MP${LOCATION_INDEX},INST=${CARD_INDEX}")
+dbLoadRecords("db/tprTrig.db", "PORT=${TPRTRIGGER_PORT},LOCA=${LOCATION},IOC_UNIT=${LOCATION_INDEX},INST=${INST}")
 
 # tprPattern database
-#dbLoadRecords("db/tprPattern.db", "PORT=${TPRPATTERN_PORT},LOCA=${LOCATION},IOC_UNIT=MP${LOCATION_INDEX},INST=${CARD_INDEX}")
+#dbLoadRecords("db/tprPattern.db", "PORT=${TPRPATTERN_PORT},LOCA=${LOCATION},IOC_UNIT=${LOCATION_INDEX},INST=${INST}")
 
 # Save/load configuration database
 dbLoadRecords("db/saveLoadConfig.db", "P=${IOC_PV}, PORT=${CPSW_PORT}")
@@ -148,7 +156,7 @@ dbLoadRecords("db/saveLoadConfig.db", "P=${IOC_PV}, PORT=${CPSW_PORT}")
 # Central Node database, from the MPS configuration database
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/device_inputs.db","ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/analog_devices.db","ASG1=${ASG1},ASG2=${ASG2}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/destinations.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
+dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/destinations.db","GLOBAL=${GLOBAL},BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults.db","ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/apps.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
 dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/conditions.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")

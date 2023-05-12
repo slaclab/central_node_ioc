@@ -7,6 +7,10 @@
 # ====================================================================
 # Setup environment variables specific to the PROD environment
 # ====================================================================
+# Set ASG groups
+epicsEnvSet("ASG1", "MCC")
+epicsEnvSet("ASG2", "EOICDESK")
+
 # MPS Database location
 epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
 
