@@ -11,17 +11,10 @@
 # ====================================================================
 # Setup environment variables specific to this IOC
 # ====================================================================
-epicsEnvSet("LOCATION_INDEX","01")
-epicsEnvSet("IOC_PV",   "SIOC:SYS0:MP${LOCATION_INDEX}")
-epicsEnvSet("LOCATION", "SYS0")
-epicsEnvSet("FPGA_IP",  "10.0.1.102")
 epicsEnvSet("CN_INDEX", "1")
-epicsEnvSet("CARD_INDEX","1")
+epicsEnvSet("LOCATION", "SYS0")
 epicsEnvSet("MPS_VERSION","current")
-
-# Set ASG groups
-epicsEnvSet("ASG1", "MCC")
-epicsEnvSet("ASG2", "EOICDESK")
+epicsEnvSet("SLOT","2")
 
 # ====================================================================
 # Load the common Central Node startup for PROD
