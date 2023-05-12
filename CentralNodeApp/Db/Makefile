@@ -16,7 +16,7 @@ include $(TOP)/configure/CONFIG
 #DB += userHost.substitutions
 
 DB += CentralNode.db
-
+DB += timing_rx_error.db
 DB += Carrier.db
 
 # ========================================
@@ -76,7 +76,7 @@ DB_INSTALLS += $(TPRTRIGGER)/db/tprTrig.db
 DB_INSTALLS += $(TPRTRIGGER)/db/tprDeviceNamePV.db
 
 # Install Database for crossbarControl module
-DB_INSTALLS += $(CROSSBARCONTROL)/db/crossbarCtrl.db
+DB_INSTALLS += $(ATCACOMMON)/db/crossbarCtrl.db
 
 # =======================================================================
 
