@@ -124,6 +124,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_FW_RESET_ALL_STRING, asynParamUInt32Digital, &_mpsFwResetAll);
   createParam(MPS_TIMING_BC_STRING, asynParamInt32, &_mpsTimingBCparam);
   createParam(MPS_MAX_BEAM_CLASS_STRING, asynParamUInt32Digital, &_mpsMaxPermitDestBeamClass);
+  createParam(MPS_TEST_MODE_STRING, asynParamUInt32Digital, &_mpsTestMode);
 
 
   createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
@@ -132,7 +133,6 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(TEST_CHECK_BYPASS_STRING, asynParamInt32, &_testCheckBypassParam);
 
   createParam(MPS_APP_TIMEOUT_ENABLE_STRING, asynParamUInt32Digital, &_mpsAppTimeoutEnableParam);
-  createParam(MPS_APP_LOGIC_ENABLE_STRING, asynParamUInt32Digital, &_mpsAppLogicEnableParam);
 
   setIntegerParam(0, _mpsStateParam, MPS_STATE_IDLE);
 
@@ -169,6 +169,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   value = 0;
   if (Firmware::getInstance().getTimeoutEnable()) value = 1;
   setUIntDigitalParam(0, _mpsTimeoutEnableRbvParam, value, 1);
+
+  _testMode = 1;
 }
 
 CentralNodeDriver::~CentralNodeDriver() {
@@ -650,8 +652,16 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
   else if (_mpsAppTimeoutEnableParam == pasynUser->reason) {
     if (addr >= FW_NUM_APPLICATION_MASKS)
       return asynError;
-
     *value = Firmware::getInstance().getAppTimeoutEnable(addr);
+    return status;
+  }
+  else if (_mpsTestMode == pasynUser->reason) {
+    if (getTestMode()) {
+      *value = 1;
+    }
+    else {
+      *value = 0;
+    }
     return status;
   }
   if (!Engine::getInstance().isInitialized()) {
@@ -674,26 +684,6 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
 	status = asynError;
       }
     }
-  }
-  else if (_mpsAppLogicEnableParam == pasynUser->reason) {
-    if (addr >= FW_NUM_APPLICATION_MASKS)
-      return asynError;
-    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-    try {
-	    if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
-	        Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-	      LOG_TRACE("DRIVER", "ERROR: ApplicationCard not found, key=" << addr);
-	      return asynError;
-	    }
-      if (Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->ignored)
-	      *value = 1;
-      else
-        *value = 0;
-    }
-    catch (std::exception &e) {
-	    status = asynError;
-    }
-    return status;
   }
   else if (_mpsAnalogDeviceParam == pasynUser->reason) {
     {
@@ -1057,23 +1047,6 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       }
     }
   }
-  else if (_mpsAppLogicEnableParam == pasynUser->reason) {
-    if (addr >= FW_NUM_APPLICATION_MASKS)
-      return asynError;
-    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-    try {
-	    if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
-	        Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-	      LOG_TRACE("DRIVER", "ERROR: ApplicationCard not found, key=" << addr);
-	      return asynError;
-	    }
-      Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->ignored = value;
-    }
-    catch (std::exception &e) {
-	    status = asynError;
-    }
-    return status;
-  }
   else if (_mpsDeviceInputUnlatchFastParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
@@ -1409,6 +1382,14 @@ void CentralNodeDriver::showDatabaseInfo() {
 
 void CentralNodeDriver::showEngineInfo() {
   Engine::getInstance().showStats();
+}
+
+void CentralNodeDriver::setTestMode(int mode) {
+  _testMode = mode;
+}
+
+int CentralNodeDriver::getTestMode() {
+  return _testMode;
 }
 
 void CentralNodeDriver::report(FILE *fp, int reportDetails) {

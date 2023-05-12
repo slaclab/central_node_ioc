@@ -103,6 +103,7 @@
 #define MPS_FW_RESET_ALL_STRING                    "MPS_FW_RESET_ALL"
 #define MPS_TIMING_BC_STRING                       "MPS_TIMING_BC"
 #define MPS_MAX_BEAM_CLASS_STRING                  "MPS_MAX_BEAM_CLASS"
+#define MPS_TEST_MODE_STRING                       "MPS_TEST_MODE"
 
 #define TEST_DEVICE_INPUT_STRING                   "TEST_DEVICE_INPUT"
 #define TEST_ANALOG_DEVICE_STRING                  "TEST_ANALOG_DEVICE"
@@ -110,7 +111,6 @@
 #define TEST_CHECK_BYPASS_STRING                   "TEST_CHECK_BYPASS"
 
 #define MPS_APP_TIMEOUT_ENABLE_STRING              "MPS_APP_TIMEOUT_ENABLE"
-#define MPS_APP_LOGIC_ENABLE_STRING              "MPS_APP_LOGIC_ENABLE"
 
 enum CentralNodeState {
   MPS_STATE_IDLE,
@@ -142,6 +142,9 @@ public:
   void showFirmware();
   void showDatabaseInfo();
   void showEngineInfo();
+
+  void setTestMode(int mode);
+  int getTestMode();
 
  private:
   std::string _configPath;
@@ -234,6 +237,7 @@ public:
   int _mpsFwResetAll;
   int _mpsTimingBCparam;
   int _mpsMaxPermitDestBeamClass;
+  int _mpsTestMode;
 
   int _testDeviceInputParam;
   int _testAnalogDeviceParam;
@@ -242,6 +246,8 @@ public:
 
   int _mpsAppTimeoutEnableParam;
   int _mpsAppLogicEnableParam;
+
+  int _testMode;
 
   //  CentralNodeState _mpsState;
 
