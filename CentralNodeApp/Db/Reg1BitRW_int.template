@@ -1,0 +1,39 @@
+record(bo,      "$(P):$(R)") {
+    field(DTYP, "asynInt32")
+    field(DESC, "$(DESC)")
+    field(PINI, "YES")
+    field(SCAN, "Passive")
+    field(OUT,  "@asyn($(PORT),1)$(PARAM)")
+    field(ZNAM, "$(ZNAM)")
+    field(ONAM, "$(ONAM)")
+    field(FLNK, "$(P):$(R)_RBV")
+}
+
+record(bi,      "$(P):$(R)_RBV") {
+    field(DTYP, "asynInt32")
+    field(DESC, "$(DESC)")
+    field(PINI, "YES")
+    field(SCAN, "$(SCAN)")
+    field(INP,  "@asyn($(PORT),1)$(PARAM)")
+    field(ZNAM, "$(ZNAM)")
+    field(ONAM, "$(ONAM)")
+    field(FLNK, "$(P):$(R)_CALC")
+}
+record(calc,    "$(P):$(R)_CALC") {
+    field(DESC, "$(DESC)")
+    field(PINI, "YES")
+    field(SCAN, "Passive")
+    field(INPA, "$(P):$(R)")
+    field(INPB, "$(P):$(R)_RBV")
+    field(CALC, "A=B?1:0")
+    field(FLNK, "$(P):$(R)_STAT")
+}
+record(bi,      "$(P):$(R)_STAT") {
+    field(DESC, "$(DESC)")
+    field(INP,  "$(P):$(R)_CALC")
+    field(ZNAM, "Mismatch")
+    field(ZSV,  "MAJOR")
+    field(ONAM, "Ok")
+    field(OSV,  "NO_ALARM")
+    field(SCAN, "Passive")
+}

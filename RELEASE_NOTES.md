@@ -6,7 +6,6 @@ Release notes for the LCLS-II MPS central node IOC.
 * __central_node_ioc-R4-3-0__:
   * Build against central_node_engine-R4-3-0
   * Remove DB loads from st.cmd for database files that are no longer generated
-  * 
 
 * __central_node_ioc-R4-2-1__:
   * Reactivate CAS for MAX_PERMIT

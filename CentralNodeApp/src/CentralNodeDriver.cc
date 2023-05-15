@@ -133,6 +133,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(TEST_CHECK_BYPASS_STRING, asynParamInt32, &_testCheckBypassParam);
 
   createParam(MPS_APP_TIMEOUT_ENABLE_STRING, asynParamUInt32Digital, &_mpsAppTimeoutEnableParam);
+  createParam(MPS_APP_ACTIVE_ENABLE_STRING, asynParamUInt32Digital, &_mpsAppActiveEnableParam);
+
 
   setIntegerParam(0, _mpsStateParam, MPS_STATE_IDLE);
 
@@ -843,6 +845,29 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
+  else if (_mpsAppActiveEnableParam == pasynUser->reason) {
+    if (addr >= FW_NUM_APPLICATION_MASKS)
+      return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+        if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
+            Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+              LOG_TRACE("DRIVER", "ERROR: ApplicationCard not found, key=" << addr);
+              std::cout << "*** ERROR: ApplicationCard not found, key=" << addr << std::endl;
+              return asynError;
+        }
+        if (Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->modeActive) {
+          *value = 1;
+        }
+        else {
+          *value = 0;
+        }
+      } catch (std::exception &e) {
+        status = asynError;
+      }
+    }
+  }
   else if (_mpsDeviceInputBypassStatusParam ==  pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
@@ -1061,6 +1086,24 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 	status = asynError;
       }
     Firmware::getInstance().evalLatchClear();
+    }
+  }
+  else if (_mpsAppActiveEnableParam == pasynUser->reason) {
+    if (addr >= FW_NUM_APPLICATION_MASKS)
+      return asynError;
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+        if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
+            Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+              LOG_TRACE("DRIVER", "ERROR: ApplicationCard not found, key=" << addr);
+              std::cout << "*** ERROR: ApplicationCard not found, key=" << addr << std::endl;
+              return asynError;
+        }
+        Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->modeActive = !!value;
+      } catch (std::exception &e) {
+        status = asynError;
+      }
     }
   }
   else if (_mpsAnalogDeviceUnlatchParam == pasynUser->reason) {
