@@ -1,0 +1,4 @@
+file "Reg1BitRW_int.template" { pattern
+{ R,                  DESC,                                     ZNAM,       ONAM,       SCAN,                     PARAM                    }
+{ TIMING_RX_ERR,      "TPR Rx Err: 1=Err",                      "OK",       "Error",    "1 second",               RxDown                   }
+}

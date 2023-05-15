@@ -43,7 +43,8 @@ USR_LIBS_Linux += central_node_engine yamlReader deviceLib cpsw boost_system yam
 # ================================================
 # This will attempt to build an IOC application
 # for every target including the host computer.
-PROD_IOC = CentralNode
+PROD_IOC_linuxRT-x86_64 = CentralNode
+PROD_IOC = $(PROD_IOC_$(T_A))
 
 # Use the following for RTEMS Only IOCs
 #PROD_IOC_RTEMS = CentralNode
