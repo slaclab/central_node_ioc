@@ -3,6 +3,9 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-5-0__:
+  * Build against central_node_engine-R4-5-0
+
 * __central_node_ioc-R4-4-0__:
   * Build against central_node_engine-R4-4-0
   * Add flag and PVs for active / not active logic (does nor drive an ignore condition)
