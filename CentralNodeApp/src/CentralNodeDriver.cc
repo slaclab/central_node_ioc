@@ -857,7 +857,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
               std::cout << "*** ERROR: ApplicationCard not found, key=" << addr << std::endl;
               return asynError;
         }
-        if (Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->modeActive) {
+        if (Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->active) {
           *value = 1;
         }
         else {
@@ -1100,7 +1100,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
               std::cout << "*** ERROR: ApplicationCard not found, key=" << addr << std::endl;
               return asynError;
         }
-        Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->modeActive = !!value;
+        Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->active = !!value;
       } catch (std::exception &e) {
         status = asynError;
       }

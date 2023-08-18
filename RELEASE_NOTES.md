@@ -3,6 +3,10 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-5-1__:
+  * Build against central_node_engine-R4-5-1:
+    * Fix bug with ignore condition for devices when app is disabled
+
 * __central_node_ioc-R4-5-0__:
   * Build against central_node_engine-R4-5-0
 
