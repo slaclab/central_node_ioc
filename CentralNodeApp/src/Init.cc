@@ -209,7 +209,7 @@ static void mpsShowUpdateBuffer(uint32_t id) {
     DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
 
     if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-      std::cout << (*appCard).second->name << " [number:"
+      std::cout << (*appCard).second->applicationType->name << " [number:"
 		<< (*appCard).second->number << "]:" << std::endl;
 
       std::cout << "WasLow: " << std::endl;
@@ -245,7 +245,7 @@ static void mpsShowConfigBuffer(uint32_t id) {
   DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
 
   if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-    std::cout << (*appCard).second->name << " [number:"
+    std::cout << (*appCard).second->applicationType->name << " [number:"
 	      << (*appCard).second->number << "]:" << std::endl;
     std::cout << *(*appCard).second->applicationConfigBuffer << std::endl;
     //    (*appCard).second->printAnalogConfiguration();

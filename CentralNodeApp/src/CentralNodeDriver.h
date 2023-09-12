@@ -254,8 +254,8 @@ public:
   //  CentralNodeState _mpsState;
 
   asynStatus loadConfig(const char *config);
-  asynStatus loadTestDeviceInputs(const char *testFileName);
-  asynStatus loadTestAnalogDevices(const char *testFileName);
+  asynStatus loadTestDigitalChannels(const char *testFileName);
+  asynStatus loadTestAnalogChannels(const char *testFileName);
 
   asynStatus setBypass(BypassType bypassType, int deviceId, int thresholdIndex, epicsInt32 expirationTime);
 
