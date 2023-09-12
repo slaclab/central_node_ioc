@@ -182,9 +182,9 @@ static void mpsShowUpdateBuffer(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mps show update command ***" << std::endl
 	      << "Usage: mps show update <id>" << std::endl
-	      << "  id: database Id for the application card (*not* the global id)" << std::endl
+	      << "  id: database Id for the application card (*not* the number)" << std::endl
 	      << "      use the 'mpsg2d'(REVIEW) command to find the database id based on" << std::endl
-	      << "      the global id" << std::endl
+	      << "      the number" << std::endl
 	      << std::endl
 	      << "Prints out the current software update buffer (bits) read from firmware. This" << std::endl
 	      << "buffer is updated at 360Hz. The update buffer contents are sets of 'was high' and" << std::endl
@@ -209,8 +209,8 @@ static void mpsShowUpdateBuffer(uint32_t id) {
     DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
 
     if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-      std::cout << (*appCard).second->name << " [global id:"
-		<< (*appCard).second->globalId << "]:" << std::endl;
+      std::cout << (*appCard).second->name << " [number:"
+		<< (*appCard).second->number << "]:" << std::endl;
 
       std::cout << "WasLow: " << std::endl;
       std::cout << *(*appCard).second->getWasLowBuffer() << std::endl;
@@ -226,9 +226,9 @@ static void mpsShowConfigBuffer(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mpsShowConfigBuffer or mpsscb command ***" << std::endl
 	      << "Usage: mpsscb <id>" << std::endl
-	      << "  id: database Id for the application card (*not* the global id)" << std::endl
+	      << "  id: database Id for the application card (*not* the number)" << std::endl
 	      << "      use the 'mpsg2d' command to find the database id based on" << std::endl
-	      << "      the global id" << std::endl
+	      << "      the number" << std::endl
 	      << std::endl
 	      << "Prints out the configuration buffer (bits) for the given application card." << std::endl
 	      << "These are the last contents written to the firmware configuration buffere," << std::endl
@@ -245,44 +245,20 @@ static void mpsShowConfigBuffer(uint32_t id) {
   DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
 
   if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-    std::cout << (*appCard).second->name << " [global id:"
-	      << (*appCard).second->globalId << "]:" << std::endl;
+    std::cout << (*appCard).second->name << " [number:"
+	      << (*appCard).second->number << "]:" << std::endl;
     std::cout << *(*appCard).second->applicationConfigBuffer << std::endl;
     //    (*appCard).second->printAnalogConfiguration();
   }
 }
 
-/*=== mpsShowDigitalDevice command =======================================================*/
+/*=== mpsShowFaultInput command =======================================================*/
 
-static void mpsShowDigitalDevice(uint32_t id) {
+static void mpsShowFaultInput(uint32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowDigitalDevice or mpssdd command ***" << std::endl
-	      << "Usage: mpssdd <id>" << std::endl
-	      << "  id: database Id for the digital device" << std::endl
-	      << std::endl;
-    return;
-  }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
-  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-  DbDigitalDeviceMap::iterator device = Engine::getInstance().getCurrentDb()->digitalDevices->find(id);
-
-  if (device != Engine::getInstance().getCurrentDb()->digitalDevices->end()) {
-    std::cout << (*device).second << std::endl;
-  }
-}
-
-/*=== mpsShowDeviceInput command =======================================================*/
-
-static void mpsShowDeviceInput(uint32_t id) {
-  if (id < 0) {
-    std::cout << "*** mpsShowDeviceInput or mpssdi command ***" << std::endl
+    std::cout << "*** mpsShowFaultInput or mpssfi command ***" << std::endl
 	      << "Usage: mpssdi <id>" << std::endl
-	      << "  id: database Id for the device input" << std::endl
+	      << "  id: database Id for the fault input" << std::endl
 	      << std::endl;
     return;
   }
@@ -293,10 +269,10 @@ static void mpsShowDeviceInput(uint32_t id) {
   }
 
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-  DbDeviceInputMap::iterator device = Engine::getInstance().getCurrentDb()->deviceInputs->find(id);
+  DbFaultInputMap::iterator fault = Engine::getInstance().getCurrentDb()->faultInputs->find(id);
 
-  if (device != Engine::getInstance().getCurrentDb()->deviceInputs->end()) {
-    std::cout << (*device).second << std::endl;
+  if (fault != Engine::getInstance().getCurrentDb()->faultInputs->end()) {
+    std::cout << (*fault).second << std::endl;
   }
 }
 
@@ -317,7 +293,7 @@ static void mpsShowDigitalChannel(uint32_t id) {
   }
 
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-  DbChannelMap::iterator channel = Engine::getInstance().getCurrentDb()->digitalChannels->find(id);
+  DbDigitalChannelMap::iterator channel = Engine::getInstance().getCurrentDb()->digitalChannels->find(id);
 
   if (channel != Engine::getInstance().getCurrentDb()->digitalChannels->end()) {
     std::cout << (*channel).second << std::endl;
@@ -329,7 +305,7 @@ static void mpsShowDigitalChannel(uint32_t id) {
 static void mpsShowAppCard(uint32_t id) {
   if (id < 0) {
     std::cout << "*** mps show app [id] ***" << std::endl
-	      << "  id: database Id for the application card - *not* the global app id!" << std::endl
+	      << "  id: database Id for the application card - *not* the number!" << std::endl
 	      << std::endl;
     return;
   }
@@ -347,13 +323,13 @@ static void mpsShowAppCard(uint32_t id) {
   }
 }
 
-/*=== mpsShowAnalogDevice command =======================================================*/
+/*=== mpsShowAnalogChannel command =======================================================*/
 
-static void mpsShowAnalogDevice(uint32_t id) {
+static void mpsShowAnalogChannel(uint32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowAnalogDevice or mpssad command ***" << std::endl
-	      << "Usage: mpssad <id>" << std::endl
-	      << "  id: database Id for the analog device" << std::endl
+    std::cout << "*** mpsShowAnalogChannel or mpssac command ***" << std::endl
+	      << "Usage: mpssac <id>" << std::endl
+	      << "  id: database Id for the analog channel" << std::endl
 	      << std::endl;
     return;
   }
@@ -364,10 +340,10 @@ static void mpsShowAnalogDevice(uint32_t id) {
   }
 
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-  DbAnalogDeviceMap::iterator device = Engine::getInstance().getCurrentDb()->analogDevices->find(id);
+  DbAnalogChannelMap::iterator channel = Engine::getInstance().getCurrentDb()->analogChannels->find(id);
 
-  if (device != Engine::getInstance().getCurrentDb()->analogDevices->end()) {
-    std::cout << (*device).second << std::endl;
+  if (channel != Engine::getInstance().getCurrentDb()->analogChannels->end()) {
+    std::cout << (*channel).second << std::endl;
   }
 }
 
@@ -419,8 +395,8 @@ static void mpsShowTestMode() {
 static void mpsEnableApp(uint32_t id, int enableInt) {
   if (id < 0) {
     std::cout << "*** mpsEnableApp or mpsea command ***" << std::endl
-	      << "Usage: mpsea <globalId> <enable>" << std::endl
-	      << "  globalId: unique application card id (0 to 1023)" << std::endl
+	      << "Usage: mpsea <number> <enable>" << std::endl
+	      << "  number: unique application card id (0 to 1023)" << std::endl
 	      << "  enable: 0 to disable, 1 to enable timeouts" << std::endl
 	      << "" << std::endl
 	      << "This command clears/sets the timeout enable bit for the"
@@ -488,11 +464,11 @@ static void mpsEnableAllApp(int enableInt) {
 
 static void mpsApp2Db(uint32_t id) {
   if (id < 0) {
-    std::cout << "Usage: mpsg2d <globalId>" << std::endl
-	      << "  globalId: unique application card id (0 to 1023)" << std::endl
+    std::cout << "Usage: mpsg2d <number>" << std::endl
+	      << "  number: unique application card id (0 to 1023)" << std::endl
 	      << "" << std::endl
 	      << "Searches the database for the application card information " << std::endl
-	      << "for the specified global id, and prints out the application" << std::endl
+	      << "for the specified number, and prints out the application" << std::endl
 	      << "card database id and its attributes." << std::endl;
     return;
   }
@@ -509,7 +485,7 @@ static void mpsApp2Db(uint32_t id) {
   uint32_t dbId = 0;
   for (DbApplicationCardMap::iterator it = Engine::getInstance().getCurrentDb()->applicationCards->begin();
        it != Engine::getInstance().getCurrentDb()->applicationCards->end(); ++it) {
-    if ((*it).second->globalId == id) {
+    if ((*it).second->number == id) {
       found = true;
       dbId = (*it).second->id;
       appCard = (*it).second;
@@ -521,7 +497,7 @@ static void mpsApp2Db(uint32_t id) {
     std::cout << appCard << std::endl;
   }
   else {
-    std::cerr << "ERROR: no entry found for globalId=" << id << std::endl;
+    std::cerr << "ERROR: no entry found for number=" << id << std::endl;
   }
 }
 
@@ -571,10 +547,9 @@ static void printHelp() {
 	      << "  |- show destination    : print beam destination info" << std::endl
 	      << "  |- show faults         : print current MPS faults" << std::endl
 	      << "  |- show app [id]       : print application card info" << std::endl
-          << "  |- show digital [id]   : print digital device info" << std::endl
-	      << "  |- show input [id]     : print device input info (for digital devices)" << std::endl
-	      << "  |- show channel [id]   : print channel info (for digital devices)" << std::endl
-	      << "  |- show analog [id]    : show analog device info" << std::endl
+        << "  |- show digital [id]   : print digital channel info" << std::endl
+	      << "  |- show input [id]     : print fault input info (for digital channels)" << std::endl
+	      << "  |- show analog [id]    : show analog channel info" << std::endl
 	      << "  |- show config [id]    : print fw configuration buffer for app" << std::endl
 	      << "  |- show update [id]    : print latest MPS update message for app" << std::endl
 	      << "  |- show fault [id]     : print fault info" << std::endl
@@ -679,9 +654,9 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       uint32_t id = args[2].ival;
       mpsShowAppCard(id);
     }
-    else if (option == "ad" || option == "analog") {
+    else if (option == "ac" || option == "analog") {
       uint32_t id = args[2].ival;
-      mpsShowAnalogDevice(id);
+      mpsShowAnalogChannel(id);
     }
     else if (option == "cb" || option == "config") {
       uint32_t id = args[2].ival;
@@ -691,17 +666,13 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       uint32_t id = args[2].ival;
       mpsShowUpdateBuffer(id);
     }
-    else if (option == "di" || option == "input") {
+    else if (option == "fi" || option == "input") {
       uint32_t id = args[2].ival;
-      mpsShowDeviceInput(id);
+      mpsShowFaultInput(id);
     }
-    else if (option == "dc" || option == "channel") {
+    else if (option == "dc" || option == "digital") {
       uint32_t id = args[2].ival;
       mpsShowDigitalChannel(id);
-    }
-    else if (option == "dd" || option == "digital") {
-      uint32_t id = args[2].ival;
-      mpsShowDigitalDevice(id);
     }
     else if (option == "fault") {
       uint32_t id = args[2].ival;
