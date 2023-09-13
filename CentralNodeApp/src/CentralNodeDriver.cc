@@ -1407,6 +1407,10 @@ void CentralNodeDriver::printQueue() {
   Engine::getInstance().getBypassManager()->printBypassQueue();
 }
 
+void CentralNodeDriver::testLoadConfig(std::string yamlFile) {
+  Engine::getInstance().loadConfig(yamlFile, 3500);
+}
+
 void CentralNodeDriver::showMitigation() {
   Engine::getInstance().showBeamDestinations();
 }

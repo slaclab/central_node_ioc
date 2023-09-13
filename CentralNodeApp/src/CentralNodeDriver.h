@@ -139,6 +139,7 @@ public:
   virtual void report(FILE *fp, int details);
 
   void printQueue();
+  void testLoadConfig(std::string yamlFile);
   void showMitigation();
   void showFaults();
   void showFirmware();

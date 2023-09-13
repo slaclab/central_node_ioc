@@ -11,7 +11,7 @@
 # ====================================================================
 # Setup environment variables specific to this IOC
 # ====================================================================
-epicsEnvSet("CN_INDEX", "2")
+epicsEnvSet("CN_INDEX", "1")
 epicsEnvSet("LOCATION", "SYS0")
 epicsEnvSet("MPS_VERSION","current")
 epicsEnvSet("SLOT","2")
