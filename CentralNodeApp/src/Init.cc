@@ -147,13 +147,7 @@ static int mpsShowFaults() {
   return 0;
 }
 
-static void mpsShowFault(uint32_t id) {
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
-  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+static void mpsShowFault(uint32_t id) {  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbFaultMap::iterator fault = Engine::getInstance().getCurrentDb()->faults->find(id);
 
   if (fault != Engine::getInstance().getCurrentDb()->faults->end()) {
@@ -200,12 +194,6 @@ static void mpsShowUpdateBuffer(uint32_t id) {
 	      << std::endl;
     return;
   }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   if (id == 999) {
     std::cout << "Full update buffer:" << std::endl;
     std::vector<uint8_t> updateBuffer = Engine::getInstance().getCurrentDb()->getFastUpdateBuffer();
@@ -243,12 +231,6 @@ static void mpsShowConfigBuffer(uint32_t id) {
 	      << std::endl;
     return;
   }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
 
   if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
@@ -269,12 +251,6 @@ static void mpsShowFaultInput(uint32_t id) {
 	      << std::endl;
     return;
   }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbFaultInputMap::iterator fault = Engine::getInstance().getCurrentDb()->faultInputs->find(id);
 
@@ -293,12 +269,6 @@ static void mpsShowDigitalChannel(uint32_t id) {
 	      << std::endl;
     return;
   }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbDigitalChannelMap::iterator channel = Engine::getInstance().getCurrentDb()->digitalChannels->find(id);
 
@@ -316,12 +286,6 @@ static void mpsShowAppCard(uint32_t id) {
 	      << std::endl;
     return;
   }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbApplicationCardMap::iterator card = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
 
@@ -340,12 +304,6 @@ static void mpsShowAnalogChannel(uint32_t id) {
 	      << std::endl;
     return;
   }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   DbAnalogChannelMap::iterator channel = Engine::getInstance().getCurrentDb()->analogChannels->find(id);
 
@@ -363,12 +321,6 @@ static void mpsShowMitigationDevice(uint32_t id) {
 	      << "  id: database Id for the mitigation device" << std::endl
 	      << std::endl;
   }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   if (id < 0) {
     std::cout << "This are the available mitigation devices: " << std::endl;
@@ -410,12 +362,6 @@ static void mpsEnableApp(uint32_t id, int enableInt) {
 	      << "specified application card." << std::endl;
     return;
   }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
 
   bool enable = false;
@@ -437,13 +383,7 @@ static void mpsEnableAllApp(int enableInt) {
 	      << "This command clears/sets the timeout enable bit for all"
 	      << "the application cards in this central node." << std::endl;
     return;
-  }
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
-  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+  }  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
 
   bool enable = false;
   if (enableInt < 1) {
@@ -479,12 +419,6 @@ static void mpsApp2Db(uint32_t id) {
 	      << "card database id and its attributes." << std::endl;
     return;
   }
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
 
   bool found = false;
@@ -511,13 +445,7 @@ static void mpsApp2Db(uint32_t id) {
 /*=== mpsSetPCStreamDebug command ================================================*/
 
 static void mpsSetPCStreamDebug(int enableInt) {
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-
   bool enable = false;
   if (enableInt > 0) {
     enable = true;
@@ -528,11 +456,6 @@ static void mpsSetPCStreamDebug(int enableInt) {
 /*=== mpsPrintPCCounter command ==================================================*/
 
 static void mpsPrintPCCounter() {
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   Engine::getInstance().getCurrentDb()->printPCCounters();
 }
@@ -578,6 +501,11 @@ static const iocshFuncDef mpsFuncDef = {"mps", 4, mpsArgs};
 static void mpsCallFunc(const iocshArgBuf *args) {
   if (args[0].sval == NULL) {
     printHelp();
+    return;
+  }
+
+  if (!Engine::getInstance().getCurrentDb()) {
+    std::cerr << "ERROR: No database loaded" << std::endl;
     return;
   }
 
