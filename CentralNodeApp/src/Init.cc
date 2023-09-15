@@ -323,7 +323,7 @@ static void mpsShowMitigationDevice(uint32_t id) {
   }
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
   if (id < 0) {
-    std::cout << "This are the available mitigation devices: " << std::endl;
+    std::cout << "These are the available mitigation devices: " << std::endl;
     for (DbBeamDestinationMap::iterator it = Engine::getInstance().getCurrentDb()->beamDestinations->begin();
 	 it != Engine::getInstance().getCurrentDb()->beamDestinations->end(); ++it) {
       std::cout << "  [" << (*it).second->id << "] " << (*it).second->name << std::endl;
@@ -336,6 +336,60 @@ static void mpsShowMitigationDevice(uint32_t id) {
 
   if (device != Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
     std::cout << (*device).second << std::endl;
+  }
+}
+
+/*=== mpsShowFaultState command =======================================================*/
+
+static void mpsShowFaultState(uint32_t id) {
+  if (id < 0) {
+    std::cout << "*** mpsShowState or mpsss command ***" << std::endl
+	      << "Usage: mpsss <id>" << std::endl
+	      << "  id: database Id for the fault state" << std::endl
+	      << std::endl;
+  }
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+  DbFaultStateMap::iterator faultState = Engine::getInstance().getCurrentDb()->faultStates->find(id);
+
+  if (faultState != Engine::getInstance().getCurrentDb()->faultStates->end()) {
+    std::cout << (*faultState).second << std::endl;
+  }
+}
+
+/*=== mpsShowLinkNode command =======================================================*/
+
+static void mpsShowLinkNode(uint32_t id) {
+  if (id < 0) {
+    std::cout << "*** mpsShowNode or mpssn command ***" << std::endl
+	      << "Usage: mpssn <id>" << std::endl
+	      << "  id: database Id for the link node" << std::endl
+	      << std::endl;
+  }
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+  DbLinkNodeMap::iterator linkNode = Engine::getInstance().getCurrentDb()->linkNodes->find(id);
+
+  if (linkNode != Engine::getInstance().getCurrentDb()->linkNodes->end()) {
+    std::cout << (*linkNode).second << std::endl;
+  }
+}
+
+/*=== mpsShowCrate command =======================================================*/
+
+static void mpsShowCrate(uint32_t id) {
+  if (id < 0) {
+    std::cout << "*** mpsShowCrate or mpssc command ***" << std::endl
+	      << "Usage: mpssc <id>" << std::endl
+	      << "  id: database Id for the crate" << std::endl
+	      << std::endl;
+  }
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+  DbCrateMap::iterator crate = Engine::getInstance().getCurrentDb()->crates->find(id);
+
+  if (crate != Engine::getInstance().getCurrentDb()->crates->end()) {
+    std::cout << (*crate).second << std::endl;
   }
 }
 
@@ -480,11 +534,14 @@ static void printHelp() {
 	      << "  |- show app [id]       : print application card info" << std::endl
         << "  |- show digital [id]   : print digital channel info" << std::endl
 	      << "  |- show input [id]     : print fault input info (for digital channels)" << std::endl
-	      << "  |- show analog [id]    : show analog channel info" << std::endl
+	      << "  |- show analog [id]    : print analog channel info" << std::endl
 	      << "  |- show config [id]    : print fw configuration buffer for app" << std::endl
 	      << "  |- show update [id]    : print latest MPS update message for app" << std::endl
 	      << "  |- show fault [id]     : print fault info" << std::endl
 	      << "  |- show mitigation [id]: print mitigation device info" << std::endl
+        << "  |- show state [id]     : print fault state info" << std::endl
+        << "  |- show node [id]      : print link node info" << std::endl
+        << "  |- show crate [id]     : print crate info" << std::endl
         << "  |- show test           : print All App Disable Flag (test mode)" << std::endl
         << "  |- show pccounters     : print power class change counters" << std::endl
 	      << "" << std::endl
@@ -527,11 +584,6 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     mpsTestDatabase(yamlFile);
   }
   /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
-
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
 
   if (command == "app") {
     if (args[1].sval == NULL) {
@@ -580,6 +632,11 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       printHelp();
       return;
     }
+
+    if (!Engine::getInstance().getCurrentDb()) {
+      std::cerr << "ERROR: No database loaded" << std::endl;
+      return;
+    }
     std::string option(args[1].sval);
     if (option == "db" || option == "database") {
       mpsShowDatabaseInfo();
@@ -623,6 +680,18 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     else if (option == "dc" || option == "digital") {
       uint32_t id = args[2].ival;
       mpsShowDigitalChannel(id);
+    }
+    else if (option == "s" || option == "state") {
+      uint32_t id = args[2].ival;
+      mpsShowFaultState(id);
+    }
+    else if (option == "n" || option == "node") {
+      uint32_t id = args[2].ival;
+      mpsShowLinkNode(id);
+    }
+    else if (option == "c" || option == "crate") {
+      uint32_t id = args[2].ival;
+      mpsShowCrate(id);
     }
     else if (option == "fault") {
       uint32_t id = args[2].ival;
