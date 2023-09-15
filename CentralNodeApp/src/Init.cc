@@ -504,11 +504,6 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     return;
   }
 
-  if (!Engine::getInstance().getCurrentDb()) {
-    std::cerr << "ERROR: No database loaded" << std::endl;
-    return;
-  }
-
   std::string command(args[0].sval);
 
   if (command == "help") {
@@ -517,6 +512,24 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       option = args[1].sval;
     }
     printHelp();
+    return;
+  }
+
+  /* <<< For testing new database <<< */
+  if (command == "dev") {
+    std::string yamlFile(args[1].sval);
+    std::cout << yamlFile << std::endl; // Todo: temp here for testing
+    if (args[1].sval == NULL) {
+      std::cout << "ERROR: missing yamlFile" << std::endl;
+      printHelp();
+      return;
+    }
+    mpsTestDatabase(yamlFile);
+  }
+  /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+
+  if (!Engine::getInstance().getCurrentDb()) {
+    std::cerr << "ERROR: No database loaded" << std::endl;
     return;
   }
 
@@ -560,18 +573,6 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       }
     }
   }
-  /* <<< For testing new database <<< */
-  else if (command == "dev") {
-    std::string yamlFile(args[1].sval);
-    std::cout << yamlFile << std::endl; // Todo: temp here for testing
-    if (args[1].sval == NULL) {
-      std::cout << "ERROR: missing yamlFile" << std::endl;
-      printHelp();
-      return;
-    }
-    mpsTestDatabase(yamlFile);
-  }
-  /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 
   else if (command == "show" || command == "s") {
     if (args[1].sval == NULL) {
