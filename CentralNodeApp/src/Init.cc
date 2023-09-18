@@ -126,13 +126,6 @@ static int mpsPrintQueue() {
   return 0;
 }
 
-/*=== mpsTestDatabase command =======================================================*/
-
-static int mpsTestDatabase(std::string yamlFile) {
-  pCNDriver->testLoadConfig(yamlFile);
-  return 0;
-}
-
 /*=== mpsShowMitigation command =======================================================*/
 
 static int mpsShowMitigation() {
@@ -521,7 +514,6 @@ static void printHelp() {
 	      << "  help                   : print this help" << std::endl
 	      << "  app db [id]            : convert app dd to database id" << std::endl
 	      << "  print bypass           : print bypass queue" << std::endl
-        << "  dev [yaml]             : function call loadConfig() for testing" << std::endl
 	      << "  enable app [id] [en]   : id=appId, use 1024 for all, en=1 enable, en=0 disable" << std::endl
           << "  debug" << std::endl
           << "  |- debug pcstream [en] : Power class stream debug, en=1 enable, en=0 disable" << std::endl
@@ -571,19 +563,6 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     printHelp();
     return;
   }
-
-  /* <<< For testing new database <<< */
-  if (command == "dev") {
-    std::string yamlFile(args[1].sval);
-    std::cout << yamlFile << std::endl; // Todo: temp here for testing
-    if (args[1].sval == NULL) {
-      std::cout << "ERROR: missing yamlFile" << std::endl;
-      printHelp();
-      return;
-    }
-    mpsTestDatabase(yamlFile);
-  }
-  /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 
   if (command == "app") {
     if (args[1].sval == NULL) {
