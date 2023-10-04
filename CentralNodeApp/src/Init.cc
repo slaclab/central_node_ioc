@@ -140,14 +140,6 @@ static int mpsShowFaults() {
   return 0;
 }
 
-static void mpsShowFault(uint32_t id) {  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-  DbFaultMap::iterator fault = Engine::getInstance().getCurrentDb()->faults->find(id);
-
-  if (fault != Engine::getInstance().getCurrentDb()->faults->end()) {
-    std::cout << (*fault).second << std::endl;
-  }
-}
-
 /*=== mpsShowFirmware command =======================================================*/
 
 static int mpsShowFirmware() {
@@ -171,10 +163,10 @@ static int mpsShowEngineInfo() {
 
 /*=== mpsShowUpdateBuffer command =======================================================*/
 
-static void mpsShowUpdateBuffer(uint32_t id) {
+static void mpsShowUpdateBuffer(int32_t id) {
 
   if (id < 0) {
-    std::cout << "*** mps show update command ***" << std::endl
+    std::cout << "*** mps show update or mps s ub command ***" << std::endl
 	      << "Usage: mps show update <id>" << std::endl
 	      << "  id: database Id for the application card (*not* the number)" << std::endl
 	      << "      use the 'mpsg2d'(REVIEW) command to find the database id based on" << std::endl
@@ -210,10 +202,10 @@ static void mpsShowUpdateBuffer(uint32_t id) {
 
 /*=== mpsShowConfigBuffer command =======================================================*/
 
-static void mpsShowConfigBuffer(uint32_t id) {
+static void mpsShowConfigBuffer(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowConfigBuffer or mpsscb command ***" << std::endl
-	      << "Usage: mpsscb <id>" << std::endl
+    std::cout << "*** mps show config or mps s cb command ***" << std::endl
+	      << "Usage: mps show config <id>" << std::endl
 	      << "  id: database Id for the application card (*not* the number)" << std::endl
 	      << "      use the 'mpsg2d' command to find the database id based on" << std::endl
 	      << "      the number" << std::endl
@@ -236,10 +228,10 @@ static void mpsShowConfigBuffer(uint32_t id) {
 
 /*=== mpsShowFaultInput command =======================================================*/
 
-static void mpsShowFaultInput(uint32_t id) {
+static void mpsShowFaultInput(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowFaultInput or mpssfi command ***" << std::endl
-	      << "Usage: mpssdi <id>" << std::endl
+    std::cout << "*** mps show input or mps s fi command ***" << std::endl
+	      << "Usage: mps show input <id>" << std::endl
 	      << "  id: database Id for the fault input" << std::endl
 	      << std::endl;
     return;
@@ -254,10 +246,10 @@ static void mpsShowFaultInput(uint32_t id) {
 
 /*=== mpsShowDigitalChannel command =======================================================*/
 
-static void mpsShowDigitalChannel(uint32_t id) {
+static void mpsShowDigitalChannel(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowDigitalChannel or mpssdc command ***" << std::endl
-	      << "Usage: mpssdc <id>" << std::endl
+    std::cout << "*** mps show digital or mps s dc command ***" << std::endl
+	      << "Usage: mps show digital <id>" << std::endl
 	      << "  id: database Id for the digital channel" << std::endl
 	      << std::endl;
     return;
@@ -272,9 +264,10 @@ static void mpsShowDigitalChannel(uint32_t id) {
 
 /*=== mpsShowAppCard command =======================================================*/
 
-static void mpsShowAppCard(uint32_t id) {
+static void mpsShowAppCard(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mps show app [id] ***" << std::endl
+    std::cout << "*** mps show app or mps s a command ***" << std::endl
+        << "Usage: mps show app <id>" << std::endl
 	      << "  id: database Id for the application card - *not* the number!" << std::endl
 	      << std::endl;
     return;
@@ -289,10 +282,10 @@ static void mpsShowAppCard(uint32_t id) {
 
 /*=== mpsShowAnalogChannel command =======================================================*/
 
-static void mpsShowAnalogChannel(uint32_t id) {
+static void mpsShowAnalogChannel(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowAnalogChannel or mpssac command ***" << std::endl
-	      << "Usage: mpssac <id>" << std::endl
+    std::cout << "*** mps show analog or mps s ac command ***" << std::endl
+	      << "Usage: mps show analog <id>" << std::endl
 	      << "  id: database Id for the analog channel" << std::endl
 	      << std::endl;
     return;
@@ -307,10 +300,10 @@ static void mpsShowAnalogChannel(uint32_t id) {
 
 /*=== mpsShowMitigationDevice command =======================================================*/
 
-static void mpsShowMitigationDevice(uint32_t id) {
+static void mpsShowMitigationDevice(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowMitigationDevice or mpssmd command ***" << std::endl
-	      << "Usage: mpssmd <id>" << std::endl
+    std::cout << "*** mps show mitigation or mps s mit command ***" << std::endl
+	      << "Usage: mps show mitigation <id>" << std::endl
 	      << "  id: database Id for the mitigation device" << std::endl
 	      << std::endl;
   }
@@ -318,7 +311,7 @@ static void mpsShowMitigationDevice(uint32_t id) {
   if (id < 0) {
     std::cout << "These are the available mitigation devices: " << std::endl;
     for (DbBeamDestinationMap::iterator it = Engine::getInstance().getCurrentDb()->beamDestinations->begin();
-	 it != Engine::getInstance().getCurrentDb()->beamDestinations->end(); ++it) {
+	    it != Engine::getInstance().getCurrentDb()->beamDestinations->end(); ++it) {
       std::cout << "  [" << (*it).second->id << "] " << (*it).second->name << std::endl;
     }
     std::cout << std::endl;
@@ -332,12 +325,46 @@ static void mpsShowMitigationDevice(uint32_t id) {
   }
 }
 
+/*=== mpsShowAllowedClass (mitigation) command =======================================================*/
+
+static void mpsShowAllowedClass(int32_t id) {
+  if (id < 0) {
+    std::cout << "*** mps show class or mps s cla command ***" << std::endl
+	      << "Usage: mps show class <id>" << std::endl
+	      << "  id: database Id for the allowed class (mitigation)" << std::endl
+	      << std::endl;
+  }
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+  DbAllowedClassMap::iterator it = Engine::getInstance().getCurrentDb()->allowedClasses->find(id);
+
+  if (it != Engine::getInstance().getCurrentDb()->allowedClasses->end()) {
+    std::cout << (*it).second << std::endl;
+  }
+}
+
+/*=== mpsShowFault command =======================================================*/
+static void mpsShowFault(int32_t id) {  
+  if (id < 0) {
+    std::cout << "*** mps show fault or mps s f command ***" << std::endl
+	      << "Usage: mps show fault <id>" << std::endl
+	      << "  id: database Id for the fault" << std::endl
+	      << std::endl;
+  }
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+  DbFaultMap::iterator fault = Engine::getInstance().getCurrentDb()->faults->find(id);
+
+  if (fault != Engine::getInstance().getCurrentDb()->faults->end()) {
+    std::cout << (*fault).second << std::endl;
+  }
+}
+
 /*=== mpsShowFaultState command =======================================================*/
 
-static void mpsShowFaultState(uint32_t id) {
+static void mpsShowFaultState(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowState or mpsss command ***" << std::endl
-	      << "Usage: mpsss <id>" << std::endl
+    std::cout << "*** mps show state or mps s s command ***" << std::endl
+	      << "Usage: mps show state <id>" << std::endl
 	      << "  id: database Id for the fault state" << std::endl
 	      << std::endl;
   }
@@ -352,10 +379,10 @@ static void mpsShowFaultState(uint32_t id) {
 
 /*=== mpsShowLinkNode command =======================================================*/
 
-static void mpsShowLinkNode(uint32_t id) {
+static void mpsShowLinkNode(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowNode or mpssn command ***" << std::endl
-	      << "Usage: mpssn <id>" << std::endl
+    std::cout << "*** mps show node or mps s n command ***" << std::endl
+	      << "Usage: mps show node <id>" << std::endl
 	      << "  id: database Id for the link node" << std::endl
 	      << std::endl;
   }
@@ -370,10 +397,10 @@ static void mpsShowLinkNode(uint32_t id) {
 
 /*=== mpsShowCrate command =======================================================*/
 
-static void mpsShowCrate(uint32_t id) {
+static void mpsShowCrate(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mpsShowCrate or mpssc command ***" << std::endl
-	      << "Usage: mpssc <id>" << std::endl
+    std::cout << "*** mps show crate or mps s c command ***" << std::endl
+	      << "Usage: mps s c <id>" << std::endl
 	      << "  id: database Id for the crate" << std::endl
 	      << std::endl;
   }
@@ -398,10 +425,10 @@ static void mpsShowTestMode() {
 
 /*=== mpsEnableApp command =======================================================*/
 
-static void mpsEnableApp(uint32_t id, int enableInt) {
+static void mpsEnableApp(int32_t id, int enableInt) {
   if (id < 0) {
-    std::cout << "*** mpsEnableApp or mpsea command ***" << std::endl
-	      << "Usage: mpsea <number> <enable>" << std::endl
+    std::cout << "*** mps enable app or mps e a command ***" << std::endl
+	      << "Usage: mps enable app <number> <enable>" << std::endl
 	      << "  number: unique application card id (0 to 1023)" << std::endl
 	      << "  enable: 0 to disable, 1 to enable timeouts" << std::endl
 	      << "" << std::endl
@@ -423,8 +450,8 @@ static void mpsEnableApp(uint32_t id, int enableInt) {
 
 static void mpsEnableAllApp(int enableInt) {
   if (enableInt < 0) {
-    std::cout << "*** mpsEnableApp or mpsea command ***" << std::endl
-	      << "Usage: mpsEnableAllApp <enable>" << std::endl
+    std::cout << "*** mps enable app or mps e a command ***" << std::endl
+	      << "Usage: mps enable app <enable>" << std::endl
 	      << "  enable: 0 to disable, 1 to enable timeouts" << std::endl
 	      << "" << std::endl
 	      << "This command clears/sets the timeout enable bit for all"
@@ -456,9 +483,10 @@ static void mpsEnableAllApp(int enableInt) {
 
 /*=== mpsApp2Db command =======================================================*/
 
-static void mpsApp2Db(uint32_t id) {
+static void mpsApp2Db(int32_t id) {
   if (id < 0) {
-    std::cout << "Usage: mpsg2d <number>" << std::endl
+    std::cout << "Usage: mps app db <number>" << std::endl
+        << "Usage: mps app db <number>" << std::endl
 	      << "  number: unique application card id (0 to 1023)" << std::endl
 	      << "" << std::endl
 	      << "Searches the database for the application card information " << std::endl
@@ -473,7 +501,7 @@ static void mpsApp2Db(uint32_t id) {
   uint32_t dbId = 0;
   for (DbApplicationCardMap::iterator it = Engine::getInstance().getCurrentDb()->applicationCards->begin();
        it != Engine::getInstance().getCurrentDb()->applicationCards->end(); ++it) {
-    if ((*it).second->number == id) {
+    if ((*it).second->number == (uint32_t)id) {
       found = true;
       dbId = (*it).second->id;
       appCard = (*it).second;
@@ -507,6 +535,13 @@ static void mpsPrintPCCounter() {
   Engine::getInstance().getCurrentDb()->printPCCounters();
 }
 
+/*=== mpsPrintTables command ==================================================*/
+
+static void mpsPrintTables() {
+  std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+  std::cout << Engine::getInstance().getCurrentDb() << std::endl;
+}
+
 /*=== mps command =======================================================*/
 
 static void printHelp() {
@@ -525,17 +560,19 @@ static void printHelp() {
 	      << "  |- show faults         : print current MPS faults" << std::endl
 	      << "  |- show app [id]       : print application card info" << std::endl
         << "  |- show digital [id]   : print digital channel info" << std::endl
-	      << "  |- show input [id]     : print fault input info (for digital channels)" << std::endl
+	      << "  |- show input [id]     : print fault input info" << std::endl
 	      << "  |- show analog [id]    : print analog channel info" << std::endl
 	      << "  |- show config [id]    : print fw configuration buffer for app" << std::endl
 	      << "  |- show update [id]    : print latest MPS update message for app" << std::endl
 	      << "  |- show fault [id]     : print fault info" << std::endl
 	      << "  |- show mitigation [id]: print mitigation device info" << std::endl
+        << "  |- show class [id]     : print mitigation (allowed class) info" << std::endl
         << "  |- show state [id]     : print fault state info" << std::endl
         << "  |- show node [id]      : print link node info" << std::endl
         << "  |- show crate [id]     : print crate info" << std::endl
         << "  |- show test           : print All App Disable Flag (test mode)" << std::endl
         << "  |- show pccounters     : print power class change counters" << std::endl
+        << "  |- show tables         : print All the records of the database" << std::endl
 	      << "" << std::endl
 	      << "*** The id specified to the mps command is the database id   ***" << std::endl
 	      << "*** Use id=-1 for additional help (e.g. 'mps show fault -1') ***" << std::endl;
@@ -572,7 +609,7 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     }
     std::string option(args[1].sval);
     if (option == "db") {
-      uint32_t appId = args[2].ival;
+      int32_t appId = args[2].ival;
       mpsApp2Db(appId);
     }
   }
@@ -594,8 +631,8 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       return;
     }
     std::string option(args[1].sval);
-    if (option == "app") {
-      uint32_t id = args[2].ival;
+    if (option == "app" || option == "a") {
+      int32_t id = args[2].ival;
       int enable = args[3].ival;
       if (id > 1023) {
         mpsEnableAllApp(enable);
@@ -633,47 +670,51 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       mpsShowFaults();
     }
     else if (option == "mit" || option == "mitigation") {
-      uint32_t id = args[2].ival;
+      int32_t id = args[2].ival;
       mpsShowMitigationDevice(id);
     }
-    else if (option == "app") {
-      uint32_t id = args[2].ival;
+    else if (option == "cla" || option == "class") {
+      int32_t id = args[2].ival;
+      mpsShowAllowedClass(id);
+    }
+    else if (option == "a" || option == "app") {
+      int32_t id = args[2].ival;
       mpsShowAppCard(id);
     }
     else if (option == "ac" || option == "analog") {
-      uint32_t id = args[2].ival;
+      int32_t id = args[2].ival;
       mpsShowAnalogChannel(id);
     }
     else if (option == "cb" || option == "config") {
-      uint32_t id = args[2].ival;
+      int32_t id = args[2].ival;
       mpsShowConfigBuffer(id);
     }
     else if (option == "ub" || option == "update") {
-      uint32_t id = args[2].ival;
+      int32_t id = args[2].ival;
       mpsShowUpdateBuffer(id);
     }
     else if (option == "fi" || option == "input") {
-      uint32_t id = args[2].ival;
+      int32_t id = args[2].ival;
       mpsShowFaultInput(id);
     }
     else if (option == "dc" || option == "digital") {
-      uint32_t id = args[2].ival;
+      int32_t id = args[2].ival;
       mpsShowDigitalChannel(id);
     }
     else if (option == "s" || option == "state") {
-      uint32_t id = args[2].ival;
+      int32_t id = args[2].ival;
       mpsShowFaultState(id);
     }
     else if (option == "n" || option == "node") {
-      uint32_t id = args[2].ival;
+      int32_t id = args[2].ival;
       mpsShowLinkNode(id);
     }
     else if (option == "c" || option == "crate") {
-      uint32_t id = args[2].ival;
+      int32_t id = args[2].ival;
       mpsShowCrate(id);
     }
-    else if (option == "fault") {
-      uint32_t id = args[2].ival;
+    else if (option == "fault" || option == "f") {
+      int32_t id = args[2].ival;
       mpsShowFault(id);
     }
     else if (option == "test") {
@@ -681,6 +722,9 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     }
     else if (option == "pccounters") {
       mpsPrintPCCounter();
+    }
+    else if (option == "tables") {
+      mpsPrintTables();
     }
     else {
       std::cout << "ERROR: unknown option \"" << option << "\"" << std::endl;
