@@ -542,6 +542,128 @@ static void mpsPrintTables() {
   std::cout << Engine::getInstance().getCurrentDb() << std::endl;
 }
 
+/*=== mpsClearLatch command ==================================================*/
+
+static void mpsClearLatch() {
+  if ( Engine::getInstance().unlatchAllowed() ){
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      Engine::getInstance().getCurrentDb()->unlatchAll(); // Clear all software latches (digital/analog)
+    }
+    Engine::getInstance().clearSoftwareLatch();
+    Firmware::getInstance().evalLatchClear(); // Clear the latches within the firmware
+  }
+  Engine::getInstance().startLatchTimeout();
+}
+
+/*=== mpsBypassDigital command ==================================================*/
+
+static void mpsBypassDigital(int id, int val, epicsInt32 expirationTime) {
+  if (id < 0) {
+    std::cout << "*** mps bypass digital or mps b dc command ***" << std::endl
+	      << "Usage: mps b dc <id> <val> <time (sec)>" << std::endl
+	      << "  id: database Id for the digital channel" << std::endl
+	      << std::endl;
+  }
+  // Add expirationTime to current time, unless the bypass is being cancelled
+  time_t now;
+  time(&now);
+  if (expirationTime > 0) {
+    expirationTime += now;
+  }
+  else {
+    expirationTime = 0;
+  }
+  {
+    
+    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+    Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), BYPASS_DIGITAL,
+                    id, val, expirationTime);
+    
+    std::cout << "Bypassed set for channel " << id << ", exp time=" << expirationTime << std::endl; // TEMP
+  }
+}
+
+/*=== mpsBypassAnalog command ==================================================*/
+
+static void mpsBypassAnalog(int id, int thresholdIndex, epicsInt32 expirationTime) {
+  if (id < 0) {
+    std::cout << "*** mps bypass analog or mps b ac command ***" << std::endl
+	      << "Usage: mps b ac <id> <threshold index> <time (sec)>" << std::endl
+	      << "  id: database Id for the analog channel" << std::endl
+	      << std::endl;
+  }
+  // Add expirationTime to current time, unless the bypass is being cancelled
+  time_t now;
+  time(&now);
+  if (expirationTime > 0) {
+    expirationTime += now;
+  }
+  else {
+    expirationTime = 0;
+  }
+  {
+    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+    uint32_t bypassValue = Engine::getInstance().getCurrentDb()->analogChannels->at(id)->bypass[thresholdIndex]->value;
+    Engine::getInstance().getBypassManager()->setThresholdBypass(Engine::getInstance().getCurrentDb(), BYPASS_ANALOG,
+                    id, bypassValue, expirationTime, thresholdIndex);
+    
+    std::cout << "Bypassed set for channel " << id << ", exp time=" << expirationTime << std::endl; // TEMP
+  }
+}
+
+/*=== mpsBypassfault command =======================================================*/
+
+static void mpsBypassFault(int id, int stateId, epicsInt32 expirationTime) {
+  if (id <= 0) {
+    std::cout << "*** mps bypass fault or mps b f command ***" << std::endl
+	      << "Usage: mps b f <id> <fault state id> <time (sec)>" << std::endl
+	      << "  id: database Id for the fault" << std::endl
+	      << std::endl;
+    return;
+  }
+  // Add expirationTime to current time, unless the bypass is being cancelled
+  time_t now;
+  time(&now);
+  if (expirationTime > 0) {
+    expirationTime += now;
+  }
+  else {
+    expirationTime = 0;
+  }
+  {
+    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+    Engine::getInstance().getBypassManager()->bypassFault(Engine::getInstance().getCurrentDb(),
+                                id, stateId, expirationTime);
+  }
+}
+
+/*=== mpsBypassApp command =======================================================*/
+
+static void mpsBypassApp(int id, epicsInt32 expirationTime) {
+  if (id <= 0) {
+    std::cout << "*** mps bypass app or mps b a command ***" << std::endl
+	      << "Usage: mps b a <id> <time (sec)>" << std::endl
+	      << "  id: database Id for the application card" << std::endl
+	      << std::endl;
+    return;
+  }
+  // Add expirationTime to current time, unless the bypass is being cancelled
+  time_t now;
+  time(&now);
+  if (expirationTime > 0) {
+    expirationTime += now;
+  }
+  else {
+    expirationTime = 0;
+  }
+  {
+    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+    Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), BYPASS_APPLICATION,
+                    id, 0, expirationTime);
+  }
+}
+
 /*=== mps command =======================================================*/
 
 static void printHelp() {
@@ -573,6 +695,19 @@ static void printHelp() {
         << "  |- show test           : print All App Disable Flag (test mode)" << std::endl
         << "  |- show pccounters     : print power class change counters" << std::endl
         << "  |- show tables         : print All the records of the database" << std::endl
+        << "  clear" << std::endl
+        << "  |- clear beam          : clear beam fault" << std::endl
+        << "  |- clear latch         : clear evaluation latch" << std::endl
+        << "  |- clear mon           : clear monitor error" << std::endl
+        << "  |- clear sw            : clear software error" << std::endl
+        << "  |- clear mo            : clear mitigation message concentrator error" << std::endl
+        << "  |- clear to            : clear timeout error" << std::endl
+        << "  bypass" << std::endl
+        << "  |- bypass fault [id] [state_id] [time] : bypass fault to fault state" << std::endl
+        << "  |- bypass app [id] [time] : bypass application card (Disable timeout)" << std::endl
+        // TODO: Think about if worth removing bypass analog/digital
+        // << "  |- bypass digital [id] [time]      : bypass digital channel" << std::endl
+        // << "  |- bypass analog [id] [thr] [time] : bypass analog channel" << std::endl
 	      << "" << std::endl
 	      << "*** The id specified to the mps command is the database id   ***" << std::endl
 	      << "*** Use id=-1 for additional help (e.g. 'mps show fault -1') ***" << std::endl;
@@ -582,8 +717,9 @@ static const iocshArg mpsArg0 = {"[help|show]", iocshArgString};
 static const iocshArg mpsArg1 = {"[option]", iocshArgString};
 static const iocshArg mpsArg2 = {"[id]", iocshArgInt};
 static const iocshArg mpsArg3 = {"[arg3]", iocshArgInt};
-static const iocshArg * const mpsArgs[4] = {&mpsArg0, &mpsArg1, &mpsArg2, &mpsArg3};
-static const iocshFuncDef mpsFuncDef = {"mps", 4, mpsArgs};
+static const iocshArg mpsArg4 = {"[arg4]", iocshArgInt};
+static const iocshArg * const mpsArgs[5] = {&mpsArg0, &mpsArg1, &mpsArg2, &mpsArg3, &mpsArg4};
+static const iocshFuncDef mpsFuncDef = {"mps", 5, mpsArgs};
 static void mpsCallFunc(const iocshArgBuf *args) {
   if (args[0].sval == NULL) {
     printHelp();
@@ -747,6 +883,71 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       return;
     }
   }
+
+  else if (command == "clear") {
+    if (args[1].sval == NULL) {
+      std::cout << "ERROR: missing option" << std::endl;
+      printHelp();
+      return;
+    }
+    std::string option(args[1].sval);
+    if (option == "beam") {
+      Firmware::getInstance().beamFaultClear(); 
+    }
+    else if (option == "latch") {
+      mpsClearLatch();
+    }
+    else if (option == "mon") {
+      Firmware::getInstance().monErrClear();
+    }
+    else if (option == "sw") {
+      Firmware::getInstance().swErrClear();
+    }
+    else if (option == "mo") {
+      Firmware::getInstance().moConcErrClear();
+    }
+    else if (option == "to") {
+      Firmware::getInstance().toErrClear();
+    }
+    else {
+      std::cout << "ERROR: unknown option \"" << option << "\"" << std::endl;
+      return;
+    }
+  }
+
+  else if (command == "bypass" || command == "b") {
+    if (args[1].sval == NULL) {
+      std::cout << "ERROR: missing option" << std::endl;
+      printHelp();
+      return;
+    }
+    std::string option(args[1].sval);
+    if (option == "fault" || option == "f") {
+      int32_t id = args[2].ival;
+      int32_t faultStateId = args[3].ival;
+      int32_t expTime = args[4].ival;
+      mpsBypassFault(id, faultStateId, expTime); 
+    }
+    else if (option == "app" || option == "a") {
+      int32_t id = args[2].ival;
+      int32_t expTime = args[3].ival;
+      mpsBypassApp(id, expTime); 
+    }
+    // May remove this if not used
+    // if (option == "digital" || option == "dc") {
+    //   int32_t id = args[2].ival;
+    //   int32_t bypassVal = args[3].ival;
+    //   int32_t exp_time = args[4].ival;
+    //   mpsBypassDigital(id, bypassVal, exp_time); 
+    // }
+    // if (option == "analog" || option == "ac") {
+    //   int32_t id = args[2].ival;
+    //   int32_t threshold_index = args[3].ival;
+    //   int32_t exp_time = args[4].ival;
+    //   mpsBypassAnalog(id, threshold_index, exp_time); 
+    // }
+  }
+
 }
 
 static void mpsRegistrar(void) {

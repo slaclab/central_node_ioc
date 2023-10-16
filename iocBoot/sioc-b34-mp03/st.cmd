@@ -2,7 +2,7 @@
 
 # ====================================================================
 #
-# SIOC:B084:MP04 Specific Start Up
+# SIOC:B34:MP03 Specific Start Up
 #
 # ====================================================================
 
@@ -11,10 +11,10 @@
 # ====================================================================
 # Setup environment variables specific to this IOC
 # ====================================================================
-epicsEnvSet("CN_INDEX", "2")
+epicsEnvSet("CN_INDEX", "1")
 epicsEnvSet("LOCATION", "SYS0")
 epicsEnvSet("MPS_VERSION","current")
-epicsEnvSet("SLOT","6")
+epicsEnvSet("SLOT","4")
 
 # ====================================================================
 # Load the common Central Node startup for DEV

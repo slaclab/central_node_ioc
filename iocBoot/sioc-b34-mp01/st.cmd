@@ -2,7 +2,7 @@
 
 # ====================================================================
 #
-# SIOC:B084:MP04 Specific Start Up
+# SIOC:B34:MP01 Specific Start Up
 #
 # ====================================================================
 
@@ -14,7 +14,7 @@
 epicsEnvSet("CN_INDEX", "1")
 epicsEnvSet("LOCATION", "SYS0")
 epicsEnvSet("MPS_VERSION","current")
-epicsEnvSet("SLOT","4")
+epicsEnvSet("SLOT","2")
 
 # ====================================================================
 # Load the common Central Node startup for DEV

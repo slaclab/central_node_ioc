@@ -721,24 +721,26 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
-  else if (_mpsFaultDisplayParam == pasynUser->reason) {
-    {
-      *value = 0;
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      try {
-      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
-      	    Engine::getInstance().getCurrentDb()->faults->end()) {
-     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
-      	  return asynError;
-      	}
-	      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultedDisplay) {
-          *value = 1;
-        }
-      } catch (std::exception &e) {
-        	status = asynError;
-      }
-    }
-  }
+  // TODO: This can be omitted once we figure out the proper way to indicate 'faulted' for a fault
+  // Specifically for faults in an 'is_ok' state
+  // else if (_mpsFaultDisplayParam == pasynUser->reason) {
+  //   {
+  //     *value = 0;
+  //     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+  //     try {
+  //     	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+  //     	    Engine::getInstance().getCurrentDb()->faults->end()) {
+  //    	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+  //     	  return asynError;
+  //     	}
+	//       if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultedDisplay) {
+  //         *value = 1;
+  //       }
+  //     } catch (std::exception &e) {
+  //       	status = asynError;
+  //     }
+  //   }
+  // }
   else if (_mpsFaultActiveParam == pasynUser->reason) {
     {
       *value = 0;
@@ -767,7 +769,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
           LOG_TRACE("DRIVER", "ERROR: FaultState not found, key=" << addr);
           return asynError;
         }
-        if (Engine::getInstance().getCurrentDb()->faultStates->at(addr)->faulted) {
+        if (Engine::getInstance().getCurrentDb()->faultStates->at(addr)->active) {
           *value = 1;
         }
       } catch (std::exception &e) {
