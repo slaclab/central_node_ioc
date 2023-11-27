@@ -6,6 +6,12 @@ include $(TOP)/configure/CONFIG
 #========================================
 
 USR_CXXFLAGS += -std=c++0x
+# Enable this flag for the boost test suite
+# > make BOOST_TEST=1
+ifdef BOOST_TEST
+USR_CXXFLAGS+= -DBOOST_TEST
+endif
+
 
 #==================================================================================
 # Path to "NON EPICS" External PACKAGES: USER INCLUDES
@@ -93,7 +99,10 @@ CentralNode_SRCS_vxWorks += -nil-
 # ========================================================================
 # CentralNode_SRCS += file1.c
 # CentralNode_SRCS += file2.c
-
+ifdef BOOST_TEST
+# TODO: Move the bypass_tst.cc into a /test/ folder and make a makefile for that dir
+CentralNode_SRCS += bypass_tst.cc
+endif
 # =====================================================
 # Link in the code from other libraries
 # =====================================================

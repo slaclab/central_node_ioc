@@ -17,6 +17,13 @@
 #include "central_node_database.h"
 #include "central_node_engine.h"
 
+#ifdef BOOST_TEST
+  #define BOOST_TEST_MODULE CENTRAL_NODE_TESTS
+  #define BOOST_TEST_NO_MAIN
+  #define BOOST_TEST_ALTERNATIVE_INIT_API
+  #include <boost/test/included/unit_test.hpp> 
+#endif
+
 #include <epicsExport.h> /* This should be the last header */
 
 static CentralNodeDriver *pCNDriver = NULL;
@@ -329,7 +336,7 @@ static void mpsShowMitigationDevice(int32_t id) {
 
 static void mpsShowAllowedClass(int32_t id) {
   if (id < 0) {
-    std::cout << "*** mps show class or mps s cla command ***" << std::endl
+    std::cout << "*** mps show class or mps s cls command ***" << std::endl
 	      << "Usage: mps show class <id>" << std::endl
 	      << "  id: database Id for the allowed class (mitigation)" << std::endl
 	      << std::endl;
@@ -556,62 +563,6 @@ static void mpsClearLatch() {
   Engine::getInstance().startLatchTimeout();
 }
 
-/*=== mpsBypassDigital command ==================================================*/
-
-static void mpsBypassDigital(int id, int val, epicsInt32 expirationTime) {
-  if (id < 0) {
-    std::cout << "*** mps bypass digital or mps b dc command ***" << std::endl
-	      << "Usage: mps b dc <id> <val> <time (sec)>" << std::endl
-	      << "  id: database Id for the digital channel" << std::endl
-	      << std::endl;
-  }
-  // Add expirationTime to current time, unless the bypass is being cancelled
-  time_t now;
-  time(&now);
-  if (expirationTime > 0) {
-    expirationTime += now;
-  }
-  else {
-    expirationTime = 0;
-  }
-  {
-    
-    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-    Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), BYPASS_DIGITAL,
-                    id, val, expirationTime);
-    
-    std::cout << "Bypassed set for channel " << id << ", exp time=" << expirationTime << std::endl; // TEMP
-  }
-}
-
-/*=== mpsBypassAnalog command ==================================================*/
-
-static void mpsBypassAnalog(int id, int thresholdIndex, epicsInt32 expirationTime) {
-  if (id < 0) {
-    std::cout << "*** mps bypass analog or mps b ac command ***" << std::endl
-	      << "Usage: mps b ac <id> <threshold index> <time (sec)>" << std::endl
-	      << "  id: database Id for the analog channel" << std::endl
-	      << std::endl;
-  }
-  // Add expirationTime to current time, unless the bypass is being cancelled
-  time_t now;
-  time(&now);
-  if (expirationTime > 0) {
-    expirationTime += now;
-  }
-  else {
-    expirationTime = 0;
-  }
-  {
-    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-    uint32_t bypassValue = Engine::getInstance().getCurrentDb()->analogChannels->at(id)->bypass[thresholdIndex]->value;
-    Engine::getInstance().getBypassManager()->setThresholdBypass(Engine::getInstance().getCurrentDb(), BYPASS_ANALOG,
-                    id, bypassValue, expirationTime, thresholdIndex);
-    
-    std::cout << "Bypassed set for channel " << id << ", exp time=" << expirationTime << std::endl; // TEMP
-  }
-}
-
 /*=== mpsBypassfault command =======================================================*/
 
 static void mpsBypassFault(int id, int stateId, epicsInt32 expirationTime) {
@@ -619,6 +570,7 @@ static void mpsBypassFault(int id, int stateId, epicsInt32 expirationTime) {
     std::cout << "*** mps bypass fault or mps b f command ***" << std::endl
 	      << "Usage: mps b f <id> <fault state id> <time (sec)>" << std::endl
 	      << "  id: database Id for the fault" << std::endl
+        << "  if analog fault: mps b f <id> 0 <time (sec)>" << std::endl
 	      << std::endl;
     return;
   }
@@ -633,8 +585,7 @@ static void mpsBypassFault(int id, int stateId, epicsInt32 expirationTime) {
   }
   {
     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-    Engine::getInstance().getBypassManager()->bypassFault(Engine::getInstance().getCurrentDb(),
-                                id, stateId, expirationTime);
+    Engine::getInstance().getBypassManager()->bypassFault(id, stateId, expirationTime);
   }
 }
 
@@ -659,8 +610,7 @@ static void mpsBypassApp(int id, epicsInt32 expirationTime) {
   }
   {
     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-    Engine::getInstance().getBypassManager()->setBypass(Engine::getInstance().getCurrentDb(), BYPASS_APPLICATION,
-                    id, 0, expirationTime);
+    Engine::getInstance().getBypassManager()->setBypass(BYPASS_APPLICATION, id, 0, expirationTime);
   }
 }
 
@@ -705,9 +655,6 @@ static void printHelp() {
         << "  bypass" << std::endl
         << "  |- bypass fault [id] [state_id] [time] : bypass fault to fault state" << std::endl
         << "  |- bypass app [id] [time] : bypass application card (Disable timeout)" << std::endl
-        // TODO: Think about if worth removing bypass analog/digital
-        // << "  |- bypass digital [id] [time]      : bypass digital channel" << std::endl
-        // << "  |- bypass analog [id] [thr] [time] : bypass analog channel" << std::endl
 	      << "" << std::endl
 	      << "*** The id specified to the mps command is the database id   ***" << std::endl
 	      << "*** Use id=-1 for additional help (e.g. 'mps show fault -1') ***" << std::endl;
@@ -809,7 +756,7 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       int32_t id = args[2].ival;
       mpsShowMitigationDevice(id);
     }
-    else if (option == "cla" || option == "class") {
+    else if (option == "cls" || option == "class") {
       int32_t id = args[2].ival;
       mpsShowAllowedClass(id);
     }
@@ -925,28 +872,33 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     if (option == "fault" || option == "f") {
       int32_t id = args[2].ival;
       int32_t faultStateId = args[3].ival;
-      int32_t expTime = args[4].ival;
+      uint32_t expTime = args[4].ival;
       mpsBypassFault(id, faultStateId, expTime); 
     }
     else if (option == "app" || option == "a") {
       int32_t id = args[2].ival;
-      int32_t expTime = args[3].ival;
+      uint32_t expTime = args[3].ival;
       mpsBypassApp(id, expTime); 
     }
-    // May remove this if not used
-    // if (option == "digital" || option == "dc") {
-    //   int32_t id = args[2].ival;
-    //   int32_t bypassVal = args[3].ival;
-    //   int32_t exp_time = args[4].ival;
-    //   mpsBypassDigital(id, bypassVal, exp_time); 
-    // }
-    // if (option == "analog" || option == "ac") {
-    //   int32_t id = args[2].ival;
-    //   int32_t threshold_index = args[3].ival;
-    //   int32_t exp_time = args[4].ival;
-    //   mpsBypassAnalog(id, threshold_index, exp_time); 
-    // }
   }
+  #ifdef BOOST_TEST
+  else if (command == "test" || command == "t") {
+    if (args[1].sval == NULL) {
+      std::cout << "ERROR: missing option" << std::endl;
+      printHelp();
+      return;
+    }
+    std::string option(args[1].sval);
+    if (option == "bypass" || option == "b") {
+      // TODO: create a test log, so its easier to refer to
+      // 2) you should also make the args command line instead of hardcoded
+      // char *argv[] = { (char*)"--report_level=detailed", NULL };
+      char *argv[] = { (char*)"CentralNode", (char*)"--report_level=short", (char*)"--show_progress", 
+                    (char*)"--logger=HRF,error,stdout", (char*)"--run_test=BYPASS_TESTS", NULL };
+      boost::unit_test::unit_test_main(init_unit_test, 5, argv);
+    }
+  }
+  #endif
 
 }
 
