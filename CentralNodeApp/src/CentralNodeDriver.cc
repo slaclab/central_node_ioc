@@ -43,43 +43,39 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   }
 
   createParam(MPS_CONFIG_LOAD_STRING, asynParamOctet, &_mpsConfigLoadParam);
-  createParam(MPS_DEVICE_INPUT_STRING, asynParamUInt32Digital, &_mpsDeviceInputParam);
-  createParam(MPS_ANALOG_DEVICE_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceParam);
+  createParam(MPS_DIGITAL_CHANNEL_STRING, asynParamUInt32Digital, &_mpsDigitalChannelParam);
+  createParam(MPS_ANALOG_CHANNEL_STRING, asynParamUInt32Digital, &_mpsAnalogChannelParam);
   createParam(MPS_SW_MITIGATION_STRING, asynParamInt32, &_mpsSwMitigationParam);
   createParam(MPS_FAULT_STRING, asynParamUInt32Digital, &_mpsFaultParam);
   createParam(MPS_FAULT_TEST_STRING, asynParamInt32, &_mpsFaultParamTest);
-  createParam(MPS_FAULT_DISPLAY_STRING, asynParamUInt32Digital, &_mpsFaultDisplayParam);
+  createParam(MPS_FAULT_FAULTED_STRING, asynParamUInt32Digital, &_mpsFaultFaultedParam);
   createParam(MPS_FAULT_ACTIVE_STRING, asynParamUInt32Digital, &_mpsFaultActiveParam);
   createParam(MPS_FAULT_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultIgnoredParam);
-  createParam(MPS_FAULT_STATE_STRING, asynParamUInt32Digital, &_mpsFaultStateParam);
-  createParam(MPS_FAULT_STATE_IGNORED_STRING, asynParamUInt32Digital, &_mpsFaultStateIgnoredParam);
-  createParam(MPS_DEVICE_INPUT_LATCHED_STRING, asynParamUInt32Digital, &_mpsDeviceInputLatchedParam);
-  createParam(MPS_DEVICE_INPUT_UNLATCH_STRING, asynParamUInt32Digital, &_mpsDeviceInputUnlatchParam);
-  createParam(MPS_DEVICE_INPUT_UNLATCH_FAST_STRING, asynParamUInt32Digital, &_mpsDeviceInputUnlatchFastParam);
-  createParam(MPS_DEVICE_INPUT_BYPV_STRING, asynParamUInt32Digital, &_mpsDeviceInputBypassValueParam);
-  createParam(MPS_DEVICE_INPUT_BYPS_STRING, asynParamUInt32Digital, &_mpsDeviceInputBypassStatusParam);
-  createParam(MPS_DEVICE_INPUT_BYPEXPDATE_STRING, asynParamInt32, &_mpsDeviceInputBypassExpirationDateParam);
-  createParam(MPS_DEVICE_INPUT_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsDeviceInputBypassRemainingExpirationTimeParam);
-  createParam(MPS_DEVICE_INPUT_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsDeviceInputBypassExpirationDateStringParam);
-  createParam(MPS_ANALOG_DEVICE_LATCHED_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceLatchedParam);
-  createParam(MPS_ANALOG_DEVICE_UNLATCH_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceUnlatchParam);
-  createParam(MPS_ANALOG_DEVICE_BYPV_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceBypassValueParam);
-  createParam(MPS_ANALOG_DEVICE_BYPS_STRING, asynParamInt32, &_mpsAnalogDeviceBypassStatusParam);
-  createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING, asynParamInt32, &_mpsAnalogDeviceBypassExpirationDateParam);
-  createParam(MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsAnalogDeviceBypassRemainingExpirationTimeParam);
-  createParam(MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsAnalogDeviceBypassExpirationDateStringParam);
-  createParam(MPS_ANALOG_DEVICE_IGNORED_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceIgnoredParam);
-  createParam(MPS_ANALOG_DEVICE_IGNORED_INTEGRATOR_STRING, asynParamUInt32Digital, &_mpsAnalogDeviceIgnoredIntegratorParam);
+  createParam(MPS_FAULT_BYPV_STRING, asynParamInt32, &_mpsFaultBypassValueParam);
+  createParam(MPS_FAULT_BYPS_STRING, asynParamUInt32Digital, &_mpsFaultBypassStatusParam);
+  createParam(MPS_FAULT_BYPEXPDATE_STRING, asynParamInt32, &_mpsFaultBypassExpirationDateParam);
+  createParam(MPS_FAULT_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsFaultBypassRemainingExpirationTimeParam);
+  createParam(MPS_FAULT_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsFaultBypassExpirationDateStringParam);
+  createParam(MPS_DIGITAL_CHANNEL_LATCHED_STRING, asynParamUInt32Digital, &_mpsDigitalChannelLatchedParam);
+  createParam(MPS_DIGITAL_CHANNEL_UNLATCH_STRING, asynParamUInt32Digital, &_mpsDigitalChannelUnlatchParam);
+  createParam(MPS_DIGITAL_CHANNEL_UNLATCH_FAST_STRING, asynParamUInt32Digital, &_mpsDigitalChannelUnlatchFastParam);
+  createParam(MPS_DIGITAL_CHANNEL_BYPV_STRING, asynParamUInt32Digital, &_mpsDigitalChannelBypassValueParam);
+  createParam(MPS_DIGITAL_CHANNEL_BYPS_STRING, asynParamUInt32Digital, &_mpsDigitalChannelBypassStatusParam);
+  createParam(MPS_DIGITAL_CHANNEL_BYPEXPDATE_STRING, asynParamInt32, &_mpsDigitalChannelBypassExpirationDateParam);
+  createParam(MPS_DIGITAL_CHANNEL_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsDigitalChannelBypassRemainingExpirationTimeParam);
+  createParam(MPS_DIGITAL_CHANNEL_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsDigitalChannelBypassExpirationDateStringParam);
+  createParam(MPS_ANALOG_CHANNEL_LATCHED_STRING, asynParamUInt32Digital, &_mpsAnalogChannelLatchedParam);
+  createParam(MPS_ANALOG_CHANNEL_UNLATCH_STRING, asynParamUInt32Digital, &_mpsAnalogChannelUnlatchParam);
+  createParam(MPS_ANALOG_CHANNEL_BYPV_STRING, asynParamUInt32Digital, &_mpsAnalogChannelBypassValueParam);
+  createParam(MPS_ANALOG_CHANNEL_BYPS_STRING, asynParamInt32, &_mpsAnalogChannelBypassStatusParam);
+  createParam(MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING, asynParamInt32, &_mpsAnalogChannelBypassExpirationDateParam);
+  createParam(MPS_ANALOG_CHANNEL_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsAnalogChannelBypassRemainingExpirationTimeParam);
+  createParam(MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsAnalogChannelBypassExpirationDateStringParam);
+  createParam(MPS_ANALOG_CHANNEL_IGNORED_STRING, asynParamUInt32Digital, &_mpsAnalogChannelIgnoredParam);
+  createParam(MPS_ANALOG_CHANNEL_IGNORED_INTEGRATOR_STRING, asynParamUInt32Digital, &_mpsAnalogChannelIgnoredIntegratorParam);
   createParam(MPS_UNLATCH_ALL_STRING, asynParamInt32, &_mpsUnlatchAllParam);
   createParam(MPS_FW_BUILD_STAMP_STRING_STRING, asynParamOctet, &_mpsFwBuildStampParam);
-  createParam(MPS_ENABLE_STRING, asynParamUInt32Digital, &_mpsEnableParam);
-  createParam(MPS_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsEnableRbvParam);
-  createParam(MPS_SW_ENABLE_STRING, asynParamUInt32Digital, &_mpsSwEnableParam);
-  createParam(MPS_SW_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsSwEnableRbvParam);
-  createParam(MPS_FAULT_REASON_STRING, asynParamInt32, &_mpsFaultReasonParam);
   createParam(MPS_SW_UPDATE_RATE_STRING, asynParamInt32, &_mpsUpdateRateParam);
-  createParam(MPS_TIMING_CHECK_ENABLE_STRING, asynParamUInt32Digital, &_mpsTimingCheckEnableParam);
-  createParam(MPS_TIMING_CHECK_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsTimingCheckEnableRbvParam);
   createParam(MPS_FW_MITIGATION_STRING, asynParamInt32, &_mpsFwMitigationParam);
   createParam(MPS_MITIGATION_STRING, asynParamInt32, &_mpsMitigationParam);
   createParam(MPS_SW_UPDATE_COUNTER_STRING, asynParamInt32, &_mpsUpdateCounterParam);
@@ -87,18 +83,18 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_LATCHED_MITIGATION_STRING, asynParamInt32, &_mpsLatchedMitigationParam);
   createParam(MPS_FINAL_MITIGATION_STRING, asynParamInt32, &_mpsFinalBeamClassParam);
   createParam(MPS_MITIGATION_UNLATCH_STRING, asynParamUInt32Digital, &_mpsMitigationUnlatchParam);
+  createParam(MPS_APP_BYPS_STRING, asynParamUInt32Digital, &_mpsAppBypassStatusParam);
+  createParam(MPS_APP_BYPEXPDATE_STRING, asynParamInt32, &_mpsAppBypassExpirationDateParam);
+  createParam(MPS_APP_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsAppBypassRemainingExpirationTimeParam);
+  createParam(MPS_APP_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsAppBypassExpirationDateStringParam);
   createParam(MPS_APP_STATUS_STRING, asynParamUInt32Digital, &_mpsAppStatusParam);
   createParam(MPS_APP_TIMESTAMP_LOW_BITS_STRING, asynParamInt32, &_mpsAppTimestampLowBitsParam);
   createParam(MPS_APP_TIMESTAMP_HIGH_BITS_STRING, asynParamInt32, &_mpsAppTimestampHighBitsParam);
-  createParam(MPS_EVALUATION_ENABLE_STRING, asynParamUInt32Digital, &_mpsEvaluationEnableParam);
-  createParam(MPS_EVALUATION_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsEvaluationEnableRbvParam);
   createParam(MPS_MON_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsMonErrClearParam);
   createParam(MPS_SW_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsSwErrClearParam);
   createParam(MPS_TO_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsToErrClearParam);
   createParam(MPS_MO_CONC_ERR_CLEAR_STRING, asynParamUInt32Digital, &_mpsMoConcErrClearParam);
   createParam(MPS_BEAM_FAULT_CLEAR_STRING, asynParamUInt32Digital, &_mpsBeamFaultClearParam);
-  createParam(MPS_TIMEOUT_ENABLE_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableParam);
-  createParam(MPS_TIMEOUT_ENABLE_RBV_STRING, asynParamUInt32Digital, &_mpsTimeoutEnableRbvParam);
   createParam(MPS_EVALCYCLE_AVG_TIME_STRING, asynParamInt32, &_mpsEvalCycleAvgParam);
   createParam(MPS_EVALCYCLE_MAX_TIME_STRING, asynParamInt32, &_mpsEvalCycleMaxParam);
   createParam(MPS_EVAL_AVG_TIME_STRING, asynParamInt32, &_mpsEvalAvgParam);
@@ -115,10 +111,8 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_CONFIG_DB_DATE_STRING, asynParamOctet, &_mpsConfigDbDateParam);
   createParam(MPS_CONFIG_DB_MD5SUM_STRING, asynParamOctet, &_mpsConfigDbMd5SumParam);
   createParam(MPS_STATE_STRING, asynParamInt32, &_mpsStateParam);
-  createParam(MPS_CONDITION_STRING, asynParamUInt32Digital, &_mpsConditionParam);
+  createParam(MPS_IGNORE_CONDITION_STRING, asynParamUInt32Digital, &_mpsIgnoreConditionParam);
   createParam(MPS_FW_SOFTWARE_WDOG_COUNTER_STRING, asynParamInt32, &_mpsFwSoftwareWdogCounterParam);
-  createParam(MPS_FW_MONITOR_NOT_READY_COUNTER_STRING, asynParamInt32, &_mpsFwMonitorNotReadyCounterParam);
-  createParam(MPS_SKIP_HEARTBEAT_STRING, asynParamUInt32Digital, &_mpsSkipHeartbeatParam);
   createParam(MPS_FORCE_DEST_STRING, asynParamUInt32Digital, &_mpsForceDestBeamClass);
   createParam(MPS_SW_PERMIT_DEST_STRING, asynParamUInt32Digital, &_mpsSoftPermitDestBeamClass);
   createParam(MPS_FW_RESET_ALL_STRING, asynParamUInt32Digital, &_mpsFwResetAll);
@@ -127,21 +121,22 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_TEST_MODE_STRING, asynParamUInt32Digital, &_mpsTestMode);
 
 
-  createParam(TEST_DEVICE_INPUT_STRING, asynParamOctet, &_testDeviceInputParam);
-  createParam(TEST_ANALOG_DEVICE_STRING, asynParamOctet, &_testAnalogDeviceParam);
+  createParam(TEST_DIGITAL_CHANNEL_STRING, asynParamOctet, &_testDigitalChannelParam);
+  createParam(TEST_ANALOG_CHANNEL_STRING, asynParamOctet, &_testAnalogChannelParam);
   createParam(TEST_CHECK_FAULTS_STRING, asynParamInt32, &_testCheckFaultsParam);
   createParam(TEST_CHECK_BYPASS_STRING, asynParamInt32, &_testCheckBypassParam);
 
   createParam(MPS_APP_TIMEOUT_ENABLE_STRING, asynParamUInt32Digital, &_mpsAppTimeoutEnableParam);
   createParam(MPS_APP_ACTIVE_ENABLE_STRING, asynParamUInt32Digital, &_mpsAppActiveEnableParam);
 
-
   setIntegerParam(0, _mpsStateParam, MPS_STATE_IDLE);
 
   // Initialize bypass date strings
   for (int i = 0; i < 10000; ++i) {
-    setStringParam(i, _mpsDeviceInputBypassExpirationDateStringParam, "Bypass date not set");
-    setStringParam(i, _mpsAnalogDeviceBypassExpirationDateStringParam, "Bypass date not set");
+    setStringParam(i, _mpsDigitalChannelBypassExpirationDateStringParam, "Bypass date not set");
+    setStringParam(i, _mpsAnalogChannelBypassExpirationDateStringParam, "Bypass date not set");
+    setStringParam(i, _mpsFaultBypassExpirationDateStringParam, "Bypass date not set");
+    setStringParam(i, _mpsAppBypassExpirationDateStringParam, "Bypass date not set");
   }
 
   // Start thread that sends out history messages
@@ -155,22 +150,6 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   setStringParam(0, _mpsConfigDbUserParam, "invalid");
   setStringParam(0, _mpsConfigDbDateParam, "invalid");
   setStringParam(0, _mpsConfigDbSourceParam, "invalid");
-
-  int value = 0;
-  if (Firmware::getInstance().getEnable()) value = 1;
-  setUIntDigitalParam(0, _mpsEnableRbvParam, value, 1);
-  value = 0;
-  if (Firmware::getInstance().getSoftwareEnable()) value = 1;
-  setUIntDigitalParam(0, _mpsSwEnableRbvParam, value, 1);
-  value = 0;
-  if (Firmware::getInstance().getTimingCheckEnable()) value = 1;
-  setUIntDigitalParam(0, _mpsTimingCheckEnableRbvParam, value, 1);
-  value = 0;
-  if (Firmware::getInstance().getEvaluationEnable()) value = 1;
-  setUIntDigitalParam(0, _mpsEvaluationEnableRbvParam, value, 1);
-  value = 0;
-  if (Firmware::getInstance().getTimeoutEnable()) value = 1;
-  setUIntDigitalParam(0, _mpsTimeoutEnableRbvParam, value, 1);
 
   _testMode = 1;
 }
@@ -215,11 +194,11 @@ asynStatus CentralNodeDriver::writeOctet(asynUser *pasynUser, const char *value,
       setIntegerParam(0, _mpsStateParam, MPS_STATE_RUNNING);
     }
   }
-  else if (_testDeviceInputParam == pasynUser->reason) {
+  else if (_testDigitalChannelParam == pasynUser->reason) {
     LOG_TRACE("DRIVER", "Loading test fault inputs from file: " << value);
     status = loadTestDigitalChannels(value);
   }
-  else if (_testAnalogDeviceParam == pasynUser->reason) {
+  else if (_testAnalogChannelParam == pasynUser->reason) {
     LOG_TRACE("DRIVER", "Loading test analog channels from file: " << value);
     status = loadTestAnalogChannels(value);
   }
@@ -258,16 +237,41 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
     }
     Engine::getInstance().startLatchTimeout();
   }
-  else if (_mpsDeviceInputBypassExpirationDateParam == pasynUser->reason) {
+  else if (_mpsDigitalChannelBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_DIGITAL, addr, 0, value);
     if (status != asynSuccess) {
-      status = setIntegerParam(addr, _mpsDeviceInputBypassExpirationDateParam, 0);
+      status = setIntegerParam(addr, _mpsDigitalChannelBypassExpirationDateParam, 0);
     }
   }
-  else if (_mpsAnalogDeviceBypassExpirationDateParam == pasynUser->reason) {
+  else if (_mpsFaultBypassValueParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+        Engine::getInstance().getCurrentDb()->faults->at(addr)->bypass->value = value;
+        LOG_TRACE("DRIVER", "BypassValue: "
+            << Engine::getInstance().getCurrentDb()->faults->at(addr)->name
+            << " value: " << value);
+      } catch (std::exception &e) {
+	      status = asynError;
+      }
+    }
+  }
+  else if (_mpsAnalogChannelBypassExpirationDateParam == pasynUser->reason) {
     status = setBypass(BYPASS_ANALOG, addr, pasynUser->timeout, value);
     if (status != asynSuccess) {
-      status = setIntegerParam(addr, _mpsAnalogDeviceBypassExpirationDateParam, 0);
+      status = setIntegerParam(addr, _mpsAnalogChannelBypassExpirationDateParam, 0);
+    }
+  }
+  else if (_mpsFaultBypassExpirationDateParam == pasynUser->reason) {
+    status = setBypass(BYPASS_FAULT, addr, 0, value);
+    if (status != asynSuccess) {
+      status = setIntegerParam(addr, _mpsFaultBypassExpirationDateParam, 0);
+    }
+  }
+  else if (_mpsAppBypassExpirationDateParam == pasynUser->reason) {
+    status = setBypass(BYPASS_APPLICATION, addr, 0, value);
+    if (status != asynSuccess) {
+      status = setIntegerParam(addr, _mpsAppBypassExpirationDateParam, 0);
     }
   }
   else if (_testCheckBypassParam == pasynUser->reason) {
@@ -287,14 +291,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   getAddress(pasynUser, &addr);
   int bitIndex = pasynUser->timeout;
 
-  if (_mpsFaultReasonParam == pasynUser->reason) {
-    try {
-      *value = Firmware::getInstance().getFaultReason();
-    } catch (std::exception &e) {
-      status = asynError;
-    }
-  }
-  else if (_mpsUpdateRateParam == pasynUser->reason) {
+  if (_mpsUpdateRateParam == pasynUser->reason) {
     *value = Engine::getInstance().getUpdateRate();
     return status;
   }
@@ -312,12 +309,6 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
   }
   else if (_mpsFwSoftwareWdogCounterParam == pasynUser->reason) {
     *value = (epicsInt32)(Engine::getInstance().getWdErrorCnt());
-    return status;
-  }
-  else if (_mpsFwMonitorNotReadyCounterParam == pasynUser->reason) {
-    //*value = Firmware::getInstance()._monitorNotReadyCounter;
-    // TO BE DONE: We should rething if this is neccesaty and how to implement it, maybe in FW instead?
-    *value = 0;
     return status;
   }
 
@@ -360,6 +351,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       	}
         *value = Engine::getInstance().getCurrentDb()->faults->at(addr)->displayState;
       } catch (std::exception &e) {
+          
         	status = asynError;
       }
     }
@@ -379,13 +371,13 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       }
     }
   }
-  else if (_mpsAnalogDeviceBypassStatusParam ==  pasynUser->reason) {
+  else if (_mpsAnalogChannelBypassStatusParam ==  pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
         if (Engine::getInstance().getCurrentDb()->analogChannels->find(addr) ==
             Engine::getInstance().getCurrentDb()->analogChannels->end()) {
-          LOG_TRACE("DRIVER", "ERROR: AnalogDevice not found, key=" << addr);
+          LOG_TRACE("DRIVER", "ERROR: AnalogChannel not found, key=" << addr);
           return asynError;
         }
         if (Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->bypass[bitIndex]->status == BYPASS_VALID) {
@@ -571,14 +563,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     }
     return status;
   }
-  else if (_mpsDeviceInputBypassRemainingExpirationTimeParam == pasynUser->reason) {
+  else if (_mpsDigitalChannelBypassRemainingExpirationTimeParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
 
       try {
-        if (Engine::getInstance().getCurrentDb()->faultInputs->find(addr) ==
-            Engine::getInstance().getCurrentDb()->faultInputs->end()) {
-          LOG_TRACE("DRIVER", "ERROR: FaultInput not found, key=" << addr);
+        if (Engine::getInstance().getCurrentDb()->digitalChannels->find(addr) ==
+            Engine::getInstance().getCurrentDb()->digitalChannels->end()) {
+          LOG_TRACE("DRIVER", "ERROR: DigitalChannel not found, key=" << addr);
           return asynError;
         }
         if (Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->bypass->status == BYPASS_VALID) {
@@ -587,14 +579,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
         }
         else {
           *value = 0;
-          status = setStringParam(addr, _mpsDeviceInputBypassExpirationDateStringParam, "Not Bypassed");
+          status = setStringParam(addr, _mpsDigitalChannelBypassExpirationDateStringParam, "Not Bypassed");
         }
       } catch (std::exception &e) {
       	status = asynError;
       }
     }
   }
-  else if (_mpsAnalogDeviceBypassRemainingExpirationTimeParam == pasynUser->reason) {
+  else if (_mpsAnalogChannelBypassRemainingExpirationTimeParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
 
@@ -611,10 +603,56 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
         else {
           *value = 0;
           status = setStringParam(getParamStringOffset(addr, bitIndex),
-                _mpsAnalogDeviceBypassExpirationDateStringParam, "Not Bypassed");
+                _mpsAnalogChannelBypassExpirationDateStringParam, "Not Bypassed");
         }
       } catch (std::exception &e) {
           status = asynError;
+      }
+    }
+  }
+  else if (_mpsFaultBypassRemainingExpirationTimeParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+      try {
+        if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+            Engine::getInstance().getCurrentDb()->faults->end()) {
+          LOG_TRACE("DRIVER", "ERROR: DigitalChannel not found, key=" << addr);
+          return asynError;
+        }
+        if (Engine::getInstance().getCurrentDb()->faults->at(addr)->bypass->status == BYPASS_VALID) {
+          time_t now = time(0);
+          *value = Engine::getInstance().getCurrentDb()->faults->at(addr)->bypass->until - now;
+        }
+        else {
+          *value = 0;
+          status = setStringParam(addr, _mpsFaultBypassExpirationDateStringParam, "Not Bypassed");
+        }
+      } catch (std::exception &e) {
+      	status = asynError;
+      }
+    }
+  }
+  else if (_mpsAppBypassRemainingExpirationTimeParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+
+      try {
+        if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
+            Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+          LOG_TRACE("DRIVER", "ERROR: DigitalChannel not found, key=" << addr);
+          return asynError;
+        }
+        if (Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->bypass->status == BYPASS_VALID) {
+          time_t now = time(0);
+          *value = Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->bypass->until - now;
+        }
+        else {
+          *value = 0;
+          status = setStringParam(addr, _mpsAppBypassExpirationDateStringParam, "Not Bypassed");
+        }
+      } catch (std::exception &e) {
+      	status = asynError;
       }
     }
   }
@@ -631,27 +669,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
   int addr;
   getAddress(pasynUser, &addr);
 
-  if (_mpsEnableRbvParam == pasynUser->reason) {
-    if (Firmware::getInstance().getEnable()) *value = 1; else *value = 0;
-    return status;
-  }
-  else if (_mpsSwEnableRbvParam == pasynUser->reason) {
-    if (Firmware::getInstance().getSoftwareEnable()) *value = 1; else *value = 0;
-    return status;
-  }
-  else if (_mpsTimingCheckEnableRbvParam == pasynUser->reason) {
-    if (Firmware::getInstance().getTimingCheckEnable()) *value = 1; else *value = 0;
-    return status;
-  }
-  else if (_mpsEvaluationEnableRbvParam == pasynUser->reason) {
-    if (Firmware::getInstance().getEvaluationEnable()) *value = 1; else *value = 0;
-    return status;
-  }
-  else if (_mpsTimeoutEnableRbvParam == pasynUser->reason) {
-    if (Firmware::getInstance().getTimeoutEnable()) *value = 1; else *value = 0;
-    return status;
-  }
-  else if (_mpsAppTimeoutEnableParam == pasynUser->reason) {
+  if (_mpsAppTimeoutEnableParam == pasynUser->reason) {
     if (addr >= FW_NUM_APPLICATION_MASKS)
       return asynError;
     *value = Firmware::getInstance().getAppTimeoutEnable(addr);
@@ -672,13 +690,13 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
     return status;
   }
 
-  if (_mpsDeviceInputParam == pasynUser->reason) {
+  if (_mpsDigitalChannelParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
-        if (Engine::getInstance().getCurrentDb()->faultInputs->find(addr) ==
-            Engine::getInstance().getCurrentDb()->faultInputs->end()) {
-          LOG_TRACE("DRIVER", "ERROR: FaultInput not found, key=" << addr);
+        if (Engine::getInstance().getCurrentDb()->digitalChannels->find(addr) ==
+            Engine::getInstance().getCurrentDb()->digitalChannels->end()) {
+          LOG_TRACE("DRIVER", "ERROR: DigitalChannel not found, key=" << addr);
           return asynError;
         }
         *value = Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->value;
@@ -687,7 +705,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
-  else if (_mpsAnalogDeviceParam == pasynUser->reason) {
+  else if (_mpsAnalogChannelParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
@@ -721,6 +739,24 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
+  else if (_mpsFaultFaultedParam == pasynUser->reason) {
+    {
+      *value = 0;
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+      	    Engine::getInstance().getCurrentDb()->faults->end()) {
+     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+      	  return asynError;
+      	}
+	      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
+          *value = 1;
+        }
+      } catch (std::exception &e) {
+        	status = asynError;
+      }
+    }
+  }
   else if (_mpsFaultActiveParam == pasynUser->reason) {
     {
       *value = 0;
@@ -739,43 +775,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
-  else if (_mpsFaultStateParam == pasynUser->reason) {
-    *value = 0;
-    {
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      try {
-        if (Engine::getInstance().getCurrentDb()->faultStates->find(addr) ==
-            Engine::getInstance().getCurrentDb()->faultStates->end()) {
-          LOG_TRACE("DRIVER", "ERROR: FaultState not found, key=" << addr);
-          return asynError;
-        }
-        if (Engine::getInstance().getCurrentDb()->faultStates->at(addr)->active) {
-          *value = 1;
-        }
-      } catch (std::exception &e) {
-	        status = asynError;
-      }
-    }
-  }
-  else if (_mpsFaultStateIgnoredParam == pasynUser->reason) {
-    *value = 0;
-    {
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      try {
-        if (Engine::getInstance().getCurrentDb()->faultStates->find(addr) ==
-            Engine::getInstance().getCurrentDb()->faultStates->end()) {
-          LOG_TRACE("DRIVER", "ERROR: FaultState not found, key=" << addr);
-          return asynError;
-        }
-        if (Engine::getInstance().getCurrentDb()->faultStates->at(addr)->ignored) {
-          *value = 1;
-        }
-      } catch (std::exception &e) {
-	        status = asynError;
-      }
-    }
-  }
-  else if (_mpsAnalogDeviceIgnoredParam == pasynUser->reason) {
+  else if (_mpsAnalogChannelIgnoredParam == pasynUser->reason) {
     *value = 0;
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
@@ -793,7 +793,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
-  else if (_mpsAnalogDeviceIgnoredIntegratorParam == pasynUser->reason) {
+  else if (_mpsAnalogChannelIgnoredIntegratorParam == pasynUser->reason) {
     *value = 0;
     int integrator = pasynUser->timeout;
     {
@@ -812,13 +812,13 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
-  else if (_mpsDeviceInputLatchedParam == pasynUser->reason) {
+  else if (_mpsDigitalChannelLatchedParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
-        if (Engine::getInstance().getCurrentDb()->faultInputs->find(addr) ==
-            Engine::getInstance().getCurrentDb()->faultInputs->end()) {
-          LOG_TRACE("DRIVER", "ERROR: FaultInput not found, key=" << addr);
+        if (Engine::getInstance().getCurrentDb()->digitalChannels->find(addr) ==
+            Engine::getInstance().getCurrentDb()->digitalChannels->end()) {
+          LOG_TRACE("DRIVER", "ERROR: DigitalChannel not found, key=" << addr);
           return asynError;
         }
         *value = Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->latchedValue;
@@ -850,13 +850,13 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
-  else if (_mpsDeviceInputBypassStatusParam ==  pasynUser->reason) {
+  else if (_mpsDigitalChannelBypassStatusParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
-        if (Engine::getInstance().getCurrentDb()->faultInputs->find(addr) ==
-            Engine::getInstance().getCurrentDb()->faultInputs->end()) {
-          LOG_TRACE("DRIVER", "ERROR: FaultInput not found, key=" << addr);
+        if (Engine::getInstance().getCurrentDb()->digitalChannels->find(addr) ==
+            Engine::getInstance().getCurrentDb()->digitalChannels->end()) {
+          LOG_TRACE("DRIVER", "ERROR: DigitalChannel not found, key=" << addr);
           return asynError;
         }
         if (Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->bypass->status == BYPASS_VALID) {
@@ -870,7 +870,47 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
-  else if (_mpsAnalogDeviceLatchedParam == pasynUser->reason) {
+  else if (_mpsFaultBypassStatusParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+        if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+            Engine::getInstance().getCurrentDb()->faults->end()) {
+          LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+          return asynError;
+        }
+        if (Engine::getInstance().getCurrentDb()->faults->at(addr)->bypass->status == BYPASS_VALID) {
+          *value = 1;
+        }
+        else {
+          *value = 0;
+        }
+      } catch (std::exception &e) {
+	      status = asynError;
+      }
+    }
+  }
+  else if (_mpsAppBypassStatusParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+        if (Engine::getInstance().getCurrentDb()->applicationCards->find(addr) ==
+            Engine::getInstance().getCurrentDb()->applicationCards->end()) {
+          LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+          return asynError;
+        }
+        if (Engine::getInstance().getCurrentDb()->applicationCards->at(addr)->bypassed) {
+          *value = 1;
+        }
+        else {
+          *value = 0;
+        }
+      } catch (std::exception &e) {
+	      status = asynError;
+      }
+    }
+  }
+  else if (_mpsAnalogChannelLatchedParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
@@ -908,7 +948,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       }
     }
   }
-  else if (_mpsConditionParam == pasynUser->reason) {
+  else if (_mpsIgnoreConditionParam == pasynUser->reason) {
     *value = 0;
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
@@ -939,47 +979,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   getAddress(pasynUser, &addr);
   int bitIndex = pasynUser->timeout;
 
-  if (_mpsEnableParam == pasynUser->reason) {
-    bool enable = false;
-    if (value != 0) {
-      enable = true;
-    }
-    Firmware::getInstance().setEnable(enable);
-    return status;
-  }
-  else if (_mpsSwEnableParam == pasynUser->reason) {
-    bool enable = false;
-    if (value != 0) {
-      enable = true;
-    }
-    Firmware::getInstance().setSoftwareEnable(enable);
-    return status;
-  }
-  else if (_mpsEvaluationEnableParam == pasynUser->reason) {
-    bool enable = false;
-    if (value != 0) {
-      enable = true;
-    }
-    Firmware::getInstance().setEvaluationEnable(enable);
-    return status;
-  }
-  else if (_mpsTimingCheckEnableParam == pasynUser->reason) {
-    bool enable = false;
-    if (value != 0) {
-      enable = true;
-    }
-    Firmware::getInstance().setTimingCheckEnable(enable);
-    return status;
-  }
-  else if (_mpsTimeoutEnableParam == pasynUser->reason) {
-    bool enable = false;
-    if (value != 0) {
-      enable = true;
-    }
-    Firmware::getInstance().setTimeoutEnable(enable);
-    return status;
-  }
-  else if (_mpsMitigationUnlatchParam == pasynUser->reason) {
+  if (_mpsMitigationUnlatchParam == pasynUser->reason) {
     Firmware::getInstance().evalLatchClear();
     return status;
   }
@@ -1019,11 +1019,6 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     }
     return status;
   }
-  else if (_mpsSkipHeartbeatParam == pasynUser->reason) {
-    //Firmware::getInstance()._skipHeartbeat = value;
-    // TO BE DONE: Is this neccesary? If so, we need to reimplement it.
-    return status;
-  }
   else if (_mpsAppTimeoutEnableParam == pasynUser->reason) {
     if (addr >= FW_NUM_APPLICATION_MASKS)
       return asynError;
@@ -1039,7 +1034,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     return status;
   }
 
-  if (_mpsDeviceInputUnlatchParam == pasynUser->reason) {
+  if (_mpsDigitalChannelUnlatchParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
@@ -1054,7 +1049,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       }
     }
   }
-  else if (_mpsDeviceInputUnlatchFastParam == pasynUser->reason) {
+  else if (_mpsDigitalChannelUnlatchFastParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
@@ -1088,7 +1083,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       }
     }
   }
-  else if (_mpsAnalogDeviceUnlatchParam == pasynUser->reason) {
+  else if (_mpsAnalogChannelUnlatchParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
@@ -1106,7 +1101,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     Firmware::getInstance().evalLatchClear();
     }
   }
-  else if (_mpsDeviceInputBypassValueParam == pasynUser->reason) {
+  else if (_mpsDigitalChannelBypassValueParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
@@ -1119,7 +1114,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       }
     }
   }
-  else if (_mpsAnalogDeviceBypassValueParam == pasynUser->reason) {
+  else if (_mpsAnalogChannelBypassValueParam == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
@@ -1318,21 +1313,13 @@ int CentralNodeDriver::getParamStringOffset(int deviceIndex, int thresholdIndex)
  * @param expirationTime bypass expiration time in seconds since now.
  * If expirationTime is zero or negative the bypass is cancelled.
  */
-asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId,
+asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int id,
 					int thresholdIndex, epicsInt32 expirationTime) {
   asynStatus status = asynSuccess;
   time_t now;
   time(&now);
 
-  LOG_TRACE("DRIVER", "Set bypass for device " << deviceId << ", thresholdIndex=" << thresholdIndex);
-
-  /*
-  if (expirationTime > 0 && expirationTime < now) {
-    std::cerr << "WARNING: Invalid expiration time " << expirationTime
-	      << ". Must be greater than (now) " << now << "." << std::endl;
-    return asynError;
-  }
-  */
+  LOG_TRACE("DRIVER", "Set bypass for channel " << id << ", thresholdIndex=" << thresholdIndex);
 
   // Add expirationTime to current time, unless the bypass is being cancelled
   if (expirationTime > 0) {
@@ -1345,40 +1332,67 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int deviceId,
   {
     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
     try {
-      if (bypassType == BYPASS_DIGITAL) {
-        uint32_t bypassValue = Engine::getInstance().getCurrentDb()->digitalChannels->at(deviceId)->bypass->value;
+      if (bypassType == BYPASS_APPLICATION) {
         Engine::getInstance().getBypassManager()->setBypass(bypassType,
-                        deviceId, bypassValue, expirationTime);
+                        id, 0, expirationTime);
+      }
+      else if (bypassType == BYPASS_FAULT) {
+        uint32_t bypassValue = Engine::getInstance().getCurrentDb()->faults->at(id)->bypass->value;
+        Engine::getInstance().getBypassManager()->bypassFault(
+                        id, bypassValue, expirationTime);
+      }
+      else if (bypassType == BYPASS_DIGITAL) {
+        uint32_t bypassValue = Engine::getInstance().getCurrentDb()->digitalChannels->at(id)->bypass->value;
+        Engine::getInstance().getBypassManager()->setBypass(bypassType,
+                        id, bypassValue, expirationTime);
       }
       else {
-        uint32_t bypassValue = Engine::getInstance().getCurrentDb()->analogChannels->at(deviceId)->bypass[thresholdIndex]->value;
+        uint32_t bypassValue = Engine::getInstance().getCurrentDb()->analogChannels->at(id)->bypass[thresholdIndex]->value;
         Engine::getInstance().getBypassManager()->setThresholdBypass(bypassType,
-                          deviceId, bypassValue, expirationTime, thresholdIndex);
+                          id, bypassValue, expirationTime, thresholdIndex);
       }
     } catch (std::exception &e) {
+      std::cerr << "ERROR: Exception while setting bypass:" << std::endl;
+      std::cerr << e.what() << std::endl;
       return asynError;
     }
   }
 
   if (expirationTime == 0) {
     if (bypassType == BYPASS_DIGITAL) {
-      status = setStringParam(deviceId,
-			      _mpsDeviceInputBypassExpirationDateStringParam, "Not Bypassed");
+      status = setStringParam(id,
+			      _mpsDigitalChannelBypassExpirationDateStringParam, "Not Bypassed");
+    }
+    else if (bypassType == BYPASS_ANALOG) {
+      status = setStringParam(getParamStringOffset(id, thresholdIndex),
+			      _mpsAnalogChannelBypassExpirationDateStringParam, "Not Bypassed");
+    }
+    else if (bypassType == BYPASS_FAULT) {
+      status = setStringParam(id,
+			      _mpsFaultBypassExpirationDateStringParam, "Not Bypassed");
     }
     else {
-      status = setStringParam(getParamStringOffset(deviceId, thresholdIndex),
-			      _mpsAnalogDeviceBypassExpirationDateStringParam, "Not Bypassed");
+      status = setStringParam(id,
+			      _mpsAppBypassExpirationDateStringParam, "Not Bypassed");
     }
   }
   else {
     time_t expTime = expirationTime;
     if (bypassType == BYPASS_DIGITAL) {
-      status = setStringParam(deviceId,
-			      _mpsDeviceInputBypassExpirationDateStringParam, ctime(&expTime));
+      status = setStringParam(id,
+			      _mpsDigitalChannelBypassExpirationDateStringParam, ctime(&expTime));
+    }
+    else if (bypassType == BYPASS_ANALOG) {
+      status = setStringParam(getParamStringOffset(id, thresholdIndex),
+			      _mpsAnalogChannelBypassExpirationDateStringParam, ctime(&expTime));
+    }
+    else if (bypassType == BYPASS_FAULT) {
+      status = setStringParam(id,
+            _mpsFaultBypassExpirationDateStringParam, ctime(&expTime));
     }
     else {
-      status = setStringParam(getParamStringOffset(deviceId, thresholdIndex),
-			      _mpsAnalogDeviceBypassExpirationDateStringParam, ctime(&expTime));
+      status = setStringParam(id,
+            _mpsAppBypassExpirationDateStringParam, ctime(&expTime));
     }
   }
 

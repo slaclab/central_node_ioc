@@ -18,63 +18,59 @@
 
 // List of ASYN parameter names
 #define MPS_CONFIG_LOAD_STRING                     "MPS_CONFIG_LOAD"
-#define MPS_DEVICE_INPUT_STRING                    "MPS_DEVICE_INPUT"
-#define MPS_ANALOG_DEVICE_STRING                   "MPS_ANALOG_DEVICE"
+#define MPS_DIGITAL_CHANNEL_STRING                 "MPS_DIGITAL_CHANNEL"
+#define MPS_ANALOG_CHANNEL_STRING                  "MPS_ANALOG_CHANNEL"
 #define MPS_SW_MITIGATION_STRING                   "MPS_SW_MITIGATION"
 #define MPS_FAULT_STRING                           "MPS_FAULT"
 #define MPS_FAULT_TEST_STRING                      "MPS_FAULT_TEST"
-#define MPS_FAULT_DISPLAY_STRING                   "MPS_FAULT_DISPLAY"
+#define MPS_FAULT_FAULTED_STRING                   "MPS_FAULT_FAULTED"
 #define MPS_FAULT_ACTIVE_STRING                    "MPS_FAULT_ACTIVE"
 #define MPS_FAULT_IGNORED_STRING                   "MPS_FAULT_IGNORED"
 #define MPS_FAULT_LATCHED_STRING                   "MPS_FAULT_LATCHED"
 #define MPS_FAULT_UNLATCH_STRING                   "MPS_FAULT_UNLATCH"
-#define MPS_FAULT_STATE_STRING                     "MPS_FAULT_STATE"
-#define MPS_FAULT_STATE_IGNORED_STRING             "MPS_FAULT_STATE_IGNORED"
-#define MPS_DEVICE_INPUT_LATCHED_STRING            "MPS_DEVICE_INPUT_LATCHED"
-#define MPS_DEVICE_INPUT_UNLATCH_STRING            "MPS_DEVICE_INPUT_UNLATCH"
-#define MPS_DEVICE_INPUT_UNLATCH_FAST_STRING       "MPS_DEVICE_INPUT_FAST_UNLATCH"
-#define MPS_DEVICE_INPUT_BYPV_STRING               "MPS_DEVICE_INPUT_BYPV"
-#define MPS_DEVICE_INPUT_BYPS_STRING               "MPS_DEVICE_INPUT_BYPS"
-#define MPS_DEVICE_INPUT_BYPEXPDATE_STRING         "MPS_DEVICE_INPUT_BYPEXPDATE"
-#define MPS_DEVICE_INPUT_REMAINING_BYPTIME_STRING  "MPS_DEVICE_INPUT_REMAINING_BYPTIME"
-#define MPS_DEVICE_INPUT_BYPEXPDATE_STRING_STRING  "MPS_DEVICE_INPUT_BYPEXPDATE_STRING"
-#define MPS_ANALOG_DEVICE_LATCHED_STRING           "MPS_ANALOG_DEVICE_LATCHED"
-#define MPS_ANALOG_DEVICE_UNLATCH_STRING           "MPS_ANALOG_DEVICE_UNLATCH"
-#define MPS_ANALOG_DEVICE_BYPV_STRING              "MPS_ANALOG_DEVICE_BYPV"
-#define MPS_ANALOG_DEVICE_BYPS_STRING              "MPS_ANALOG_DEVICE_BYPS"
-#define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING        "MPS_ANALOG_DEVICE_BYPEXPDATE"
-#define MPS_ANALOG_DEVICE_REMAINING_BYPTIME_STRING "MPS_ANALOG_DEVICE_REMAINING_BYPTIME"
-#define MPS_ANALOG_DEVICE_BYPEXPDATE_STRING_STRING "MPS_ANALOG_DEVICE_BYPEXPDATE_STRING"
-#define MPS_ANALOG_DEVICE_IGNORED_STRING           "MPS_ANALOG_DEVICE_IGNORED"
-#define MPS_ANALOG_DEVICE_IGNORED_INTEGRATOR_STRING "MPS_ANALOG_DEVICE_IGNORED_INTEGRATOR"
+#define MPS_FAULT_BYPV_STRING                      "MPS_FAULT_BYPV"
+#define MPS_FAULT_BYPS_STRING                      "MPS_FAULT_BYPS"
+#define MPS_FAULT_BYPEXPDATE_STRING                "MPS_FAULT_BYPEXPDATE"
+#define MPS_FAULT_REMAINING_BYPTIME_STRING         "MPS_FAULT_REMAINING_BYPTIME"
+#define MPS_FAULT_BYPEXPDATE_STRING_STRING         "MPS_FAULT_BYPEXPDATE_STRING"
+#define MPS_DIGITAL_CHANNEL_LATCHED_STRING         "MPS_DIGITAL_CHANNEL_LATCHED"
+#define MPS_DIGITAL_CHANNEL_UNLATCH_STRING         "MPS_DIGITAL_CHANNEL_UNLATCH"
+#define MPS_DIGITAL_CHANNEL_UNLATCH_FAST_STRING    "MPS_DIGITAL_CHANNEL_FAST_UNLATCH"
+#define MPS_DIGITAL_CHANNEL_BYPV_STRING            "MPS_DIGITAL_CHANNEL_BYPV"
+#define MPS_DIGITAL_CHANNEL_BYPS_STRING            "MPS_DIGITAL_CHANNEL_BYPS"
+#define MPS_DIGITAL_CHANNEL_BYPEXPDATE_STRING      "MPS_DIGITAL_CHANNEL_BYPEXPDATE"
+#define MPS_DIGITAL_CHANNEL_REMAINING_BYPTIME_STRING "MPS_DIGITAL_CHANNEL_REMAINING_BYPTIME"
+#define MPS_DIGITAL_CHANNEL_BYPEXPDATE_STRING_STRING "MPS_DIGITAL_CHANNEL_BYPEXPDATE_STRING"
+#define MPS_ANALOG_CHANNEL_LATCHED_STRING           "MPS_ANALOG_CHANNEL_LATCHED"
+#define MPS_ANALOG_CHANNEL_UNLATCH_STRING           "MPS_ANALOG_CHANNEL_UNLATCH"
+#define MPS_ANALOG_CHANNEL_BYPV_STRING              "MPS_ANALOG_CHANNEL_BYPV"
+#define MPS_ANALOG_CHANNEL_BYPS_STRING              "MPS_ANALOG_CHANNEL_BYPS"
+#define MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING        "MPS_ANALOG_CHANNEL_BYPEXPDATE"
+#define MPS_ANALOG_CHANNEL_REMAINING_BYPTIME_STRING "MPS_ANALOG_CHANNEL_REMAINING_BYPTIME"
+#define MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING_STRING "MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING"
+#define MPS_ANALOG_CHANNEL_IGNORED_STRING           "MPS_ANALOG_CHANNEL_IGNORED"
+#define MPS_ANALOG_CHANNEL_IGNORED_INTEGRATOR_STRING "MPS_ANALOG_CHANNEL_IGNORED_INTEGRATOR"
 #define MPS_UNLATCH_ALL_STRING                     "MPS_UNLATCH_ALL"
 #define MPS_FW_BUILD_STAMP_STRING_STRING           "MPS_FW_BUILD_STAMP_STRING"
-#define MPS_ENABLE_STRING                          "MPS_ENABLE"
-#define MPS_ENABLE_RBV_STRING                      "MPS_ENABLE_RBV"
-#define MPS_SW_ENABLE_STRING                       "MPS_SW_ENABLE"
-#define MPS_SW_ENABLE_RBV_STRING                   "MPS_SW_ENABLE_RBV"
-#define MPS_FAULT_REASON_STRING                    "MPS_FAULT_REASON"
 #define MPS_SW_UPDATE_RATE_STRING                  "MPS_SW_UPDATE_RATE"
-#define MPS_TIMING_CHECK_ENABLE_STRING             "MPS_TIMING_CHECK_ENABLE"
-#define MPS_TIMING_CHECK_ENABLE_RBV_STRING         "MPS_TIMING_CHECK_ENABLE_RBV"
 #define MPS_FW_MITIGATION_STRING                   "MPS_FW_MITIGATION"
 #define MPS_MITIGATION_STRING                      "MPS_MITIGATION"
 #define MPS_SW_UPDATE_COUNTER_STRING               "MPS_SW_UPDATE_COUNTER"
 #define MPS_ENGINE_START_TIME_STRING_STRING        "MPS_ENGINE_START_TIME_STRING"
 #define MPS_LATCHED_MITIGATION_STRING              "MPS_LATCHED_MITIGATION"
 #define MPS_MITIGATION_UNLATCH_STRING              "MPS_MITIGATION_UNLATCH"
+#define MPS_APP_BYPS_STRING                        "MPS_APP_BYPS"
+#define MPS_APP_BYPEXPDATE_STRING                  "MPS_APP_BYPEXPDATE"
+#define MPS_APP_REMAINING_BYPTIME_STRING           "MPS_APP_REMAINING_BYPTIME"
+#define MPS_APP_BYPEXPDATE_STRING_STRING           "MPS_APP_BYPEXPDATE_STRING"
 #define MPS_APP_STATUS_STRING                      "MPS_APP_STATUS"
 #define MPS_APP_TIMESTAMP_LOW_BITS_STRING          "MPS_APP_TIMESTAMP_LOW_BITS"
 #define MPS_APP_TIMESTAMP_HIGH_BITS_STRING         "MPS_APP_TIMESTAMP_HIGH_BITS"
-#define MPS_EVALUATION_ENABLE_STRING               "MPS_EVALUATION_ENABLE"
-#define MPS_EVALUATION_ENABLE_RBV_STRING           "MPS_EVALUATION_ENABLE_RBV"
 #define MPS_MON_ERR_CLEAR_STRING                   "MPS_MON_ERR_CLEAR"
 #define MPS_SW_ERR_CLEAR_STRING                    "MPS_SW_ERR_CLEAR"
 #define MPS_TO_ERR_CLEAR_STRING                    "MPS_TO_ERR_CLEAR"
 #define MPS_MO_CONC_ERR_CLEAR_STRING               "MPS_MO_CONC_ERR_CLEAR"
 #define MPS_BEAM_FAULT_CLEAR_STRING                "MPS_BEAM_FAULT_CLEAR"
-#define MPS_TIMEOUT_ENABLE_STRING                  "MPS_TIMEOUT_ENABLE"
-#define MPS_TIMEOUT_ENABLE_RBV_STRING              "MPS_TIMEOUT_ENABLE_RBV"
 #define MPS_EVALCYCLE_AVG_TIME_STRING              "MPS_EVALCYCLE_AVG_TIME"
 #define MPS_EVALCYCLE_MAX_TIME_STRING              "MPS_EVALCYCLE_MAX_TIME"
 #define MPS_EVAL_AVG_TIME_STRING                   "MPS_EVAL_AVG_TIME"
@@ -91,10 +87,8 @@
 #define MPS_CONFIG_DB_DATE_STRING                  "MPS_CONFIG_DB_DATE"
 #define MPS_CONFIG_DB_MD5SUM_STRING                "MPS_CONFIG_DB_MD5SUM"
 #define MPS_STATE_STRING                           "MPS_STATE"
-#define MPS_CONDITION_STRING                       "MPS_CONDITION"
+#define MPS_IGNORE_CONDITION_STRING                "MPS_IGNORE_CONDITION"
 #define MPS_FW_SOFTWARE_WDOG_COUNTER_STRING        "MPS_FW_SOFTWARE_WDOG_COUNTER"
-#define MPS_FW_MONITOR_NOT_READY_COUNTER_STRING    "MPS_FW_MONITOR_NOT_READY_COUNTER"
-#define MPS_SKIP_HEARTBEAT_STRING                  "MPS_SKIP_HEARTBEAT"
 #define MPS_FORCE_LINAC_PC0_STRING                 "MPS_FORCE_LINAC_PC0"
 #define MPS_FORCE_AOM_PC0_STRING                   "MPS_FORCE_AOM_PC0"
 #define MPS_FORCE_DEST_STRING                      "MPS_FORCE_DEST"
@@ -105,8 +99,8 @@
 #define MPS_MAX_BEAM_CLASS_STRING                  "MPS_MAX_BEAM_CLASS"
 #define MPS_TEST_MODE_STRING                       "MPS_TEST_MODE"
 
-#define TEST_DEVICE_INPUT_STRING                   "TEST_DEVICE_INPUT"
-#define TEST_ANALOG_DEVICE_STRING                  "TEST_ANALOG_DEVICE"
+#define TEST_DIGITAL_CHANNEL_STRING                "TEST_DIGITAL_CHANNEL"
+#define TEST_ANALOG_CHANNEL_STRING                 "TEST_ANALOG_CHANNEL"
 #define TEST_CHECK_FAULTS_STRING                   "TEST_CHECK_FAULTS"
 #define TEST_CHECK_BYPASS_STRING                   "TEST_CHECK_BYPASS"
 
@@ -155,45 +149,41 @@ public:
 
   // List of ASYN parameters
   int _mpsConfigLoadParam;
-  int _mpsDeviceInputParam;
-  int _mpsAnalogDeviceParam;
+  int _mpsDigitalChannelParam;
+  int _mpsAnalogChannelParam;
   int _mpsSwMitigationParam;
   int _mpsFaultParam;
   int _mpsFaultParamTest;
-  int _mpsFaultDisplayParam;
+  int _mpsFaultFaultedParam;
   int _mpsFaultActiveParam;
   int _mpsFaultIgnoredParam;
   int _mpsFaultLatchedParam;
   int _mpsFaultUnlatchParam;
-  int _mpsFaultStateParam;
-  int _mpsFaultStateIgnoredParam;
-  int _mpsDeviceInputLatchedParam;
-  int _mpsDeviceInputUnlatchParam;
-  int _mpsDeviceInputUnlatchFastParam;
-  int _mpsDeviceInputBypassValueParam;
-  int _mpsDeviceInputBypassStatusParam;
-  int _mpsDeviceInputBypassExpirationDateParam;
-  int _mpsDeviceInputBypassRemainingExpirationTimeParam;
-  int _mpsDeviceInputBypassExpirationDateStringParam;
-  int _mpsAnalogDeviceLatchedParam;
-  int _mpsAnalogDeviceUnlatchParam;
-  int _mpsAnalogDeviceBypassValueParam;
-  int _mpsAnalogDeviceBypassStatusParam;
-  int _mpsAnalogDeviceBypassExpirationDateParam;
-  int _mpsAnalogDeviceBypassRemainingExpirationTimeParam;
-  int _mpsAnalogDeviceBypassExpirationDateStringParam;
-  int _mpsAnalogDeviceIgnoredParam;
-  int _mpsAnalogDeviceIgnoredIntegratorParam;
+  int _mpsFaultBypassValueParam;
+  int _mpsFaultBypassStatusParam;
+  int _mpsFaultBypassExpirationDateParam;
+  int _mpsFaultBypassRemainingExpirationTimeParam;
+  int _mpsFaultBypassExpirationDateStringParam;
+  int _mpsDigitalChannelLatchedParam;
+  int _mpsDigitalChannelUnlatchParam;
+  int _mpsDigitalChannelUnlatchFastParam;
+  int _mpsDigitalChannelBypassValueParam;
+  int _mpsDigitalChannelBypassStatusParam;
+  int _mpsDigitalChannelBypassExpirationDateParam;
+  int _mpsDigitalChannelBypassRemainingExpirationTimeParam;
+  int _mpsDigitalChannelBypassExpirationDateStringParam;
+  int _mpsAnalogChannelLatchedParam;
+  int _mpsAnalogChannelUnlatchParam;
+  int _mpsAnalogChannelBypassValueParam;
+  int _mpsAnalogChannelBypassStatusParam;
+  int _mpsAnalogChannelBypassExpirationDateParam;
+  int _mpsAnalogChannelBypassRemainingExpirationTimeParam;
+  int _mpsAnalogChannelBypassExpirationDateStringParam;
+  int _mpsAnalogChannelIgnoredParam;
+  int _mpsAnalogChannelIgnoredIntegratorParam;
   int _mpsUnlatchAllParam;
   int _mpsFwBuildStampParam;
-  int _mpsEnableParam;
-  int _mpsEnableRbvParam;
-  int _mpsSwEnableParam;
-  int _mpsSwEnableRbvParam;
-  int _mpsFaultReasonParam;
   int _mpsUpdateRateParam;
-  int _mpsTimingCheckEnableParam;
-  int _mpsTimingCheckEnableRbvParam;
   int _mpsFwMitigationParam;
   int _mpsMitigationParam;
   int _mpsUpdateCounterParam;
@@ -201,18 +191,18 @@ public:
   int _mpsLatchedMitigationParam;
   int _mpsFinalBeamClassParam;
   int _mpsMitigationUnlatchParam;
+  int _mpsAppBypassStatusParam;
+  int _mpsAppBypassExpirationDateParam;
+  int _mpsAppBypassRemainingExpirationTimeParam;
+  int _mpsAppBypassExpirationDateStringParam;
   int _mpsAppStatusParam;
   int _mpsAppTimestampLowBitsParam;
   int _mpsAppTimestampHighBitsParam;
-  int _mpsEvaluationEnableParam;
-  int _mpsEvaluationEnableRbvParam;
   int _mpsMonErrClearParam;
   int _mpsSwErrClearParam;
   int _mpsToErrClearParam;
   int _mpsMoConcErrClearParam;
   int _mpsBeamFaultClearParam;
-  int _mpsTimeoutEnableParam;
-  int _mpsTimeoutEnableRbvParam;
   int _mpsEvalAvgParam;
   int _mpsEvalMaxParam;
   int _mpsEvalCycleAvgParam;
@@ -229,10 +219,8 @@ public:
   int _mpsConfigDbDateParam;
   int _mpsConfigDbMd5SumParam;
   int _mpsStateParam;
-  int _mpsConditionParam;
+  int _mpsIgnoreConditionParam;
   int _mpsFwSoftwareWdogCounterParam;
-  int _mpsFwMonitorNotReadyCounterParam;
-  int _mpsSkipHeartbeatParam;
   int _mpsForceLinacPc0Param;
   int _mpsForceAomPc0Param;
   int _mpsForceDestBeamClass;
@@ -242,8 +230,8 @@ public:
   int _mpsMaxPermitDestBeamClass;
   int _mpsTestMode;
 
-  int _testDeviceInputParam;
-  int _testAnalogDeviceParam;
+  int _testDigitalChannelParam;
+  int _testAnalogChannelParam;
   int _testCheckFaultsParam;
   int _testCheckBypassParam;
 
@@ -258,7 +246,7 @@ public:
   asynStatus loadTestDigitalChannels(const char *testFileName);
   asynStatus loadTestAnalogChannels(const char *testFileName);
 
-  asynStatus setBypass(BypassType bypassType, int deviceId, int thresholdIndex, epicsInt32 expirationTime);
+  asynStatus setBypass(BypassType bypassType, int channelId, int thresholdIndex, epicsInt32 expirationTime);
 
   int getParamStringOffset(int deviceIndex, int thresholdIndex);
 };

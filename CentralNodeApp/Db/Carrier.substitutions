@@ -32,8 +32,6 @@ file "RegisterIn.template" { pattern
 { $(P), EvaluationTimeStamp, "Mitigation timestamp",                        "YES",  "1 second", $(PORT),   "",   EvaluationTimeStamp }
 { $(P), SoftwareBusy,        "Soft. engine busy, waiting pause to clr",     "YES",  "1 second", $(PORT),   "",   SoftwareBusy      }
 { $(P), SoftwarePause,       "Soft. engine pause back-pressure signal",     "YES",  "1 second", $(PORT),   "",   SoftwarePause     }
-{ $(P), TimePowL,            "PowerClass from timing (lower 32 bits)",      "YES",  "1 second", $(PORT),   "",   TimePowL          }
-{ $(P), TimePowH,            "PowerClass from timing (upper 32 bits)",      "YES",  "1 second", $(PORT),   "",   TimePowH          }
 { $(P), PGP_RX_FRAME_CNT_0,      "Pgp2bAxi 0 RX Frame Count",               "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameCount_0       }
 { $(P), PGP_RX_FRAME_ERR_CNT_0,  "Pgp2bAxi 0 RX Frame Error Count",         "YES",  "1 second", $(PORT),   "frames", PGP_RxFrameErrorCount_0  }
 { $(P), PGP_RX_CLK_0,            "Pgp2bAxi 0 RX Clock Frequency",           "YES",  "1 second", $(PORT),   "Hz",     PGP_RxClkFreq_0          }
@@ -360,18 +358,18 @@ file "RegRW.template" { pattern
 
 file "RegisterOut.template" { pattern
 { P,        R,              DESC,                                       PINI,   SCAN,       PORT,  PARAM       }
-{ $(P), ScratchPad,       "Register to test R/W"                        "NO",   "Passive",  $(PORT),    ScratchPad }
-{ $(P), RxPolarity,       ""                                            "NO",   "Passive",  $(PORT),    RxPolarity }
-{ $(P), Enable,           "General Enable. Enables message stream",     "NO",   "Passive",  $(PORT),    Enable     }
-{ $(P), Switch,           "Switch the configuration buffer",            "NO",   "Passive",  $(PORT),    Switch     }
-{ $(P), SoftwareEnable,   "Enable software eval engine updates",        "NO",   "Passive",  $(PORT),    SoftwareEnable     }
-{ $(P), EvaluationEnable, "Enable evaluation engine",                   "NO",   "Passive",  $(PORT),    EvaluationEnable     }
-{ $(P), BeamFaultEn,      "Beam fault enable",                          "NO",   "Passive",  $(PORT),    BeamFaultEn     }
-{ $(P), TimeoutEnable,    "Enable application timeout engine",          "NO",   "Passive",  $(PORT),    TimeoutEnable     }
-{ $(P), SoftwareClear,    "Clear software counters",                    "NO",   "Passive",  $(PORT),    SoftwareClear     }
-{ $(P), TimeoutMsgVer,    "MPS Message version (5 bits)",               "NO",   "Passive",  $(PORT),    TimeoutMsgVer  }
-{ $(P), TO_APP_SEL_0,      "App ID to monitor timeout",                 "NO",   "Passive",  $(PORT),    ToAppIDSel0  }
-{ $(P), TO_APP_SEL_1,      "App ID to monitor timeout",                 "NO",   "Passive",  $(PORT),    ToAppIDSel1  }
+{ $(P), ScratchPad,        "Register to test R/W"                        "NO",   "Passive",  $(PORT),    ScratchPad }
+{ $(P), RxPolarity,        ""                                            "NO",   "Passive",  $(PORT),    RxPolarity }
+{ $(P), ENABLE,            "General Enable. Enables message stream",     "NO",   "Passive",  $(PORT),    Enable     }
+{ $(P), Switch,            "Switch the configuration buffer",            "NO",   "Passive",  $(PORT),    Switch     }
+{ $(P), SOFTWARE_ENABLE,   "Enable software eval engine updates",        "NO",   "Passive",  $(PORT),    SoftwareEnable     }
+{ $(P), EVALUATION_ENABLE, "Enable evaluation engine",                   "NO",   "Passive",  $(PORT),    EvaluationEnable     }
+{ $(P), TIMING_CHECK_ENABLE,       "Beam fault enable",                  "NO",   "Passive",  $(PORT),    BeamFaultEn     }
+{ $(P), TIMEOUT_ENABLE,    "Enable application timeout engine",          "NO",   "Passive",  $(PORT),    TimeoutEnable     }
+{ $(P), SoftwareClear,     "Clear software counters",                    "NO",   "Passive",  $(PORT),    SoftwareClear     }
+{ $(P), TimeoutMsgVer,     "MPS Message version (5 bits)",               "NO",   "Passive",  $(PORT),    TimeoutMsgVer  }
+{ $(P), TO_APP_SEL_0,      "App ID to monitor timeout",                  "NO",   "Passive",  $(PORT),    ToAppIDSel0  }
+{ $(P), TO_APP_SEL_1,      "App ID to monitor timeout",                  "NO",   "Passive",  $(PORT),    ToAppIDSel1  }
 
 }
 
@@ -384,28 +382,24 @@ file "RegisterOutAutosaveAsg.template" { pattern
 
 file "RegisterOutRBV.template" { pattern
 { P,           R,                DESC,                                    PINI,   SCAN,        PORT,       PARAM          }
-{ $(P), ScratchPadRBV,      "Register to test R/W",                       "YES",  "1 second",  $(PORT),    ScratchPad      }
-{ $(P), RxPolarityRBV,      ""                                            "YES",  "1 second",  $(PORT),    RxPolarity      }
-{ $(P), EnableRBV,          "General Enable. Enables message stream",     "YES",  "1 second",  $(PORT),    Enable          }
-{ $(P), SwitchRBV,          "Switch the configuration buffer       ",     "YES",  "1 second",  $(PORT),    Switch          }
-{ $(P), BeamFaultEnRBV,     "Beam fault enable",                          "YES",  "1 second",  $(PORT),    BeamFaultEn }
-{ $(P), SoftwareEnableRBV,  "Enable software eval engine updates",        "YES",  "1 second",  $(PORT),    SoftwareEnable  }
-{ $(P), TimeoutEnableRBV,   "Enable application timeout engine",          "YES",  "1 second",  $(PORT),    TimeoutEnable  }
-{ $(P), TimeoutMsgVerRBV,   "MPS Message version (5 bits)",               "YES",  "1 second",  $(PORT),    TimeoutMsgVer  }
-{ $(P), EvaluationEnableRBV,"Enable evaluation engine",                   "YES",  "1 second",  $(PORT),    EvaluationEnable  }
-{ $(P), TO_APP_SEL_0_RBV,   "App ID to monitor timeout",                  "YES",  "1 second",  $(PORT),    ToAppIDSel0  }
-{ $(P), TO_APP_SEL_1_RBV,   "App ID to monitor timeout",                  "YES",  "1 second",  $(PORT),    ToAppIDSel1  }
+{ $(P), ScratchPadRBV,           "Register to test R/W",                       "YES",  "1 second",  $(PORT),    ScratchPad      }
+{ $(P), RxPolarityRBV,           ""                                            "YES",  "1 second",  $(PORT),    RxPolarity      }
+{ $(P), ENABLE_RBV,              "General Enable. Enables message stream",     "YES",  "1 second",  $(PORT),    Enable          }
+{ $(P), SwitchRBV,               "Switch the configuration buffer       ",     "YES",  "1 second",  $(PORT),    Switch          }
+{ $(P), TIMING_CHECK_ENABLE_RBV, "Beam fault enable",                          "YES",  "1 second",  $(PORT),    BeamFaultEn }
+{ $(P), SOFTWARE_ENABLE_RBV,      "Enable software eval engine updates",        "YES",  "1 second",  $(PORT),    SoftwareEnable  }
+{ $(P), TIMEOUT_ENABLE_RBV,      "Enable application timeout engine",          "YES",  "1 second",  $(PORT),    TimeoutEnable  }
+{ $(P), TimeoutMsgVerRBV,        "MPS Message version (5 bits)",               "YES",  "1 second",  $(PORT),    TimeoutMsgVer  }
+{ $(P), EVALUATION_ENABLE_RBV,     "Enable evaluation engine",                   "YES",  "1 second",  $(PORT),    EvaluationEnable  }
+{ $(P), TO_APP_SEL_0_RBV,        "App ID to monitor timeout",                  "YES",  "1 second",  $(PORT),    ToAppIDSel0  }
+{ $(P), TO_APP_SEL_1_RBV,        "App ID to monitor timeout",                  "YES",  "1 second",  $(PORT),    ToAppIDSel1  }
 }
 
 # Array of register
 file "RegisterArrayOutRBV.template" { pattern
 { P,    R,             DESC,                                                         NELM,      SCAN, ADDR,    PORT, PARAM         }
 { $(P), EvaluationSwPowerLevel,      "Allowed power levels from software",           2,    "Passive",   1, $(PORT), EvaluationSwPowerLevel }
-{ $(P), EvaluationFwPowerLevel,      "Allowed power levels from firmware",           2,    "Passive",   0, $(PORT), EvaluationFwPowerLevel }
-{ $(P), EvaluationLatchedPowerLevel, "Latched power levels from firmware",           2,    "Passive",   0, $(PORT), EvaluationLatchedPowerLevel}
-{ $(P), EvaluationPowerLevel,        "Actual power levels",                          2,    "Passive",   0, $(PORT), EvaluationPowerLevel }
 { $(P), TimeoutErrIndex,             "Timeout bit status per application",           32,   "Passive",   0, $(PORT), TimeoutErrIndex }
-{ $(P), TimeoutMask,                 "1024 Bit Application Mask",                    32,   "Passive",   1, $(PORT), TimeoutMask }
 }
 
 # ENUM register

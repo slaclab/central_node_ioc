@@ -890,9 +890,6 @@ static void mpsCallFunc(const iocshArgBuf *args) {
     }
     std::string option(args[1].sval);
     if (option == "bypass" || option == "b") {
-      // TODO: create a test log, so its easier to refer to
-      // 2) you should also make the args command line instead of hardcoded
-      // char *argv[] = { (char*)"--report_level=detailed", NULL };
       char *argv[] = { (char*)"CentralNode", (char*)"--report_level=short", (char*)"--show_progress", 
                     (char*)"--logger=HRF,error,stdout", (char*)"--run_test=BYPASS_TESTS", NULL };
       boost::unit_test::unit_test_main(init_unit_test, 5, argv);

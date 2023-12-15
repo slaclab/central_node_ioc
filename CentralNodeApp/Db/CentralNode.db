@@ -46,75 +46,11 @@ record(longout, "$(IOC):UNLATCHALL") {
     field(OMSL, "closed_loop")
 }
 
-record(bo, "$(IOC):ENABLE") {
-    field(DESC, "Enable Central Node")
-    field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_ENABLE")
-    field(ONAM, "Enabled")
-    field(ZNAM, "Disabled")
-    field(VAL,  "0")
-    field(ASG,  "$(ASG1)")
-}
-
-record(bo, "$(IOC):EVALUATION_ENABLE") {
-    field(DESC, "Enable Central Node")
-    field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_EVALUATION_ENABLE")
-    field(ONAM, "Enabled")
-    field(ZNAM, "Disabled")
-    field(VAL,  "0")
-    field(ASG,  "$(ASG1)")
-}
-
 record(bo, "$(IOC):MITIGATION_UNLH") {
     field(DESC, "Unlatch mitigation")
     field(DTYP, "asynUInt32Digital")
     field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_MITIGATION_UNLATCH")
     field(ASG,  "$(ASG1)")
-}
-
-record(bi, "$(IOC):ENABLE_RBV") {
-    field(DESC, "Enable Central Node (RBV)")
-    field(DTYP, "asynUInt32Digital")
-    field(SCAN, "1 second")
-    field(ZNAM, "Disabled")
-    field(ONAM, "Enabled")
-    field(ZSV, "MAJOR")
-    field(OSV, "NO_ALARM")
-    field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_ENABLE_RBV")
-    field(VAL,  "0")
-}
-
-record(bi, "$(IOC):EVALUATION_ENABLE_RBV") {
-    field(DESC, "Enable Eval Central Node (RBV)")
-    field(DTYP, "asynUInt32Digital")
-    field(SCAN, "1 second")
-    field(ZNAM, "Disabled")
-    field(ONAM, "Enabled")
-    field(ZSV, "MAJOR")
-    field(OSV, "NO_ALARM")
-    field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_EVALUATION_ENABLE_RBV")
-}
-
-record(bo, "$(IOC):SW_ENABLE") {
-    field(DESC, "Enable Central Node Software")
-    field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SW_ENABLE")
-    field(ONAM, "Enabled")
-    field(ZNAM, "Disabled")
-    field(VAL,  "0")
-    field(ASG,  "$(ASG1)")
-}
-
-record(bi, "$(IOC):SW_ENABLE_RBV") {
-    field(DESC, "Enable Central Node Software (RBV)")
-    field(DTYP, "asynUInt32Digital")
-    field(SCAN, "1 second")
-    field(ZNAM, "Disabled")
-    field(ONAM, "Enabled")
-    field(ZSV, "MAJOR")
-    field(OSV, "NO_ALARM")
-    field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SW_ENABLE_RBV")
 }
 
 record(longin, "$(IOC):SW_UPDATE_RATE") {
@@ -138,47 +74,6 @@ record(longin, "$(IOC):SW_UPDATE_COUNTER") {
     field(DTYP, "asynInt32")
     field(SCAN, "1 second")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_SW_UPDATE_COUNTER")
-}
-
-record(bo, "$(IOC):TIMING_CHECK_ENABLE") {
-    field(DESC, "Enable timing pattern check")
-    field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TIMING_CHECK_ENABLE")
-    field(ONAM, "Enabled")
-    field(ZNAM, "Disabled")
-    field(VAL,  "0")
-    field(ASG,  "$(ASG1)")
-}
-
-record(bi, "$(IOC):TIMING_CHECK_ENABLE_RBV") {
-    field(DESC, "Enable timing pattern check (RBV)")
-    field(DTYP, "asynUInt32Digital")
-    field(SCAN, "1 second")
-    field(ZNAM, "Disabled")
-    field(ONAM, "Enabled")
-    field(ZSV, "MAJOR")
-    field(OSV, "NO_ALARM")
-    field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TIMING_CHECK_ENABLE_RBV")
-}
-
-record(bo, "$(IOC):TIMEOUT_ENABLE") {
-    field(DESC, "Timeout enable")
-    field(DTYP, "asynUInt32Digital")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TIMEOUT_ENABLE")
-    field(ONAM, "Enabled")
-    field(ZNAM, "Disabled")
-    field(ASG,  "$(ASG1)")
-}
-
-record(bi, "$(IOC):TIMEOUT_ENABLE_RBV") {
-    field(DESC, "Timeout enable RBV")
-    field(DTYP, "asynUInt32Digital")
-    field(SCAN, "1 second")
-    field(ZNAM, "Disabled")
-    field(ONAM, "Enabled")
-    field(ZSV, "MAJOR")
-    field(OSV, "NO_ALARM")
-    field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_TIMEOUT_ENABLE_RBV")
 }
 
 #record(bi, "$(IOC):TIMEOUT_ERROR_STATUS") {
@@ -390,14 +285,6 @@ record(longin, "$(IOC):SoftwareWdErrorCounter") {
     field(SCAN, "1 second")
     field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FW_SOFTWARE_WDOG_COUNTER")
-}
-
-record(longin, "$(IOC):MonitorNotReadyCounter") {
-    field(DESC, "Increases when FW not ready for beam")
-    field(DTYP, "asynInt32")
-    field(SCAN, "1 second")
-    field(EGU, "us")
-    field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FW_MONITOR_NOT_READY_COUNTER")
 }
 
 record(bo, "$(IOC):SKIP_HEARTBEAT") {
