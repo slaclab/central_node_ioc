@@ -68,6 +68,9 @@ DB_INSTALLS += $(IOCADMIN)/db/iocScanMonSum.db
 DB_INSTALLS += $(IOCADMIN)/db/iocScanMon.db
 IOCRELEASE_DB += iocRelease.db
 
+# Install Database to support reading the status of the seq package:
+DB_INSTALLS += $(SNCSEQ)/db/devSeqCar.db
+
 # Install Database to support reading the status of the autosave package:
 DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
 
