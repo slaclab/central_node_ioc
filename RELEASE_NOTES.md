@@ -3,6 +3,10 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-5-3__:
+  * Move Beam Class PVs to be readback only instead of read/write to 
+    address problem where some of them read 0
+
 * __central_node_ioc-R4-5-2__:
   * Load db files for Seq status and autosave status
 

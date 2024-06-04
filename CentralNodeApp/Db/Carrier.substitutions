@@ -232,51 +232,99 @@ file "RegisterOutRBVUnits.template" { pattern
 
 # Single register with AI records
 file "RegRO_Analog.template" { pattern
-{ R,                           DESC,                                     PINI,   SCAN,           EGU,     LINR,     EGUL,       EGUF,       PREC,    PARAM                   }
-{ PGP_RX_MON_BANDWIDTH_0,      "PGP 0 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_0    }
-{ PGP_RX_MON_BANDWIDTH_MAX_0,  "PGP 0 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_0 }
-{ PGP_RX_MON_BANDWIDTH_MIN_0,  "PGP 0 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_0 }
-{ PGP_RX_MON_BANDWIDTH_1,      "PGP 1 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_1    }
-{ PGP_RX_MON_BANDWIDTH_MAX_1,  "PGP 1 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_1 }
-{ PGP_RX_MON_BANDWIDTH_MIN_1,  "PGP 1 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_1 }
-{ PGP_RX_MON_BANDWIDTH_2,      "PGP 2 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_2    }
-{ PGP_RX_MON_BANDWIDTH_MAX_2,  "PGP 2 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_2 }
-{ PGP_RX_MON_BANDWIDTH_MIN_2,  "PGP 2 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_2 }
-{ PGP_RX_MON_BANDWIDTH_3,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_3    }
-{ PGP_RX_MON_BANDWIDTH_MAX_3,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_3 }
-{ PGP_RX_MON_BANDWIDTH_MIN_3,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_3 }
-{ PGP_RX_MON_BANDWIDTH_4,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_4    }
-{ PGP_RX_MON_BANDWIDTH_MAX_4,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_4 }
-{ PGP_RX_MON_BANDWIDTH_MIN_4,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_4 }
-{ PGP_RX_MON_BANDWIDTH_5,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_5    }
-{ PGP_RX_MON_BANDWIDTH_MAX_5,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_5 }
-{ PGP_RX_MON_BANDWIDTH_MIN_5,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_5 }
-{ PGP_RX_MON_BANDWIDTH_6,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_6    }
-{ PGP_RX_MON_BANDWIDTH_MAX_6,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_6 }
-{ PGP_RX_MON_BANDWIDTH_MIN_6,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_6 }
-{ PGP_RX_MON_BANDWIDTH_7,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_7    }
-{ PGP_RX_MON_BANDWIDTH_MAX_7,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_7 }
-{ PGP_RX_MON_BANDWIDTH_MIN_7,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_7 }
-{ PGP_RX_MON_BANDWIDTH_8,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_8    }
-{ PGP_RX_MON_BANDWIDTH_MAX_8,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_8 }
-{ PGP_RX_MON_BANDWIDTH_MIN_8,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_8 }
-{ PGP_RX_MON_BANDWIDTH_9,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_9    }
-{ PGP_RX_MON_BANDWIDTH_MAX_9,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_9 }
-{ PGP_RX_MON_BANDWIDTH_MIN_9,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_9 }
-{ PGP_RX_MON_BANDWIDTH_10,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_10   }
-{ PGP_RX_MON_BANDWIDTH_MAX_10, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_10}
-{ PGP_RX_MON_BANDWIDTH_MIN_10, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_10}
-{ PGP_RX_MON_BANDWIDTH_11,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_11   }
-{ PGP_RX_MON_BANDWIDTH_MAX_11, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_11}
-{ PGP_RX_MON_BANDWIDTH_MIN_11, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_11}
-{ PGP_RX_MON_BANDWIDTH_12,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_12   }
-{ PGP_RX_MON_BANDWIDTH_MAX_12, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_12}
-{ PGP_RX_MON_BANDWIDTH_MIN_12, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_12}
-{ PGP_RX_MON_BANDWIDTH_13,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidth_13   }
-{ PGP_RX_MON_BANDWIDTH_MAX_13, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMax_13}
-{ PGP_RX_MON_BANDWIDTH_MIN_13, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps", "LINEAR",   "0",        "0.5242880", 3,      PGP_RxMonBandwidthMin_13}
-{ APP_TIMEOUT_0,               "Time in 4 ns ticks",                    "YES",  "1 second",     "us"  , "LINEAR"    "0",        "262.140"  , 3,      TimeoutSelAppIdMaxCnt0  }
-{ APP_TIMEOUT_1,               "Time in 4 ns ticks",                    "YES",  "1 second",     "us"  , "LINEAR"    "0",        "262.140"  , 3,      TimeoutSelAppIdMaxCnt1  }
+{ R,                           DESC,                                     PINI,   SCAN,           EGU,     LINR,              EGUL,  EGUF,       PREC,    PARAM                   }
+{ BC0_INTEGRATED_CHARGE,       "Beam Class 0 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge0          }
+{ BC1_INTEGRATED_CHARGE,       "Beam Class 1 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge1          }
+{ BC2_INTEGRATED_CHARGE,       "Beam Class 2 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge2          }
+{ BC3_INTEGRATED_CHARGE,       "Beam Class 3 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge3          }
+{ BC4_INTEGRATED_CHARGE,       "Beam Class 4 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge4          }
+{ BC5_INTEGRATED_CHARGE,       "Beam Class 5 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge5          }
+{ BC6_INTEGRATED_CHARGE,       "Beam Class 6 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge6          }
+{ BC7_INTEGRATED_CHARGE,       "Beam Class 7 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge7          }
+{ BC8_INTEGRATED_CHARGE,       "Beam Class 8 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge8          }
+{ BC9_INTEGRATED_CHARGE,       "Beam Class 9 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge9          }
+{ BC10_INTEGRATED_CHARGE,      "Beam Class 10 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge10         }
+{ BC11_INTEGRATED_CHARGE,      "Beam Class 11 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge11         }
+{ BC12_INTEGRATED_CHARGE,      "Beam Class 12 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge12         }
+{ BC13_INTEGRATED_CHARGE,      "Beam Class 13 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge13         }
+{ BC14_INTEGRATED_CHARGE,      "Beam Class 14 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge14         }
+{ BC15_INTEGRATED_CHARGE,      "Beam Class 15 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge15         }
+{ BC0_INTEGRATION_TIME_RAW,    "Beam Class 0 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime0            }
+{ BC1_INTEGRATION_TIME_RAW,    "Beam Class 1 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime1            }
+{ BC2_INTEGRATION_TIME_RAW,    "Beam Class 2 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime2            }
+{ BC3_INTEGRATION_TIME_RAW,    "Beam Class 3 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime3            }
+{ BC4_INTEGRATION_TIME_RAW,    "Beam Class 4 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime4            }
+{ BC5_INTEGRATION_TIME_RAW,    "Beam Class 5 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime5            }
+{ BC6_INTEGRATION_TIME_RAW,    "Beam Class 6 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime6            }
+{ BC7_INTEGRATION_TIME_RAW,    "Beam Class 7 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime7            }
+{ BC8_INTEGRATION_TIME_RAW,    "Beam Class 8 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime8            }
+{ BC9_INTEGRATION_TIME_RAW,    "Beam Class 9 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime9            }
+{ BC10_INTEGRATION_TIME_RAW,   "Beam Class 10 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime10           }
+{ BC11_INTEGRATION_TIME_RAW,   "Beam Class 11 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime11           }
+{ BC12_INTEGRATION_TIME_RAW,   "Beam Class 12 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime12           }
+{ BC13_INTEGRATION_TIME_RAW,   "Beam Class 13 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime13           }
+{ BC14_INTEGRATION_TIME_RAW,   "Beam Class 14 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime14           }
+{ BC15_INTEGRATION_TIME_RAW,   "Beam Class 15 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime15           }
+{ BC0_MINIMUM_PERIOD_RAW,      "Beam Class 0 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod0          }
+{ BC1_MINIMUM_PERIOD_RAW,      "Beam Class 1 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod1          }
+{ BC2_MINIMUM_PERIOD_RAW,      "Beam Class 2 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod2          }
+{ BC3_MINIMUM_PERIOD_RAW,      "Beam Class 3 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod3          }
+{ BC4_MINIMUM_PERIOD_RAW,      "Beam Class 4 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod4          }
+{ BC5_MINIMUM_PERIOD_RAW,      "Beam Class 5 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod5          }
+{ BC6_MINIMUM_PERIOD_RAW,      "Beam Class 6 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod6          }
+{ BC7_MINIMUM_PERIOD_RAW,      "Beam Class 7 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod7          }
+{ BC8_MINIMUM_PERIOD_RAW,      "Beam Class 8 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod8          }
+{ BC9_MINIMUM_PERIOD_RAW,      "Beam Class 9 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod9          }
+{ BC10_MINIMUM_PERIOD_RAW,     "Beam Class 10 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod10         }
+{ BC11_MINIMUM_PERIOD_RAW,     "Beam Class 11 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod11         }
+{ BC12_MINIMUM_PERIOD_RAW,     "Beam Class 12 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod12         }
+{ BC13_MINIMUM_PERIOD_RAW,     "Beam Class 13 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod13         }
+{ BC14_MINIMUM_PERIOD_RAW,     "Beam Class 14 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod14         }
+{ BC15_MINIMUM_PERIOD_RAW,     "Beam Class 15 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod15         }
+{ PGP_RX_MON_BANDWIDTH_0,      "PGP 0 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_0    }
+{ PGP_RX_MON_BANDWIDTH_MAX_0,  "PGP 0 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_0 }
+{ PGP_RX_MON_BANDWIDTH_MIN_0,  "PGP 0 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_0 }
+{ PGP_RX_MON_BANDWIDTH_1,      "PGP 1 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_1    }
+{ PGP_RX_MON_BANDWIDTH_MAX_1,  "PGP 1 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_1 }
+{ PGP_RX_MON_BANDWIDTH_MIN_1,  "PGP 1 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_1 }
+{ PGP_RX_MON_BANDWIDTH_2,      "PGP 2 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_2    }
+{ PGP_RX_MON_BANDWIDTH_MAX_2,  "PGP 2 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_2 }
+{ PGP_RX_MON_BANDWIDTH_MIN_2,  "PGP 2 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_2 }
+{ PGP_RX_MON_BANDWIDTH_3,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_3    }
+{ PGP_RX_MON_BANDWIDTH_MAX_3,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_3 }
+{ PGP_RX_MON_BANDWIDTH_MIN_3,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_3 }
+{ PGP_RX_MON_BANDWIDTH_4,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_4    }
+{ PGP_RX_MON_BANDWIDTH_MAX_4,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_4 }
+{ PGP_RX_MON_BANDWIDTH_MIN_4,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_4 }
+{ PGP_RX_MON_BANDWIDTH_5,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_5    }
+{ PGP_RX_MON_BANDWIDTH_MAX_5,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_5 }
+{ PGP_RX_MON_BANDWIDTH_MIN_5,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_5 }
+{ PGP_RX_MON_BANDWIDTH_6,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_6    }
+{ PGP_RX_MON_BANDWIDTH_MAX_6,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_6 }
+{ PGP_RX_MON_BANDWIDTH_MIN_6,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_6 }
+{ PGP_RX_MON_BANDWIDTH_7,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_7    }
+{ PGP_RX_MON_BANDWIDTH_MAX_7,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_7 }
+{ PGP_RX_MON_BANDWIDTH_MIN_7,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_7 }
+{ PGP_RX_MON_BANDWIDTH_8,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_8    }
+{ PGP_RX_MON_BANDWIDTH_MAX_8,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_8 }
+{ PGP_RX_MON_BANDWIDTH_MIN_8,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_8 }
+{ PGP_RX_MON_BANDWIDTH_9,      "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_9    }
+{ PGP_RX_MON_BANDWIDTH_MAX_9,  "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_9 }
+{ PGP_RX_MON_BANDWIDTH_MIN_9,  "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_9 }
+{ PGP_RX_MON_BANDWIDTH_10,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_10   }
+{ PGP_RX_MON_BANDWIDTH_MAX_10, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_10}
+{ PGP_RX_MON_BANDWIDTH_MIN_10, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_10}
+{ PGP_RX_MON_BANDWIDTH_11,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_11   }
+{ PGP_RX_MON_BANDWIDTH_MAX_11, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_11}
+{ PGP_RX_MON_BANDWIDTH_MIN_11, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_11}
+{ PGP_RX_MON_BANDWIDTH_12,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_12   }
+{ PGP_RX_MON_BANDWIDTH_MAX_12, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_12}
+{ PGP_RX_MON_BANDWIDTH_MIN_12, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_12}
+{ PGP_RX_MON_BANDWIDTH_13,     "PGP 3 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_13   }
+{ PGP_RX_MON_BANDWIDTH_MAX_13, "PGP 3 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_13}
+{ PGP_RX_MON_BANDWIDTH_MIN_13, "PGP 3 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_13}
+{ APP_TIMEOUT_0,               "Time in 4 ns ticks",                    "YES",  "1 second",     "us"  ,   "LINEAR"        "0",      "262.140"  , 3,      TimeoutSelAppIdMaxCnt0  }
+{ APP_TIMEOUT_1,               "Time in 4 ns ticks",                    "YES",  "1 second",     "us"  ,   "LINEAR"        "0",      "262.140"  , 3,      TimeoutSelAppIdMaxCnt1  }
 }
 
 # Array of register
@@ -303,54 +351,6 @@ file "RegisterEnumBIn.template" { pattern
 # Single register
 file "RegRW.template" { pattern
 { P,          R,                         DESC,                               PINI,   SCAN,       PORT,      EGU,            PARAM          }
-{ $(P), BC0_INTEGRATED_CHARGE,          "Beam Class 0 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge0       }
-{ $(P), BC1_INTEGRATED_CHARGE,          "Beam Class 1 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge1       }
-{ $(P), BC2_INTEGRATED_CHARGE,          "Beam Class 2 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge2       }
-{ $(P), BC3_INTEGRATED_CHARGE,          "Beam Class 3 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge3       }
-{ $(P), BC4_INTEGRATED_CHARGE,          "Beam Class 4 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge4       }
-{ $(P), BC5_INTEGRATED_CHARGE,          "Beam Class 5 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge5       }
-{ $(P), BC6_INTEGRATED_CHARGE,          "Beam Class 6 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge6       }
-{ $(P), BC7_INTEGRATED_CHARGE,          "Beam Class 7 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge7       }
-{ $(P), BC8_INTEGRATED_CHARGE,          "Beam Class 8 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge8       }
-{ $(P), BC9_INTEGRATED_CHARGE,          "Beam Class 9 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge9       }
-{ $(P), BC10_INTEGRATED_CHARGE,         "Beam Class 10 Integrated Charge",   "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge10      }
-{ $(P), BC11_INTEGRATED_CHARGE,         "Beam Class 11 Integrated Charge",   "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge11      }
-{ $(P), BC12_INTEGRATED_CHARGE,         "Beam Class 12 Integrated Charge",   "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge12      }
-{ $(P), BC13_INTEGRATED_CHARGE,         "Beam Class 13 Integrated Charge",   "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge13      }
-{ $(P), BC14_INTEGRATED_CHARGE,         "Beam Class 14 Integrated Charge",   "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge14      }
-{ $(P), BC15_INTEGRATED_CHARGE,         "Beam Class 15 Integrated Charge",   "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge15      }
-{ $(P), BC0_INTEGRATION_TIME_RAW,       "Beam Class 0 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime0         }
-{ $(P), BC1_INTEGRATION_TIME_RAW,       "Beam Class 1 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime1         }
-{ $(P), BC2_INTEGRATION_TIME_RAW,       "Beam Class 2 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime2         }
-{ $(P), BC3_INTEGRATION_TIME_RAW,       "Beam Class 3 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime3         }
-{ $(P), BC4_INTEGRATION_TIME_RAW,       "Beam Class 4 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime4         }
-{ $(P), BC5_INTEGRATION_TIME_RAW,       "Beam Class 5 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime5         }
-{ $(P), BC6_INTEGRATION_TIME_RAW,       "Beam Class 6 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime6         }
-{ $(P), BC7_INTEGRATION_TIME_RAW,       "Beam Class 7 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime7         }
-{ $(P), BC8_INTEGRATION_TIME_RAW,       "Beam Class 8 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime8         }
-{ $(P), BC9_INTEGRATION_TIME_RAW,       "Beam Class 9 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime9         }
-{ $(P), BC10_INTEGRATION_TIME_RAW,      "Beam Class 10 Integration Time",    "YES",  "1 second", $(PORT),   "",       BeamIntTime10        }
-{ $(P), BC11_INTEGRATION_TIME_RAW,      "Beam Class 11 Integration Time",    "YES",  "1 second", $(PORT),   "",       BeamIntTime11        }
-{ $(P), BC12_INTEGRATION_TIME_RAW,      "Beam Class 12 Integration Time",    "YES",  "1 second", $(PORT),   "",       BeamIntTime12        }
-{ $(P), BC13_INTEGRATION_TIME_RAW,      "Beam Class 13 Integration Time",    "YES",  "1 second", $(PORT),   "",       BeamIntTime13        }
-{ $(P), BC14_INTEGRATION_TIME_RAW,      "Beam Class 14 Integration Time",    "YES",  "1 second", $(PORT),   "",       BeamIntTime14        }
-{ $(P), BC15_INTEGRATION_TIME_RAW,      "Beam Class 15 Integration Time",    "YES",  "1 second", $(PORT),   "",       BeamIntTime15        }
-{ $(P), BC0_MINIMUM_PERIOD_RAW,         "Beam Class 0 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod0       }
-{ $(P), BC1_MINIMUM_PERIOD_RAW,         "Beam Class 1 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod1       }
-{ $(P), BC2_MINIMUM_PERIOD_RAW,         "Beam Class 2 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod2       }
-{ $(P), BC3_MINIMUM_PERIOD_RAW,         "Beam Class 3 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod3       }
-{ $(P), BC4_MINIMUM_PERIOD_RAW,         "Beam Class 4 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod4       }
-{ $(P), BC5_MINIMUM_PERIOD_RAW,         "Beam Class 5 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod5       }
-{ $(P), BC6_MINIMUM_PERIOD_RAW,         "Beam Class 6 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod6       }
-{ $(P), BC7_MINIMUM_PERIOD_RAW,         "Beam Class 7 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod7       }
-{ $(P), BC8_MINIMUM_PERIOD_RAW,         "Beam Class 8 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod8       }
-{ $(P), BC9_MINIMUM_PERIOD_RAW,         "Beam Class 9 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod9       }
-{ $(P), BC10_MINIMUM_PERIOD_RAW,        "Beam Class 10 Minimum Period",      "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod10      }
-{ $(P), BC11_MINIMUM_PERIOD_RAW,        "Beam Class 11 Minimum Period",      "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod11      }
-{ $(P), BC12_MINIMUM_PERIOD_RAW,        "Beam Class 12 Minimum Period",      "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod12      }
-{ $(P), BC13_MINIMUM_PERIOD_RAW,        "Beam Class 13 Minimum Period",      "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod13      }
-{ $(P), BC14_MINIMUM_PERIOD_RAW,        "Beam Class 14 Minimum Period",      "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod14      }
-{ $(P), BC15_MINIMUM_PERIOD_RAW,        "Beam Class 15 Minimum Period",      "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod15      }
 { $(P), DUAL_CORE_EN,                   "Dual-Core '1' vs. Single-Core '0'", "YES",  "1 second", $(PORT),   "",       DualCoreEn           }
 }
 
