@@ -49,6 +49,8 @@ DB_INSTALLS += $(YCPSWASYN)/db/bo.template
 DB_INSTALLS += $(YCPSWASYN)/db/waveform_stream16.template
 DB_INSTALLS += $(YCPSWASYN)/db/waveform_stream32.template
 DB_INSTALLS += $(YCPSWASYN)/db/RegisterCommand.template
+DB_INSTALLS += $(YCPSWASYN)/db/RegisterIn.template
+
 
 # For saving and loading yaml configuration
 DB += saveLoadConfig.db

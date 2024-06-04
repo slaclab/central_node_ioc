@@ -14,7 +14,7 @@ record(ai, "$(P):TPG_SECOND") {
 record(calc, "$(P):BC$(BC)_INTEGRATION_TIME_TPGS") {
   field(CALC, "((A&0xFFF0000)>>16)*1000+(A&0xFFF)+1")
   field(DESC, "BC$(BC) Chrg Int time TPG Second units")
-  field(INPA, "$(P):BC$(BC)_INTEGRATION_TIME_RAW_RBV")
+  field(INPA, "$(P):BC$(BC)_INTEGRATION_TIME_RAW")
   field(SCAN, "1 second")
   field(FLNK, "$(P):BC$(BC)_INTEGRATION_TIME")
 }

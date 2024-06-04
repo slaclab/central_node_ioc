@@ -65,6 +65,7 @@ CentralNode_DBD += yamlDownloader.dbd
 CentralNode_DBD += tprTriggerAsynDriver.dbd
 CentralNode_DBD += tprPatternAsynDriver.dbd
 CentralNode_DBD += crossbarControl.dbd
+CentralNode_DBD += devSeqCar.dbd
 CentralNode_DBD += $(CEXP_DBDS)
 
 # ================================================================================
@@ -113,6 +114,7 @@ CentralNode_LIBS += yamlDownloader
 CentralNode_LIBS += ATCACommon
 CentralNode_LIBS += tprPattern
 CentralNode_LIBS += tprTrigger
+CentralNode_LIBS += seqCar seq pv
 CentralNode_LIBS += asyn
 
 # Needed to link cexpsh() support

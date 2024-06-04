@@ -153,70 +153,121 @@ file "RegisterIn.template" { pattern
 #======================================
 # Single register
 file "RegisterInAlarm.template" { pattern
-{ P,          R,                  DESC,                                     PINI,    SCAN,       PORT,     EGU,      PARAM,            HIGH, HSV,   LOW , LSV                }
-{ $(P), SoftwareLossError,   "Software packet loss error",                  "YES",  "1 second", $(PORT),   "",   SoftwareLossError,    1,    MAJOR, "", NO_ALARM }
-{ $(P), SoftwareWdError,     "Software watchdog error",                     "YES",  "1 second", $(PORT),   "",   SoftwareWdError,      1,    MAJOR, "", NO_ALARM   }
-{ $(P), MonitorReady,        "Must be OK to allow beam",                    "YES",  "1 second", $(PORT),   "",   MonitorReady,         1,    NO_ALARM, 0, MAJOR              }
-{ $(P), MonitorConcWdErr,    "Concentrator watchdog error",                 "YES",  "1 second", $(PORT),   "",   MonitorConcWdErr,     1,    MAJOR, "", NO_ALARM              }
-{ $(P), MonitorConcStallErr, "Mitigation message conc tstamp stall err",    "YES",  "1 second", $(PORT),   "",   MonitorConcStallErr,  1,    MAJOR, "", NO_ALARM              }
-{ $(P), MONITOR_RX_ERR_CNT_0,    "PGP 0 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt0, 1,    MAJOR, "",  NO_ALARM           }
-{ $(P), MONITOR_RX_ERR_CNT_1,    "PGP 1 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt1, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_RX_ERR_CNT_2,    "PGP 2 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt2, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_RX_ERR_CNT_3,    "PGP 3 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt3, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_RX_ERR_CNT_4,    "PGP 4 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt4, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_RX_ERR_CNT_5,    "PGP 5 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt5, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_RX_ERR_CNT_6,    "PGP 6 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt6, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_RX_ERR_CNT_7,    "PGP 7 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt7, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_RX_ERR_CNT_8,    "PGP 8 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt8, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_RX_ERR_CNT_9,    "PGP 9 RX error count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt9, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_RX_ERR_CNT_10,   "PGP 10 RX error count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt10, 1,    MAJOR, "",  NO_ALARM        }
-{ $(P), MONITOR_RX_ERR_CNT_11,   "PGP 11 RX error count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt11, 1,    MAJOR, "",  NO_ALARM        }
-{ $(P), MONITOR_PAUSE_CNT_0,     "PGP 0 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt0, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_1,     "PGP 1 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt1, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_2,     "PGP 2 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt2, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_3,     "PGP 3 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt3, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_4,     "PGP 4 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt4, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_5,     "PGP 5 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt5, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_6,     "PGP 6 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt6, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_7,     "PGP 7 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt7, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_8,     "PGP 8 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt8, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_9,     "PGP 9 Pause count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt9, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_PAUSE_CNT_10,    "PGP 10 Pause count must be 0",            "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt10, 1,    MAJOR, "",  NO_ALARM        }
-{ $(P), MONITOR_PAUSE_CNT_11,    "PGP 11 Pause count must be 0",            "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt11, 1,    MAJOR, "",  NO_ALARM        }
-{ $(P), MONITOR_OVERFLOW_CNT_0,  "PGP 0 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt0, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_1,  "PGP 1 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt1, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_2,  "PGP 2 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt2, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_3,  "PGP 3 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt3, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_4,  "PGP 4 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt4, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_5,  "PGP 5 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt5, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_6,  "PGP 6 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt6, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_7,  "PGP 7 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt7, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_8,  "PGP 8 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt8, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_9,  "PGP 9 Overflow count must be 0",          "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt9, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_OVERFLOW_CNT_10, "PGP 10 Overflow count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt10, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_OVERFLOW_CNT_11, "PGP 11 Overflow count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt11, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_DROP_CNT_0,      "PGP 0 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt0, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_1,      "PGP 1 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt1, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_2,      "PGP 2 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt2, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_3,      "PGP 3 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt3, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_4,      "PGP 4 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt4, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_5,      "PGP 5 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt5, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_6,      "PGP 6 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt6, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_7,      "PGP 7 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt7, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_8,      "PGP 8 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt8, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_9,      "PGP 9 Drop count must be 0",              "YES",  "1 second", $(PORT),   "",       MonitorDropCnt9, 1,    MAJOR, "",  NO_ALARM          }
-{ $(P), MONITOR_DROP_CNT_10,     "PGP 10 Drop count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorDropCnt10, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MONITOR_DROP_CNT_11,     "PGP 11 Drop count must be 0",             "YES",  "1 second", $(PORT),   "",       MonitorDropCnt11, 1,    MAJOR, "",  NO_ALARM         }
-{ $(P), MonitorConcExtRxErr0,    "External mitg msg recvr Err Cnt",         "YES",  "1 second", $(PORT),   "",       MonitorConcExtRxErr0,   1,    MAJOR, "",  NO_ALARM    }
-{ $(P), MonitorConcExtRxErr1,    "External mitg msg recvr Err Cnt",         "YES",  "1 second", $(PORT),   "",       MonitorConcExtRxErr1,   1,    MAJOR, "",  NO_ALARM    }
-{ $(P), SoftwareLossCount,       "Software packet loss counter",                "YES",  "1 second", $(PORT),   "",       SoftwareLossCnt,       1,    MAJOR, "",  NO_ALARM    }
-{ $(P), SoftwareOvflCnt,         "Number of axi-fifo overflows",                "YES",  "1 second", $(PORT),   "",       SoftwareOvflCnt,       1,    MAJOR, "",  NO_ALARM    }
-{ $(P), LASER_BC_VIOLATION_CNT,  "LASER dest BC violation cnt",         "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt0, 1,    MAJOR, "",  NO_ALARM    }
-{ $(P), SC_DIAG0_BC_VIOLATION_CNT,"DIAG0 dest BC violation cnt",         "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt1, 1,    MAJOR, "",  NO_ALARM    }
-{ $(P), SC_BSYD_BC_VIOLATION_CNT,"DUMPBSY dest BC violation cnt",       "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt2, 1,    MAJOR, "",  NO_ALARM    }
-{ $(P), SC_HXR_BC_VIOLATION_CNT, "DUMPHXR dest BC violation cnt",       "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt3, 1,    MAJOR, "",  NO_ALARM    }
-{ $(P), SC_SXR_BC_VIOLATION_CNT, "DUMPSXR dest BC violation cnt",       "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt4, 1,    MAJOR, "",  NO_ALARM    }
-{ $(P), SC_LESA_BC_VIOLATION_CNT,"LESA dest BC violation cnt",          "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt5, 1,    MAJOR, "",  NO_ALARM    }
+{ P,          R,                   DESC,                                 PINI,   SCAN,         PORT,    EGU,      PARAM,                HIGH,HSV,     LOW, LSV,     INDEX  }
+{ $(P), BC0_INTEGRATED_CHARGE,     "Beam Class 0 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge0         1,  MAJOR,   "",  NO_ALARM, 1     }
+{ $(P), BC1_INTEGRATED_CHARGE,     "Beam Class 1 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge1         1,  MAJOR,   "",  NO_ALARM, 1     }
+{ $(P), BC2_INTEGRATED_CHARGE,     "Beam Class 2 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge2         "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC3_INTEGRATED_CHARGE,     "Beam Class 3 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge3         "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC4_INTEGRATED_CHARGE,     "Beam Class 4 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge4         "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC5_INTEGRATED_CHARGE,     "Beam Class 5 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge5         "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC6_INTEGRATED_CHARGE,     "Beam Class 6 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge6         "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC7_INTEGRATED_CHARGE,     "Beam Class 7 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge7         "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC8_INTEGRATED_CHARGE,     "Beam Class 8 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge8         "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC9_INTEGRATED_CHARGE,     "Beam Class 9 Integrated Charge",     "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge9         "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC10_INTEGRATED_CHARGE,    "Beam Class 10 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge10        "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC11_INTEGRATED_CHARGE,    "Beam Class 11 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge11        "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC12_INTEGRATED_CHARGE,    "Beam Class 12 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge12        "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC13_INTEGRATED_CHARGE,    "Beam Class 13 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge13        "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC14_INTEGRATED_CHARGE,    "Beam Class 14 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge14        "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC15_INTEGRATED_CHARGE,    "Beam Class 15 Integrated Charge",    "YES",  "1 second", $(PORT),   "pC",     BeamIntCharge15        "", NO_ALARM,0,   MAJOR,    1     }
+{ $(P), BC0_INTEGRATION_TIME_RAW,  "Beam Class 0 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime0           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC1_INTEGRATION_TIME_RAW,  "Beam Class 1 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime1           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC2_INTEGRATION_TIME_RAW,  "Beam Class 2 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime2           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC3_INTEGRATION_TIME_RAW,  "Beam Class 3 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime3           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC4_INTEGRATION_TIME_RAW,  "Beam Class 4 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime4           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC5_INTEGRATION_TIME_RAW,  "Beam Class 5 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime5           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC6_INTEGRATION_TIME_RAW,  "Beam Class 6 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime6           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC7_INTEGRATION_TIME_RAW,  "Beam Class 7 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime7           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC8_INTEGRATION_TIME_RAW,  "Beam Class 8 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime8           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC9_INTEGRATION_TIME_RAW,  "Beam Class 9 Integration Time",      "YES",  "1 second", $(PORT),   "",       BeamIntTime9           "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC10_INTEGRATION_TIME_RAW, "Beam Class 10 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime10          "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC11_INTEGRATION_TIME_RAW, "Beam Class 11 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime11          "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC12_INTEGRATION_TIME_RAW, "Beam Class 12 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime12          "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC13_INTEGRATION_TIME_RAW, "Beam Class 13 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime13          "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC14_INTEGRATION_TIME_RAW, "Beam Class 14 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime14          "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC15_INTEGRATION_TIME_RAW, "Beam Class 15 Integration Time",     "YES",  "1 second", $(PORT),   "",       BeamIntTime15          "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC0_MINIMUM_PERIOD_RAW,    "Beam Class 0 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod0         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC1_MINIMUM_PERIOD_RAW,    "Beam Class 1 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod1         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC2_MINIMUM_PERIOD_RAW,    "Beam Class 2 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod2         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC3_MINIMUM_PERIOD_RAW,    "Beam Class 3 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod3         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC4_MINIMUM_PERIOD_RAW,    "Beam Class 4 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod4         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC5_MINIMUM_PERIOD_RAW,    "Beam Class 5 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod5         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC6_MINIMUM_PERIOD_RAW,    "Beam Class 6 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod6         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC7_MINIMUM_PERIOD_RAW,    "Beam Class 7 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod7         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC8_MINIMUM_PERIOD_RAW,    "Beam Class 8 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod8         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC9_MINIMUM_PERIOD_RAW,    "Beam Class 9 Minimum Period",        "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod9         "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC10_MINIMUM_PERIOD_RAW,   "Beam Class 10 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod10        "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC11_MINIMUM_PERIOD_RAW,   "Beam Class 11 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod11        "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC12_MINIMUM_PERIOD_RAW,   "Beam Class 12 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod12        "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC13_MINIMUM_PERIOD_RAW,   "Beam Class 13 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod13        "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC14_MINIMUM_PERIOD_RAW,   "Beam Class 14 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod14        "", NO_ALARM,"",  NO_ALARM, 1     }
+{ $(P), BC15_MINIMUM_PERIOD_RAW,   "Beam Class 15 Minimum Period",       "YES",  "1 second", $(PORT),   "cycles", BeamMinPeriod15        "", NO_ALARM,"",  NO_ALARM, 1     }
+}
+file "RegisterInAlarm.template" { pattern
+{ P,          R,                   DESC,                                 PINI,   SCAN,         PORT,    EGU,      PARAM,            HIGH, HSV,   LOW , LSV                }
+{ $(P), SoftwareLossError,         "Software packet loss error",         "YES",  "1 second", $(PORT),   "",       SoftwareLossError,     1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), SoftwareWdError,           "Software watchdog error",            "YES",  "1 second", $(PORT),   "",       SoftwareWdError,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MonitorReady,              "Must be OK to allow beam",           "YES",  "1 second", $(PORT),   "",       MonitorReady,          1,  NO_ALARM,0,   MAJOR       }
+{ $(P), MonitorConcWdErr,          "Concentrator watchdog error",        "YES",  "1 second", $(PORT),   "",       MonitorConcWdErr,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MonitorConcStallErr,       "Mit message conc tstamp stall err",  "YES",  "1 second", $(PORT),   "",       MonitorConcStallErr,   1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_0,      "PGP 0 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt0,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_1,      "PGP 1 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt1,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_2,      "PGP 2 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt2,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_3,      "PGP 3 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt3,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_4,      "PGP 4 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt4,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_5,      "PGP 5 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt5,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_6,      "PGP 6 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt6,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_7,      "PGP 7 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt7,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_8,      "PGP 8 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt8,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_9,      "PGP 9 RX error count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt9,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_10,     "PGP 10 RX error count must be 0",    "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt10,     1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_RX_ERR_CNT_11,     "PGP 11 RX error count must be 0",    "YES",  "1 second", $(PORT),   "",       MonitorRxErrCnt11,     1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_0,       "PGP 0 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt0,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_1,       "PGP 1 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt1,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_2,       "PGP 2 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt2,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_3,       "PGP 3 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt3,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_4,       "PGP 4 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt4,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_5,       "PGP 5 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt5,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_6,       "PGP 6 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt6,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_7,       "PGP 7 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt7,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_8,       "PGP 8 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt8,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_9,       "PGP 9 Pause count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt9,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_10,      "PGP 10 Pause count must be 0",       "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt10,     1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_PAUSE_CNT_11,      "PGP 11 Pause count must be 0",       "YES",  "1 second", $(PORT),   "",       MonitorPauseCnt11,     1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_0,    "PGP 0 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt0,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_1,    "PGP 1 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt1,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_2,    "PGP 2 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt2,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_3,    "PGP 3 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt3,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_4,    "PGP 4 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt4,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_5,    "PGP 5 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt5,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_6,    "PGP 6 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt6,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_7,    "PGP 7 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt7,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_8,    "PGP 8 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt8,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_9,    "PGP 9 Overflow count must be 0",     "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt9,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_10,   "PGP 10 Overflow count must be 0",    "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt10,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_OVERFLOW_CNT_11,   "PGP 11 Overflow count must be 0",    "YES",  "1 second", $(PORT),   "",       MonitorOvflCnt11,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_0,        "PGP 0 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt0,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_1,        "PGP 1 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt1,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_2,        "PGP 2 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt2,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_3,        "PGP 3 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt3,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_4,        "PGP 4 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt4,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_5,        "PGP 5 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt5,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_6,        "PGP 6 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt6,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_7,        "PGP 7 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt7,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_8,        "PGP 8 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt8,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_9,        "PGP 9 Drop count must be 0",         "YES",  "1 second", $(PORT),   "",       MonitorDropCnt9,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_10,       "PGP 10 Drop count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorDropCnt10,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MONITOR_DROP_CNT_11,       "PGP 11 Drop count must be 0",        "YES",  "1 second", $(PORT),   "",       MonitorDropCnt11,      1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MonitorConcExtRxErr0,      "External mitg msg recvr Err Cnt",    "YES",  "1 second", $(PORT),   "",       MonitorConcExtRxErr0,  1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), MonitorConcExtRxErr1,      "External mitg msg recvr Err Cnt",    "YES",  "1 second", $(PORT),   "",       MonitorConcExtRxErr1,  1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), SoftwareLossCount,         "Software packet loss counter",       "YES",  "1 second", $(PORT),   "",       SoftwareLossCnt,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), SoftwareOvflCnt,           "Number of axi-fifo overflows",       "YES",  "1 second", $(PORT),   "",       SoftwareOvflCnt,       1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), LASER_BC_VIOLATION_CNT,    "LASER dest BC violation cnt",        "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt0, 1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), SC_DIAG0_BC_VIOLATION_CNT, "DIAG0 dest BC violation cnt",        "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt1, 1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), SC_BSYD_BC_VIOLATION_CNT,  "DUMPBSY dest BC violation cnt",      "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt2, 1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), SC_HXR_BC_VIOLATION_CNT,   "DUMPHXR dest BC violation cnt",      "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt3, 1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), SC_SXR_BC_VIOLATION_CNT,   "DUMPSXR dest BC violation cnt",      "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt4, 1,  MAJOR,   "",  NO_ALARM    }
+{ $(P), SC_LESA_BC_VIOLATION_CNT,  "LESA dest BC violation cnt",         "YES",  "1 second", $(PORT),   "",       MonitorChrgPowVtnCnt5, 1,  MAJOR,   "",  NO_ALARM    }
 }
 
 #======================================
@@ -233,54 +284,6 @@ file "RegisterOutRBVUnits.template" { pattern
 # Single register with AI records
 file "RegRO_Analog.template" { pattern
 { R,                           DESC,                                     PINI,   SCAN,           EGU,     LINR,              EGUL,  EGUF,       PREC,    PARAM                   }
-{ BC0_INTEGRATED_CHARGE,       "Beam Class 0 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge0          }
-{ BC1_INTEGRATED_CHARGE,       "Beam Class 1 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge1          }
-{ BC2_INTEGRATED_CHARGE,       "Beam Class 2 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge2          }
-{ BC3_INTEGRATED_CHARGE,       "Beam Class 3 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge3          }
-{ BC4_INTEGRATED_CHARGE,       "Beam Class 4 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge4          }
-{ BC5_INTEGRATED_CHARGE,       "Beam Class 5 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge5          }
-{ BC6_INTEGRATED_CHARGE,       "Beam Class 6 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge6          }
-{ BC7_INTEGRATED_CHARGE,       "Beam Class 7 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge7          }
-{ BC8_INTEGRATED_CHARGE,       "Beam Class 8 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge8          }
-{ BC9_INTEGRATED_CHARGE,       "Beam Class 9 Integrated Charge",        "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge9          }
-{ BC10_INTEGRATED_CHARGE,      "Beam Class 10 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge10         }
-{ BC11_INTEGRATED_CHARGE,      "Beam Class 11 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge11         }
-{ BC12_INTEGRATED_CHARGE,      "Beam Class 12 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge12         }
-{ BC13_INTEGRATED_CHARGE,      "Beam Class 13 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge13         }
-{ BC14_INTEGRATED_CHARGE,      "Beam Class 14 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge14         }
-{ BC15_INTEGRATED_CHARGE,      "Beam Class 15 Integrated Charge",       "YES",  "1 second",     "pC",     "NO CONVERSION",   "0",   "1",         3,      BeamIntCharge15         }
-{ BC0_INTEGRATION_TIME_RAW,    "Beam Class 0 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime0            }
-{ BC1_INTEGRATION_TIME_RAW,    "Beam Class 1 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime1            }
-{ BC2_INTEGRATION_TIME_RAW,    "Beam Class 2 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime2            }
-{ BC3_INTEGRATION_TIME_RAW,    "Beam Class 3 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime3            }
-{ BC4_INTEGRATION_TIME_RAW,    "Beam Class 4 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime4            }
-{ BC5_INTEGRATION_TIME_RAW,    "Beam Class 5 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime5            }
-{ BC6_INTEGRATION_TIME_RAW,    "Beam Class 6 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime6            }
-{ BC7_INTEGRATION_TIME_RAW,    "Beam Class 7 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime7            }
-{ BC8_INTEGRATION_TIME_RAW,    "Beam Class 8 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime8            }
-{ BC9_INTEGRATION_TIME_RAW,    "Beam Class 9 Integration Time",         "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime9            }
-{ BC10_INTEGRATION_TIME_RAW,   "Beam Class 10 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime10           }
-{ BC11_INTEGRATION_TIME_RAW,   "Beam Class 11 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime11           }
-{ BC12_INTEGRATION_TIME_RAW,   "Beam Class 12 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime12           }
-{ BC13_INTEGRATION_TIME_RAW,   "Beam Class 13 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime13           }
-{ BC14_INTEGRATION_TIME_RAW,   "Beam Class 14 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime14           }
-{ BC15_INTEGRATION_TIME_RAW,   "Beam Class 15 Integration Time",        "YES",  "1 second",     "",       "NO CONVERSION",   "0",   "1",         3,      BeamIntTime15           }
-{ BC0_MINIMUM_PERIOD_RAW,      "Beam Class 0 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod0          }
-{ BC1_MINIMUM_PERIOD_RAW,      "Beam Class 1 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod1          }
-{ BC2_MINIMUM_PERIOD_RAW,      "Beam Class 2 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod2          }
-{ BC3_MINIMUM_PERIOD_RAW,      "Beam Class 3 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod3          }
-{ BC4_MINIMUM_PERIOD_RAW,      "Beam Class 4 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod4          }
-{ BC5_MINIMUM_PERIOD_RAW,      "Beam Class 5 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod5          }
-{ BC6_MINIMUM_PERIOD_RAW,      "Beam Class 6 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod6          }
-{ BC7_MINIMUM_PERIOD_RAW,      "Beam Class 7 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod7          }
-{ BC8_MINIMUM_PERIOD_RAW,      "Beam Class 8 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod8          }
-{ BC9_MINIMUM_PERIOD_RAW,      "Beam Class 9 Minimum Period",           "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod9          }
-{ BC10_MINIMUM_PERIOD_RAW,     "Beam Class 10 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod10         }
-{ BC11_MINIMUM_PERIOD_RAW,     "Beam Class 11 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod11         }
-{ BC12_MINIMUM_PERIOD_RAW,     "Beam Class 12 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod12         }
-{ BC13_MINIMUM_PERIOD_RAW,     "Beam Class 13 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod13         }
-{ BC14_MINIMUM_PERIOD_RAW,     "Beam Class 14 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod14         }
-{ BC15_MINIMUM_PERIOD_RAW,     "Beam Class 15 Minimum Period",          "YES",  "1 second",     "cycles", "NO CONVERSION",   "0",   "1",         3,      BeamMinPeriod15         }
 { PGP_RX_MON_BANDWIDTH_0,      "PGP 0 Rx Bandwidth",                    "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidth_0    }
 { PGP_RX_MON_BANDWIDTH_MAX_0,  "PGP 0 Rx Bandwidth Max",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMax_0 }
 { PGP_RX_MON_BANDWIDTH_MIN_0,  "PGP 0 Rx Bandwidth Min",                "YES",  "1 second",     "Mbps",   "LINEAR",       "0",      "0.5242880", 3,      PGP_RxMonBandwidthMin_0 }

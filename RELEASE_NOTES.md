@@ -3,6 +3,9 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-5-4__:
+  * Fix scal val type of beam class definitions - they need to be scalVal not scalVal_RO
+
 * __central_node_ioc-R4-5-3__:
   * Move Beam Class PVs to be readback only instead of read/write to 
     address problem where some of them read 0

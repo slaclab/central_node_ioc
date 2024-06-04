@@ -15,7 +15,7 @@ record(longin,  "$(P):$(R)") {
     field(DESC, "$(DESC)")
     field(PINI, "$(PINI)")
     field(SCAN, "$(SCAN)")
-    field(INP,  "@asyn($(PORT),0)$(PARAM)")
+    field(INP,  "@asyn($(PORT),$(INDEX=0))$(PARAM)")
     field(HIGH, "$(HIGH)")
     field(HSV,  "$(HSV)")
     field(LOW,  "$(LOW)")
