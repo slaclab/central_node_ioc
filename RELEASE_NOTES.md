@@ -3,6 +3,12 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-7-0__:
+  * build against central_node_engine-R4-7-0
+  * Migrate from rhel7 to rhel9 as host architecture:
+    * Upgrade module versions
+    * Add support for tirpc when building rhel9 targets 
+
 * __central_node_ioc-R4-6-0__:
   * build against central_node_engine-R4-6-0
 
