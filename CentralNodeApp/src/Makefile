@@ -28,6 +28,7 @@ yaml-cpp_DIR        = $(YAML_LIB)
 yamlReader_DIR      = $(YAMLREADER_LIB)
 hpstpr_DIR          = $(HPSTPR_LIB)
 commonATCA_DIR      = $(COMMONATCA_LIB)
+tirpc_DIR           = $(TIRPC_LIB)
 
 # Central Node Engine Lib
 USR_INCLUDES += -I$(CENTRAL_NODE_ENGINE_INCLUDE)
@@ -37,14 +38,16 @@ central_node_engine_DIR = $(CENTRAL_NODE_ENGINE_LIB)
 # LINK "NON EPICS" EXTERNAL PACKAGE LIBRARIES STATICALLY
 #=======================================================
 USR_LIBS_Linux += central_node_engine yamlReader deviceLib cpsw boost_system yaml-cpp hpstpr commonATCA
+ifeq ($(NEEDS_TIRPC),YES)
+USR_LIBS_Linux += tirpc
+endif
 
 # ================================================
 # Build the IOC application
 # ================================================
 # This will attempt to build an IOC application
 # for every target including the host computer.
-PROD_IOC_linuxRT-x86_64 = CentralNode
-PROD_IOC = $(PROD_IOC_$(T_A))
+PROD_IOC = CentralNode
 
 # Use the following for RTEMS Only IOCs
 #PROD_IOC_RTEMS = CentralNode
