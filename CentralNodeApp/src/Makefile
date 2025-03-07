@@ -34,6 +34,7 @@ yaml-cpp_DIR        = $(YAML_LIB)
 yamlReader_DIR      = $(YAMLREADER_LIB)
 hpstpr_DIR          = $(HPSTPR_LIB)
 commonATCA_DIR      = $(COMMONATCA_LIB)
+tirpc_DIR           = $(TIRPC_LIB)
 
 # Central Node Engine Lib
 USR_INCLUDES += -I$(CENTRAL_NODE_ENGINE_INCLUDE)
@@ -43,6 +44,9 @@ central_node_engine_DIR = $(CENTRAL_NODE_ENGINE_LIB)
 # LINK "NON EPICS" EXTERNAL PACKAGE LIBRARIES STATICALLY
 #=======================================================
 USR_LIBS_Linux += central_node_engine yamlReader deviceLib cpsw boost_system yaml-cpp hpstpr commonATCA
+ifeq ($(NEEDS_TIRPC),YES)
+USR_LIBS_Linux += tirpc
+endif
 
 # ================================================
 # Build the IOC application
@@ -50,11 +54,6 @@ USR_LIBS_Linux += central_node_engine yamlReader deviceLib cpsw boost_system yam
 # This will attempt to build an IOC application
 # for every target including the host computer.
 PROD_IOC = CentralNode
-# PROD_IOC_linuxRT-x86_64 = CentralNode
-# PROD_IOC = $(PROD_IOC_$(T_A))
-
-# Use the following for RTEMS Only IOCs
-#PROD_IOC_RTEMS = CentralNode
 
 # CentralNode.dbd will be created and installed
 DBD += CentralNode.dbd
@@ -72,6 +71,7 @@ CentralNode_DBD += yamlDownloader.dbd
 CentralNode_DBD += tprTriggerAsynDriver.dbd
 CentralNode_DBD += tprPatternAsynDriver.dbd
 CentralNode_DBD += crossbarControl.dbd
+CentralNode_DBD += devSeqCar.dbd
 CentralNode_DBD += $(CEXP_DBDS)
 
 # ================================================================================
@@ -123,6 +123,7 @@ CentralNode_LIBS += yamlDownloader
 CentralNode_LIBS += ATCACommon
 CentralNode_LIBS += tprPattern
 CentralNode_LIBS += tprTrigger
+CentralNode_LIBS += seqCar seq pv
 CentralNode_LIBS += asyn
 
 # Needed to link cexpsh() support
@@ -154,6 +155,13 @@ USR_LDFLAGS += -L$(CENTRAL_NODE_ENGINE_LIB)
 USR_LDFLAGS += -L$(YAML_LIB)
 USR_LDFLAGS += -L$(CPSW_FRAMEWORK_LIB)
 USR_LDFLAGS += -L$(BOOST_LIB)
+
+# Install external package binaries
+BIN_INSTALLS += $(EPICS_BASE_BIN)/caRepeater
+BIN_INSTALLS += $(EPICS_BASE_BIN)/caget
+BIN_INSTALLS += $(EPICS_BASE_BIN)/caput
+BIN_INSTALLS += $(EPICS_BASE_BIN)/camonitor
+BIN_INSTALLS += $(EPICS_BASE_BIN)/cainfo
 
 include $(TOP)/configure/RULES
 #----------------------------------------

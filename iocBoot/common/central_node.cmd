@@ -131,6 +131,8 @@ crossbarControlAsynDriverConfigure("${CROSSBARCTRL_PORT}", "mmio/AmcCarrierCore/
 # Load iocAdmin databases to support IOC Health and monitoring
 dbLoadRecords("db/iocAdminSoft.db","IOC=${IOC_PV}")
 dbLoadRecords("db/iocAdminScanMon.db","IOC=${IOC_PV}")
+dbLoadRecords("db/devSeqCar.db"    ,"SIOC=${IOC_PV}")
+dbLoadRecords("db/save_restoreStatus.db", "P=${IOC_PV}:")
 
 # The following database is a result of a python parser
 # which looks at RELEASE_SITE and RELEASE to discover
@@ -169,6 +171,7 @@ set_requestfile_path("${IOC_DATA}/${IOC}/autosave-req")
 set_savefile_path("${IOC_DATA}/${IOC}/autosave")
 set_pass0_restoreFile("info_settings.sav")
 set_pass1_restoreFile("info_settings.sav")
+save_restoreSet_status_prefix("${IOC_PV}:")
 
 # ====================================================================
 # Channel Access security

@@ -3,6 +3,28 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-7-1__:
+  * Add support for cpuBoot from this app
+
+* __central_node_ioc-R4-7-0__:
+  * build against central_node_engine-R4-7-0
+  * Migrate from rhel7 to rhel9 as host architecture:
+    * Upgrade module versions
+    * Add support for tirpc when building rhel9 targets 
+
+* __central_node_ioc-R4-6-0__:
+  * build against central_node_engine-R4-6-0
+
+* __central_node_ioc-R4-5-4__:
+  * Fix scal val type of beam class definitions - they need to be scalVal not scalVal_RO
+
+* __central_node_ioc-R4-5-3__:
+  * Move Beam Class PVs to be readback only instead of read/write to 
+    address problem where some of them read 0
+
+* __central_node_ioc-R4-5-2__:
+  * Load db files for Seq status and autosave status
+
 * __central_node_ioc-R4-5-1__:
   * Build against central_node_engine-R4-5-1:
     * Fix bug with ignore condition for devices when app is disabled

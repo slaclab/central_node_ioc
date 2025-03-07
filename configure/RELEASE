@@ -15,19 +15,19 @@
 # Don't set your version to anything such as "test" that
 # could match a directory name.
 # ==========================================================
-ASYN_MODULE_VERSION             = R4.39-1.0.1
+ASYN_MODULE_VERSION             = R4.39-1.0.2
 SEQ_MODULE_VERSION              = R2.2.4-1.2
 AUTOSAVE_MODULE_VERSION         = R5.10-1.1.0
-CAPUTLOG_MODULE_VERSION         = R3.7-1.0.0
-IOCADMIN_MODULE_VERSION         = R3.1.16-1.3.2
+CAPUTLOG_MODULE_VERSION         = R4.0-1.0.0
+IOCADMIN_MODULE_VERSION         = R3.1.16-1.4.0
 MISCUTILS_MODULE_VERSION        = R2.2.5
-YCPSWASYN_MODULE_VERSION        = R3.3.6-1.0
-YAMLLOADER_MODULE_VERSION       = R2.3.5
-YAMLDOWNLOADER_MODULE_VERSION   = R1.2.3
-ATCACOMMON_MODULE_VERSION       = R2.0.1
-TPRTRIGGER_MODULE_VERSION       = R2.6.3
-TPRPATTERN_MODULE_VERSION       = R2.3.6
-TIMINGAPI_MODULE_VERSION        = R0.6
+YCPSWASYN_MODULE_VERSION        = R3.4.2
+YAMLLOADER_MODULE_VERSION       = R2.3.8
+YAMLDOWNLOADER_MODULE_VERSION   = R1.2.5
+ATCACOMMON_MODULE_VERSION       = R2.0.4
+TPRTRIGGER_MODULE_VERSION       = R2.6.5
+TPRPATTERN_MODULE_VERSION       = R2.3.9
+TIMINGAPI_MODULE_VERSION        = R0.9
 
 # ==========================================================
 # Define module paths using pattern
