@@ -5,6 +5,7 @@ O.*
 *.swp
 *.bak
 envPaths
+cpuEnv.sh
 RELEASE_SITE
 bin/
 lib/
