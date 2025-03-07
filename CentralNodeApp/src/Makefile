@@ -150,6 +150,13 @@ USR_LDFLAGS += -L$(YAML_LIB)
 USR_LDFLAGS += -L$(CPSW_FRAMEWORK_LIB)
 USR_LDFLAGS += -L$(BOOST_LIB)
 
+# Install external package binaries
+BIN_INSTALLS += $(EPICS_BASE_BIN)/caRepeater
+BIN_INSTALLS += $(EPICS_BASE_BIN)/caget
+BIN_INSTALLS += $(EPICS_BASE_BIN)/caput
+BIN_INSTALLS += $(EPICS_BASE_BIN)/camonitor
+BIN_INSTALLS += $(EPICS_BASE_BIN)/cainfo
+
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
