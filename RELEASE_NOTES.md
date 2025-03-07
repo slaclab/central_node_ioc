@@ -3,6 +3,9 @@
 Release notes for the LCLS-II MPS central node IOC.
 
 ## Releases:
+* __central_node_ioc-R4-7-1__:
+  * Add support for cpuBoot from this app
+
 * __central_node_ioc-R4-7-0__:
   * build against central_node_engine-R4-7-0
   * Migrate from rhel7 to rhel9 as host architecture:
