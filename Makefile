@@ -4,6 +4,7 @@ include $(TOP)/configure/CONFIG
 
 # Directories to build, any order
 DIRS += configure
+DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *cpuBoot*))
 DIRS += $(wildcard *Sup)
 DIRS += $(wildcard *App)
 DIRS += $(wildcard *Top)
