@@ -67,7 +67,7 @@ CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPat
   createParam(MPS_ANALOG_CHANNEL_LATCHED_STRING, asynParamUInt32Digital, &_mpsAnalogChannelLatchedParam);
   createParam(MPS_ANALOG_CHANNEL_UNLATCH_STRING, asynParamUInt32Digital, &_mpsAnalogChannelUnlatchParam);
   createParam(MPS_ANALOG_CHANNEL_BYPV_STRING, asynParamUInt32Digital, &_mpsAnalogChannelBypassValueParam);
-  createParam(MPS_ANALOG_CHANNEL_BYPS_STRING, asynParamInt32, &_mpsAnalogChannelBypassStatusParam);
+  createParam(MPS_ANALOG_CHANNEL_BYPS_STRING, asynParamUInt32Digital, &_mpsAnalogChannelBypassStatusParam);
   createParam(MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING, asynParamInt32, &_mpsAnalogChannelBypassExpirationDateParam);
   createParam(MPS_ANALOG_CHANNEL_REMAINING_BYPTIME_STRING, asynParamInt32, &_mpsAnalogChannelBypassRemainingExpirationTimeParam);
   createParam(MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING_STRING, asynParamOctet, &_mpsAnalogChannelBypassExpirationDateStringParam);
@@ -371,26 +371,6 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       }
     }
   }
-  else if (_mpsAnalogChannelBypassStatusParam ==  pasynUser->reason) {
-    {
-      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      try {
-        if (Engine::getInstance().getCurrentDb()->analogChannels->find(addr) ==
-            Engine::getInstance().getCurrentDb()->analogChannels->end()) {
-          LOG_TRACE("DRIVER", "ERROR: AnalogChannel not found, key=" << addr);
-          return asynError;
-        }
-        if (Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->bypass[bitIndex]->status == BYPASS_VALID) {
-          *value = 1;
-        }
-        else {
-          *value = 0;
-        }
-      } catch (std::exception &e) {
-        status = asynError;
-      }
-    }
-  }
   else if (_mpsFwMitigationParam == pasynUser->reason) {
     try {
       uint8_t index = 0;
@@ -668,6 +648,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
   asynStatus status = asynSuccess;
   int addr;
   getAddress(pasynUser, &addr);
+  int bitIndex = pasynUser->timeout;
 
   if (_mpsAppTimeoutEnableParam == pasynUser->reason) {
     if (addr >= FW_NUM_APPLICATION_MASKS)
@@ -867,6 +848,26 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
         }
       } catch (std::exception &e) {
 	      status = asynError;
+      }
+    }
+  }
+  else if (_mpsAnalogChannelBypassStatusParam ==  pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+        if (Engine::getInstance().getCurrentDb()->analogChannels->find(addr) ==
+            Engine::getInstance().getCurrentDb()->analogChannels->end()) {
+          LOG_TRACE("DRIVER", "ERROR: AnalogChannel not found, key=" << addr);
+          return asynError;
+        }
+        if (Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->bypass[bitIndex]->status == BYPASS_VALID) {
+          *value = 1;
+        }
+        else {
+          *value = 0;
+        }
+      } catch (std::exception &e) {
+        status = asynError;
       }
     }
   }
@@ -1091,7 +1092,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
 
         status = setUIntDigitalParam(addr, pasynUser->reason, latchedValue, mask);
         LOG_TRACE("DRIVER", "Unlatch: "
-            << Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->channel->name
+            << Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->name
             << " latchedValue: " << latchedValue << ", unlatched: "
             << Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->latchedValue
             << " mask: " << mask);
@@ -1120,7 +1121,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
       try {
         Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->bypass[bitIndex]->value = value;
         LOG_TRACE("DRIVER", "BypassValue: "
-            << Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->channel->name
+            << Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->name
             << " value: " << value << " (threshold=" << bitIndex << ")");
       } catch (const std::out_of_range &e) {
 	      LOG_TRACE("DRIVER", "ERROR: AnalogChannels out of range, key=" << addr);
