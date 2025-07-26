@@ -5,18 +5,6 @@ record(stringout, "$(IOC):CONFIG_LOAD") {
     field(ASG,  "$(ASG1)")
 }
 
-record(stringout, "$(IOC):Test:DEVICE_INPUT") {
-    field(DESC, "Load values for device inputs (digital)")
-    field(DTYP, "asynOctetWrite")
-    field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_DEVICE_INPUT")
-}
-
-record(stringout, "$(IOC):Test:ANALOG_DEVICE") {
-    field(DESC, "Load test file for analog devices")
-    field(DTYP, "asynOctetWrite")
-    field(OUT, "@asyn(CENTRAL_NODE 0 0)TEST_ANALOG_DEVICE")
-}
-
 record(stringin, "$(IOC):FW_BUILD_STAMP") {
     field(DESC, "Central node firmware build stamp")
     field(DTYP, "asynOctetRead")
@@ -285,14 +273,6 @@ record(longin, "$(IOC):SoftwareWdErrorCounter") {
     field(SCAN, "1 second")
     field(EGU, "us")
     field(INP, "@asyn(CENTRAL_NODE 1 0)MPS_FW_SOFTWARE_WDOG_COUNTER")
-}
-
-record(bo, "$(IOC):SKIP_HEARTBEAT") {
-    field(DESC, "For test only - disable SW/FW heartbeats")
-    field(DTYP, "asynUInt32Digital")
-    field(VAL, "0")
-    field(PINI, "YES")
-    field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_SKIP_HEARTBEAT")
 }
 
 record(bi, "$(IOC):SW_LOSS_ERROR") {
