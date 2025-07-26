@@ -359,16 +359,20 @@ file "RegRW.template" { pattern
 # Register with ScalVal interfaces
 #======================================
 
+file "Reg1BitRW.template" { pattern
+{ R,                   DESC,                                  SCAN,       PORT,    ZNAM,      ONAM,     PARAM            }
+{ ENABLE,              "MPS Engine Enable",                   "1 second", $(PORT), "Disable", "Enable", Enable           }
+{ SOFTWARE_ENABLE,     "Enable software eval engine updates", "1 second", $(PORT), "Disable", "Enable", SoftwareEnable   }
+{ EVALUATION_ENABLE,   "Enable evaluation engine",            "1 second", $(PORT), "Disable", "Enable", EvaluationEnable }
+{ TIMING_CHECK_ENABLE, "Timing check engine",                 "1 second", $(PORT), "Disable", "Enable", BeamFaultEn      }
+{ TIMEOUT_ENABLE,      "Enable application timeout engine",   "1 second", $(PORT), "Disable", "Enable", TimeoutEnable    }
+}
+
 file "RegisterOut.template" { pattern
 { P,        R,              DESC,                                       PINI,   SCAN,       PORT,  PARAM       }
 { $(P), ScratchPad,        "Register to test R/W"                        "NO",   "Passive",  $(PORT),    ScratchPad }
 { $(P), RxPolarity,        ""                                            "NO",   "Passive",  $(PORT),    RxPolarity }
-{ $(P), ENABLE,            "General Enable. Enables message stream",     "NO",   "Passive",  $(PORT),    Enable     }
 { $(P), Switch,            "Switch the configuration buffer",            "NO",   "Passive",  $(PORT),    Switch     }
-{ $(P), SOFTWARE_ENABLE,   "Enable software eval engine updates",        "NO",   "Passive",  $(PORT),    SoftwareEnable     }
-{ $(P), EVALUATION_ENABLE, "Enable evaluation engine",                   "NO",   "Passive",  $(PORT),    EvaluationEnable     }
-{ $(P), TIMING_CHECK_ENABLE,       "Beam fault enable",                  "NO",   "Passive",  $(PORT),    BeamFaultEn     }
-{ $(P), TIMEOUT_ENABLE,    "Enable application timeout engine",          "NO",   "Passive",  $(PORT),    TimeoutEnable     }
 { $(P), SoftwareClear,     "Clear software counters",                    "NO",   "Passive",  $(PORT),    SoftwareClear     }
 { $(P), TimeoutMsgVer,     "MPS Message version (5 bits)",               "NO",   "Passive",  $(PORT),    TimeoutMsgVer  }
 { $(P), TO_APP_SEL_0,      "App ID to monitor timeout",                  "NO",   "Passive",  $(PORT),    ToAppIDSel0  }
@@ -387,13 +391,8 @@ file "RegisterOutRBV.template" { pattern
 { P,           R,                DESC,                                    PINI,   SCAN,        PORT,       PARAM          }
 { $(P), ScratchPadRBV,           "Register to test R/W",                       "YES",  "1 second",  $(PORT),    ScratchPad      }
 { $(P), RxPolarityRBV,           ""                                            "YES",  "1 second",  $(PORT),    RxPolarity      }
-{ $(P), ENABLE_RBV,              "General Enable. Enables message stream",     "YES",  "1 second",  $(PORT),    Enable          }
 { $(P), SwitchRBV,               "Switch the configuration buffer       ",     "YES",  "1 second",  $(PORT),    Switch          }
-{ $(P), TIMING_CHECK_ENABLE_RBV, "Beam fault enable",                          "YES",  "1 second",  $(PORT),    BeamFaultEn }
-{ $(P), SOFTWARE_ENABLE_RBV,      "Enable software eval engine updates",        "YES",  "1 second",  $(PORT),    SoftwareEnable  }
-{ $(P), TIMEOUT_ENABLE_RBV,      "Enable application timeout engine",          "YES",  "1 second",  $(PORT),    TimeoutEnable  }
 { $(P), TimeoutMsgVerRBV,        "MPS Message version (5 bits)",               "YES",  "1 second",  $(PORT),    TimeoutMsgVer  }
-{ $(P), EVALUATION_ENABLE_RBV,     "Enable evaluation engine",                   "YES",  "1 second",  $(PORT),    EvaluationEnable  }
 { $(P), TO_APP_SEL_0_RBV,        "App ID to monitor timeout",                  "YES",  "1 second",  $(PORT),    ToAppIDSel0  }
 { $(P), TO_APP_SEL_1_RBV,        "App ID to monitor timeout",                  "YES",  "1 second",  $(PORT),    ToAppIDSel1  }
 }
