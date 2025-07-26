@@ -156,13 +156,16 @@ dbLoadRecords("db/tprTrig.db", "PORT=${TPRTRIGGER_PORT},LOCA=${LOCATION},IOC_UNI
 dbLoadRecords("db/saveLoadConfig.db", "P=${IOC_PV}, PORT=${CPSW_PORT}")
 
 # Central Node database, from the MPS configuration database
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/device_inputs.db","ASG1=${ASG1},ASG2=${ASG2}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/analog_devices.db","ASG1=${ASG1},ASG2=${ASG2}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/destinations.db","GLOBAL=${GLOBAL},BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults.db","ASG1=${ASG1},ASG2=${ASG2}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/apps.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/conditions.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
-dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/fault_bypass.db","ASG1=${ASG1},ASG2=${ASG2}")
+
+dbLoadRecords(${TOP}/iocBoot/${IOC}/${IOC}.db,"ASG1=${ASG1},ASG2=${ASG2}")
+
+#dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/device_inputs.db","ASG1=${ASG1},ASG2=${ASG2}")
+#dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/analog_devices.db","ASG1=${ASG1},ASG2=${ASG2}")
+#dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/destinations.db","GLOBAL=${GLOBAL},BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
+#dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/faults.db","ASG1=${ASG1},ASG2=${ASG2}")
+#dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/apps.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
+#dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/conditions.db","BASE=${IOC_PV},ASG1=${ASG1},ASG2=${ASG2}")
+#dbLoadRecords("${MPS_ENV_CONFIG_PATH}/central_node_db/cn${CN_INDEX}/fault_bypass.db","ASG1=${ASG1},ASG2=${ASG2}")
 
 # ====================================================================
 # Setup autosave/restore
