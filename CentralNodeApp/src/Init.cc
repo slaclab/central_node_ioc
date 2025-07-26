@@ -589,6 +589,33 @@ static void mpsBypassFault(int id, int stateId, epicsInt32 expirationTime) {
   }
 }
 
+/*=== mpsBypassAnalog command =======================================================*/
+
+static void mpsBypassAnalog(int id, int integrator, epicsInt32 expirationTime) {
+  if (id <= 0) {
+    std::cout << "*** mps bypass analog or mps b a command ***" << std::endl
+        << "Usage: mps b a <id> <integrator> <threshold> <time (sec)>" << std::endl
+        << "  id: database Id for the fault" << std::endl
+        << "  integrator: integrator number (0-3) for the channel" << std::endl
+        << "  if analog fault: mps b f <id> 0 <time (sec)>" << std::endl
+        << std::endl;
+    return;
+  }
+  // Add expirationTime to current time, unless the bypass is being cancelled
+  time_t now;
+  time(&now);
+  if (expirationTime > 0) {
+    expirationTime += now;
+  }
+  else {
+    expirationTime = 0;
+  }
+  {
+    std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+    Engine::getInstance().getBypassManager()->setThresholdBypass(BYPASS_ANALOG, id, 0, expirationTime, integrator);
+  }
+}
+
 /*=== mpsBypassApp command =======================================================*/
 
 static void mpsBypassApp(int id, epicsInt32 expirationTime) {
@@ -654,6 +681,7 @@ static void printHelp() {
         << "  |- clear to            : clear timeout error" << std::endl
         << "  bypass" << std::endl
         << "  |- bypass fault [id] [state_id] [time] : bypass fault to fault state" << std::endl
+        << "  |- bypass analog [id] [integrator] [time] : bypass analog channel" << std::endl
         << "  |- bypass app [id] [time] : bypass application card (Disable timeout)" << std::endl
 	      << "" << std::endl
 	      << "*** The id specified to the mps command is the database id   ***" << std::endl
@@ -874,6 +902,12 @@ static void mpsCallFunc(const iocshArgBuf *args) {
       int32_t faultStateId = args[3].ival;
       uint32_t expTime = args[4].ival;
       mpsBypassFault(id, faultStateId, expTime); 
+    }
+    else if (option == "analog" || option == "a") {
+      int32_t id = args[2].ival;
+      int32_t in = args[3].ival; //integrator
+      uint32_t expTime = args[4].ival;
+      mpsBypassAnalog(id, in, expTime);
     }
     else if (option == "app" || option == "a") {
       int32_t id = args[2].ival;
