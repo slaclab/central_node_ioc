@@ -36,49 +36,9 @@ record(bi, "MPLN:B34:MP11:1:DIG_ENABLE_RBV") {
   field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_APP_TIMEOUT_ENABLE")
 }
 #================================================================================#
-# LCLS MPS PV template for Central Node DIGITAL Channel                          #
-# Macro description:                                                             #
-#   - P          : Device Input PV Prefix                                        #
-#   - ONAM       : OK state name                                                 #
-#   - ZNAM       : Fault state name.                                             #
-#   - LOCA       : Card location                                                 #
-#   - CH         : Channel Number                                                #
-#   - ID         : Device ID in DB                                               #
-#   - ZSV        : Zero Severity                                                 #
-#   - OSV        : One Severity                                                  #
-#   - MASK       : Bit mask of the channel (digital = 1, analog is thr mask)     #
-#   - TYPE       : DIGITAL or ANALOG                                             #
-#================================================================================#
-record(bi, "MPS:B34:1:TEST_DI0_SCMPSC") {
-  field(DESC, "B34-SP08-RTM CH 0")
-  field(DTYP, "asynUInt32Digital")
-  field(SCAN, "1 second")
-  field(ZNAM, "IS_FAULTED")
-  field(ONAM, "IS_OK")
-  field(ZSV, "MAJOR")
-  field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_DIGITAL_CHANNEL")
-}
-record(bi, "MPS:B34:1:TEST_DI0_SCMPS") {
-  field(DESC, "B34-SP08-RTM CH 0 Latched Value")
-  field(DTYP, "asynUInt32Digital")
-  field(SCAN, "1 second")
-  field(ZNAM, "IS_FAULTED")
-  field(ONAM, "IS_OK")
-  field(ZSV, "MAJOR")
-  field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_DIGITAL_CHANNEL_LATCHED")
-}
-record(bo, "MPS:B34:1:TEST_DI0_SCUNLH") {
-  field(DESC, "B34-SP08-RTM CH 0 Unlatch")
-  field(DTYP, "asynUInt32Digital")
-  field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_DIGITAL_CHANNEL_UNLATCH")
-  field(ASG,  "$(ASG1)")
-}
-#================================================================================#
 # LCLS MPS PV template for Central Node DIGITAL bypass                           #
 # Macro description:                                                             #
-#   - P          : Device Input PV Prefix                                        #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
 #   - ONAM       : OK state name                                                 #
 #   - ZNAM       : Fault state name.                                             #
 #   - LOCA       : Card location                                                 #
@@ -94,10 +54,21 @@ record(bo, "MPS:B34:1:TEST_DI0_SCBYPV") {
   field(DTYP, "asynUInt32Digital")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
-  field(ZSV,  "MAJOR")
+  field(ZSV,  "NO_ALARM")
   field(OSV,  "NO_ALARM")
   field(PINI, "YES")
   field(OUT, "@asynMask(CENTRAL_NODE 1 1 1)MPS_DIGITAL_CHANNEL_BYPV")
+}
+record(bi, "MPS:B34:1:TEST_DI0_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-RTM CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_FAULTED")
+  field(ONAM, "IS_OK")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 1 1 1)MPS_DIGITAL_CHANNEL_BYPV")
+  field(SCAN, "1 second")
 }
 record(bi, "MPS:B34:1:TEST_DI0_SCBYPS") {
   field(DESC, "B34-SP08-RTM CH 0 Bypass Status")
@@ -149,36 +120,36 @@ record(stringin, "MPS:B34:1:TEST_DI0_SCBYP_END") {
 #   - MASK       : Bit mask of the channel (digital = 1, analog is thr mask)     #
 #   - TYPE       : DIGITAL or ANALOG                                             #
 #================================================================================#
-record(bi, "MPS:B34:1:TEST_DI1_SCMPSC") {
-  field(DESC, "B34-SP08-RTM CH 1")
+record(bi, "MPS:B34:1:TEST_DI0_SCMPSC") {
+  field(DESC, "B34-SP08-RTM CH 0")
   field(DTYP, "asynUInt32Digital")
   field(SCAN, "1 second")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
   field(ZSV, "MAJOR")
   field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE 2 1 0)MPS_DIGITAL_CHANNEL")
+  field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_DIGITAL_CHANNEL")
 }
-record(bi, "MPS:B34:1:TEST_DI1_SCMPS") {
-  field(DESC, "B34-SP08-RTM CH 1 Latched Value")
+record(bi, "MPS:B34:1:TEST_DI0_SCMPS") {
+  field(DESC, "B34-SP08-RTM CH 0 Latched Value")
   field(DTYP, "asynUInt32Digital")
   field(SCAN, "1 second")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
   field(ZSV, "MAJOR")
   field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE 2 1 0)MPS_DIGITAL_CHANNEL_LATCHED")
+  field(INP, "@asynMask(CENTRAL_NODE 1 1 0)MPS_DIGITAL_CHANNEL_LATCHED")
 }
-record(bo, "MPS:B34:1:TEST_DI1_SCUNLH") {
-  field(DESC, "B34-SP08-RTM CH 1 Unlatch")
+record(bo, "MPS:B34:1:TEST_DI0_SCUNLH") {
+  field(DESC, "B34-SP08-RTM CH 0 Unlatch")
   field(DTYP, "asynUInt32Digital")
-  field(OUT, "@asynMask(CENTRAL_NODE 2 1 0)MPS_DIGITAL_CHANNEL_UNLATCH")
+  field(OUT, "@asynMask(CENTRAL_NODE 1 1 0)MPS_DIGITAL_CHANNEL_UNLATCH")
   field(ASG,  "$(ASG1)")
 }
 #================================================================================#
 # LCLS MPS PV template for Central Node DIGITAL bypass                           #
 # Macro description:                                                             #
-#   - P          : Device Input PV Prefix                                        #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
 #   - ONAM       : OK state name                                                 #
 #   - ZNAM       : Fault state name.                                             #
 #   - LOCA       : Card location                                                 #
@@ -194,10 +165,21 @@ record(bo, "MPS:B34:1:TEST_DI1_SCBYPV") {
   field(DTYP, "asynUInt32Digital")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
-  field(ZSV,  "MAJOR")
+  field(ZSV,  "NO_ALARM")
   field(OSV,  "NO_ALARM")
   field(PINI, "YES")
   field(OUT, "@asynMask(CENTRAL_NODE 2 1 1)MPS_DIGITAL_CHANNEL_BYPV")
+}
+record(bi, "MPS:B34:1:TEST_DI1_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-RTM CH 1 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_FAULTED")
+  field(ONAM, "IS_OK")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 2 1 1)MPS_DIGITAL_CHANNEL_BYPV")
+  field(SCAN, "1 second")
 }
 record(bi, "MPS:B34:1:TEST_DI1_SCBYPS") {
   field(DESC, "B34-SP08-RTM CH 1 Bypass Status")
@@ -249,36 +231,36 @@ record(stringin, "MPS:B34:1:TEST_DI1_SCBYP_END") {
 #   - MASK       : Bit mask of the channel (digital = 1, analog is thr mask)     #
 #   - TYPE       : DIGITAL or ANALOG                                             #
 #================================================================================#
-record(bi, "SIOC:B34:MP11:HEARTBEAT_SCMPSC") {
-  field(DESC, "B34-SP08-RTM CH 32")
+record(bi, "MPS:B34:1:TEST_DI1_SCMPSC") {
+  field(DESC, "B34-SP08-RTM CH 1")
   field(DTYP, "asynUInt32Digital")
   field(SCAN, "1 second")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
   field(ZSV, "MAJOR")
   field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE 3 1 0)MPS_DIGITAL_CHANNEL")
+  field(INP, "@asynMask(CENTRAL_NODE 2 1 0)MPS_DIGITAL_CHANNEL")
 }
-record(bi, "SIOC:B34:MP11:HEARTBEAT_SCMPS") {
-  field(DESC, "B34-SP08-RTM CH 32 Latched Value")
+record(bi, "MPS:B34:1:TEST_DI1_SCMPS") {
+  field(DESC, "B34-SP08-RTM CH 1 Latched Value")
   field(DTYP, "asynUInt32Digital")
   field(SCAN, "1 second")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
   field(ZSV, "MAJOR")
   field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE 3 1 0)MPS_DIGITAL_CHANNEL_LATCHED")
+  field(INP, "@asynMask(CENTRAL_NODE 2 1 0)MPS_DIGITAL_CHANNEL_LATCHED")
 }
-record(bo, "SIOC:B34:MP11:HEARTBEAT_SCUNLH") {
-  field(DESC, "B34-SP08-RTM CH 32 Unlatch")
+record(bo, "MPS:B34:1:TEST_DI1_SCUNLH") {
+  field(DESC, "B34-SP08-RTM CH 1 Unlatch")
   field(DTYP, "asynUInt32Digital")
-  field(OUT, "@asynMask(CENTRAL_NODE 3 1 0)MPS_DIGITAL_CHANNEL_UNLATCH")
+  field(OUT, "@asynMask(CENTRAL_NODE 2 1 0)MPS_DIGITAL_CHANNEL_UNLATCH")
   field(ASG,  "$(ASG1)")
 }
 #================================================================================#
 # LCLS MPS PV template for Central Node DIGITAL bypass                           #
 # Macro description:                                                             #
-#   - P          : Device Input PV Prefix                                        #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
 #   - ONAM       : OK state name                                                 #
 #   - ZNAM       : Fault state name.                                             #
 #   - LOCA       : Card location                                                 #
@@ -294,10 +276,21 @@ record(bo, "SIOC:B34:MP11:HEARTBEAT_SCBYPV") {
   field(DTYP, "asynUInt32Digital")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
-  field(ZSV,  "MAJOR")
+  field(ZSV,  "NO_ALARM")
   field(OSV,  "NO_ALARM")
   field(PINI, "YES")
   field(OUT, "@asynMask(CENTRAL_NODE 3 1 1)MPS_DIGITAL_CHANNEL_BYPV")
+}
+record(bi, "SIOC:B34:MP11:HEARTBEAT_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-RTM CH 32 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_FAULTED")
+  field(ONAM, "IS_OK")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 3 1 1)MPS_DIGITAL_CHANNEL_BYPV")
+  field(SCAN, "1 second")
 }
 record(bi, "SIOC:B34:MP11:HEARTBEAT_SCBYPS") {
   field(DESC, "B34-SP08-RTM CH 32 Bypass Status")
@@ -349,36 +342,36 @@ record(stringin, "SIOC:B34:MP11:HEARTBEAT_SCBYP_END") {
 #   - MASK       : Bit mask of the channel (digital = 1, analog is thr mask)     #
 #   - TYPE       : DIGITAL or ANALOG                                             #
 #================================================================================#
-record(bi, "SIOC:B34:MP11:IGNORE_SCMPSC") {
-  field(DESC, "B34-SP08-RTM CH 33")
+record(bi, "SIOC:B34:MP11:HEARTBEAT_SCMPSC") {
+  field(DESC, "B34-SP08-RTM CH 32")
   field(DTYP, "asynUInt32Digital")
   field(SCAN, "1 second")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
   field(ZSV, "MAJOR")
   field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE 4 1 0)MPS_DIGITAL_CHANNEL")
+  field(INP, "@asynMask(CENTRAL_NODE 3 1 0)MPS_DIGITAL_CHANNEL")
 }
-record(bi, "SIOC:B34:MP11:IGNORE_SCMPS") {
-  field(DESC, "B34-SP08-RTM CH 33 Latched Value")
+record(bi, "SIOC:B34:MP11:HEARTBEAT_SCMPS") {
+  field(DESC, "B34-SP08-RTM CH 32 Latched Value")
   field(DTYP, "asynUInt32Digital")
   field(SCAN, "1 second")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
   field(ZSV, "MAJOR")
   field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE 4 1 0)MPS_DIGITAL_CHANNEL_LATCHED")
+  field(INP, "@asynMask(CENTRAL_NODE 3 1 0)MPS_DIGITAL_CHANNEL_LATCHED")
 }
-record(bo, "SIOC:B34:MP11:IGNORE_SCUNLH") {
-  field(DESC, "B34-SP08-RTM CH 33 Unlatch")
+record(bo, "SIOC:B34:MP11:HEARTBEAT_SCUNLH") {
+  field(DESC, "B34-SP08-RTM CH 32 Unlatch")
   field(DTYP, "asynUInt32Digital")
-  field(OUT, "@asynMask(CENTRAL_NODE 4 1 0)MPS_DIGITAL_CHANNEL_UNLATCH")
+  field(OUT, "@asynMask(CENTRAL_NODE 3 1 0)MPS_DIGITAL_CHANNEL_UNLATCH")
   field(ASG,  "$(ASG1)")
 }
 #================================================================================#
 # LCLS MPS PV template for Central Node DIGITAL bypass                           #
 # Macro description:                                                             #
-#   - P          : Device Input PV Prefix                                        #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
 #   - ONAM       : OK state name                                                 #
 #   - ZNAM       : Fault state name.                                             #
 #   - LOCA       : Card location                                                 #
@@ -394,10 +387,21 @@ record(bo, "SIOC:B34:MP11:IGNORE_SCBYPV") {
   field(DTYP, "asynUInt32Digital")
   field(ZNAM, "IS_FAULTED")
   field(ONAM, "IS_OK")
-  field(ZSV,  "MAJOR")
+  field(ZSV,  "NO_ALARM")
   field(OSV,  "NO_ALARM")
   field(PINI, "YES")
   field(OUT, "@asynMask(CENTRAL_NODE 4 1 1)MPS_DIGITAL_CHANNEL_BYPV")
+}
+record(bi, "SIOC:B34:MP11:IGNORE_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-RTM CH 33 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_FAULTED")
+  field(ONAM, "IS_OK")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 4 1 1)MPS_DIGITAL_CHANNEL_BYPV")
+  field(SCAN, "1 second")
 }
 record(bi, "SIOC:B34:MP11:IGNORE_SCBYPS") {
   field(DESC, "B34-SP08-RTM CH 33 Bypass Status")
@@ -436,6 +440,46 @@ record(stringin, "SIOC:B34:MP11:IGNORE_SCBYP_END") {
   field(INP, "@asyn(CENTRAL_NODE 4 1)MPS_DIGITAL_CHANNEL_BYPEXPDATE_STRING")
 }
 #================================================================================#
+# LCLS MPS PV template for Central Node DIGITAL Channel                          #
+# Macro description:                                                             #
+#   - P          : Device Input PV Prefix                                        #
+#   - ONAM       : OK state name                                                 #
+#   - ZNAM       : Fault state name.                                             #
+#   - LOCA       : Card location                                                 #
+#   - CH         : Channel Number                                                #
+#   - ID         : Device ID in DB                                               #
+#   - ZSV        : Zero Severity                                                 #
+#   - OSV        : One Severity                                                  #
+#   - MASK       : Bit mask of the channel (digital = 1, analog is thr mask)     #
+#   - TYPE       : DIGITAL or ANALOG                                             #
+#================================================================================#
+record(bi, "SIOC:B34:MP11:IGNORE_SCMPSC") {
+  field(DESC, "B34-SP08-RTM CH 33")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "IS_FAULTED")
+  field(ONAM, "IS_OK")
+  field(ZSV, "MAJOR")
+  field(OSV, "NO_ALARM")
+  field(INP, "@asynMask(CENTRAL_NODE 4 1 0)MPS_DIGITAL_CHANNEL")
+}
+record(bi, "SIOC:B34:MP11:IGNORE_SCMPS") {
+  field(DESC, "B34-SP08-RTM CH 33 Latched Value")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "IS_FAULTED")
+  field(ONAM, "IS_OK")
+  field(ZSV, "MAJOR")
+  field(OSV, "NO_ALARM")
+  field(INP, "@asynMask(CENTRAL_NODE 4 1 0)MPS_DIGITAL_CHANNEL_LATCHED")
+}
+record(bo, "SIOC:B34:MP11:IGNORE_SCUNLH") {
+  field(DESC, "B34-SP08-RTM CH 33 Unlatch")
+  field(DTYP, "asynUInt32Digital")
+  field(OUT, "@asynMask(CENTRAL_NODE 4 1 0)MPS_DIGITAL_CHANNEL_UNLATCH")
+  field(ASG,  "$(ASG1)")
+}
+#================================================================================#
 # LCLS MPS PV template for Central Node Application - 1 per application          #
 # Macro description:                                                             #
 #   - P          : MPLN Prefix                                                   #
@@ -471,6 +515,77 @@ record(bi, "MPLN:B34:MP11:1:ENABLE_RBV") {
   field(ZSV, "MINOR")
   field(OSV, "NO_ALARM")
   field(INP, "@asynMask(CENTRAL_NODE 2 1 0)MPS_APP_TIMEOUT_ENABLE")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node ANALOG bypass                           #
+# Macro description:                                                             #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
+#   - ONAM       : OK state name                                                 #
+#   - ZNAM       : Fault state name.                                             #
+#   - LOCA       : Card location                                                 #
+#   - CH         : Channel Number                                                #
+#   - ID         : Device ID in DB                                               #
+#   - ZSV        : Zero Severity                                                 #
+#   - OSV        : One Severity                                                  #
+#   - INT        : Integrator (digital = 1)                                      #
+#   - TYPE       : DIGITAL or ANALOG of FAULT                                    #
+#================================================================================#
+record(bo, "MPS:B34:0:I0_LOSS_SCBYPV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(OUT, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+  field(SCAN, "1 second")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPS") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPS")
+}
+record(longout, "MPS:B34:0:I0_LOSS_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "MPS:B34:0:I0_LOSS_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_REMAINING_BYPTIME")
+}
+record(stringin, "MPS:B34:0:I0_LOSS_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING")
 }
 #================================================================================#
 # LCLS MPS PV template for Central Node ANALOG Channel                          #
@@ -513,6 +628,77 @@ record(bo, "MPS:B34:0:I0_LOSS_T0_SCUNLH") {
   field(ASG,  "$(ASG1)")
 }
 #================================================================================#
+# LCLS MPS PV template for Central Node ANALOG bypass                           #
+# Macro description:                                                             #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
+#   - ONAM       : OK state name                                                 #
+#   - ZNAM       : Fault state name.                                             #
+#   - LOCA       : Card location                                                 #
+#   - CH         : Channel Number                                                #
+#   - ID         : Device ID in DB                                               #
+#   - ZSV        : Zero Severity                                                 #
+#   - OSV        : One Severity                                                  #
+#   - INT        : Integrator (digital = 1)                                      #
+#   - TYPE       : DIGITAL or ANALOG of FAULT                                    #
+#================================================================================#
+record(bo, "MPS:B34:0:I0_LOSS_SCBYPV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(OUT, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+  field(SCAN, "1 second")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPS") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPS")
+}
+record(longout, "MPS:B34:0:I0_LOSS_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "MPS:B34:0:I0_LOSS_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_REMAINING_BYPTIME")
+}
+record(stringin, "MPS:B34:0:I0_LOSS_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING")
+}
+#================================================================================#
 # LCLS MPS PV template for Central Node ANALOG Channel                          #
 # Macro description:                                                             #
 #   - P          : Device Input PV Prefix                                        #
@@ -551,6 +737,77 @@ record(bo, "MPS:B34:0:I0_LOSS_T1_SCUNLH") {
   field(DTYP, "asynUInt32Digital")
   field(OUT, "@asynMask(CENTRAL_NODE 5 2 0)MPS_ANALOG_CHANNEL_UNLATCH")
   field(ASG,  "$(ASG1)")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node ANALOG bypass                           #
+# Macro description:                                                             #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
+#   - ONAM       : OK state name                                                 #
+#   - ZNAM       : Fault state name.                                             #
+#   - LOCA       : Card location                                                 #
+#   - CH         : Channel Number                                                #
+#   - ID         : Device ID in DB                                               #
+#   - ZSV        : Zero Severity                                                 #
+#   - OSV        : One Severity                                                  #
+#   - INT        : Integrator (digital = 1)                                      #
+#   - TYPE       : DIGITAL or ANALOG of FAULT                                    #
+#================================================================================#
+record(bo, "MPS:B34:0:I0_LOSS_SCBYPV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(OUT, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+  field(SCAN, "1 second")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPS") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPS")
+}
+record(longout, "MPS:B34:0:I0_LOSS_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "MPS:B34:0:I0_LOSS_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_REMAINING_BYPTIME")
+}
+record(stringin, "MPS:B34:0:I0_LOSS_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING")
 }
 #================================================================================#
 # LCLS MPS PV template for Central Node ANALOG Channel                          #
@@ -593,6 +850,77 @@ record(bo, "MPS:B34:0:I0_LOSS_T2_SCUNLH") {
   field(ASG,  "$(ASG1)")
 }
 #================================================================================#
+# LCLS MPS PV template for Central Node ANALOG bypass                           #
+# Macro description:                                                             #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
+#   - ONAM       : OK state name                                                 #
+#   - ZNAM       : Fault state name.                                             #
+#   - LOCA       : Card location                                                 #
+#   - CH         : Channel Number                                                #
+#   - ID         : Device ID in DB                                               #
+#   - ZSV        : Zero Severity                                                 #
+#   - OSV        : One Severity                                                  #
+#   - INT        : Integrator (digital = 1)                                      #
+#   - TYPE       : DIGITAL or ANALOG of FAULT                                    #
+#================================================================================#
+record(bo, "MPS:B34:0:I0_LOSS_SCBYPV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(OUT, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+  field(SCAN, "1 second")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPS") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPS")
+}
+record(longout, "MPS:B34:0:I0_LOSS_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "MPS:B34:0:I0_LOSS_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_REMAINING_BYPTIME")
+}
+record(stringin, "MPS:B34:0:I0_LOSS_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING")
+}
+#================================================================================#
 # LCLS MPS PV template for Central Node ANALOG Channel                          #
 # Macro description:                                                             #
 #   - P          : Device Input PV Prefix                                        #
@@ -631,6 +959,77 @@ record(bo, "MPS:B34:0:I0_LOSS_T3_SCUNLH") {
   field(DTYP, "asynUInt32Digital")
   field(OUT, "@asynMask(CENTRAL_NODE 5 8 0)MPS_ANALOG_CHANNEL_UNLATCH")
   field(ASG,  "$(ASG1)")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node ANALOG bypass                           #
+# Macro description:                                                             #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
+#   - ONAM       : OK state name                                                 #
+#   - ZNAM       : Fault state name.                                             #
+#   - LOCA       : Card location                                                 #
+#   - CH         : Channel Number                                                #
+#   - ID         : Device ID in DB                                               #
+#   - ZSV        : Zero Severity                                                 #
+#   - OSV        : One Severity                                                  #
+#   - INT        : Integrator (digital = 1)                                      #
+#   - TYPE       : DIGITAL or ANALOG of FAULT                                    #
+#================================================================================#
+record(bo, "MPS:B34:0:I0_LOSS_SCBYPV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(OUT, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+  field(SCAN, "1 second")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPS") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPS")
+}
+record(longout, "MPS:B34:0:I0_LOSS_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "MPS:B34:0:I0_LOSS_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_REMAINING_BYPTIME")
+}
+record(stringin, "MPS:B34:0:I0_LOSS_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING")
 }
 #================================================================================#
 # LCLS MPS PV template for Central Node ANALOG Channel                          #
@@ -673,6 +1072,77 @@ record(bo, "MPS:B34:0:I0_LOSS_T4_SCUNLH") {
   field(ASG,  "$(ASG1)")
 }
 #================================================================================#
+# LCLS MPS PV template for Central Node ANALOG bypass                           #
+# Macro description:                                                             #
+#   - DEVICE_BYP : Device Input PV Prefix                                        #
+#   - ONAM       : OK state name                                                 #
+#   - ZNAM       : Fault state name.                                             #
+#   - LOCA       : Card location                                                 #
+#   - CH         : Channel Number                                                #
+#   - ID         : Device ID in DB                                               #
+#   - ZSV        : Zero Severity                                                 #
+#   - OSV        : One Severity                                                  #
+#   - INT        : Integrator (digital = 1)                                      #
+#   - TYPE       : DIGITAL or ANALOG of FAULT                                    #
+#================================================================================#
+record(bo, "MPS:B34:0:I0_LOSS_SCBYPV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(OUT, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPV_RBV") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "IS_OK")
+  field(ONAM, "IS_EXCEEDED")
+  field(ZSV,  "NO_ALARM")
+  field(OSV,  "NO_ALARM")
+  field(PINI, "YES")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+  field(SCAN, "1 second")
+}
+record(bi, "MPS:B34:0:I0_LOSS_SCBYPS") {
+  field(DESC, "B34-SP08-S2 CH 0 Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPS")
+}
+record(longout, "MPS:B34:0:I0_LOSS_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "MPS:B34:0:I0_LOSS_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_REMAINING_BYPTIME")
+}
+record(stringin, "MPS:B34:0:I0_LOSS_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING")
+}
+#================================================================================#
 # LCLS MPS PV template for Central Node ANALOG Channel                          #
 # Macro description:                                                             #
 #   - P          : Device Input PV Prefix                                        #
@@ -713,62 +1183,469 @@ record(bo, "MPS:B34:0:I0_LOSS_T5_SCUNLH") {
   field(ASG,  "$(ASG1)")
 }
 #================================================================================#
-# LCLS MPS PV template for Central Node ANALOG bypass                           #
+# LCLS MPS PV template for Central Node Faults                                   #
 # Macro description:                                                             #
-#   - P          : Device Input PV Prefix                                        #
-#   - ONAM       : OK state name                                                 #
-#   - ZNAM       : Fault state name.                                             #
-#   - LOCA       : Card location                                                 #
-#   - CH         : Channel Number                                                #
-#   - ID         : Device ID in DB                                               #
-#   - ZSV        : Zero Severity                                                 #
-#   - OSV        : One Severity                                                  #
-#   - INT        : Integrator (digital = 1)                                      #
-#   - TYPE       : DIGITAL or ANALOG of FAULT                                    #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
 #================================================================================#
-record(bo, "MPS:B34:0:I0_LOSS_SCBYPV") {
-  field(DESC, "B34-SP08-S2 CH 0 Bypass Value")
-  field(DTYP, "asynUInt32Digital")
-  field(ZNAM, "IS_OK")
-  field(ONAM, "IS_OK")
-  field(ZSV,  "NO_ALARM")
-  field(OSV,  "NO_ALARM")
-  field(PINI, "YES")
-  field(OUT, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPV")
+
+record(longin, "MPS:B34:1:STATUS_FLT") {
+  field(DESC, "Test Digital 0")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(INP,  "@asynMask(CENTRAL_NODE 1 0)MPS_FAULT")
 }
-record(bi, "MPS:B34:0:I0_LOSS_SCBYPS") {
-  field(DESC, "B34-SP08-S2 CH 0 Bypass Status")
+record(bi, "MPS:B34:1:STATUS_FLT_IGNORED") {
+  field(DESC, "Test Digital 0 Ignored")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Ignored")
+  field(ONAM, "Ignored")
+  field(INP,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_FAULT_IGNORED")
+}
+record(bi, "MPS:B34:1:STATUS_FLT_SCMPS") {
+  field(DESC, "Test Digital 0 Faulted")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Faulted")
+  field(ONAM, "Faulted")
+  field(INP,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_FAULT_FAULTED")
+}
+record(bi, "MPS:B34:1:STATUS_FLT_ACTIVE") {
+  field(DESC, "Test Digital 0 Active")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Active")
+  field(ONAM, "Active")
+  field(INP,  "@asynMask(CENTRAL_NODE 1 1 0)MPS_FAULT_ACTIVE")
+}
+record(bi, "MPS:B34:1:STATUS_FLT_SCBYPS") {
+  field(DESC, "Bypass Status")
   field(SCAN, "1 second")
   field(DTYP, "asynUInt32Digital")
   field(ZNAM, "Not Bypassed")
   field(ONAM, "Bypassed")
   field(ZSV, "NO_ALARM")
   field(OSV, "MAJOR")
-  field(INP, "@asynMask(CENTRAL_NODE 5 1 0)MPS_ANALOG_CHANNEL_BYPS")
+  field(INP, "@asynMask(CENTRAL_NODE 1 1 1)MPS_FAULT_BYPS")
 }
-record(longout, "MPS:B34:0:I0_LOSS_SCBYPD") {
+record(longout, "MPS:B34:1:STATUS_FLT_SCBYPD") {
   field(DESC, "Bypass duration in seconds")
   field(DTYP, "asynInt32")
   field(EGU, "Seconds")
   field(VAL, "0")
   field(PINI, "YES")
-  field(OUT, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE")
+  field(OUT, "@asyn(CENTRAL_NODE 1 1)MPS_FAULT_BYPEXPDATE")
   field(ASG,  "$(ASG2)")
 }
-record(longin, "MPS:B34:0:I0_LOSS_SCBYPT") {
+record(longin, "MPS:B34:1:STATUS_FLT_SCBYPT") {
   field(DESC, "Remaining bypass duration in seconds")
   field(DTYP, "asynInt32")
   field(EGU, "Seconds")
   field(SCAN, "1 second")
   field(VAL, "0")
   field(PINI, "YES")
-  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_REMAINING_BYPTIME")
+  field(INP, "@asyn(CENTRAL_NODE 1 1)MPS_FAULT_REMAINING_BYPTIME")
 }
-record(stringin, "MPS:B34:0:I0_LOSS_SCBYP_END") {
+record(stringin, "MPS:B34:1:STATUS_FLT_SCBYP_END") {
   field(DESC, "Bypass Expiration Date/Time String")
   field(DTYP, "asynOctetRead")
   field(SCAN, "1 second")
   field(VAL, "Invalid")
   field(PINI, "YES")
-  field(INP, "@asyn(CENTRAL_NODE 5 0)MPS_ANALOG_CHANNEL_BYPEXPDATE_STRING")
+  field(INP, "@asyn(CENTRAL_NODE 1 1)MPS_FAULT_BYPEXPDATE_STRING")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node Faults                                   #
+# Macro description:                                                             #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
+#================================================================================#
+record(mbbo, "MPS:B34:1:STATUS_FLT_SCBYPV") {
+  field(DESC, "Test Digital 0")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn(CENTRAL_NODE 1 1)MPS_FAULT_BYPV")
+  field(PINI, "YES")
+  field(VAL,  "0")
+  field(ZRST, "Is Faulted")
+  field(ZRVL,  "1")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "Is Ok")
+  field(ONVL,  "2")
+  field(ONSV, "NO_ALARM")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node Faults                                   #
+# Macro description:                                                             #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
+#================================================================================#
+
+record(longin, "MPS:B34:1:STATUS_FLT") {
+  field(DESC, "Test Digital 1")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(INP,  "@asynMask(CENTRAL_NODE 2 0)MPS_FAULT")
+}
+record(bi, "MPS:B34:1:STATUS_FLT_IGNORED") {
+  field(DESC, "Test Digital 1 Ignored")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Ignored")
+  field(ONAM, "Ignored")
+  field(INP,  "@asynMask(CENTRAL_NODE 2 1 0)MPS_FAULT_IGNORED")
+}
+record(bi, "MPS:B34:1:STATUS_FLT_SCMPS") {
+  field(DESC, "Test Digital 1 Faulted")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Faulted")
+  field(ONAM, "Faulted")
+  field(INP,  "@asynMask(CENTRAL_NODE 2 1 0)MPS_FAULT_FAULTED")
+}
+record(bi, "MPS:B34:1:STATUS_FLT_ACTIVE") {
+  field(DESC, "Test Digital 1 Active")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Active")
+  field(ONAM, "Active")
+  field(INP,  "@asynMask(CENTRAL_NODE 2 1 0)MPS_FAULT_ACTIVE")
+}
+record(bi, "MPS:B34:1:STATUS_FLT_SCBYPS") {
+  field(DESC, "Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 2 1 1)MPS_FAULT_BYPS")
+}
+record(longout, "MPS:B34:1:STATUS_FLT_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 2 1)MPS_FAULT_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "MPS:B34:1:STATUS_FLT_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 2 1)MPS_FAULT_REMAINING_BYPTIME")
+}
+record(stringin, "MPS:B34:1:STATUS_FLT_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 2 1)MPS_FAULT_BYPEXPDATE_STRING")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node Faults                                   #
+# Macro description:                                                             #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
+#================================================================================#
+record(mbbo, "MPS:B34:1:STATUS_FLT_SCBYPV") {
+  field(DESC, "Test Digital 1")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn(CENTRAL_NODE 2 1)MPS_FAULT_BYPV")
+  field(PINI, "YES")
+  field(VAL,  "0")
+  field(ZRST, "Is Faulted")
+  field(ZRVL,  "3")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "Is Ok")
+  field(ONVL,  "4")
+  field(ONSV, "NO_ALARM")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node Faults                                   #
+# Macro description:                                                             #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
+#================================================================================#
+
+record(longin, "SIOC:B34:MP11:WDOG_FLT") {
+  field(DESC, "Test Heartbeat ")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(INP,  "@asynMask(CENTRAL_NODE 3 0)MPS_FAULT")
+}
+record(bi, "SIOC:B34:MP11:WDOG_FLT_IGNORED") {
+  field(DESC, "Test Heartbeat  Ignored")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Ignored")
+  field(ONAM, "Ignored")
+  field(INP,  "@asynMask(CENTRAL_NODE 3 1 0)MPS_FAULT_IGNORED")
+}
+record(bi, "SIOC:B34:MP11:WDOG_FLT_SCMPS") {
+  field(DESC, "Test Heartbeat  Faulted")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Faulted")
+  field(ONAM, "Faulted")
+  field(INP,  "@asynMask(CENTRAL_NODE 3 1 0)MPS_FAULT_FAULTED")
+}
+record(bi, "SIOC:B34:MP11:WDOG_FLT_ACTIVE") {
+  field(DESC, "Test Heartbeat  Active")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Active")
+  field(ONAM, "Active")
+  field(INP,  "@asynMask(CENTRAL_NODE 3 1 0)MPS_FAULT_ACTIVE")
+}
+record(bi, "SIOC:B34:MP11:WDOG_FLT_SCBYPS") {
+  field(DESC, "Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 3 1 1)MPS_FAULT_BYPS")
+}
+record(longout, "SIOC:B34:MP11:WDOG_FLT_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 3 1)MPS_FAULT_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "SIOC:B34:MP11:WDOG_FLT_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 3 1)MPS_FAULT_REMAINING_BYPTIME")
+}
+record(stringin, "SIOC:B34:MP11:WDOG_FLT_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 3 1)MPS_FAULT_BYPEXPDATE_STRING")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node Faults                                   #
+# Macro description:                                                             #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
+#================================================================================#
+record(mbbo, "SIOC:B34:MP11:WDOG_FLT_SCBYPV") {
+  field(DESC, "Test Heartbeat ")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn(CENTRAL_NODE 3 1)MPS_FAULT_BYPV")
+  field(PINI, "YES")
+  field(VAL,  "0")
+  field(ZRST, "Is Faulted")
+  field(ZRVL,  "5")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "Is Ok")
+  field(ONVL,  "6")
+  field(ONSV, "NO_ALARM")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node Faults                                   #
+# Macro description:                                                             #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
+#================================================================================#
+
+record(longin, "SIOC:B34:MP11:STATUS_FLT") {
+  field(DESC, "Test Epics Anal")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(INP,  "@asynMask(CENTRAL_NODE 4 0)MPS_FAULT")
+}
+record(bi, "SIOC:B34:MP11:STATUS_FLT_IGNORED") {
+  field(DESC, "Test Epics Anal Ignored")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Ignored")
+  field(ONAM, "Ignored")
+  field(INP,  "@asynMask(CENTRAL_NODE 4 1 0)MPS_FAULT_IGNORED")
+}
+record(bi, "SIOC:B34:MP11:STATUS_FLT_SCMPS") {
+  field(DESC, "Test Epics Anal Faulted")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Faulted")
+  field(ONAM, "Faulted")
+  field(INP,  "@asynMask(CENTRAL_NODE 4 1 0)MPS_FAULT_FAULTED")
+}
+record(bi, "SIOC:B34:MP11:STATUS_FLT_ACTIVE") {
+  field(DESC, "Test Epics Anal Active")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Active")
+  field(ONAM, "Active")
+  field(INP,  "@asynMask(CENTRAL_NODE 4 1 0)MPS_FAULT_ACTIVE")
+}
+record(bi, "SIOC:B34:MP11:STATUS_FLT_SCBYPS") {
+  field(DESC, "Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 4 1 1)MPS_FAULT_BYPS")
+}
+record(longout, "SIOC:B34:MP11:STATUS_FLT_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 4 1)MPS_FAULT_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "SIOC:B34:MP11:STATUS_FLT_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 4 1)MPS_FAULT_REMAINING_BYPTIME")
+}
+record(stringin, "SIOC:B34:MP11:STATUS_FLT_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 4 1)MPS_FAULT_BYPEXPDATE_STRING")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node Faults                                   #
+# Macro description:                                                             #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
+#================================================================================#
+record(mbbo, "SIOC:B34:MP11:STATUS_FLT_SCBYPV") {
+  field(DESC, "Test Epics Anal")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn(CENTRAL_NODE 4 1)MPS_FAULT_BYPV")
+  field(PINI, "YES")
+  field(VAL,  "0")
+  field(ZRST, "Is Faulted")
+  field(ZRVL,  "7")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "Is Ok")
+  field(ONVL,  "8")
+  field(ONSV, "NO_ALARM")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node Faults                                   #
+# Macro description:                                                             #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
+#================================================================================#
+
+record(longin, "MPS:B34:0:STATUS_FLT") {
+  field(DESC, "Test Analog 0")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 0)MPS_FAULT")
+}
+record(bi, "MPS:B34:0:STATUS_FLT_IGNORED") {
+  field(DESC, "Test Analog 0 Ignored")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Ignored")
+  field(ONAM, "Ignored")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 1 0)MPS_FAULT_IGNORED")
+}
+record(bi, "MPS:B34:0:STATUS_FLT_SCMPS") {
+  field(DESC, "Test Analog 0 Faulted")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Faulted")
+  field(ONAM, "Faulted")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 1 0)MPS_FAULT_FAULTED")
+}
+record(bi, "MPS:B34:0:STATUS_FLT_ACTIVE") {
+  field(DESC, "Test Analog 0 Active")
+  field(DTYP, "asynUInt32Digital")
+  field(SCAN, "1 second")
+  field(ZNAM, "Not Active")
+  field(ONAM, "Active")
+  field(INP,  "@asynMask(CENTRAL_NODE 5 1 0)MPS_FAULT_ACTIVE")
+}
+record(bi, "MPS:B34:0:STATUS_FLT_SCBYPS") {
+  field(DESC, "Bypass Status")
+  field(SCAN, "1 second")
+  field(DTYP, "asynUInt32Digital")
+  field(ZNAM, "Not Bypassed")
+  field(ONAM, "Bypassed")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "@asynMask(CENTRAL_NODE 5 1 1)MPS_FAULT_BYPS")
+}
+record(longout, "MPS:B34:0:STATUS_FLT_SCBYPD") {
+  field(DESC, "Bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(OUT, "@asyn(CENTRAL_NODE 5 1)MPS_FAULT_BYPEXPDATE")
+  field(ASG,  "$(ASG2)")
+}
+record(longin, "MPS:B34:0:STATUS_FLT_SCBYPT") {
+  field(DESC, "Remaining bypass duration in seconds")
+  field(DTYP, "asynInt32")
+  field(EGU, "Seconds")
+  field(SCAN, "1 second")
+  field(VAL, "0")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 1)MPS_FAULT_REMAINING_BYPTIME")
+}
+record(stringin, "MPS:B34:0:STATUS_FLT_SCBYP_END") {
+  field(DESC, "Bypass Expiration Date/Time String")
+  field(DTYP, "asynOctetRead")
+  field(SCAN, "1 second")
+  field(VAL, "Invalid")
+  field(PINI, "YES")
+  field(INP, "@asyn(CENTRAL_NODE 5 1)MPS_FAULT_BYPEXPDATE_STRING")
+}
+#================================================================================#
+# LCLS MPS PV template for Central Node Faults                                   #
+# Macro description:                                                             #
+#   - PV         : Device Input PV Prefix                                        #
+#   - ID         : Fault  ID                                                     #
+#   - DESC       : Fault Description                                             #
+#================================================================================#
+record(mbbo, "MPS:B34:0:STATUS_FLT_SCBYPV") {
+  field(DESC, "Test Analog 0")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn(CENTRAL_NODE 5 1)MPS_FAULT_BYPV")
+  field(PINI, "YES")
+  field(VAL,  "0")
+  field(ZRST, "IS_OK")
+  field(ZRVL,  "0")
+  field(ZRSV, "NO_ALARM")
 }

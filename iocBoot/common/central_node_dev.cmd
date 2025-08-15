@@ -15,7 +15,7 @@ epicsEnvSet("ASG2", "")
 epicsEnvSet("PHYSICS_TOP", "/afs/slac/g/lcls/physics")
 
 # MPS history server configurations
-epicsEnvSet("MPS_ENV_HISTORY_HOST", "lcls-dev3")
+epicsEnvSet("MPS_ENV_HISTORY_HOST", "dev-srv09")
 
 # ====================================================================
 # Load the common Central Node startup

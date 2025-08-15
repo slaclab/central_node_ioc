@@ -22,12 +22,12 @@ static Logger *centralNodeLogger;
 #endif
 
 CentralNodeDriver::CentralNodeDriver(const char *portName, std::string configPath,
-				     std::string historyServer, int historyPort) :
+             std::string historyServer, int historyPort) :
   asynPortDriver(portName, 10000,
-		 asynOctetMask | asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask | asynUInt32DigitalMask | asynDrvUserMask, // interfaceMask
-		 asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask, // interruptMask
-		 ASYN_MULTIDEVICE,                       // asynFlags
-		 1, 0, 0),            // autoConnect, priority, stackSize
+     asynOctetMask | asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask | asynUInt32DigitalMask | asynDrvUserMask, // interfaceMask
+     asynInt32Mask | asynInt16ArrayMask | asynInt8ArrayMask, // interruptMask
+     ASYN_MULTIDEVICE,                       // asynFlags
+     1, 0, 0),            // autoConnect, priority, stackSize
   _configPath(configPath) {
 #if defined(LOG_ENABLED) && !defined(LOG_STDOUT)
   centralNodeLogger = Loggers::getLogger("DRIVER");
@@ -159,11 +159,11 @@ CentralNodeDriver::~CentralNodeDriver() {
 }
 
 // asynStatus CentralNodeDriver::drvUserCreate(asynUser *pasynUser, const char *drvInfo, const char **ppTypeName,
-// 					    size_t *psize) {
+//              size_t *psize) {
 //   int addr;
 //   getAddress(pasynUser, &addr);
 //   LOG_TRACE("DRIVER", "drvUserCreate info=" << drvInfo << " timeout=" << pasynUser->timeout
-// 	    << "; address=" << addr);
+//      << "; address=" << addr);
 //   return asynSuccess;
 // }
 /*
@@ -218,7 +218,7 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
     LOG_TRACE("DRIVER", "ERROR: Database not initialized, reason="
-	      << pasynUser->reason << ", addr=" << addr << ", value=" << value);
+        << pasynUser->reason << ", addr=" << addr << ", value=" << value);
     return setIntegerParam(addr, pasynUser->reason, value);
   }
 
@@ -252,7 +252,7 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
             << Engine::getInstance().getCurrentDb()->faults->at(addr)->name
             << " value: " << value);
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -344,15 +344,15 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
-      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
-      	    Engine::getInstance().getCurrentDb()->faults->end()) {
-     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
-      	  return asynError;
-      	}
+        if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+            Engine::getInstance().getCurrentDb()->faults->end()) {
+              LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+          return asynError;
+        }
         *value = Engine::getInstance().getCurrentDb()->faults->at(addr)->displayState;
       } catch (std::exception &e) {
           
-        	status = asynError;
+          status = asynError;
       }
     }
   }
@@ -360,14 +360,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
-      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
-      	    Engine::getInstance().getCurrentDb()->faults->end()) {
-     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
-      	  return asynError;
-      	}
+        if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+            Engine::getInstance().getCurrentDb()->faults->end()) {
+              LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+          return asynError;
+        }
         *value = Engine::getInstance().getCurrentDb()->faults->at(addr)->value;
       } catch (std::exception &e) {
-        	status = asynError;
+          status = asynError;
       }
     }
   }
@@ -392,6 +392,19 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       *value = (fwMitigation[index] >> bitShift) & 0xF;
     } catch (std::exception &e) {
       status = asynError;
+    }
+  }
+  else if (_mpsFaultBypassValueParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+        *value = Engine::getInstance().getCurrentDb()->faults->at(addr)->bypass->value;
+        LOG_TRACE("DRIVER", "BypassValue: "
+            << Engine::getInstance().getCurrentDb()->faults->at(addr)->name
+            << " value: " << value);
+      } catch (std::exception &e) {
+        status = asynError;
+      }
     }
   }
   else if (_mpsMitigationParam == pasynUser->reason) {
@@ -562,7 +575,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
           status = setStringParam(addr, _mpsDigitalChannelBypassExpirationDateStringParam, "Not Bypassed");
         }
       } catch (std::exception &e) {
-      	status = asynError;
+        status = asynError;
       }
     }
   }
@@ -609,7 +622,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
           status = setStringParam(addr, _mpsFaultBypassExpirationDateStringParam, "Not Bypassed");
         }
       } catch (std::exception &e) {
-      	status = asynError;
+        status = asynError;
       }
     }
   }
@@ -632,7 +645,7 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
           status = setStringParam(addr, _mpsAppBypassExpirationDateStringParam, "Not Bypassed");
         }
       } catch (std::exception &e) {
-      	status = asynError;
+        status = asynError;
       }
     }
   }
@@ -682,7 +695,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
         }
         *value = Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->value;
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -698,7 +711,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
         // Non-zero *value means threshold exceeded
         *value = Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->value & mask;
       } catch (std::exception &e) {
-      	status = asynError;
+        status = asynError;
       }
     }
   }
@@ -716,7 +729,33 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
           *value = 1;
         }
       } catch (std::exception &e) {
-        	status = asynError;
+          status = asynError;
+      }
+    }
+  }
+  else if (_mpsDigitalChannelBypassValueParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+        *value = Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->bypass->value;
+        LOG_TRACE("DRIVER", "BypassValue: "
+            << Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->name
+            << " value: " << value);
+      } catch (std::exception &e) {
+        status = asynError;
+      }
+    }
+  }
+  else if (_mpsAnalogChannelBypassValueParam == pasynUser->reason) {
+    {
+      std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
+      try {
+        *value = Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->bypass[bitIndex]->value;
+        LOG_TRACE("DRIVER", "BypassValue: "
+            << Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->name
+            << " value: " << value << " (threshold=" << bitIndex << ")");
+      } catch (const std::out_of_range &e) {
+        LOG_TRACE("DRIVER", "ERROR: AnalogChannels out of range, key=" << addr);
       }
     }
   }
@@ -725,16 +764,16 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       *value = 0;
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
-      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
-      	    Engine::getInstance().getCurrentDb()->faults->end()) {
-     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
-      	  return asynError;
-      	}
-	      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
+        if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+            Engine::getInstance().getCurrentDb()->faults->end()) {
+              LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+          return asynError;
+        }
+        if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faulted) {
           *value = 1;
         }
       } catch (std::exception &e) {
-        	status = asynError;
+          status = asynError;
       }
     }
   }
@@ -743,16 +782,16 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
       *value = 0;
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
-      	if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
-      	    Engine::getInstance().getCurrentDb()->faults->end()) {
-     	        LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
-      	  return asynError;
-      	}
-	      if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultActive) {
+        if (Engine::getInstance().getCurrentDb()->faults->find(addr) ==
+            Engine::getInstance().getCurrentDb()->faults->end()) {
+              LOG_TRACE("DRIVER", "ERROR: Fault not found, key=" << addr);
+          return asynError;
+        }
+        if (Engine::getInstance().getCurrentDb()->faults->at(addr)->faultActive) {
           *value = 1;
         }
       } catch (std::exception &e) {
-        	status = asynError;
+          status = asynError;
       }
     }
   }
@@ -770,7 +809,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
           *value = 1;
         }
       } catch (std::exception &e) {
-	        status = asynError;
+          status = asynError;
       }
     }
   }
@@ -789,7 +828,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
           *value = 1;
         }
       } catch (std::exception &e) {
-	        status = asynError;
+          status = asynError;
       }
     }
   }
@@ -804,7 +843,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
         }
         *value = Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->latchedValue;
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -847,7 +886,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
           *value = 0;
         }
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -887,7 +926,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
           *value = 0;
         }
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -907,7 +946,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
           *value = 0;
         }
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -924,7 +963,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
         // Non-zero *value means threshold exceeded
         *value = Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->latchedValue & mask;
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -945,7 +984,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
           *value = 0;
         }
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -963,7 +1002,7 @@ asynStatus CentralNodeDriver::readUInt32Digital(asynUser *pasynUser, epicsUInt32
           *value = 1;
         }
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -1030,7 +1069,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   if (!Engine::getInstance().isInitialized()) {
     // Database has not been loaded
     LOG_TRACE("DRIVER", "ERROR: Database not initialized (reason=" << pasynUser->reason
-	      << ", addr=" << addr << ")");
+        << ", addr=" << addr << ")");
     status = setUIntDigitalParam(addr, pasynUser->reason, value, mask);
     return status;
   }
@@ -1046,7 +1085,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
             << Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->name
             << " value: " << Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->latchedValue);
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -1061,7 +1100,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
             << Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->name
             << " value: " << Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->latchedValue);
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     Firmware::getInstance().evalLatchClear();
     }
@@ -1097,7 +1136,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
             << Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->latchedValue
             << " mask: " << mask);
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     Firmware::getInstance().evalLatchClear();
     }
@@ -1111,7 +1150,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
             << Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->name
             << " value: " << value);
       } catch (std::exception &e) {
-	      status = asynError;
+        status = asynError;
       }
     }
   }
@@ -1124,7 +1163,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
             << Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->name
             << " value: " << value << " (threshold=" << bitIndex << ")");
       } catch (const std::out_of_range &e) {
-	      LOG_TRACE("DRIVER", "ERROR: AnalogChannels out of range, key=" << addr);
+        LOG_TRACE("DRIVER", "ERROR: AnalogChannels out of range, key=" << addr);
       }
     }
   }
@@ -1136,10 +1175,10 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       if (value != 0) {
-	      Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, value);
+        Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, value);
       }
       else {
-	      Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, CLEAR_BEAM_CLASS);
+        Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, CLEAR_BEAM_CLASS);
       }
     }
     return status;
@@ -1148,10 +1187,10 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       if (value != 0) {
-	      Engine::getInstance().getCurrentDb()->softPermitDestination(addr, value);
+        Engine::getInstance().getCurrentDb()->softPermitDestination(addr, value);
       }
       else {
-	      Engine::getInstance().getCurrentDb()->softPermitDestination(addr, CLEAR_BEAM_CLASS);
+        Engine::getInstance().getCurrentDb()->softPermitDestination(addr, CLEAR_BEAM_CLASS);
       }
     }
     return status;
@@ -1160,10 +1199,10 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       if (value != 0) {
-	      Engine::getInstance().getCurrentDb()->setMaxPermit(value);
+        Engine::getInstance().getCurrentDb()->setMaxPermit(value);
       }
       else {
-	      Engine::getInstance().getCurrentDb()->setMaxPermit(CLEAR_BEAM_CLASS);
+        Engine::getInstance().getCurrentDb()->setMaxPermit(CLEAR_BEAM_CLASS);
       }
     }
     return status;
@@ -1263,7 +1302,7 @@ asynStatus CentralNodeDriver::loadTestDigitalChannels(const char *testFilename) 
       testInputFile >> digitalValue;
 
       try {
-	      Engine::getInstance().getCurrentDb()->digitalChannels->at(digitalId)->update(digitalValue);
+        Engine::getInstance().getCurrentDb()->digitalChannels->at(digitalId)->update(digitalValue);
       } catch (std::exception &ex) {
         std::cerr << "ERROR: Invalid digital channel ID: " << digitalId << std::endl;
         status = asynError;
@@ -1294,7 +1333,7 @@ asynStatus CentralNodeDriver::loadTestAnalogChannels(const char *testFilename) {
       testInputFile >> channelValue;
 
       try {
-	      Engine::getInstance().getCurrentDb()->analogChannels->at(channelId)->update(channelValue);
+        Engine::getInstance().getCurrentDb()->analogChannels->at(channelId)->update(channelValue);
       } catch (std::exception &ex) {
         std::cerr << "ERROR: Invalid analog channel ID: " << channelId << std::endl;
         status = asynError;
@@ -1315,10 +1354,11 @@ int CentralNodeDriver::getParamStringOffset(int deviceIndex, int thresholdIndex)
  * If expirationTime is zero or negative the bypass is cancelled.
  */
 asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int id,
-					int thresholdIndex, epicsInt32 expirationTime) {
+          int thresholdIndex, epicsInt32 expirationTime) {
   asynStatus status = asynSuccess;
   time_t now;
   time(&now);
+  // localtime(&now);
 
   LOG_TRACE("DRIVER", "Set bypass for channel " << id << ", thresholdIndex=" << thresholdIndex);
 
@@ -1329,26 +1369,29 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int id,
   else {
     expirationTime = 0;
   }
-
   {
     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
     try {
       if (bypassType == BYPASS_APPLICATION) {
+          printf("Call setBypass() BYPASS_APPLICATION: id: %d, expirationTime: %ld, now: %ld\n", id, long(expirationTime), long(now));
         Engine::getInstance().getBypassManager()->setBypass(bypassType,
                         id, 0, expirationTime);
       }
       else if (bypassType == BYPASS_FAULT) {
         uint32_t bypassValue = Engine::getInstance().getCurrentDb()->faults->at(id)->bypass->value;
+          printf("Call setBypass() BYPASS_FAULT: id: %d, expirationTime: %ld, now: %ld\n", id, long(expirationTime), long(now));
         Engine::getInstance().getBypassManager()->bypassFault(
                         id, bypassValue, expirationTime);
       }
       else if (bypassType == BYPASS_DIGITAL) {
         uint32_t bypassValue = Engine::getInstance().getCurrentDb()->digitalChannels->at(id)->bypass->value;
+          printf("Call setBypass() BYPASS_DIGITAL: id: %d, expirationTime: %ld, now: %ld\n", id, long(expirationTime), long(now));
         Engine::getInstance().getBypassManager()->setBypass(bypassType,
                         id, bypassValue, expirationTime);
       }
       else {
         uint32_t bypassValue = Engine::getInstance().getCurrentDb()->analogChannels->at(id)->bypass[thresholdIndex]->value;
+          printf("Call setBypass() analog: id: %d, expirationTime: %ld, now: %ld\n", id, long(expirationTime), long(now));
         Engine::getInstance().getBypassManager()->setThresholdBypass(bypassType,
                           id, bypassValue, expirationTime, thresholdIndex);
       }
@@ -1358,34 +1401,34 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int id,
       return asynError;
     }
   }
-
-  if (expirationTime == 0) {
+  std::cout << "Bypass type: " << bypassType << "\n";
+  if (expirationTime <= now) {
     if (bypassType == BYPASS_DIGITAL) {
       status = setStringParam(id,
-			      _mpsDigitalChannelBypassExpirationDateStringParam, "Not Bypassed");
+            _mpsDigitalChannelBypassExpirationDateStringParam, "Not Bypassed");
     }
     else if (bypassType == BYPASS_ANALOG) {
       status = setStringParam(getParamStringOffset(id, thresholdIndex),
-			      _mpsAnalogChannelBypassExpirationDateStringParam, "Not Bypassed");
+            _mpsAnalogChannelBypassExpirationDateStringParam, "Not Bypassed");
     }
     else if (bypassType == BYPASS_FAULT) {
       status = setStringParam(id,
-			      _mpsFaultBypassExpirationDateStringParam, "Not Bypassed");
+            _mpsFaultBypassExpirationDateStringParam, "Not Bypassed");
     }
     else {
       status = setStringParam(id,
-			      _mpsAppBypassExpirationDateStringParam, "Not Bypassed");
+            _mpsAppBypassExpirationDateStringParam, "Not Bypassed");
     }
   }
   else {
     time_t expTime = expirationTime;
     if (bypassType == BYPASS_DIGITAL) {
       status = setStringParam(id,
-			      _mpsDigitalChannelBypassExpirationDateStringParam, ctime(&expTime));
+            _mpsDigitalChannelBypassExpirationDateStringParam, ctime(&expTime));
     }
     else if (bypassType == BYPASS_ANALOG) {
       status = setStringParam(getParamStringOffset(id, thresholdIndex),
-			      _mpsAnalogChannelBypassExpirationDateStringParam, ctime(&expTime));
+            _mpsAnalogChannelBypassExpirationDateStringParam, ctime(&expTime));
     }
     else if (bypassType == BYPASS_FAULT) {
       status = setStringParam(id,

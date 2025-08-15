@@ -58,7 +58,7 @@ static int configureCentralNode(const char *portName) {
   char hostname[100];
   if (gethostname(hostname, 50) == 0) {
     std::string hoststr = hostname;
-    if (!hoststr.compare(0, 9, "lcls-dev3")) {
+    if (!hoststr.compare(0, 9, "dev-srv09")) {
       testIoc = true;
     }
   }
