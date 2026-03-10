@@ -93,7 +93,7 @@
 #define MPS_FORCE_AOM_PC0_STRING                   "MPS_FORCE_AOM_PC0"
 #define MPS_FORCE_DEST_STRING                      "MPS_FORCE_DEST"
 #define MPS_SW_PERMIT_DEST_STRING                  "MPS_SW_PERMIT_DEST"
-#define MPS_FINAL_MITIGATION_STRING                "MPS_FINAL_BC"
+#define MPS_FINAL_MITIGATION_STRING                "MPS_FINAL_MITIGATION"
 #define MPS_FW_RESET_ALL_STRING                    "MPS_FW_RESET_ALL"
 #define MPS_TIMING_BC_STRING                       "MPS_TIMING_BC"
 #define MPS_MAX_BEAM_CLASS_STRING                  "MPS_MAX_BEAM_CLASS"

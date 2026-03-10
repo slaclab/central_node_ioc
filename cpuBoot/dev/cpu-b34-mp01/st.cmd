@@ -32,7 +32,8 @@ ipmitool lan print
 # Network configuration 
 # =========================================
 # Enable Ethernet SFP+ Top For Advantech 1U
-ifconfig eth5 10.0.1.1 netmask 255.255.255.0 up
+ifconfig enp3s0f0 10.0.1.1 netmask 255.255.255.0 up
+# ifconfig eth5 10.0.1.1 netmask 255.255.255.0 up
 
 # ==================================================================
 # escalating RT priority for network kernel threads (SCHED_FIFO, 84)

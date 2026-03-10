@@ -1,0 +1,11 @@
+file "destination.template" { pattern
+{ NAME,         ID }
+{ LASER,        00 }
+{ SC_DIAG0,     01 }
+{ SC_BSYD,      02 }
+{ SC_HXR,       03 }
+{ SX_SXR,       04 }
+{ SC_LESA,      05 }
+{ LASER_HTR,    14 }
+{ MECH_SHUTTER, 15 }
+}
