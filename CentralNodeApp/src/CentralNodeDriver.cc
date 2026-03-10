@@ -238,6 +238,11 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
     Engine::getInstance().startLatchTimeout();
   }
   else if (_mpsDigitalChannelBypassExpirationDateParam == pasynUser->reason) {
+    // If the fault the channel is attached to is bypassed, then do not set. 
+    bool faultBypassed = Engine::getInstance().getBypassManager()->checkFaultBypassForChannel(addr);
+    if (faultBypassed) {
+      return status;
+    }
     status = setBypass(BYPASS_DIGITAL, addr, 0, value);
     if (status != asynSuccess) {
       status = setIntegerParam(addr, _mpsDigitalChannelBypassExpirationDateParam, 0);
@@ -255,8 +260,26 @@ asynStatus CentralNodeDriver::writeInt32(asynUser *pasynUser, epicsInt32 value) 
         status = asynError;
       }
     }
+    // add logic to only call setBypass if there already exists a bypass
+    // bugs out cause value is a state not a duration
+    auto fault = Engine::getInstance().getCurrentDb()->faults->at(addr);
+    auto bypass = fault->bypass;
+    if (bypass && bypass->status == BYPASS_VALID) {
+      std::cout << "Fault bypass valid - changing state for current bypass to " << value;
+      time_t durationT = Engine::getInstance().getCurrentDb()->faults->at(addr)->bypass->until;
+      epicsInt32 duration = (epicsInt32)durationT;
+      time_t now; time(&now);
+      duration = duration - now; // Add a second so it overwrites the previous bypass?
+      std::cout << "Duration of bypass: " << duration;
+      status = setBypass(BYPASS_FAULT, addr, 0, duration);
+    }
   }
   else if (_mpsAnalogChannelBypassExpirationDateParam == pasynUser->reason) {
+    // If the fault the channel is attached to is bypassed, then do not set. 
+    bool faultBypassed = Engine::getInstance().getBypassManager()->checkFaultBypassForChannel(addr);
+    if (faultBypassed) {
+      return status;
+    }
     status = setBypass(BYPASS_ANALOG, addr, pasynUser->timeout, value);
     if (status != asynSuccess) {
       status = setIntegerParam(addr, _mpsAnalogChannelBypassExpirationDateParam, 0);
@@ -323,17 +346,17 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
     {
     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
     try {
-        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr+1) ==
             Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr+1);
           return asynError;
         }
-        if (Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->allowedBeamClass) {
-          *value = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->allowedBeamClass->number;
+        if (Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->allowedBeamClass) {
+          *value = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->allowedBeamClass->number;
         }
         else {
           LOG_TRACE("DRIVER", "ERROR: Invalid allowed class for mitigation device "
-              << Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->name);
+              << Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->name);
         }
         } catch (std::exception &e) {
           status = asynError;
@@ -377,13 +400,13 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       uint8_t bitShift = 0;
       {
         std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr+1) ==
             Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr+1);
           return asynError;
         }
-        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
-        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
+        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->softwareMitigationBufferIndex;
+        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->bitShift;
       }
 
       uint32_t fwMitigation[2];
@@ -413,13 +436,13 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       uint8_t bitShift = 0;
       {
         std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr+1) ==
             Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr+1);
           return asynError;
         }
-        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
-        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
+        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->softwareMitigationBufferIndex;
+        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->bitShift;
       }
 
       uint32_t mitigation[2];
@@ -435,14 +458,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       uint8_t bitShift = 0;
       {
         std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr+1) ==
             Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr+1);
 
           return asynError;
         }
-        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
-        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
+        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->softwareMitigationBufferIndex;
+        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->bitShift;
       }
 
       uint32_t mitigation[2];
@@ -458,14 +481,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       uint8_t bitShift = 0;
       {
         std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr+1) ==
             Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr+1);
 
           return asynError;
         }
-        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
-        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
+        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->softwareMitigationBufferIndex;
+        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->bitShift;
       }
 
       uint32_t mitigation[2];
@@ -482,14 +505,14 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
       uint8_t bitShift = 0;
       {
         std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr) ==
+        if (Engine::getInstance().getCurrentDb()->beamDestinations->find(addr+1) ==
             Engine::getInstance().getCurrentDb()->beamDestinations->end()) {
-          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr);
+          LOG_TRACE("DRIVER", "ERROR: BeamDestination not found, key=" << addr+1);
 
           return asynError;
         }
-        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->softwareMitigationBufferIndex;
-        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr)->bitShift;
+        index = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->softwareMitigationBufferIndex;
+        bitShift = Engine::getInstance().getCurrentDb()->beamDestinations->at(addr+1)->bitShift;
       }
 
       uint32_t mitigation[2];
@@ -568,7 +591,10 @@ asynStatus CentralNodeDriver::readInt32(asynUser *pasynUser, epicsInt32 *value) 
         }
         if (Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->bypass->status == BYPASS_VALID) {
           time_t now = time(0);
-          *value = Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->bypass->until - now;
+          time_t expTime = Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->bypass->until;
+          *value = expTime - now;
+            status = setStringParam(addr,
+            _mpsDigitalChannelBypassExpirationDateStringParam, ctime(&expTime));
         }
         else {
           *value = 0;
@@ -1127,6 +1153,11 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
+        // If the fault the channel is attached to is bypassed, then do not set. 
+        bool faultBypassed = Engine::getInstance().getBypassManager()->checkFaultBypassForChannel(addr);
+        if (faultBypassed) {
+          return status;
+        }
         uint32_t latchedValue = Engine::getInstance().getCurrentDb()->analogChannels->at(addr)->unlatch(mask);
 
         status = setUIntDigitalParam(addr, pasynUser->reason, latchedValue, mask);
@@ -1145,6 +1176,11 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       try {
+        // If the fault the channel is attached to is bypassed, then do not set. 
+        bool faultBypassed = Engine::getInstance().getBypassManager()->checkFaultBypassForChannel(addr);
+        if (faultBypassed) {
+          return status;
+        }
         Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->bypass->value = value;
         LOG_TRACE("DRIVER", "BypassValue: "
             << Engine::getInstance().getCurrentDb()->digitalChannels->at(addr)->name
@@ -1174,12 +1210,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   else if (_mpsForceDestBeamClass == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      if (value != 0) {
-        Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, value);
-      }
-      else {
-        Engine::getInstance().getCurrentDb()->forceBeamDestination(addr, CLEAR_BEAM_CLASS);
-      }
+      Engine::getInstance().getCurrentDb()->forceBeamDestination(addr+1, value+1);
     }
     return status;
   }
@@ -1187,10 +1218,10 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
       if (value != 0) {
-        Engine::getInstance().getCurrentDb()->softPermitDestination(addr, value);
+        Engine::getInstance().getCurrentDb()->softPermitDestination(addr+1, value);
       }
       else {
-        Engine::getInstance().getCurrentDb()->softPermitDestination(addr, CLEAR_BEAM_CLASS);
+        Engine::getInstance().getCurrentDb()->softPermitDestination(addr+1, CLEAR_BEAM_CLASS);
       }
     }
     return status;
@@ -1198,12 +1229,7 @@ asynStatus CentralNodeDriver::writeUInt32Digital(asynUser *pasynUser, epicsUInt3
   else if (_mpsMaxPermitDestBeamClass == pasynUser->reason) {
     {
       std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-      if (value != 0) {
-        Engine::getInstance().getCurrentDb()->setMaxPermit(value);
-      }
-      else {
-        Engine::getInstance().getCurrentDb()->setMaxPermit(CLEAR_BEAM_CLASS);
-      }
+      Engine::getInstance().getCurrentDb()->setMaxPermit(value+1);
     }
     return status;
   }
@@ -1361,17 +1387,24 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int id,
   // localtime(&now);
 
   LOG_TRACE("DRIVER", "Set bypass for channel " << id << ", thresholdIndex=" << thresholdIndex);
-
+  printf("Call setBypass():before expirationTime: %ld, now: %ld\n", long(expirationTime), long(now));
+  // If expirationTime is greater than now, then subract now from it (This value is likely taken from the pydm
+  // calender widget which returns the time in seconds from unix epoch)
+  if (expirationTime > now) {
+    expirationTime -= now;
+  }
   // Add expirationTime to current time, unless the bypass is being cancelled
-  if (expirationTime > 0) {
+  else if (expirationTime > 0) {
     expirationTime += now;
   }
   else {
     expirationTime = 0;
   }
+  printf("Call setBypass(): id: %d, expirationTime: %ld, now: %ld\n", id, long(expirationTime), long(now));
   {
     std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
     try {
+      std::cout << "Bypass type: " << bypassType << "\n";
       if (bypassType == BYPASS_APPLICATION) {
           printf("Call setBypass() BYPASS_APPLICATION: id: %d, expirationTime: %ld, now: %ld\n", id, long(expirationTime), long(now));
         Engine::getInstance().getBypassManager()->setBypass(bypassType,
@@ -1401,7 +1434,6 @@ asynStatus CentralNodeDriver::setBypass(BypassType bypassType, int id,
       return asynError;
     }
   }
-  std::cout << "Bypass type: " << bypassType << "\n";
   if (expirationTime <= now) {
     if (bypassType == BYPASS_DIGITAL) {
       status = setStringParam(id,

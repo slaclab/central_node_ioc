@@ -1,0 +1,194 @@
+#================================================================================#
+# LCLS MPS PV template for Central Node current beam class at a destination      #
+# Macro description:                                                             #
+#   - NAME         : Destination Name                                            #
+#   - ID           : Destination Number                                          #
+#   - P            : Dest prefix                                                 #
+#================================================================================#
+record(stringin, "$(P):DST$(ID):NAME") {
+  field(DESC, "Name of for: $(NAME)")
+  field(SCAN, "Passive")
+  field(VAL,  "$(NAME)")
+  field(PINI, "YES")
+}
+record(longin, "$(P):DST$(ID):SW_BC") {
+  field(DESC, "Software mitigation for: $(NAME)")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(LOLO, "0")
+  field(LLSV, "MAJOR")
+  field(INP, "@asyn(CENTRAL_NODE $(ID) 0)MPS_SW_MITIGATION")
+}
+record(longin, "$(P):DST$(ID):FW_BC") {
+  field(DESC, "Fast mitigation for: $(NAME)")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(LOLO, "0")
+  field(LLSV, "MAJOR")
+  field(INP, "@asyn(CENTRAL_NODE $(ID) 0)MPS_FW_MITIGATION")
+}
+record(longin, "$(P):DST$(ID):EVAL_BC") {
+  field(DESC, "Current mitigation for: $(NAME)")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(LOLO, "0")
+  field(LLSV, "MAJOR")
+  field(INP, "@asyn(CENTRAL_NODE $(ID) 0)MPS_MITIGATION")
+}
+record(longin, "$(P):DST$(ID):LATCHED_BC") {
+  field(DESC, "Latched mitigation for: $(NAME)")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(LOLO, "0")
+  field(LLSV, "MAJOR")
+  field(INP, "@asyn(CENTRAL_NODE $(ID) 0)MPS_LATCHED_MITIGATION")
+}
+record(longin, "$(P):DST$(ID):BC") {
+  field(DESC, "Final mitigation for: $(NAME)")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(LOLO, "0")
+  field(LLSV, "MAJOR")
+  field(INP,  "@asyn(CENTRAL_NODE $(ID) 0)MPS_FINAL_MITIGATION")
+}
+record(longin, "$(P):DST$(ID):TPG_BC") {
+  field(DESC, "TPG BC received for: $(NAME)")
+  field(DTYP, "asynInt32")
+  field(SCAN, "1 second")
+  field(LOLO, "0")
+  field(LLSV, "MAJOR")
+  field(INP, "@asyn(CENTRAL_NODE $(ID) 0)MPS_TIMING_BC")
+}
+record(calc, "$(P):DST$(ID):TPG_FAULT_CALC") {
+  field(DESC, "Calc TPG BC status $(NAME)")
+  field(SCAN, "1 second")
+  field(INPA, "$(P):FAULT_REASON")
+  field(CALC, "(A>>$(ID))&1")
+  field(FLNK, "$(P):DST$(ID):TPG_FAULT")
+}
+record(bi, "$(P):DST$(ID):TPG_FAULT") {
+  field(DESC, "TPG BC > MPS BC: $(NAME)")
+  field(DTYP, "Raw Soft Channel")
+  field(SCAN, "Passive")
+  field(ZNAM, "OK")
+  field(ONAM, "FAULT")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "$(P):DST$(ID):TPG_FAULT_CALC")
+}
+record(calc, "$(P):DST$(ID):MIN_SPACING_FAULT_CALC") {
+  field(DESC, "Calc Min Spacing status $(NAME)")
+  field(SCAN, "1 second")
+  field(INPA, "$(P):FAULT_REASON")
+  field(CALC, "(A>>($(ID)+16))&1")
+  field(FLNK, "$(P):DST$(ID):MIN_SPACING_FAULT")
+}
+record(bi, "$(P):DST$(ID):MIN_SPACING_FAULT") {
+  field(DESC, "Min Spacing Fault: $(NAME)")
+  field(DTYP, "Raw Soft Channel")
+  field(ZNAM, "OK")
+  field(ONAM, "FAULT")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "$(P):DST$(ID):MIN_SPACING_FAULT_CALC")
+  field(SCAN, "Passive")
+}
+record(calc, "$(P):DST$(ID):CHRG_INT_LOW_FAULT_CALC") {
+  field(DESC, "Calc Q int low status $(NAME)")
+  field(SCAN, "1 second")
+  field(INPA, "$(P):FAULT_REASON_MSB")
+  field(CALC, "(A>>$(ID))&1")
+  field(FLNK, "$(P):DST$(ID):CHRG_INT_LOW_FAULT")
+}
+record(bi, "$(P):DST$(ID):CHRG_INT_LOW_FAULT") {
+  field(DESC, "Charge Integrator Low: $(NAME)")
+  field(DTYP, "Raw Soft Channel")
+  field(SCAN, "Passive")
+  field(ZNAM, "OK")
+  field(ONAM, "FAULT")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "$(P):DST$(ID):CHRG_INT_LOW_FAULT_CALC")
+}
+record(calc, "$(P):DST$(ID):CHRG_INT_HIGH_FAULT_CALC") {
+  field(DESC, "Calc Q int high status $(NAME)")
+  field(SCAN, "1 second")
+  field(INPA, "$(P):FAULT_REASON_MSB")
+  field(CALC, "(A>>(16+$(ID)))&1")
+  field(FLNK, "$(P):DST$(ID):CHRG_INT_HIGH_FAULT")
+}
+record(bi, "$(P):DST$(ID):CHRG_INT_HIGH_FAULT") {
+  field(DESC, "Charge Integrator High: $(NAME)")
+  field(DTYP, "Raw Soft Channel")
+  field(ZNAM, "OK")
+  field(ONAM, "FAULT")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(INP, "$(P):DST$(ID):CHRG_INT_HIGH_FAULT_CALC")
+  field(SCAN, "Passive")
+}
+record(mbbo, "$(P):DST$(ID):SOFT_PERMIT") {
+    field(DESC, "Set BC to $(NAME)")
+    field(DTYP, "asynUInt32Digital")
+    field(VAL,  "0")
+    field(ZRST, "Allow Beam")
+    field(ZRVL, "0")
+    field(ONST, "Revoke Permit")
+    field(ONVL, "1")
+    field(OUT,  "@asynMask(CENTRAL_NODE $(ID) 1 0)MPS_SW_PERMIT_DEST")
+    field(DOL,  "MPS:SYS0:1:DST$(ID):SOFT_PERMIT CPP MSI")
+    field(OMSL, "closed_loop")
+    field(ASG,  "$(ASG1)")
+}
+record(mbbo, "$(P):DST$(ID):FORCE_BC") {
+    field(DESC, "Set BC to $(NAME)")
+    field(DTYP, "asynUInt32Digital")
+    field(VAL, "0")
+    field(OUT, "@asynMask(CENTRAL_NODE $(ID) 1 0)MPS_FORCE_DEST")
+    field(PINI, "YES")
+    field(ASG,  "$(ASG1)")
+    field(DOL,  "MPS:SYS0:1:DST$(ID):FORCE_BC CPP MSI")
+    field(OMSL, "closed_loop")
+    field(ZRST, "Beam Off")
+    field(ZRVL,"0")
+    field(ZRSV,"MAJOR")
+    field(ONST, "Kicker STBY")
+    field(ONVL,"1")
+    field(ONSV,"MAJOR")
+    field(TWST, "BC1Hz")
+    field(TWVL,"2")
+    field(TWSV,"MINOR")
+    field(THST, "BC10Hz")
+    field(THVL,"3")
+    field(THSV,"MINOR")
+    field(FRST, "BC120Hz")
+    field(FRVL,"4")
+    field(FRSV,"NO_ALARM")
+    field(FVST, "Diagnostic")
+    field(FVVL,"5")
+    field(FVSV,"MINOR")
+    field(SXST, "Tuning")
+    field(SXVL,"6")
+    field(SXSV,"NO_ALARM")
+    field(SVST, "1% MAP")
+    field(SVVL,"7")
+    field(SVSV,"NO_ALARM")
+    field(EIST, "5% MAP")
+    field(EIVL,"8")
+    field(EISV,"NO_ALARM")
+    field(NIST, "10% MAP")
+    field(NIVL,"9")
+    field(NISV,"NO_ALARM")
+    field(TEST, "25% MAP")
+    field(TEVL,"10")
+    field(TESV,"NO_ALARM")
+    field(ELST, "50% MAP")
+    field(ELVL,"11")
+    field(ELSV,"NO_ALARM")
+    field(TVST, "100% MAP")
+    field(TVVL,"12")
+    field(TVSV,"NO_ALARM")
+    field(TTST, "Full")
+    field(TTVL,"13")
+    field(TTSV,"NO_ALARM")
+}
