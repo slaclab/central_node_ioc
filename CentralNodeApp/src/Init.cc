@@ -170,14 +170,12 @@ static int mpsShowEngineInfo() {
 
 /*=== mpsShowUpdateBuffer command =======================================================*/
 
-static void mpsShowUpdateBuffer(int32_t id) {
+static void mpsShowUpdateBuffer(int32_t number) {
 
-  if (id < 0) {
+  if (number < 0) {
     std::cout << "*** mps show update or mps s ub command ***" << std::endl
-	      << "Usage: mps show update <id>" << std::endl
-	      << "  id: database Id for the application card (*not* the number)" << std::endl
-	      << "      use the 'mpsg2d'(REVIEW) command to find the database id based on" << std::endl
-	      << "      the number" << std::endl
+	      << "Usage: mps show update <number>" << std::endl
+	      << "  number: application card number (0 to 1023)" << std::endl
 	      << std::endl
 	      << "Prints out the current software update buffer (bits) read from firmware. This" << std::endl
 	      << "buffer is updated at 360Hz. The update buffer contents are sets of 'was high' and" << std::endl
@@ -186,36 +184,38 @@ static void mpsShowUpdateBuffer(int32_t id) {
 	      << std::endl;
     return;
   }
-  if (id == 999) {
+  if (number == 999) {
     std::cout << "Full update buffer:" << std::endl;
     std::vector<uint8_t> updateBuffer = Engine::getInstance().getCurrentDb()->getFastUpdateBuffer();
     ApplicationUpdateBufferFullBitSet *buf = reinterpret_cast<ApplicationUpdateBufferFullBitSet *>(&updateBuffer);
     std::cout << buf << std::endl;
   }
   else {
-    DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
+    // Look for app card with the specified number, and print its update buffer
+    for (DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->begin();
+         appCard != Engine::getInstance().getCurrentDb()->applicationCards->end(); ++appCard) {
+      if ((*appCard).second->number == static_cast<uint32_t>(number)) {
+        std::cout << (*appCard).second->applicationType->name << " [number:"
+		  << (*appCard).second->number << "]:" << std::endl;
 
-    if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-      std::cout << (*appCard).second->applicationType->name << " [number:"
-		<< (*appCard).second->number << "]:" << std::endl;
-
-      std::cout << "WasLow: " << std::endl;
-      std::cout << *(*appCard).second->getWasLowBuffer() << std::endl;
-      std::cout << "WasHigh: " << std::endl;
-      std::cout << *(*appCard).second->getWasHighBuffer() << std::endl;
+        std::cout << "WasLow: " << std::endl;
+        std::cout << *(*appCard).second->getWasLowBuffer() << std::endl;
+        std::cout << "WasHigh: " << std::endl;
+        std::cout << *(*appCard).second->getWasHighBuffer() << std::endl;
+        return;
+      }
     }
+    std::cout << "Application card with number " << number << " not found" << std::endl;
   }
 }
 
 /*=== mpsShowConfigBuffer command =======================================================*/
 
-static void mpsShowConfigBuffer(int32_t id) {
-  if (id < 0) {
+static void mpsShowConfigBuffer(int32_t number) {
+  if (number < 0) {
     std::cout << "*** mps show config or mps s cb command ***" << std::endl
-	      << "Usage: mps show config <id>" << std::endl
-	      << "  id: database Id for the application card (*not* the number)" << std::endl
-	      << "      use the 'mpsg2d' command to find the database id based on" << std::endl
-	      << "      the number" << std::endl
+	      << "Usage: mps show config <number>" << std::endl
+	      << "  number: application card number (0 to 1023)" << std::endl
 	      << std::endl
 	      << "Prints out the configuration buffer (bits) for the given application card." << std::endl
 	      << "These are the last contents written to the firmware configuration buffere," << std::endl
@@ -223,14 +223,17 @@ static void mpsShowConfigBuffer(int32_t id) {
 	      << std::endl;
     return;
   }
-  DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
-
-  if (appCard != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-    std::cout << (*appCard).second->applicationType->name << " [number:"
-	      << (*appCard).second->number << "]:" << std::endl;
-    std::cout << *(*appCard).second->applicationConfigBuffer << std::endl;
-    //    (*appCard).second->printAnalogConfiguration();
+  // Look for app card with the specified number, and print its configuration buffer
+  for (DbApplicationCardMap::iterator appCard = Engine::getInstance().getCurrentDb()->applicationCards->begin();
+       appCard != Engine::getInstance().getCurrentDb()->applicationCards->end(); ++appCard) {
+    if ((*appCard).second->number == static_cast<uint32_t>(number)) {
+      std::cout << (*appCard).second->applicationType->name << " [number:"
+		<< (*appCard).second->number << "]:" << std::endl;
+      std::cout << *(*appCard).second->applicationConfigBuffer << std::endl;
+      return;
+    }
   }
+  std::cout << "Application card with number " << number << " not found" << std::endl;
 }
 
 /*=== mpsShowFaultInput command =======================================================*/
@@ -271,20 +274,24 @@ static void mpsShowDigitalChannel(int32_t id) {
 
 /*=== mpsShowAppCard command =======================================================*/
 
-static void mpsShowAppCard(int32_t id) {
-  if (id < 0) {
+static void mpsShowAppCard(int32_t number) {
+  if (number < 0) {
     std::cout << "*** mps show app or mps s a command ***" << std::endl
-        << "Usage: mps show app <id>" << std::endl
-	      << "  id: database Id for the application card - *not* the number!" << std::endl
+        << "Usage: mps show app <number>" << std::endl
+	      << "  number: application card number (0 to 1023)" << std::endl
 	      << std::endl;
     return;
   }
   std::unique_lock<std::mutex> lock(*Engine::getInstance().getCurrentDb()->getMutex());
-  DbApplicationCardMap::iterator card = Engine::getInstance().getCurrentDb()->applicationCards->find(id);
-
-  if (card != Engine::getInstance().getCurrentDb()->applicationCards->end()) {
-    std::cout << (*card).second << std::endl;
+  // Look for app card with the specified number, and print its information
+  for (DbApplicationCardMap::iterator card = Engine::getInstance().getCurrentDb()->applicationCards->begin();
+       card != Engine::getInstance().getCurrentDb()->applicationCards->end(); ++card) {
+    if ((*card).second->number == static_cast<uint32_t>(number)) {
+      std::cout << (*card).second << std::endl;
+      return;
+    }
   }
+  std::cout << "Application card with number " << number << " not found" << std::endl;
 }
 
 /*=== mpsShowAnalogChannel command =======================================================*/
@@ -432,8 +439,8 @@ static void mpsShowTestMode() {
 
 /*=== mpsEnableApp command =======================================================*/
 
-static void mpsEnableApp(int32_t id, int enableInt) {
-  if (id < 0) {
+static void mpsEnableApp(int32_t number, int enableInt) {
+  if (number < 0) {
     std::cout << "*** mps enable app or mps e a command ***" << std::endl
 	      << "Usage: mps enable app <number> <enable>" << std::endl
 	      << "  number: unique application card id (0 to 1023)" << std::endl
@@ -449,7 +456,7 @@ static void mpsEnableApp(int32_t id, int enableInt) {
   if (enableInt > 0) {
     enable = true;
   }
-  Firmware::getInstance().setAppTimeoutEnable(id, enable);
+  Firmware::getInstance().setAppTimeoutEnable(number, enable);
   Firmware::getInstance().writeAppTimeoutMask();
 }
 
@@ -648,7 +655,7 @@ static void printHelp() {
 	      << "  help                   : print this help" << std::endl
 	      << "  app db [id]            : convert app dd to database id" << std::endl
 	      << "  print bypass           : print bypass queue" << std::endl
-	      << "  enable app [id] [en]   : id=appId, use 1024 for all, en=1 enable, en=0 disable" << std::endl
+	      << "  enable app [number] [en]   : use 1024 for all, en=1 enable, en=0 disable" << std::endl
           << "  debug" << std::endl
           << "  |- debug pcstream [en] : Power class stream debug, en=1 enable, en=0 disable" << std::endl
 	      << "  show" << std::endl
@@ -657,12 +664,12 @@ static void printHelp() {
 	      << "  |- show firmware       : print firmware info" << std::endl
 	      << "  |- show destination    : print beam destination info" << std::endl
 	      << "  |- show faults         : print current MPS faults" << std::endl
-	      << "  |- show app [id]       : print application card info" << std::endl
+	      << "  |- show app [number]   : print application card info" << std::endl
         << "  |- show digital [id]   : print digital channel info" << std::endl
 	      << "  |- show input [id]     : print fault input info" << std::endl
 	      << "  |- show analog [id]    : print analog channel info" << std::endl
-	      << "  |- show config [id]    : print fw configuration buffer for app" << std::endl
-	      << "  |- show update [id]    : print latest MPS update message for app" << std::endl
+	      << "  |- show config [number]: print fw configuration buffer for app" << std::endl
+	      << "  |- show update [number]: print latest MPS update message for app" << std::endl
 	      << "  |- show fault [id]     : print fault info" << std::endl
 	      << "  |- show mitigation [id]: print mitigation device info" << std::endl
         << "  |- show class [id]     : print mitigation (allowed class) info" << std::endl
