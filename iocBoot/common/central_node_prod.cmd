@@ -10,6 +10,8 @@
 # Set ASG groups
 epicsEnvSet("ASG1", "MCC")
 epicsEnvSet("ASG2", "EOICDESK")
+epicsEnvSet("ASG1", "")
+epicsEnvSet("ASG2", "")
 
 # MPS Database location
 epicsEnvSet("PHYSICS_TOP", "/usr/local/lcls/physics")
