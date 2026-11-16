@@ -3,10 +3,13 @@
 # Macro description:                                                             #
 #   - P          : MPLN Prefix                                                   #
 #   - APP        : MPS APP ID                                                    #
+#   - ID         : ID number in sqlite db                                        #
 #   - TYPE       : App card type                                                 #
 #   - LOCA       : link node crate location                                      #
+#   - CN         : central node prefix                                           #
 #================================================================================#
 record(bi, "$(P):$(ATTR)ONLINE") {
+  alias("$(CN):APP$(APP)_STATUS")
   field(DESC, "$(TYPE) [$(LOCA) AID$(APP)]")
   field(DTYP, "asynUInt32Digital")
   field(SCAN, "1 second")
@@ -14,7 +17,7 @@ record(bi, "$(P):$(ATTR)ONLINE") {
   field(ONAM, "ONLINE")
   field(ZSV, "MAJOR")
   field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE $(APP) 1 0)MPS_APP_STATUS")
+  field(INP, "@asynMask(CENTRAL_NODE $(ID) 1 0)MPS_APP_STATUS")
 }
 record(bo, "$(P):$(ATTR)ENABLE") {
   field(DESC, "Timeout enable bit for app $(APP)")
@@ -23,7 +26,7 @@ record(bo, "$(P):$(ATTR)ENABLE") {
   field(ZNAM, "Disable")
   field(ONAM, "Enable")
   field(OMSL, "closed_loop")
-  field(OUT, "@asynMask(CENTRAL_NODE $(APP) 1 0)MPS_APP_TIMEOUT_ENABLE")
+  field(OUT, "@asynMask(CENTRAL_NODE $(ID) 1 0)MPS_APP_TIMEOUT_ENABLE")
 }
 record(bi, "$(P):$(ATTR)ENABLE_RBV") {
   field(DESC, "Timeout enable bit for app $(APP)")
@@ -33,5 +36,5 @@ record(bi, "$(P):$(ATTR)ENABLE_RBV") {
   field(ONAM, "Enabled")
   field(ZSV, "MINOR")
   field(OSV, "NO_ALARM")
-  field(INP, "@asynMask(CENTRAL_NODE $(APP) 1 0)MPS_APP_TIMEOUT_ENABLE")
+  field(INP, "@asynMask(CENTRAL_NODE $(ID) 1 0)MPS_APP_TIMEOUT_ENABLE")
 }
